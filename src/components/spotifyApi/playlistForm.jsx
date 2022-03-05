@@ -21,7 +21,12 @@ class PlaylistForm extends Form {
 
   schema = {
     playlistIDs: Joi.string().required().label("Playlist IDs").min(1),
-    artistID: Joi.string().required().min(22).max(22).label("Artist ID"),
+    artistID: Joi.string()
+      .required()
+      .min(22)
+      .max(22)
+      .label("Artist ID")
+      .allow(""),
     probability: Joi.boolean().required().label("Include Probabilities"),
     all_songs: Joi.boolean().required().label("Include All Songs"),
   };

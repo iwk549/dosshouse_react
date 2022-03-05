@@ -12,7 +12,12 @@ class PlaylistInput extends Form {
   };
 
   schema = {
-    playlistID: Joi.string().required().min(22).max(22).allow(""),
+    playlistID: Joi.string()
+      .required()
+      .min(22)
+      .max(22)
+      .allow("")
+      .label("Playlist ID"),
   };
 
   doSubmit = async () => {

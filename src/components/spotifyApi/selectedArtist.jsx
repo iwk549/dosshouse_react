@@ -4,7 +4,7 @@ const SelectedArtist = ({ selectedArtist }) => {
   if (!selectedArtist)
     return (
       <div className="side-by-side left">
-        <h4>Select Artist</h4>
+        <h4>Select an Artist</h4>
       </div>
     );
   return (
@@ -20,27 +20,21 @@ const SelectedArtist = ({ selectedArtist }) => {
         </a>
       </h4>
       <React.Fragment>
-        <div className="row">
-          <div className="col-sm-4">
-            <b>Followers: </b>
-            {selectedArtist.followers.toLocaleString()}
-            <br />
-            <br />
-            <img
-              alt="artistImage"
-              src={selectedArtist.image}
-              style={{ maxWidth: "150px", maxHeight: "150px" }}
-            />
-          </div>
-          <div className="col-sm-4">
-            <b>Genres: </b>
-            <ul>
-              {selectedArtist.genres.map((g) => (
-                <li key={g}>{g}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <b>Followers: </b>
+        {selectedArtist.followers.toLocaleString()}
+        <br />
+        <br />
+        <img
+          alt="artistImage"
+          src={selectedArtist.image}
+          style={{ maxWidth: "150px", maxHeight: "150px" }}
+        />
+        <h4>Genres</h4>
+        <ul>
+          {selectedArtist.genres.map((g) => (
+            <li key={g}>{g}</li>
+          ))}
+        </ul>
       </React.Fragment>
     </div>
   );

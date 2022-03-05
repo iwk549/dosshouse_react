@@ -11,10 +11,29 @@ import Loading from "./components/common/loading/loading";
 
 function App() {
   const [loading, setLoading] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [textTimeout, setTextTimeout] = useState(null);
+
+  const handleUpdateLoading = (bool) => {
+    console.log(bool);
+    if (bool)
+      setTextTimeout(
+        setTimeout(() => {
+          setShowText(true);
+        }, 2500)
+      );
+    else {
+      if (textTimeout) clearTimeout(textTimeout);
+      setShowText(false);
+    }
+    setLoading(bool);
+  };
 
   return (
-    <LoadingContext.Provider value={{ loading, setLoading }}>
-      <Loading loading={loading} />
+    <LoadingContext.Provider
+      value={{ loading, setLoading: handleUpdateLoading }}
+    >
+      <Loading loading={loading} showText={showText} />
       <div className="App">
         <Navbar />
         <SwitchRouter />
