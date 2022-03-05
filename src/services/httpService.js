@@ -19,7 +19,7 @@ axios.interceptors.response.use(null, (error) => {
 
 export default {
   get: axios.get,
-  audio_features_endpoint: "api/v1/spotify/audio_features",
-  artist_endpoint: "api/v1/spotify/artist",
-  playlist_endpoint: "api/v1/spotify/playlist",
+  audio_features_endpoint: "/spotify/audio_features",
+  artist_endpoint: "/spotify/artist",
+  playlist_endpoint: "/spotify/playlist",
 };
