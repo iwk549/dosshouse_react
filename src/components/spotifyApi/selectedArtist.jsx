@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const SelectedArtist = ({ selectedArtist }) => {
   if (!selectedArtist)

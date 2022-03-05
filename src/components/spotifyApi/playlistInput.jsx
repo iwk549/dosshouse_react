@@ -16,7 +16,7 @@ class PlaylistInput extends Form {
   };
 
   doSubmit = async () => {
-    const added = await this.props.onAddPlaylist(this.state.data);
+    await this.props.onAddPlaylist(this.state.data);
   };
 
   render() {

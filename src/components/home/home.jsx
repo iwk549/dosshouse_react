@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
-const Home = ({}) => {
+const Home = () => {
   return (
     <div>
       <h2>Welcome to Dosshouse</h2>
+      <p>
+        Dosshouse is a combination of personal projects and utilities. Please
+        browse around and try it out.
+      </p>
     </div>
   );
 };

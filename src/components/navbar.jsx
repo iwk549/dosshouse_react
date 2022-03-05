@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 import { IconContext } from "react-icons";
 import HomeIcon from "./common/icons/homeIcon";
 import SpotifyIcon from "./common/icons/spotifyIcon";
+import { BiLinkExternal } from "react-icons/bi";
 
-const Navbar = ({}) => {
+const imageStyle = {
+  width: "auto",
+  height: 25,
+  borderRadius: 5,
+};
+
+const Navbar = () => {
   const getActiveLink = ({ isActive }) => {
     return isActive ? "nav-link active" : "nav-link";
   };
@@ -19,6 +26,32 @@ const Navbar = ({}) => {
         <NavLink className={getActiveLink} to="/spotify_api">
           <SpotifyIcon /> Spotify API
         </NavLink>
+        <a
+          className="nav-link"
+          href="https://ultimatescoreboard.com"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            src="/assets/ultimateScoreboardLogo.ico"
+            alt="Ultimate Scoreboard"
+            style={imageStyle}
+          />{" "}
+          Ultimate Scoreboard <BiLinkExternal />
+        </a>
+        <a
+          className="nav-link"
+          href="http://structuremate.com/help"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            src="/assets/StructureMateGuyInverted.png"
+            alt="StructureMate"
+            style={imageStyle}
+          />{" "}
+          StructureMate <BiLinkExternal />
+        </a>
       </nav>
     </IconContext.Provider>
   );

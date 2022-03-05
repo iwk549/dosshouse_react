@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const SelectedPlaylists = ({ selectedPlaylists, onRemovePlaylist }) => {
   if (selectedPlaylists.length === 0)
