@@ -1,6 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./css/index.css";
+import "./css/buttons.css";
+import "./css/icon.css";
+import "./css/inputs.css";
+import "./css/nav.css";
+import "./css/pageSection.css";
+import "./css/tab.css";
+import "./css/table.css";
+import "./css/text.css";
+import "./css/tooltip.css";
+import "./css/buttons.css";
+import "./css/buttons.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";

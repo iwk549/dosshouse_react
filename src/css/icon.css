@@ -1,0 +1,48 @@
+.icon-raised {
+  margin-bottom: 5px;
+  color: var(--minus20-info-bg-color);
+}
+.icon-tabs {
+  margin-bottom: 3px;
+}
+.icon-tabs-selected {
+  margin-bottom: 3px;
+  color: var(--minus20-info-bg-color);
+}
+.icon-tabs-vertical {
+  color: var(--info-bg-color);
+  margin-right: 5px;
+}
+.icon-tabs-vertical-selected {
+  margin-right: 5px;
+  color: var(--minus20-info-bg-color);
+}
+.loading-logo {
+  height: 80px;
+  width: auto;
+  border-radius: 5px;
+}
+.loading-icon {
+  color: var(--light-text);
+}
+.loading-animation {
+  height: 50px;
+  background: #fff;
+  width: 50px;
+  border-radius: 50px;
+}
+.loading-animation-container {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #000;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.nav-icon {
+  color: var(--light-text);
+}

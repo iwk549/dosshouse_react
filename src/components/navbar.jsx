@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 
 import { IconContext } from "react-icons";
-import { BiHome } from "react-icons/bi";
-import { BsSpotify } from "react-icons/bs";
+import HomeIcon from "./common/icons/homeIcon";
+import SpotifyIcon from "./common/icons/spotifyIcon";
 
 const Navbar = ({}) => {
   const getActiveLink = ({ isActive }) => {
@@ -14,10 +14,10 @@ const Navbar = ({}) => {
     <IconContext.Provider value={{ className: "nav-icon" }}>
       <nav className="main-nav">
         <NavLink className={getActiveLink} to="/home">
-          <BiHome /> Home
+          <HomeIcon /> Home
         </NavLink>
         <NavLink className={getActiveLink} to="/spotify_api">
-          <BsSpotify /> Spotify API
+          <SpotifyIcon /> Spotify API
         </NavLink>
       </nav>
     </IconContext.Provider>

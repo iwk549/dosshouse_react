@@ -1,0 +1,32 @@
+.custom-table {
+  border: 1px solid var(--dark-grey);
+  border-collapse: collapse;
+  align-items: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+.table-header {
+  background-color: var(--secondary);
+  color: var(--light-text);
+}
+.table-header-cell {
+  text-decoration: underline;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  padding-bottom: 2px;
+}
+.table-row.alternate {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.table-row:hover {
+  background-color: var(--info-bg-color);
+}
+.table-row.selected {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.table-cell {
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
