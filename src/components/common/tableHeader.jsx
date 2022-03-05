@@ -4,7 +4,6 @@ import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs";
 
 class TableHeader extends Component {
   raiseSort = (path) => {
-    console.log(path);
     const sortColumn = { ...this.props.sortColumn };
     if (sortColumn.path === path)
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
