@@ -19,13 +19,17 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
             Close
           </button>
         </div>
-        <h5 className="text-center">Purpose</h5>
+        <h3 className="text-center">Purpose</h3>
         <p>
           To determine the best playlist match for each song from the selected
           artist.
         </p>
+        <p>
+          Click the See Demo button to see the results for The Rolling Stones
+          compared to the top pop, country and hip-hop playlists.
+        </p>
         <hr />
-        <h5 className="text-center">Instructions</h5>
+        <h3 className="text-center">Instructions</h3>
         <ul>
           <li>
             Enter a playlist id and click Add Playlist. The playlist id is a 22
@@ -40,7 +44,7 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
           <ul>
             <li>
               Include Match Probabilities will show the probability of match
-              that each track has with each playlist.
+              that each track has with each playlist. (Currently Unavailable)
             </li>
             <li>
               Include All Songs by Artist will run the algorithm for all songs
@@ -64,12 +68,12 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
             the Methodology section below for more information.
           </li>
           <li>
-            The output table will appear below the form. Click Download Full
-            Data to Excel to see all available analysis columns.
+            The output table will appear below the form.
+            {/* Click Download Full Data to Excel to see all available analysis columns. */}
           </li>
         </ul>
         <hr />
-        <h5 className="text-center">Methodology</h5>
+        <h3 className="text-center">Methodology</h3>
         <p>
           The machine learning algorithm is run using a Python Flask RESTapi
           backend deployed to Heroku. Upon submission the intial data is

@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 
-import Form from "../common/form/form";
+import Form from "../../common/form/form";
 
 class PlaylistInput extends Form {
   state = {

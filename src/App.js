@@ -15,7 +15,6 @@ function App() {
   const [textTimeout, setTextTimeout] = useState(null);
 
   const handleUpdateLoading = (bool) => {
-    console.log(bool);
     if (bool)
       setTextTimeout(
         setTimeout(() => {

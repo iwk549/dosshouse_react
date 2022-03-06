@@ -25,7 +25,7 @@
 .btn-light.disabled,
 .btn-light:disabled {
   background-color: var(--minus20-light-bg-color);
-  color: var(--dark-text);
+  color: var(--secondary);
 }
 .btn-light:not(:disabled):not(.disabled):active,
 .btn-light:not(:disabled):not(.disabled).active,

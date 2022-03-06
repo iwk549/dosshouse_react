@@ -7,3 +7,13 @@ export const toastOptions = {
   draggable: true,
   progress: undefined,
 };
+
+export function titleCase(words) {
+  if (!words) return "";
+  let split = words.split(" ");
+  let titled = [];
+  split.forEach((word) => {
+    titled.push(word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  });
+  return titled.join(" ");
+}

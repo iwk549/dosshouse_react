@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Chart from "../common/charts";
+import Chart from "../../common/charts";
 
 class ChartSelector extends Component {
   state = {

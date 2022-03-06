@@ -39,7 +39,7 @@ class Chart extends Component {
     return (
       <VictoryChart
         height={200}
-        width={200}
+        width={300}
         // domainPadding={20}
         animate={{ duration: 1000, easing: "bounce" }}
       >
@@ -57,7 +57,7 @@ class Chart extends Component {
         <VictoryScatter
           labelComponent={
             <VictoryTooltip
-              center={{ x: 115, y: 30 }}
+              center={{ x: 115, y: 60 }}
               constrainToVisibleArea={true}
               style={{ fontSize: 3 }}
             />

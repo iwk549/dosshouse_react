@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import { getPlaylistRecommendations } from "../../services/audioFeaturesService";
+import { getPlaylistRecommendations } from "../../../services/audioFeaturesService";
 import TrackTable from "./trackTable";
 import _ from "lodash";
 import PlaylistForm from "./playlistForm";
-import SearchBox from "../common/searchBox";
+import SearchBox from "../../common/searchBox";
 import { toast } from "react-toastify";
 import TrackTableProbs from "./trackTableWithProbs";
-import ExcelDownload from "../common/excelDownload";
+import ExcelDownload from "../../common/excelDownload";
 import ReadMe from "./readMe";
 import { round } from "mathjs";
-import { getArtistInfo, getPlaylistInfo } from "../../services/nameService";
+import { getArtistInfo, getPlaylistInfo } from "../../../services/nameService";
 import ChartSelector from "./chartSelector";
-import LoadingContext from "../../context/loadingContext";
+import LoadingContext from "../../../context/loadingContext";
 import SelectedArtist from "./selectedArtist";
 import SelectedPlaylists from "./selectedPlaylists";
 
-class Main extends Component {
+class PlaylistRecommendations extends Component {
   static contextType = LoadingContext;
   state = {
     data: [],
@@ -61,7 +61,7 @@ class Main extends Component {
     this.context.setLoading(false);
   };
 
-  getPlaylistCB = async (id) => {
+  getPlaylistCB = async (id, forDemo) => {
     const params = {
       api_id: localStorage.getItem("api_id"),
       api_key: localStorage.getItem("api_key"),
@@ -70,7 +70,7 @@ class Main extends Component {
     let selectedPlaylists = [...this.state.selectedPlaylists];
     let selectedPlaylistIDs = [...this.state.selectedPlaylistIDs];
     if (selectedPlaylistIDs.includes(id)) {
-      toast("You have already added this playlist.");
+      if (!forDemo) toast("You have already added this playlist.");
       return false;
     }
     this.context.setLoading(true);
@@ -127,6 +127,37 @@ class Main extends Component {
     return null;
     // return <ExcelDownload data={data} columns={columns} />;
   }
+
+  handleReset = () => {
+    this.setState({
+      selectedPlaylistIDs: [],
+      selectedPlaylists: [],
+      selectedArtist: null,
+      data: [],
+    });
+  };
+
+  handleRunDemo = async () => {
+    this.handleReset();
+    const artistID = "22bE4uQ6baNwSHPVcDxLCe";
+    const playlistIDs = [
+      "0gZLbDUYS6asoZWyvcE8xi",
+      "37i9dQZF1DX1lVhptIYRda",
+      "37i9dQZF1DWVPRVPGc4ZVv",
+    ];
+    this.context.setLoading(true);
+    for (let i = 0; i < playlistIDs.length; i++) {
+      await this.getPlaylistCB(playlistIDs[i], true);
+    }
+    await this.getArtistCB(artistID);
+    await this.submitCallbackFunction({
+      playlistIDs: playlistIDs.join(","),
+      artistID: artistID,
+      probability: false,
+      all_songs: false,
+    });
+    this.context.setLoading(false);
+  };
 
   getPageData = () => {
     const { sortColumn, data, searchQuery } = this.state;
@@ -193,18 +224,19 @@ class Main extends Component {
           closeModal={this.modalToggle}
           popupOpen={readMeOpen}
         />
-        <div className="row">
-          <div className="col">
-            <h2>Spotify Playlist Recommendations</h2>
-          </div>
-          <div className="col-2">
-            <button
-              className="btn btn-sm btn-info sticky-top"
-              onClick={this.modalToggle}
-            >
-              ReadMe
-            </button>
-          </div>
+        <h2>Spotify Playlist Recommendations</h2>
+        <div className="side-by-side left">
+          <button
+            className="btn btn-sm btn-info sticky-top"
+            onClick={this.modalToggle}
+          >
+            ReadMe
+          </button>
+        </div>
+        <div className="side-by-side right">
+          <button className="btn btn-sm btn-dark" onClick={this.handleRunDemo}>
+            See Demo
+          </button>
         </div>
         <hr />
 
@@ -213,6 +245,7 @@ class Main extends Component {
           getArtistCB={this.getArtistCB}
           getPlaylistCB={this.getPlaylistCB}
           selectedPlaylistIDs={selectedPlaylistIDs.join(",")}
+          onReset={this.handleReset}
         />
         <hr />
         <SelectedArtist selectedArtist={selectedArtist} />
@@ -254,4 +287,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default PlaylistRecommendations;

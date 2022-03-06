@@ -1,9 +1,9 @@
 import React from "react";
-import Form from "../common/form/form";
+import Form from "../../common/form/form";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import LoadingContext from "../../context/loadingContext";
-import { toastOptions } from "../../utils/allowables";
+import LoadingContext from "../../../context/loadingContext";
+import { toastOptions } from "../../../utils/allowables";
 import PlaylistInput from "./playlistInput";
 
 class PlaylistForm extends Form {
@@ -20,7 +20,7 @@ class PlaylistForm extends Form {
   };
 
   schema = {
-    playlistIDs: Joi.string().required().label("Playlist IDs").min(1),
+    playlistIDs: Joi.string().required().label("Playlist IDs").min(22),
     artistID: Joi.string()
       .required()
       .min(22)
@@ -56,12 +56,6 @@ class PlaylistForm extends Form {
     return added;
   };
 
-  handleCheck = (event) => {
-    const data = { ...this.state.data };
-    data[event.target.id] = data[event.target.id] ? false : true;
-    this.setState({ data });
-  };
-
   render() {
     return (
       <div>
@@ -70,7 +64,17 @@ class PlaylistForm extends Form {
           {this.renderInput("artistID", "Artist ID:")}
           {/* {this.renderCheckbox("probability", "Include Match Probabilities")} */}
           {this.renderCheckbox("all_songs", "Include All Songs by Artist")}
-          {this.renderValidatedButton("Get Recommendations")}
+          <div className="side-by-side left">
+            <button
+              className="btn btn-sm btn-dark"
+              onClick={this.props.onReset}
+            >
+              Reset All
+            </button>
+          </div>
+          <div className="side-by-side right">
+            {this.renderValidatedButton("Get Recommendations")}
+          </div>
         </form>
       </div>
     );
