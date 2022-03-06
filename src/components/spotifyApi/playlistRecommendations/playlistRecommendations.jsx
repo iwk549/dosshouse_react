@@ -14,6 +14,7 @@ import ChartSelector from "./chartSelector";
 import LoadingContext from "../../../context/loadingContext";
 import SelectedArtist from "./selectedArtist";
 import SelectedPlaylists from "./selectedPlaylists";
+import Header from "../../common/pageSections/header";
 
 class PlaylistRecommendations extends Component {
   static contextType = LoadingContext;
@@ -224,7 +225,7 @@ class PlaylistRecommendations extends Component {
           closeModal={this.modalToggle}
           popupOpen={readMeOpen}
         />
-        <h2>Spotify Playlist Recommendations</h2>
+        <Header text="Spotify Playlist Recommendations" secondary={true} />
         <div className="side-by-side left">
           <button
             className="btn btn-sm btn-info sticky-top"

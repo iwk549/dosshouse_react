@@ -4,13 +4,7 @@ import { NavLink } from "react-router-dom";
 import { IconContext } from "react-icons";
 import HomeIcon from "./common/icons/homeIcon";
 import SpotifyIcon from "./common/icons/spotifyIcon";
-import { BiLinkExternal } from "react-icons/bi";
-
-const imageStyle = {
-  width: "auto",
-  height: 25,
-  borderRadius: 5,
-};
+import { MdWebStories } from "react-icons/md";
 
 const Navbar = () => {
   const getActiveLink = ({ isActive }) => {
@@ -20,38 +14,24 @@ const Navbar = () => {
   return (
     <IconContext.Provider value={{ className: "nav-icon" }}>
       <nav className="main-nav">
+        <div style={{ position: "absolute", top: 22 }}>
+          <img
+            src="/assets/profilePic.jpeg"
+            height={40}
+            width={40}
+            alt="Ian Kendall"
+            style={{ borderRadius: 10 }}
+          />
+        </div>
         <NavLink className={getActiveLink} to="/home">
           <HomeIcon /> Home
         </NavLink>
         <NavLink className={getActiveLink} to="/spotify_api">
           <SpotifyIcon /> Spotify API
         </NavLink>
-        <a
-          className="nav-link"
-          href="https://ultimatescoreboard.com"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            src="/assets/ultimateScoreboardLogo.ico"
-            alt="Ultimate Scoreboard"
-            style={imageStyle}
-          />{" "}
-          Ultimate Scoreboard <BiLinkExternal />
-        </a>
-        <a
-          className="nav-link"
-          href="http://structuremate.com/help"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            src="/assets/StructureMateGuyInverted.png"
-            alt="StructureMate"
-            style={imageStyle}
-          />{" "}
-          StructureMate <BiLinkExternal />
-        </a>
+        <NavLink className={getActiveLink} to="/active_sites">
+          <MdWebStories /> Apps
+        </NavLink>
       </nav>
     </IconContext.Provider>
   );
