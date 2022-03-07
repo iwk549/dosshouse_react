@@ -80,8 +80,10 @@ a.dropdown-item {
 .nav-link {
   text-align: center;
   margin-right: 50px;
-  margin-left: 50px;
-  padding: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  padding: 5px;
   border-radius: 5px;
   color: var(--light-text);
   text-decoration: none;

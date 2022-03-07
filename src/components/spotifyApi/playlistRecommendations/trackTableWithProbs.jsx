@@ -11,8 +11,7 @@ class TrackTableProbs extends Component {
         sortColumn={sortColumn}
         onSort={onSort}
         keyProperty={"id"}
-        headerClass="thead-dark"
-        tableClass="table-hover table-sm"
+        tableClass="custom-table"
       />
     );
   }

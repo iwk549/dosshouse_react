@@ -20,7 +20,7 @@ class PlaylistRecommendations extends Component {
   static contextType = LoadingContext;
   state = {
     data: [],
-    sortColumn: { path: "trackName", order: "asc" },
+    sortColumn: { path: "name", order: "asc" },
     searchQuery: "",
     credentialsOpen: false,
     probability: false,
@@ -154,7 +154,7 @@ class PlaylistRecommendations extends Component {
     await this.submitCallbackFunction({
       playlistIDs: playlistIDs.join(","),
       artistID: artistID,
-      probability: false,
+      probability: true,
       all_songs: false,
     });
     this.context.setLoading(false);
@@ -190,9 +190,29 @@ class PlaylistRecommendations extends Component {
     const sortedTracks = this.getPageData();
     let dataColumns = [];
     let trackTableColumns = [
-      { path: "name", label: "Track Name" },
+      {
+        path: "name",
+        label: "Track Name",
+        content: (t) => (
+          <a href={t.spotify_link} target="_blank" rel="noopener noreferrer">
+            {t.name}
+          </a>
+        ),
+      },
       { path: "artists", label: "Artists" },
-      { path: "album_name", label: "Album Name" },
+      {
+        path: "album_name",
+        label: "Album Name",
+        content: (t) => (
+          <a
+            href={`https://open.spotify.com/album/${t.album_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.album_name}
+          </a>
+        ),
+      },
     ];
 
     let trackTableProbColumns = [...trackTableColumns];
@@ -201,7 +221,7 @@ class PlaylistRecommendations extends Component {
         dataColumns.push(property);
         if (property.toLowerCase() !== property) {
           data.forEach((t) => {
-            t[property] = round(t[property], 3);
+            t[property] = round(t[property], 3).toFixed(3);
           });
           trackTableProbColumns.push({ path: property, label: property });
         }

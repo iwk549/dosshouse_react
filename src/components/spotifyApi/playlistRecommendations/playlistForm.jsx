@@ -62,7 +62,7 @@ class PlaylistForm extends Form {
         <PlaylistInput onAddPlaylist={this.handleAddPlaylist} />
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("artistID", "Artist ID:")}
-          {/* {this.renderCheckbox("probability", "Include Match Probabilities")} */}
+          {this.renderCheckbox("probability", "Include Match Probabilities")}
           {this.renderCheckbox("all_songs", "Include All Songs by Artist")}
           <div className="side-by-side left">
             <button

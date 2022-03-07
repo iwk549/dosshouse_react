@@ -44,7 +44,7 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
           <ul>
             <li>
               Include Match Probabilities will show the probability of match
-              that each track has with each playlist. (Currently Unavailable)
+              that each track has with each playlist.
             </li>
             <li>
               Include All Songs by Artist will run the algorithm for all songs

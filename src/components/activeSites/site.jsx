@@ -35,7 +35,13 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
         repos.length > 0 &&
         repos.map((repo, i) => (
           <>
-            <a key={i} href={repo.url} target="_blank" rel="noreferrer">
+            <a
+              key={i}
+              href={repo.url}
+              target="_blank"
+              rel="noreferrer"
+              style={{ overflowWrap: "break-word" }}
+            >
               {repo.private && <RiGitRepositoryPrivateFill />} {repo.url}{" "}
               <BiLinkExternal />
             </a>
@@ -43,7 +49,6 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
           </>
         ))}
       <br />
-      <hr />
     </div>
   );
 };

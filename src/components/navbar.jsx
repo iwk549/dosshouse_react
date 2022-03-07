@@ -13,16 +13,22 @@ const Navbar = () => {
 
   return (
     <IconContext.Provider value={{ className: "nav-icon" }}>
+      <div
+        style={{
+          float: "left",
+          marginLeft: 20,
+          marginTop: 5,
+        }}
+      >
+        <img
+          src="/assets/profilePic.jpeg"
+          height={50}
+          width={50}
+          alt="Ian Kendall"
+          style={{ borderRadius: 10 }}
+        />
+      </div>
       <nav className="main-nav">
-        <div style={{ position: "absolute", top: 22 }}>
-          <img
-            src="/assets/profilePic.jpeg"
-            height={40}
-            width={40}
-            alt="Ian Kendall"
-            style={{ borderRadius: 10 }}
-          />
-        </div>
         <NavLink className={getActiveLink} to="/home">
           <HomeIcon /> Home
         </NavLink>
