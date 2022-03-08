@@ -49,6 +49,7 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
           </>
         ))}
       <br />
+      <hr />
     </div>
   );
 };
