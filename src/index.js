@@ -12,7 +12,6 @@ import "./css/text.css";
 import "./css/tooltip.css";
 import "./css/buttons.css";
 import "./css/buttons.css";
-import "bootstrap/dist/css/bootstrap-grid.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";

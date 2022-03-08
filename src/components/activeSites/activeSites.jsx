@@ -94,11 +94,11 @@ const ActiveSites = () => {
       ],
       names: ["Scorecard Android", "Ultimate Scorecard iOS"],
       text: (
-        <p>
-          Scorecard is a scorekeeping app for games like scrabble, bridge,
-          darts, etc.
-          <br />
-          <br />
+        <>
+          <p>
+            Scorecard is a scorekeeping app for games like scrabble, bridge,
+            darts, etc.
+          </p>
           Features include:
           <ul>
             <li>Three different scorekeeping types</li>
@@ -114,7 +114,7 @@ const ActiveSites = () => {
             </li>
             <li>A full Sudoku game within the app, play while you wait</li>
           </ul>
-        </p>
+        </>
       ),
       tech: [
         { type: "Mobile", stack: "React Native" },

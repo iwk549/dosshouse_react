@@ -34,7 +34,7 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
       {repos &&
         repos.length > 0 &&
         repos.map((repo, i) => (
-          <>
+          <React.Fragment key={i}>
             <a
               key={i}
               href={repo.url}
@@ -46,7 +46,7 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
               <BiLinkExternal />
             </a>
             <br />
-          </>
+          </React.Fragment>
         ))}
       <br />
       <hr />
