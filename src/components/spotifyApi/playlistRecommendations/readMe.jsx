@@ -76,7 +76,7 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
         <h3 className="text-center">Methodology</h3>
         <p>
           The machine learning algorithm is run using a Python Flask RESTapi
-          backend deployed to Heroku. Upon submission the intial data is
+          backend deployed to Render. Upon submission the intial data is
           gathered using{" "}
           <a
             target="blank_"
@@ -112,7 +112,7 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
           Euclidean Distance between each song in the playlist and each song for
           the selected artist. A lower number here means that the song matches
           better with each of the songs in the playlist (it's values are closer
-          in distance).)
+          in distance).
         </p>
       </div>
     </Modal>
