@@ -35,7 +35,7 @@ const ActiveSites = () => {
         { type: "Database", stack: "MongoDB" },
         { type: "Mobile", stack: "React Native" },
         { type: "Storage", stack: "Google Cloud Storage" },
-        { type: "DevOps", stack: "Render" },
+        { type: "DevOps", stack: "Render, Google Play Store, Apple App Store" },
         { type: "Payments", stack: "Stripe" },
       ],
       repos: [
@@ -72,7 +72,7 @@ const ActiveSites = () => {
         { type: "Front-End", stack: "ReactTS" },
         { type: "Back-End", stack: "NodeJS, Express, GraphQL" },
         { type: "Database", stack: "MongoDB, Redis" },
-        { type: "DevOps", stack: "Render, Google Play Store, Apple App Store" },
+        { type: "DevOps", stack: "Render" },
         { type: "Payments", stack: "Stripe" },
       ],
       repos: [
