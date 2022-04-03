@@ -30,3 +30,22 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+.draggable-table {
+  border: 1px solid var(--secondary);
+  border-collapse: collapse;
+  align-items: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+.d-table-row {
+  border: 1px solid var(--secondary);
+  cursor: move;
+}
+.d-table-row.locked {
+  cursor: auto;
+}
+.d-table-cell {
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}

@@ -46,3 +46,11 @@
 .nav-icon {
   color: var(--light-text);
 }
+.icon-info {
+  color: var(--secondary);
+  margin: 2px;
+}
+.icon-md {
+  height: 20px;
+  width: 20px;
+}

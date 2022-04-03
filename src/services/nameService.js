@@ -1,4 +1,4 @@
-import http from "./httpService";
+import http from "./flaskHttpService";
 
 export async function getArtistInfo(params) {
   try {

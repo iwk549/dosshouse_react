@@ -39,3 +39,14 @@ code {
 .text-center {
   text-align: center;
 }
+
+.dark-bg {
+  background-color: var(--dark-bg-color);
+}
+.muted-bg {
+  background-color: var(--info-bg-color);
+}
+.external-image {
+  border-radius: 10px;
+  border: 1px solid var(--info-bg-color);
+}
