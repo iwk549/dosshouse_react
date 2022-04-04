@@ -64,13 +64,8 @@ const handleUpdateBracketFromGroups = (groups, playoffMatches) => {
   return newPlayoffMatches;
 };
 
-const handleUpdateBracketWinners = (
-  playoffs,
-  playoffMatches,
-  match,
-  winner
-) => {
-  let newPlayoffs = [];
+const handleUpdateBracketWinners = (playoffMatches, match, winner) => {
+  let playoffs = [];
   let newPlayoffMatches = [];
   playoffMatches.forEach((m) => {
     let newMatch = { ...m };
@@ -83,7 +78,7 @@ const handleUpdateBracketWinners = (
           newMatch[t + "TeamName"] = match[winner + "TeamName"];
         }
       });
-      newPlayoffs.push({
+      playoffs.push({
         matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
         homeTeam: newMatch.homeTeamName,
         awayTeam: newMatch.awayTeamName,
@@ -92,7 +87,7 @@ const handleUpdateBracketWinners = (
     newPlayoffMatches.push(newMatch);
   });
 
-  return { playoffs: newPlayoffs, playoffMatches: newPlayoffMatches };
+  return { playoffs: playoffs, playoffMatches: newPlayoffMatches };
 };
 
 function groupReducer(state, action) {
@@ -119,7 +114,6 @@ function groupReducer(state, action) {
     );
   } else if (action.type === "winner") {
     const winners = handleUpdateBracketWinners(
-      playoffs,
       playoffMatches,
       action.match,
       action.winner
