@@ -15,9 +15,8 @@ const SingleMatch = ({
   matchHeight,
   spectate,
   onSelectMatch,
-  webpage,
   showFullTeamNames,
-  dontSliceTime,
+  onSelectTeam,
 }) => {
   const handleSelectMatch = () => {
     onSelectMatch(match);
@@ -28,7 +27,6 @@ const SingleMatch = ({
         width={Math.abs(width)}
         height={Math.abs(matchHeight)}
         className="svg-bracket-match"
-        style={{ fill: webpage?.logoBgColor }}
       />
       {teamOrder(match.sport).map((t, i) => {
         return (
@@ -44,8 +42,8 @@ const SingleMatch = ({
               isSemiFinal={isSemiFinal}
               isFinal={isFinal}
               spectate={spectate}
-              webpage={webpage}
               showFullTeamNames={showFullTeamNames}
+              onSelectTeam={onSelectTeam}
             />
             {i === 0 && (
               <MatchLink
@@ -54,8 +52,6 @@ const SingleMatch = ({
                 width={width}
                 height={matchHeight}
                 onSelectMatch={onSelectMatch ? handleSelectMatch : null}
-                webpage={webpage}
-                dontSliceTime={dontSliceTime}
               />
             )}
           </React.Fragment>

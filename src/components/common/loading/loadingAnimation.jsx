@@ -10,7 +10,7 @@ const LoadingAnimation = ({}) => {
           backgroundColor: ["#fff", "#000", "#fff"],
         }}
         transition={{
-          flip: Infinity,
+          repeat: Infinity,
           duration: 2,
           ease: "easeOut",
         }}
@@ -36,7 +36,7 @@ const LoadingAnimation = ({}) => {
           backgroundColor: ["#fff", "#000", "#fff"],
         }}
         transition={{
-          flip: Infinity,
+          repeat: Infinity,
           duration: 2,
           ease: "easeOut",
         }}

@@ -7,13 +7,7 @@ import MatchConnector from "./matchConnector";
 // import BracketButtons from "./bracketButtons";
 import BracketFinals from "./bracketFinals";
 
-const PlayoffBracketCanvas = ({
-  matches,
-  spectate,
-  onSelectMatch,
-  webpage,
-  dontSliceTime,
-}) => {
+const PlayoffBracketCanvas = ({ matches, onSelectMatch, onSelectTeam }) => {
   const { width, height } = useWindowDimensions();
   const [orientation] = useState("landscape");
   const [selectedBracket] = useState("main");
@@ -99,7 +93,6 @@ const PlayoffBracketCanvas = ({
         height={bracketSize.height}
         width={bracketSize.width}
         className="svg-whole-bracket"
-        style={{ backgroundColor: webpage?.logoBgColor }}
         id="svg-bracket"
       >
         <BracketFinals
@@ -107,11 +100,9 @@ const PlayoffBracketCanvas = ({
           bracketSize={bracketSize}
           selectedBracket={selectedBracket}
           onSelectMatch={onSelectMatch}
-          webpage={webpage}
           showFullTeamNames={true}
         />
         {bracket.map((roundMatches, i) => {
-          console.log(roundMatches);
           let X = (i * remainingBracketSize.width) / bracket.length;
           return roundMatches.map((m, ii) => {
             const blockStart =
@@ -163,11 +154,9 @@ const PlayoffBracketCanvas = ({
                   isSemiFinal={isSemiFinal}
                   isFinal={isFinal}
                   matchHeight={bracketSize.matchHeight}
-                  spectate={spectate}
                   onSelectMatch={onSelectMatch}
-                  webpage={webpage}
+                  onSelectTeam={onSelectTeam}
                   showFullTeamNames={true}
-                  dontSliceTime={dontSliceTime}
                 />
                 <MatchConnector
                   position={{
@@ -186,7 +175,6 @@ const PlayoffBracketCanvas = ({
                   orientation={orientation}
                   bracketEnd={bracketEnd}
                   isOnlyMatch={roundMatches.length === 1}
-                  webpage={webpage}
                 />
               </g>
             );

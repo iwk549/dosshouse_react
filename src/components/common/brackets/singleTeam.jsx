@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { getTeamNameYPlacement } from "../../../utils/bracketsUtil";
 import { getTextX, getLineX, offsets } from "../../../utils/bracketsUtil";
+import CLinkSvg from "../links/cLinkSvg";
 
 const SingleTeam = ({
   match,
@@ -14,11 +15,11 @@ const SingleTeam = ({
   isSemiFinal,
   isFinal,
   webpage,
-  spectate,
+  isLocked,
   showFullTeamNames,
+  onSelectTeam,
 }) => {
   const [showTooltip, setShowTooltip] = useState({ show: false, label: "" });
-
   const Y = getTeamNameYPlacement(verticalPosition, height);
   const X = getTextX(textAnchor, width);
 
@@ -128,7 +129,7 @@ const SingleTeam = ({
 
   return (
     <g>
-      <text
+      <CLinkSvg
         x={
           X +
           (hasLogo
@@ -142,9 +143,19 @@ const SingleTeam = ({
         y={Y}
         className="svg-text"
         style={{ textAnchor, fontSize: height / 6 }}
+        onMouseOver={() => {
+          toggleFullTeamName();
+        }}
+        onMouseOut={() => {
+          toggleFullTeamName();
+        }}
+        disabled={isLocked}
+        boldText={isWinner}
+        textColor={null}
+        clickHandler={() => onSelectTeam(match, team)}
       >
         {getLineText()}
-      </text>
+      </CLinkSvg>
       {renderUnderline()}
       {renderJoinLine()}
       {hasLogo ? (

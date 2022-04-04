@@ -21,27 +21,6 @@ import LoadingContext from "../../context/loadingContext";
 import RegistrationModalForm from "../user/registrationModalForm";
 import { getMatches } from "../../services/matchesService";
 
-function groupReducer(state, action) {
-  switch (action.type) {
-    case "initial":
-      return action.groups;
-    case "update":
-      return handleDrop(
-        action.draggedTeam,
-        action.droppedOn,
-        action.groupName,
-        state
-      );
-    case "reorder":
-      return handleReorder(
-        action.selectedTeam,
-        action.direction,
-        action.groupName,
-        state
-      );
-  }
-}
-
 const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
   let newGroups = { ...state };
   let newTeams = [...newGroups[groupName]];
@@ -52,6 +31,7 @@ const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
   let thisTeam = newTeams.splice(draggedTeam.position, 1)[0];
   newTeams.splice(dropAt, 0, thisTeam);
   newGroups[groupName] = newTeams;
+  // placeBracketTeams(newGroups);
   return newGroups;
 };
 
@@ -66,13 +46,101 @@ const handleReorder = (selectedTeam, direction, groupName, state) => {
   return handleDrop(selectedTeam, { position }, groupName, state);
 };
 
+const handleUpdateBracketFromGroups = (groups, playoffMatches) => {
+  let newPlayoffMatches = [];
+  playoffMatches.forEach((m) => {
+    let match = { ...m };
+    if (match.round === 1) {
+      ["home", "away"].forEach((t) => {
+        const group = match.getTeamsFrom[t].groupName;
+        const position = match.getTeamsFrom[t].position;
+        match[t + "TeamName"] = groups[group]
+          ? groups[group][position - 1].name
+          : match[t + "TeamName"];
+      });
+    }
+    newPlayoffMatches.push(match);
+  });
+  return newPlayoffMatches;
+};
+
+const handleUpdateBracketWinners = (
+  playoffs,
+  playoffMatches,
+  match,
+  winner
+) => {
+  let newPlayoffs = [];
+  let newPlayoffMatches = [];
+  playoffMatches.forEach((m) => {
+    let newMatch = { ...m };
+    if (newMatch.round > 1) {
+      ["home", "away"].forEach((t) => {
+        if (
+          newMatch.getTeamsFrom[t].matchNumber ===
+          (match.metadata?.matchNumber || match.matchNumber)
+        ) {
+          newMatch[t + "TeamName"] = match[winner + "TeamName"];
+        }
+      });
+      newPlayoffs.push({
+        matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
+        homeTeam: newMatch.homeTeamName,
+        awayTeam: newMatch.awayTeamName,
+      });
+    }
+    newPlayoffMatches.push(newMatch);
+  });
+
+  return { playoffs: newPlayoffs, playoffMatches: newPlayoffMatches };
+};
+
+function groupReducer(state, action) {
+  let groups = state.groups;
+  let playoffs = state.playoffs;
+  let playoffMatches = state.playoffMatches;
+  if (action.type === "initial") {
+    groups = action.groups;
+    playoffs = action.playoffs;
+    playoffMatches = action.playoffMatches;
+  } else if (action.type === "update") {
+    groups = handleDrop(
+      action.draggedTeam,
+      action.droppedOn,
+      action.groupName,
+      state.groups
+    );
+  } else if (action.type === "reorder") {
+    groups = handleReorder(
+      action.selectedTeam,
+      action.direction,
+      action.groupName,
+      state.groups
+    );
+  } else if (action.type === "winner") {
+    const winners = handleUpdateBracketWinners(
+      playoffs,
+      playoffMatches,
+      action.match,
+      action.winner
+    );
+    playoffs = winners.playoffs;
+    playoffMatches = winners.playoffMatches;
+  }
+  playoffMatches = handleUpdateBracketFromGroups(groups, playoffMatches);
+  return { groups, playoffs, playoffMatches };
+}
+
 const PredictionsHome = ({}) => {
   const { setLoading } = useContext(LoadingContext);
   const [isLocked, setIsLocked] = useState(true);
-  const [playoffMatches, setPlayoffMatches] = useState([]);
-  const [playoffPredictions, setPlayoffPredictions] = useState([]);
+  const [predictions, dispatchPredictions] = useReducer(groupReducer, {
+    groups: {},
+    playoffs: [],
+    playoffMatches: [],
+  });
   const [groupMatches, setGroupMatches] = useState({});
-  const [groups, dispatchGroups] = useReducer(groupReducer, {});
+  // const [groups, dispatchGroups] = useReducer(groupReducer, {});
   const [bracketCode, setBracketCode] = useState("worldCup2022");
   const [predictionID, setPredictionID] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
@@ -118,9 +186,15 @@ const PredictionsHome = ({}) => {
 
       setIsLocked(locked);
 
-      dispatchGroups({ type: "initial", groups: filtered.groups });
+      // dispatchGroups({ type: "initial", groups: filtered.groups });
+
       setGroupMatches(filtered.groupMatches);
-      setPlayoffMatches(filtered.playoffMatches);
+      dispatchPredictions({
+        type: "initial",
+        groups: filtered.groups,
+        playoffs: [],
+        playoffMatches: filtered.playoffMatches,
+      });
     } else toast.error(matchesRes.data);
     setLoading(false);
   };
@@ -174,24 +248,33 @@ const PredictionsHome = ({}) => {
     // setLoading(false);
   };
 
+  const handleSelectTeam = (match, team) => {
+    dispatchPredictions({ type: "winner", match, winner: team });
+  };
+
   return (
     <div>
       <button className="btn btn-sm btn-block" onClick={handleSavePredictions}>
         Save
       </button>
       <GroupPicker
-        groups={groups}
-        onDrop={dispatchGroups}
-        onReorder={dispatchGroups}
+        groups={predictions.groups}
+        onDrop={dispatchPredictions}
+        onReorder={dispatchPredictions}
         isLocked={isLocked}
         groupMatches={groupMatches}
       />
-      <BracketPicker matches={playoffMatches} />
+      <br />
+      <BracketPicker
+        matches={predictions.playoffMatches}
+        onSelectTeam={handleSelectTeam}
+      />
       <RegistrationModalForm
         isOpen={registerFormOpen}
         setIsOpen={setRegisterFormOpen}
         onSubmit={handleRegisterNewAccount}
       />
+      <hr />
     </div>
   );
 };

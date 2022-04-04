@@ -7,7 +7,6 @@ const BracketFinals = ({
   bracketSize,
   selectedBracket,
   onSelectMatch,
-  webpage,
   showFullTeamNames,
 }) => {
   const mainBracketXPlacement = bracketSize.width / 4;
@@ -28,7 +27,6 @@ const BracketFinals = ({
           header="Main Bracket Winner vs Secondary Bracket Winner"
           width={mainBracketMatchWidth}
           onSelectMatch={onSelectMatch}
-          webpage={webpage}
           showFullTeamNames={showFullTeamNames}
         />
       )}
@@ -43,7 +41,6 @@ const BracketFinals = ({
           header="Second Chance Final"
           width={mainBracketMatchWidth}
           onSelectMatch={onSelectMatch}
-          webpage={webpage}
           showFullTeamNames={showFullTeamNames}
         />
       )}
@@ -58,7 +55,6 @@ const BracketFinals = ({
           width={mainBracketMatchWidth}
           header="Secondary Bracket Final"
           onSelectMatch={onSelectMatch}
-          webpage={webpage}
           showFullTeamNames={showFullTeamNames}
         />
       )}

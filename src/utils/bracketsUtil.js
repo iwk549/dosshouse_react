@@ -31,7 +31,7 @@ export const separateAndSplit = (allRounds, bracket, matches, split) => {
     leftMatches.push(splitMatches.splice(0, roundMatches.length / 2));
     rightMatches.push(splitMatches);
   });
-  // leftMatches = leftMatches.slice(0, leftMatches.length - 1);
+  leftMatches = leftMatches.slice(0, leftMatches.length - 1);
   if (split) return [...leftMatches, ...rightMatches.reverse()];
   else return allMatches;
 };
