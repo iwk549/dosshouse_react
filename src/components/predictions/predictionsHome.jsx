@@ -20,115 +20,12 @@ import { toast } from "react-toastify";
 import LoadingContext from "../../context/loadingContext";
 import RegistrationModalForm from "../user/registrationModalForm";
 import { getMatches } from "../../services/matchesService";
-
-const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
-  let newGroups = { ...state };
-  let newTeams = [...newGroups[groupName]];
-  const dropAt =
-    draggedTeam.position > droppedOn.position
-      ? droppedOn.position + 1
-      : droppedOn.position;
-  let thisTeam = newTeams.splice(draggedTeam.position, 1)[0];
-  newTeams.splice(dropAt, 0, thisTeam);
-  newGroups[groupName] = newTeams;
-  // placeBracketTeams(newGroups);
-  return newGroups;
-};
-
-const handleReorder = (selectedTeam, direction, groupName, state) => {
-  if (
-    (selectedTeam.position === 0 && direction === "up") ||
-    (selectedTeam.position === state[groupName].length - 1 &&
-      direction === "down")
-  )
-    return state;
-  const position = selectedTeam.position + (direction === "up" ? -2 : 1);
-  return handleDrop(selectedTeam, { position }, groupName, state);
-};
-
-const handleUpdateBracketFromGroups = (groups, playoffMatches) => {
-  let newPlayoffMatches = [];
-  playoffMatches.forEach((m) => {
-    let match = { ...m };
-    if (match.round === 1) {
-      ["home", "away"].forEach((t) => {
-        const group = match.getTeamsFrom[t].groupName;
-        const position = match.getTeamsFrom[t].position;
-        match[t + "TeamName"] = groups[group]
-          ? groups[group][position - 1].name
-          : match[t + "TeamName"];
-      });
-    }
-    newPlayoffMatches.push(match);
-  });
-  return newPlayoffMatches;
-};
-
-const handleUpdateBracketWinners = (playoffMatches, match, winner) => {
-  let playoffs = [];
-  let newPlayoffMatches = [];
-  playoffMatches.forEach((m) => {
-    let newMatch = { ...m };
-    if (newMatch.round > 1) {
-      ["home", "away"].forEach((t) => {
-        if (
-          newMatch.getTeamsFrom[t].matchNumber ===
-          (match.metadata?.matchNumber || match.matchNumber)
-        ) {
-          newMatch[t + "TeamName"] = match[winner + "TeamName"];
-        }
-      });
-      playoffs.push({
-        matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
-        homeTeam: newMatch.homeTeamName,
-        awayTeam: newMatch.awayTeamName,
-      });
-    }
-    newPlayoffMatches.push(newMatch);
-  });
-
-  return { playoffs: playoffs, playoffMatches: newPlayoffMatches };
-};
-
-function groupReducer(state, action) {
-  let groups = state.groups;
-  let playoffs = state.playoffs;
-  let playoffMatches = state.playoffMatches;
-  if (action.type === "initial") {
-    groups = action.groups;
-    playoffs = action.playoffs;
-    playoffMatches = action.playoffMatches;
-  } else if (action.type === "update") {
-    groups = handleDrop(
-      action.draggedTeam,
-      action.droppedOn,
-      action.groupName,
-      state.groups
-    );
-  } else if (action.type === "reorder") {
-    groups = handleReorder(
-      action.selectedTeam,
-      action.direction,
-      action.groupName,
-      state.groups
-    );
-  } else if (action.type === "winner") {
-    const winners = handleUpdateBracketWinners(
-      playoffMatches,
-      action.match,
-      action.winner
-    );
-    playoffs = winners.playoffs;
-    playoffMatches = winners.playoffMatches;
-  }
-  playoffMatches = handleUpdateBracketFromGroups(groups, playoffMatches);
-  return { groups, playoffs, playoffMatches };
-}
+import { predictionReducer } from "../../utils/predictionsUtil";
 
 const PredictionsHome = ({}) => {
   const { setLoading } = useContext(LoadingContext);
   const [isLocked, setIsLocked] = useState(true);
-  const [predictions, dispatchPredictions] = useReducer(groupReducer, {
+  const [predictions, dispatchPredictions] = useReducer(predictionReducer, {
     groups: {},
     playoffs: [],
     playoffMatches: [],
