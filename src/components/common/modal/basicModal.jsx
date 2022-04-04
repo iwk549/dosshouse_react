@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 
+import { modalStyle } from "../../../utils/allowables";
+
 const BasicModal = ({
   id,
   isOpen,
@@ -9,7 +11,6 @@ const BasicModal = ({
   alsoRunOnClose,
   children,
   style,
-  noSticky,
 }) => {
   return (
     <Modal
@@ -21,11 +22,11 @@ const BasicModal = ({
         if (alsoRunOnClose) alsoRunOnClose();
       }}
       ariaHideApp={false}
-      style={style}
+      style={{ ...modalStyle, ...style }}
     >
-      <div className={!noSticky ? "sticky-top" : ""}>
+      <div className="text-center">
         <button
-          className="btn btn-block btn-md btn-primary"
+          className="btn btn-block btn-md btn-light"
           onClick={() => {
             onClose(id ? id : false);
             if (alsoRunOnClose) alsoRunOnClose();

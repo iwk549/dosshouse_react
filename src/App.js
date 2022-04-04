@@ -39,11 +39,12 @@ function App() {
         <SwitchRouter />
       </div>
       <ToastContainer
-        position="top-left"
+        position="bottom-right"
         autoClose={2000}
         closeOnClick
         pauseOnHover
         pauseOnFocusLoss
+        theme="dark"
       />
     </LoadingContext.Provider>
   );

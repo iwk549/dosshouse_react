@@ -6,7 +6,7 @@ const Input = ({ name, label, error, ...rest }) => {
       <label htmlFor={name} className="custom-input-label">
         {label}
       </label>
-      &nbsp;
+      <br />
       <input {...rest} name={name} id={name} className="custom-input" />
       {error && <div className="form-input-error">{error}</div>}
     </div>

@@ -93,7 +93,10 @@ const DraggableTableRow = ({
           </td>
         </tr>
       ) : (
-        <tr ref={isLocked ? null : dragDrop}>
+        <tr
+          ref={isLocked ? null : dragDrop}
+          className={isOver ? "dark-bg" : "muted-bg"}
+        >
           {renderBlankTopCell()}
           {columns.map((c, idx) => renderBlankTopCell(idx))}
           {renderBlankTopCell()}

@@ -32,3 +32,23 @@ export function teamOrder(sport) {
   const lowerSport = sport.toLowerCase();
   return ["soccer"].includes(lowerSport) ? ["home", "away"] : ["away", "home"];
 }
+
+export const cookieOptions = {
+  expires: 9999,
+  sameSite: "Lax",
+};
+
+export const modalStyle = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    height: "50%",
+    width: "50%",
+    backgroundColor: "#e6e6e6",
+    border: `1px solid #831fe0`,
+  },
+};

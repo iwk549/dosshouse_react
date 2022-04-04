@@ -41,7 +41,7 @@ code {
 }
 
 .dark-bg {
-  background-color: var(--dark-bg-color);
+  background-color: var(--secondary);
 }
 .muted-bg {
   background-color: var(--info-bg-color);

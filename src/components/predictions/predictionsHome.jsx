@@ -6,21 +6,22 @@ import React, {
   useReducer,
 } from "react";
 import { useNavigate } from "react-router-dom";
+
+import Input from "../common/form/input";
 import BracketPicker from "./bracketPicker";
 import GroupPicker from "./groupPicker";
-// import {
-//   getPickemMatches,
-//   savePredictions,
-// } from "../../services/pickemService";
 import { toast } from "react-toastify";
-// import {
-//   getCurrentUser,
-//   registerNewPickemAccount,
-// } from "../../services/userService";
 import LoadingContext from "../../context/loadingContext";
 import RegistrationModalForm from "../user/registrationModalForm";
 import { getMatches } from "../../services/matchesService";
 import { predictionReducer } from "../../utils/predictionsUtil";
+import {
+  getCurrentUser,
+  registerUser,
+  loginUser,
+} from "../../services/userService";
+import { savePredictions } from "../../services/predictionsService";
+import HeaderLine from "./headerLine";
 
 const PredictionsHome = ({}) => {
   const { setLoading } = useContext(LoadingContext);
@@ -31,9 +32,9 @@ const PredictionsHome = ({}) => {
     playoffMatches: [],
   });
   const [groupMatches, setGroupMatches] = useState({});
-  // const [groups, dispatchGroups] = useReducer(groupReducer, {});
   const [bracketCode, setBracketCode] = useState("worldCup2022");
   const [predictionID, setPredictionID] = useState("");
+  const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
 
   const getPredictionID = () => {
@@ -54,7 +55,7 @@ const PredictionsHome = ({}) => {
     let locked = false;
     if (matchesRes.status === 200) {
       matchesRes.data.forEach((m) => {
-        if (!locked && m.locked) locked = true;
+        if (locked) locked = true;
         if (m.type === "Group") {
           if (!filtered.groups[m.groupName]) {
             filtered.groups[m.groupName] = [];
@@ -68,7 +69,6 @@ const PredictionsHome = ({}) => {
               addedTeamTracker.push(teamName);
               filtered.groups[m.groupName].push({
                 name: teamName,
-                flag: m[t + "TeamFlag"],
               });
             }
           });
@@ -76,8 +76,6 @@ const PredictionsHome = ({}) => {
       });
 
       setIsLocked(locked);
-
-      // dispatchGroups({ type: "initial", groups: filtered.groups });
 
       setGroupMatches(filtered.groupMatches);
       dispatchPredictions({
@@ -94,49 +92,41 @@ const PredictionsHome = ({}) => {
     loadData();
   }, []);
 
-  const handleRegisterNewAccount = async (data) => {
-    //   setProgress(1);
-    //   setLoading(true);
-    //   const res = await registerNewPickemAccount(data, {
-    //     callback: (p) => setProgress(p),
-    //     bar: 0,
-    //   });
-    //   console.log(res);
-    //   if (res.status === 200) {
-    //     await handleSavePredictions();
-    //     // window.location.reload();
-    //   } else toast.error(res.data);
-    //   setLoading(false);
+  const handleSubmitUserForm = async (type, data) => {
+    setLoading(true);
+    let res;
+    if (type === "register") res = await registerUser(data);
+    else if (type === "login") res = await loginUser(data);
+    if (res.status === 200) {
+      setRegisterFormOpen(false);
+      await handleSavePredictions();
+    } else toast.error(res.data);
+    setLoading(false);
   };
 
   const handleSavePredictions = async () => {
-    // const user = getCurrentUser();
-    // if (!user) return setRegisterFormOpen(true);
-    // setLoading(true);
-    // let groupPredictions = [];
-    // Object.keys(groups).forEach((k) => {
-    //   groupPredictions.push({
-    //     groupName: k,
-    //     teamOrder: groups[k].map((t) => t.name),
-    //   });
-    // });
-    // const res = await savePredictions(
-    //   predictionID,
-    //   groupPredictions,
-    //   playoffPredictions,
-    //   bracketCode,
-    //   {
-    //     callback: (p) => setProgress(p),
-    //     bar: 0,
-    //   }
-    // );
-    // console.log(res);
-    // if (res.status === 200) {
-    //   history.push(`?q=${res.data}`);
-    //   getPredictionID();
-    //   toast.success("Predictions saved");
-    // } else toast.error(res.data);
-    // setLoading(false);
+    const user = getCurrentUser();
+    if (!user) return setRegisterFormOpen(true);
+    setLoading(true);
+    console.log(predictions);
+    const groupPredictions = [];
+    Object.keys(predictions.groups).forEach((k) => {
+      groupPredictions.push({
+        groupName: k,
+        teamOrder: predictions.groups[k].map((t) => t.name),
+      });
+    });
+    const res = await savePredictions(predictionID, {
+      name: predictionName,
+      bracketCode,
+      groupPredictions,
+      playoffPredictions: predictions.playoffs,
+    });
+    console.log(res);
+    if (res.status === 200) {
+      toast.success("Predictions saved");
+    } else toast.error(res.data);
+    setLoading(false);
   };
 
   const handleSelectTeam = (match, team) => {
@@ -145,9 +135,11 @@ const PredictionsHome = ({}) => {
 
   return (
     <div>
-      <button className="btn btn-sm btn-block" onClick={handleSavePredictions}>
-        Save
-      </button>
+      <HeaderLine
+        onSave={handleSavePredictions}
+        predictionName={predictionName}
+        setPredictionName={setPredictionName}
+      />
       <GroupPicker
         groups={predictions.groups}
         onDrop={dispatchPredictions}
@@ -161,9 +153,10 @@ const PredictionsHome = ({}) => {
         onSelectTeam={handleSelectTeam}
       />
       <RegistrationModalForm
+        header="Login or Register to Save Your Predictions"
         isOpen={registerFormOpen}
         setIsOpen={setRegisterFormOpen}
-        onSubmit={handleRegisterNewAccount}
+        onSubmit={handleSubmitUserForm}
       />
       <hr />
     </div>
