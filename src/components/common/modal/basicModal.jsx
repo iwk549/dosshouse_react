@@ -26,7 +26,7 @@ const BasicModal = ({
     >
       <div className="text-center">
         <button
-          className="btn btn-block btn-md btn-light"
+          className="btn btn-block btn-sm btn-light"
           onClick={() => {
             onClose(id ? id : false);
             if (alsoRunOnClose) alsoRunOnClose();

@@ -39,7 +39,7 @@ function App() {
         <SwitchRouter />
       </div>
       <ToastContainer
-        position="bottom-right"
+        position="bottom-center"
         autoClose={2000}
         closeOnClick
         pauseOnHover

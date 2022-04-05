@@ -22,3 +22,11 @@ export async function getPrediction(predictionID) {
     return ex.response;
   }
 }
+
+export async function getPredictions() {
+  try {
+    return await http.get(http.predictions);
+  } catch (ex) {
+    return ex.response;
+  }
+}

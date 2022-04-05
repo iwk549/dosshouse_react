@@ -37,7 +37,6 @@ const MatchesModal = ({ matches, isOpen, setIsOpen }) => {
 
   return (
     <BasicModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-      <br />
       <h3 className="text-center">
         <b>Group {matches[0].groupName} Matches</b>
       </h3>

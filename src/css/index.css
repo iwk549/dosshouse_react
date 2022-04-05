@@ -16,6 +16,11 @@
   --minus20-info-bg-color: #cc66ff;
   --alert-bg-color: #e60000;
   --secondary: #831fe0;
+  --main-bg-color: #831fe0;
+  --muted-bg-color: #e6d2f9;
+  --danger-bg-color: #cc0000;
+  --minus10-danger-bg-color: #ff0000;
+  --minus20-dagner-bg-color: #ff3333;
 }
 
 body {

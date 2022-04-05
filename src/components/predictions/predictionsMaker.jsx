@@ -13,7 +13,7 @@ import GroupPicker from "./groupPicker";
 import { toast } from "react-toastify";
 import LoadingContext from "../../context/loadingContext";
 import RegistrationModalForm from "../user/registrationModalForm";
-import { getMatches } from "../../services/matchesService";
+import { getMatches } from "../../services/matchService";
 import { predictionReducer } from "../../utils/predictionsUtil";
 import {
   getCurrentUser,
@@ -25,6 +25,7 @@ import {
   getPrediction,
 } from "../../services/predictionsService";
 import HeaderLine from "./headerLine";
+import TabbedArea from "../common/pageSections/tabbedArea";
 
 const PredictionMaker = ({ bracketCode, predictionID }) => {
   let navigate = useNavigate();
@@ -39,6 +40,8 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
   const [groupMatches, setGroupMatches] = useState({});
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
+  const tabs = ["group", "bracket", "miscellaneous", "rules"];
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const loadData = async () => {
     setLoading(true);
@@ -162,25 +165,44 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
         }}
         isSaved={predictions.isSaved}
       />
-      <GroupPicker
-        groups={predictions.groups}
-        onDrop={dispatchPredictions}
-        onReorder={dispatchPredictions}
-        isLocked={isLocked}
-        groupMatches={groupMatches}
-      />
       <br />
-      <BracketPicker
-        matches={predictions.playoffMatches}
-        onSelectTeam={handleSelectTeam}
-      />
+      <TabbedArea
+        tabs={tabs}
+        selectedTab={selectedTab}
+        onSelectTab={setSelectedTab}
+        tabPlacement="top"
+      >
+        <div className="text-center">
+          {selectedTab.includes("group") ? (
+            <GroupPicker
+              groups={predictions.groups}
+              onDrop={dispatchPredictions}
+              onReorder={dispatchPredictions}
+              isLocked={isLocked}
+              groupMatches={groupMatches}
+            />
+          ) : selectedTab.includes("bracket") ? (
+            <BracketPicker
+              matches={predictions.playoffMatches}
+              onSelectTeam={handleSelectTeam}
+            />
+          ) : null}
+        </div>
+      </TabbedArea>
+      <div style={{ float: "right" }}>
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => navigate("/predictions")}
+        >
+          Exit
+        </button>
+      </div>
       <RegistrationModalForm
         header="Login or Register to Save Your Predictions"
         isOpen={registerFormOpen}
         setIsOpen={setRegisterFormOpen}
         onSubmit={handleSubmitUserForm}
       />
-      <hr />
     </div>
   );
 };

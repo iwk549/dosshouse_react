@@ -31,6 +31,7 @@ export default {
   delete: axios.delete,
   users: "/users",
   matches: "/matches",
+  competitions: "/competitions",
   predictions: "/predictions",
   setJwt,
 };

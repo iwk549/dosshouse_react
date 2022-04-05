@@ -9,20 +9,20 @@ import BracketFinals from "./bracketFinals";
 
 const PlayoffBracketCanvas = ({ matches, onSelectMatch, onSelectTeam }) => {
   const { width, height } = useWindowDimensions();
-  const [orientation] = useState("landscape");
+  const [orientation, setOrientation] = useState("landscape");
   const [selectedBracket] = useState("main");
   const [bracketSize, setBracketSize] = useState({
-    width: width < 1280 ? width : 1280,
-    height: height < 720 ? height : 720,
+    width: 1280,
+    height: 720,
     matchHeight: 100,
   });
 
   useEffect(() => {
-    setBracketSize({
-      width: width < 1280 ? width : 1280,
-      height: height < 720 ? height : 720,
-      matchHeight: 100,
-    });
+    // setBracketSize({
+    //   width: width < 1280 ? width - 100 : 1280,
+    //   height: height < 720 ? height : 920,
+    //   matchHeight: 100,
+    // });
   }, []);
 
   if (matches.length === 0) return null;

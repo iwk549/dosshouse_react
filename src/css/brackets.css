@@ -1,16 +1,9 @@
-:root {
-  --main-bg-color: #831fe0;
-  --muted-bg-color: #e6d2f9;
-  --light-bg-color: #f3e9fc;
-  --dark-text: #000;
-}
-
 .svg-whole-bracket {
   background-color: var(--muted-bg-color);
   border-radius: 5px;
 }
 .svg-bracket-match {
-  fill: var(--light-bg-color);
+  fill: var(--info-bg-color);
 }
 
 .svg-link {
