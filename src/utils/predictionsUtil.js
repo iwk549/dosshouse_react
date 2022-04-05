@@ -22,32 +22,6 @@ const handleReorder = (selectedTeam, direction, groupName, state) => {
   return handleDrop(selectedTeam, { position }, groupName, state);
 };
 
-// export const handleUpdateBracketFromGroups = (
-//   groups,
-//   playoffs,
-//   playoffMatches
-// ) => {
-//   let newPlayoffMatches = [];
-//   playoffMatches.forEach((m) => {
-//     let newMatch = { ...m };
-//     if (newMatch.round === 1) {
-//       ["home", "away"].forEach((t) => {
-//         const group = newMatch.getTeamsFrom[t].groupName;
-//         const position = newMatch.getTeamsFrom[t].position;
-//         newMatch[t + "TeamName"] = groups[group]
-//           ? groups[group][position - 1].name
-//           : newMatch[t + "TeamName"];
-//       });
-//     }
-//     newPlayoffMatches.push(newMatch);
-//   });
-//   const updatedPlayoffs = cascadeGroupChanges(newPlayoffMatches);
-//   return {
-//     playoffs: updatedPlayoffs.playoffs,
-//     playoffMatches: updatedPlayoffs.playoffMatches,
-//   };
-// };
-
 const cascadeGroupChanges = (groups, playoffMatches) => {
   let newPlayoffMatches = [];
   let newPlayoffs = [];
@@ -144,14 +118,57 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner) => {
   return { playoffs: playoffs, playoffMatches: newPlayoffMatches };
 };
 
+const handlePopulateBracket = (
+  groupPredictions,
+  playoffPredictions,
+  playoffMatches
+) => {
+  let groups = {};
+  groupPredictions.forEach((g) => {
+    groups[g.groupName] = g.teamOrder.map((t) => {
+      return { name: t };
+    });
+  });
+  let populatedPlayoffMatches = [];
+  playoffPredictions.forEach((p) => {
+    let playoffMatch = {
+      ...playoffMatches.find(
+        (m) => (m.metadata?.matchNumber || m.matchNumber) === p.matchNumber
+      ),
+    };
+    playoffMatch.homeTeamName = p.homeTeam;
+    playoffMatch.awayTeamName = p.awayTeam;
+    populatedPlayoffMatches.push(playoffMatch);
+  });
+
+  return {
+    groups,
+    playoffs: playoffPredictions,
+    playoffMatches: populatedPlayoffMatches,
+    isSaved: false,
+  };
+};
+
 export function predictionReducer(state, action) {
   let groups = state.groups;
   let playoffs = state.playoffs;
   let playoffMatches = state.playoffMatches;
+  let isSaved = false;
+  if (action.type === "save") {
+    return { groups, playoffs, playoffMatches, isSaved: true };
+  } else if (action.type === "edit") {
+    return { groups, playoffs, playoffMatches, isSaved };
+  }
   if (action.type === "initial") {
     groups = action.groups;
     playoffs = action.playoffs;
     playoffMatches = action.playoffMatches;
+  } else if (action.type === "populate") {
+    return handlePopulateBracket(
+      action.groups,
+      action.playoffs,
+      action.playoffMatches
+    );
   } else if (action.type === "update") {
     groups = handleDrop(
       action.draggedTeam,
@@ -178,5 +195,5 @@ export function predictionReducer(state, action) {
   const updated = cascadeGroupChanges(groups, playoffMatches);
   playoffMatches = updated.playoffMatches;
   playoffs = updated.playoffs;
-  return { groups, playoffs, playoffMatches };
+  return { groups, playoffs, playoffMatches, isSaved };
 }

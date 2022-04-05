@@ -6,6 +6,15 @@
   margin-top: 15px;
 }
 
+.btn {
+  border-radius: 5px;
+}
+
+.btn-md {
+  height: 40px;
+  font-size: 16px;
+}
+
 .btn-light {
   background-color: var(--light-bg-color);
   border-color: var(--minus10-light-bg-color);

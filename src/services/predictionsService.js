@@ -14,3 +14,11 @@ export async function savePredictions(predictionID, predictions) {
       return ex.response;
     }
 }
+
+export async function getPrediction(predictionID) {
+  try {
+    return await http.get(http.predictions + "/" + predictionID);
+  } catch (ex) {
+    return ex.response;
+  }
+}

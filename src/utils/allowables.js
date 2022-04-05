@@ -52,3 +52,7 @@ export const modalStyle = {
     border: `1px solid #831fe0`,
   },
 };
+
+export function splitName(name) {
+  return name.split(" ")[0];
+}

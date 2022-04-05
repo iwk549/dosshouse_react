@@ -7,3 +7,11 @@ export async function getMatches(bracketCode) {
     return ex.response;
   }
 }
+
+export async function getAvailableBrackets() {
+  try {
+    return await http.get(http.matches);
+  } catch (ex) {
+    return ex.response;
+  }
+}

@@ -33,11 +33,11 @@ const Navbar = () => {
         <NavLink className={getActiveLink} to="/home">
           <HomeIcon /> Home
         </NavLink>
-        <NavLink className={getActiveLink} to="/spotify_api">
-          <SpotifyIcon /> Spotify API
-        </NavLink>
         <NavLink className={getActiveLink} to="/predictions">
           <PredictionsIcon /> Predictions
+        </NavLink>
+        <NavLink className={getActiveLink} to="/spotify_api">
+          <SpotifyIcon /> Spotify
         </NavLink>
         <NavLink className={getActiveLink} to="/active_sites">
           <MdWebStories /> Apps

@@ -1,90 +1,26 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  useReducer,
-} from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
-import Input from "../common/form/input";
-import BracketPicker from "./bracketPicker";
-import GroupPicker from "./groupPicker";
 import { toast } from "react-toastify";
+
+import Header from "../common/pageSections/header";
 import LoadingContext from "../../context/loadingContext";
-import RegistrationModalForm from "../user/registrationModalForm";
-import { getMatches } from "../../services/matchesService";
-import { predictionReducer } from "../../utils/predictionsUtil";
-import {
-  getCurrentUser,
-  registerUser,
-  loginUser,
-} from "../../services/userService";
-import { savePredictions } from "../../services/predictionsService";
-import HeaderLine from "./headerLine";
+import TabbedArea from "../common/pageSections/tabbedArea";
+import { getAvailableBrackets } from "../../services/matchesService";
+import { shortDate } from "../../utils/allowables";
 
-const PredictionsHome = ({}) => {
+const PredictionsHome = () => {
   const { setLoading } = useContext(LoadingContext);
-  const [isLocked, setIsLocked] = useState(true);
-  const [predictions, dispatchPredictions] = useReducer(predictionReducer, {
-    groups: {},
-    playoffs: [],
-    playoffMatches: [],
-  });
-  const [groupMatches, setGroupMatches] = useState({});
-  const [bracketCode, setBracketCode] = useState("worldCup2022");
-  const [predictionID, setPredictionID] = useState("");
-  const [predictionName, setPredictionName] = useState("");
-  const [registerFormOpen, setRegisterFormOpen] = useState(false);
-
-  const getPredictionID = () => {
-    const id = window.location.search.split("=");
-    setPredictionID(id[1] || "new");
-  };
+  let navigate = useNavigate();
+  const [competitions, setCompetitions] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("active Competitions");
+  const tabs = ["active Competitions", "submitted Brackets"];
 
   const loadData = async () => {
     setLoading(true);
-    const filtered = {
-      groups: {},
-      groupMatches: {},
-      playoffMatches: [],
-    };
-    let addedTeamTracker = [];
-    const matchesRes = await getMatches(bracketCode);
-    getPredictionID();
-    let locked = false;
-    if (matchesRes.status === 200) {
-      matchesRes.data.forEach((m) => {
-        if (locked) locked = true;
-        if (m.type === "Group") {
-          if (!filtered.groups[m.groupName]) {
-            filtered.groups[m.groupName] = [];
-            filtered.groupMatches[m.groupName] = [m];
-          } else {
-            filtered.groupMatches[m.groupName].push(m);
-          }
-          ["home", "away"].forEach((t) => {
-            const teamName = m[t + "TeamName"];
-            if (!addedTeamTracker.includes(teamName)) {
-              addedTeamTracker.push(teamName);
-              filtered.groups[m.groupName].push({
-                name: teamName,
-              });
-            }
-          });
-        } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
-      });
-
-      setIsLocked(locked);
-
-      setGroupMatches(filtered.groupMatches);
-      dispatchPredictions({
-        type: "initial",
-        groups: filtered.groups,
-        playoffs: [],
-        playoffMatches: filtered.playoffMatches,
-      });
-    } else toast.error(matchesRes.data);
+    const res = await getAvailableBrackets();
+    if (res.status === 200) {
+      setCompetitions(res.data);
+    } else toast.error(res.data);
     setLoading(false);
   };
 
@@ -92,73 +28,47 @@ const PredictionsHome = ({}) => {
     loadData();
   }, []);
 
-  const handleSubmitUserForm = async (type, data) => {
-    setLoading(true);
-    let res;
-    if (type === "register") res = await registerUser(data);
-    else if (type === "login") res = await loginUser(data);
-    if (res.status === 200) {
-      setRegisterFormOpen(false);
-      await handleSavePredictions();
-    } else toast.error(res.data);
-    setLoading(false);
-  };
-
-  const handleSavePredictions = async () => {
-    const user = getCurrentUser();
-    if (!user) return setRegisterFormOpen(true);
-    setLoading(true);
-    console.log(predictions);
-    const groupPredictions = [];
-    Object.keys(predictions.groups).forEach((k) => {
-      groupPredictions.push({
-        groupName: k,
-        teamOrder: predictions.groups[k].map((t) => t.name),
-      });
-    });
-    const res = await savePredictions(predictionID, {
-      name: predictionName,
-      bracketCode,
-      groupPredictions,
-      playoffPredictions: predictions.playoffs,
-    });
-    console.log(res);
-    if (res.status === 200) {
-      toast.success("Predictions saved");
-    } else toast.error(res.data);
-    setLoading(false);
-  };
-
-  const handleSelectTeam = (match, team) => {
-    dispatchPredictions({ type: "winner", match, winner: team });
-  };
-
   return (
     <div>
-      <HeaderLine
-        onSave={handleSavePredictions}
-        predictionName={predictionName}
-        setPredictionName={setPredictionName}
-      />
-      <GroupPicker
-        groups={predictions.groups}
-        onDrop={dispatchPredictions}
-        onReorder={dispatchPredictions}
-        isLocked={isLocked}
-        groupMatches={groupMatches}
-      />
-      <br />
-      <BracketPicker
-        matches={predictions.playoffMatches}
-        onSelectTeam={handleSelectTeam}
-      />
-      <RegistrationModalForm
-        header="Login or Register to Save Your Predictions"
-        isOpen={registerFormOpen}
-        setIsOpen={setRegisterFormOpen}
-        onSubmit={handleSubmitUserForm}
-      />
-      <hr />
+      <Header text="Predictions" />
+
+      <TabbedArea
+        tabs={tabs}
+        selectedTab={selectedTab}
+        onSelectTab={setSelectedTab}
+        tabPlacement="top"
+      >
+        {selectedTab === "active Competitions" ? (
+          <>
+            {competitions.map((c) => (
+              <React.Fragment key={c._id}>
+                <h3>{c.name}</h3>
+                <div className="row">
+                  <div className="col">
+                    <p>
+                      Submission Deadline: <b>{shortDate(c.deadline)}</b>
+                      <br />
+                      <br />
+                      Submissions Allowed: <b>{c.maxSubmissions}</b>
+                    </p>
+                  </div>
+                  <div className="col">
+                    <button
+                      className="btn btn-dark"
+                      onClick={() =>
+                        navigate("/predictions?id=new&bracketCode=worldCup2022")
+                      }
+                    >
+                      Start New Submission
+                    </button>
+                  </div>
+                  <hr />
+                </div>
+              </React.Fragment>
+            ))}
+          </>
+        ) : null}
+      </TabbedArea>
     </div>
   );
 };

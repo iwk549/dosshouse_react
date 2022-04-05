@@ -1,18 +1,7 @@
 :root {
   --main-bg-color: #831fe0;
-  --minus10-main-bg-color: #9c4be7;
-  --minus20-main-bg-color: #b478ed;
   --muted-bg-color: #e6d2f9;
   --light-bg-color: #f3e9fc;
-  --minus10-light-bg-color: #e6d2f9;
-  --minus20-light-bg-color: #b478ed;
-  --primary-bg: #733e0c;
-  --primary-minus10: #a25711;
-  --primary-minus20: #d07016;
-  --success-bg: #00b300;
-  --success-minus10: #008000;
-  --success-minus20: #004d00;
-  --white-text: #fff;
   --dark-text: #000;
 }
 
