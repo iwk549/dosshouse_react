@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 
-import { modalStyle } from "../../../utils/allowables";
+import { modalStyle } from "../../../utils/styles";
 
 const BasicModal = ({
   id,
@@ -11,6 +11,7 @@ const BasicModal = ({
   alsoRunOnClose,
   children,
   style,
+  hideClose,
 }) => {
   return (
     <Modal
@@ -25,15 +26,17 @@ const BasicModal = ({
       style={{ ...modalStyle, ...style }}
     >
       <div className="text-center">
-        <button
-          className="btn btn-block btn-sm btn-light"
-          onClick={() => {
-            onClose(id ? id : false);
-            if (alsoRunOnClose) alsoRunOnClose();
-          }}
-        >
-          Close
-        </button>
+        {!hideClose && (
+          <button
+            className="btn btn-block btn-sm btn-light"
+            onClick={() => {
+              onClose(id ? id : false);
+              if (alsoRunOnClose) alsoRunOnClose();
+            }}
+          >
+            Close
+          </button>
+        )}
         {header}
       </div>
       {children}

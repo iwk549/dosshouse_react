@@ -1,11 +1,16 @@
 import React from "react";
 import Joi from "joi-browser";
+import { toast } from "react-toastify";
+
 import Form from "../common/form/form";
 import BasicModal from "../common/modal/basicModal";
-
+import { registerUser, loginUser } from "../../services/userService";
 import TabbedArea from "../common/pageSections/tabbedArea";
+import LoadingContext from "../../context/loadingContext";
+import { titleCase } from "../../utils/allowables";
 
 class RegistrationModalForm extends Form {
+  static contextType = LoadingContext;
   state = {
     data: {
       name: "Ian",
@@ -27,18 +32,35 @@ class RegistrationModalForm extends Form {
     this.setState({ selectedTab });
   };
 
-  doSubmit = () => {
-    this.props.onSubmit(this.state.selectedTab, this.state.data);
+  doSubmit = async () => {
+    this.context.setLoading(true);
+    let res;
+    const type = this.state.selectedTab;
+    if (type === "register") res = await registerUser(this.state.data);
+    else if (type === "login") res = await loginUser(this.state.data);
+    if (res.status === 200) {
+      this.context.setUser();
+      toast.success(
+        type === "register" ? "Registration Successful" : "Logged In"
+      );
+      return this.props.onSuccess();
+    } else toast.error(res.data);
+    this.context.setLoading(false);
   };
 
   render() {
     return (
-      <BasicModal isOpen={this.props.isOpen} onClose={this.props.setIsOpen}>
-        {this.props.header ? (
-          <h4 className="text-center">{this.props.header}</h4>
-        ) : (
-          <br />
-        )}
+      <BasicModal
+        isOpen={this.props.isOpen}
+        onClose={this.props.setIsOpen}
+        header={
+          this.props.header ? (
+            <h4 className="text-center">{this.props.header}</h4>
+          ) : (
+            <br />
+          )
+        }
+      >
         <TabbedArea
           tabs={this.tabs}
           selectedTab={this.state.selectedTab}

@@ -16,32 +16,34 @@ import RegistrationModalForm from "../user/registrationModalForm";
 import { getMatches } from "../../services/matchService";
 import { predictionReducer } from "../../utils/predictionsUtil";
 import {
-  getCurrentUser,
-  registerUser,
-  loginUser,
-} from "../../services/userService";
-import {
   savePredictions,
   getPrediction,
 } from "../../services/predictionsService";
+import { getCompetition } from "../../services/competitionService";
 import HeaderLine from "./headerLine";
 import TabbedArea from "../common/pageSections/tabbedArea";
+import Miscellaneous from "./miscellaneous";
 
-const PredictionMaker = ({ bracketCode, predictionID }) => {
+const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
-  const { setLoading } = useContext(LoadingContext);
+  const { user, setLoading } = useContext(LoadingContext);
   const [isLocked, setIsLocked] = useState(true);
   const [predictions, dispatchPredictions] = useReducer(predictionReducer, {
     groups: {},
     playoffs: [],
     playoffMatches: [],
+    misc: {
+      winner: "",
+    },
     isSaved: false,
+    missingItems: [],
   });
   const [groupMatches, setGroupMatches] = useState({});
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const tabs = ["group", "bracket", "miscellaneous", "rules"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [competition, setCompetition] = useState({});
 
   const loadData = async () => {
     setLoading(true);
@@ -54,7 +56,12 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
       playoffMatches: [],
     };
     let addedTeamTracker = [];
-    const matchesRes = await getMatches(bracketCode);
+    const matchesRes = await getMatches(competitionID);
+    // get competition info
+    const competitionRes = await getCompetition(competitionID);
+    if (competitionRes.status === 200) setCompetition(competitionRes.data);
+    else toast.error(competitionRes.data);
+
     if (matchesRes.status === 200) {
       matchesRes.data.forEach((m) => {
         if (locked) locked = true;
@@ -90,6 +97,7 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
             playoffs: predictionsRes.data.playoffPredictions,
             playoffMatches: filtered.playoffMatches,
           });
+          setPredictionName(predictionsRes.data.name);
         } else toast.error(predictionsRes.data);
       } else {
         dispatchPredictions({
@@ -98,11 +106,10 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
           playoffs: [],
           playoffMatches: filtered.playoffMatches,
         });
+        if (user) setPredictionName(splitName(user.name) + "'s Bracket");
       }
-
-      const user = getCurrentUser();
-      if (user) setPredictionName(splitName(user.name) + "'s Bracket");
     } else toast.error(matchesRes.data);
+
     setLoading(false);
   };
 
@@ -110,20 +117,7 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
     loadData();
   }, []);
 
-  const handleSubmitUserForm = async (type, data) => {
-    setLoading(true);
-    let res;
-    if (type === "register") res = await registerUser(data);
-    else if (type === "login") res = await loginUser(data);
-    if (res.status === 200) {
-      setRegisterFormOpen(false);
-      await handleSavePredictions();
-    } else toast.error(res.data);
-    setLoading(false);
-  };
-
   const handleSavePredictions = async () => {
-    const user = getCurrentUser();
     if (!user) return setRegisterFormOpen(true);
     setLoading(true);
     console.log(predictions);
@@ -136,14 +130,14 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
     });
     const res = await savePredictions(predictionID, {
       name: predictionName,
-      bracketCode,
+      competitionID,
       groupPredictions,
       playoffPredictions: predictions.playoffs,
     });
     if (res.status === 200) {
       dispatchPredictions({ type: "save" });
       toast.success("Predictions saved");
-      navigate(`/predictions?id=${res.data}&bracketCode=${bracketCode}`, {
+      navigate(`/predictions?id=${res.data}&competitionID=${competitionID}`, {
         replace: true,
       });
     } else toast.error(res.data);
@@ -164,6 +158,8 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
           dispatchPredictions({ type: "edit" });
         }}
         isSaved={predictions.isSaved}
+        competition={competition}
+        missingItems={predictions.missingItems}
       />
       <br />
       <TabbedArea
@@ -185,6 +181,13 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
             <BracketPicker
               matches={predictions.playoffMatches}
               onSelectTeam={handleSelectTeam}
+              isLocked={isLocked}
+              misc={predictions.misc}
+            />
+          ) : selectedTab.includes("misc") ? (
+            <Miscellaneous
+              misc={predictions.misc}
+              playoffMatches={predictions.playoffMatches}
             />
           ) : null}
         </div>
@@ -201,7 +204,10 @@ const PredictionMaker = ({ bracketCode, predictionID }) => {
         header="Login or Register to Save Your Predictions"
         isOpen={registerFormOpen}
         setIsOpen={setRegisterFormOpen}
-        onSubmit={handleSubmitUserForm}
+        onSuccess={() => {
+          setRegisterFormOpen(false);
+          handleSavePredictions();
+        }}
       />
     </div>
   );

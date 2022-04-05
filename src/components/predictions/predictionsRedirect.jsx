@@ -8,14 +8,14 @@ const PredictionsRedirect = ({}) => {
   const [Component, setComponent] = useState(<div />);
   const [searchParams] = useSearchParams();
   const predictionID = searchParams.get("id");
-  const bracketCode = searchParams.get("bracketCode");
+  const competitionID = searchParams.get("competitionID");
 
   const redirect = () => {
     setComponent(
       predictionID ? (
         <PredictionMaker
           predictionID={predictionID}
-          bracketCode={bracketCode}
+          competitionID={competitionID}
         />
       ) : (
         <PredictionsHome />

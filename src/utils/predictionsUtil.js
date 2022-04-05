@@ -83,10 +83,14 @@ const cascadeGroupChanges = (groups, playoffMatches) => {
   return { playoffs: newPlayoffs, playoffMatches: newPlayoffMatches };
 };
 
-const handleUpdateBracketWinners = (playoffMatches, match, winner) => {
+const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
   let playoffs = [];
   let newPlayoffMatches = [];
   let thisTeam;
+  let newMisc = { ...misc };
+  if (match.round === Math.max(...playoffMatches.map((m) => m.round)))
+    newMisc.winner = match[winner + "TeamName"];
+
   playoffMatches.forEach((m) => {
     let newMatch = { ...m };
     if (newMatch.round > 1) {
@@ -115,7 +119,11 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner) => {
     newPlayoffMatches.push(newMatch);
   });
 
-  return { playoffs: playoffs, playoffMatches: newPlayoffMatches };
+  return {
+    playoffs: playoffs,
+    playoffMatches: newPlayoffMatches,
+    misc: newMisc,
+  };
 };
 
 const handlePopulateBracket = (
@@ -145,30 +153,68 @@ const handlePopulateBracket = (
     groups,
     playoffs: playoffPredictions,
     playoffMatches: populatedPlayoffMatches,
-    isSaved: false,
   };
+};
+
+const getMiscItems = (playoffMatches, playoffPredictions, misc) => {
+  let newMisc = { ...misc };
+  return newMisc;
+};
+
+const checkForCompletion = (playoffPredictions, misc) => {
+  // ! NEED TO IMPLEMENT CHECKS
+  let missingItems = [];
+  playoffPredictions.forEach((p) => {
+    if (
+      p.homeTeam.toLowerCase().includes("winner") ||
+      p.awayTeam.toLowerCase().includes("winner")
+    )
+      missingItems.push({
+        label: "Bracket",
+        text: `Match #${p.metadata?.matchNumbr || p.matchNumber} Missing Teams`,
+      });
+  });
+  if (!misc.winner)
+    missingItems.push({
+      label: "Bracket",
+      text: "Pick the tournament champion",
+    });
+  return missingItems;
 };
 
 export function predictionReducer(state, action) {
   let groups = state.groups;
   let playoffs = state.playoffs;
   let playoffMatches = state.playoffMatches;
+  let misc = state.misc;
   let isSaved = false;
+  let missingItems = state.missingItems;
   if (action.type === "save") {
-    return { groups, playoffs, playoffMatches, isSaved: true };
+    return {
+      groups,
+      playoffs,
+      playoffMatches,
+      misc,
+      isSaved: true,
+      missingItems,
+    };
   } else if (action.type === "edit") {
-    return { groups, playoffs, playoffMatches, isSaved };
+    return { groups, playoffs, playoffMatches, misc, isSaved, missingItems };
   }
   if (action.type === "initial") {
     groups = action.groups;
     playoffs = action.playoffs;
     playoffMatches = action.playoffMatches;
   } else if (action.type === "populate") {
-    return handlePopulateBracket(
+    const populated = handlePopulateBracket(
       action.groups,
       action.playoffs,
       action.playoffMatches
     );
+    groups = populated.groups;
+    playoffs = populated.playoffs;
+    playoffMatches = populated.playoffMatches;
+    isSaved = true;
   } else if (action.type === "update") {
     groups = handleDrop(
       action.draggedTeam,
@@ -187,13 +233,17 @@ export function predictionReducer(state, action) {
     const winners = handleUpdateBracketWinners(
       playoffMatches,
       action.match,
-      action.winner
+      action.winner,
+      misc
     );
     playoffs = winners.playoffs;
     playoffMatches = winners.playoffMatches;
+    misc = winners.misc;
   }
   const updated = cascadeGroupChanges(groups, playoffMatches);
   playoffMatches = updated.playoffMatches;
   playoffs = updated.playoffs;
-  return { groups, playoffs, playoffMatches, isSaved };
+  misc = getMiscItems(playoffMatches, playoffs, misc);
+  missingItems = checkForCompletion(playoffs, misc);
+  return { groups, playoffs, playoffMatches, misc, isSaved, missingItems };
 }

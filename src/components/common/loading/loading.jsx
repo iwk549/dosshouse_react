@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import { IconContext } from "react-icons";
-import HomeIcon from "../icons/homeIcon";
+import IconRender from "../icons/iconRender";
 import LoadingAnimation from "./loadingAnimation";
 
 const style = {
@@ -32,7 +32,7 @@ const Loading = ({ loading, showText }) => {
       <IconContext.Provider value={{ className: "loading-icon" }}>
         <div className="text-center">
           <h1 className="light-text">dosshouse</h1>
-          <HomeIcon size="40px" />
+          <IconRender type="home" size={40} />
           <br />
           <br />
           <LoadingAnimation />

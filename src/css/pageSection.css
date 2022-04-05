@@ -10,6 +10,13 @@
   margin-left: 15px;
   margin-right: 15px;
 }
+.custom-alert.danger {
+  background-color: var(--alert-bg-color);
+}
+.custom-alert.success {
+  background-color: var(--minus10-light-bg-color);
+  color: var(--dark-text);
+}
 .pop-box {
   border: 1px solid var(--secondary);
   border-radius: 5px;

@@ -17,7 +17,7 @@ const MatchLink = ({ match, textAnchor, width, height, onSelectMatch }) => {
       textColor={null}
     >
       #{match.metadata?.matchNumber || match.matchNumber}:{" "}
-      {shortDate(match.dateTime)}
+      {shortDate(match.dateTime, false, true)}
     </CLinkSvg>
   );
 };

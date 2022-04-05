@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import Input from "../common/form/input";
+import IconRender from "../common/icons/iconRender";
+import MissingItems from "./missingItems";
 
-const HeaderLine = ({ predictionName, setPredictionName, onSave, isSaved }) => {
+const HeaderLine = ({
+  predictionName,
+  setPredictionName,
+  competition,
+  onSave,
+  isSaved,
+  missingItems,
+}) => {
+  const [missingItemsOpen, setMissingItemsOpen] = useState(false);
+  const isComplete = missingItems.length === 0;
   return (
     <>
       <h2 className="text-center">
@@ -13,23 +24,47 @@ const HeaderLine = ({ predictionName, setPredictionName, onSave, isSaved }) => {
             onChange={(event) => setPredictionName(event.target.value)}
           />
         </div>
-        {predictionName || "-----"}
+        {competition.name}
         <div style={{ float: "right" }}>
           {isSaved ? (
-            <div>
-              <h4 className="pop-box">Predictions Saved</h4>
-            </div>
+            <button className="pop-box">
+              <IconRender type="checkmark" /> Predictions Saved
+            </button>
           ) : (
             <button
               className="btn btn-sm btn-block btn-dark submit-button"
               onClick={onSave}
             >
-              Save Predictions
+              <IconRender type="save" size={12} /> Save Predictions
             </button>
           )}
         </div>
       </h2>
-      <div style={{ height: 10 }} />
+      <div style={{ height: 20 }} />
+      {
+        <div
+          className={"row custom-alert " + (isComplete ? "success" : "danger")}
+        >
+          <div className="col">
+            This submission is {!isComplete ? "not " : ""}complete
+          </div>
+          {!isComplete && (
+            <div className="col">
+              <button
+                className="btn btn-sm btn-info"
+                onClick={() => setMissingItemsOpen(true)}
+              >
+                See What's Missing
+              </button>
+            </div>
+          )}
+        </div>
+      }
+      <MissingItems
+        items={missingItems}
+        isOpen={missingItemsOpen}
+        setIsOpen={setMissingItemsOpen}
+      />
     </>
   );
 };

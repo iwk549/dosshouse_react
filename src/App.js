@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./css/App.css";
 import { ToastContainer } from "react-toastify";
@@ -9,11 +9,22 @@ import SwitchRouter from "./components/switchRouter";
 import Navbar from "./components/navbar";
 import LoadingContext from "./context/loadingContext";
 import Loading from "./components/common/loading/loading";
+import { getCurrentUser } from "./services/userService";
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showText, setShowText] = useState(false);
   const [textTimeout, setTextTimeout] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const setCurrentUser = () => {
+    setUser(getCurrentUser());
+  };
+
+  useEffect(() => {
+    setCurrentUser();
+    setLoading(false);
+  }, []);
 
   const handleUpdateLoading = (bool) => {
     if (bool)
@@ -31,7 +42,12 @@ function App() {
 
   return (
     <LoadingContext.Provider
-      value={{ loading, setLoading: handleUpdateLoading }}
+      value={{
+        loading,
+        setLoading: handleUpdateLoading,
+        user,
+        setUser: setCurrentUser,
+      }}
     >
       <Loading loading={loading} showText={showText} />
       <div className="App">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import HomeIcon from "../common/icons/homeIcon";
 
 import Header from "../common/pageSections/header";
 import Site from "./site";

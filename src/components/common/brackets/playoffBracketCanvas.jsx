@@ -7,7 +7,12 @@ import MatchConnector from "./matchConnector";
 // import BracketButtons from "./bracketButtons";
 import BracketFinals from "./bracketFinals";
 
-const PlayoffBracketCanvas = ({ matches, onSelectMatch, onSelectTeam }) => {
+const PlayoffBracketCanvas = ({
+  matches,
+  onSelectMatch,
+  onSelectTeam,
+  isLocked,
+}) => {
   const { width, height } = useWindowDimensions();
   const [orientation, setOrientation] = useState("landscape");
   const [selectedBracket] = useState("main");

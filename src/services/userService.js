@@ -27,6 +27,10 @@ export function getCurrentUser() {
   }
 }
 
+export function logout() {
+  Cookies.remove(tokenKey);
+}
+
 export async function registerUser(userData) {
   try {
     const res = await http.post(http.users, userData);

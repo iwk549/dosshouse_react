@@ -4,3 +4,6 @@
 .light-text {
   color: var(--light-text);
 }
+.muted-text {
+  color: var(--minus10-dark-bg-color);
+}

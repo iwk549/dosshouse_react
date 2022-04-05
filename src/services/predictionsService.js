@@ -30,3 +30,11 @@ export async function getPredictions() {
     return ex.response;
   }
 }
+
+export async function deletePrediction(predictionID) {
+  try {
+    return await http.delete(http.predictions + "/" + predictionID);
+  } catch (ex) {
+    return ex.response;
+  }
+}

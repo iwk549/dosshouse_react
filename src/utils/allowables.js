@@ -20,12 +20,21 @@ export function titleCase(words) {
   return titled.join(" ");
 }
 
-export function shortDate(matchDateTime, dontSlice) {
-  if (!matchDateTime) return "";
+export function shortDate(dateTime, dontSlice, noTime) {
+  if (!dateTime) return "";
   const newDateTime = new Date(
-    dontSlice ? matchDateTime : matchDateTime.slice(0, matchDateTime.length - 1)
+    dontSlice ? dateTime : dateTime.slice(0, dateTime.length - 1)
   );
-  return format(newDateTime, "M/d/yy h:mma").toLowerCase();
+  const time = format(newDateTime, "h:mma").toLowerCase();
+  return format(newDateTime, "yyyy-M-dd") + (noTime ? "" : " " + time);
+}
+export function longDate(dateTime, dontSlice) {
+  if (!dateTime) return "";
+  const newDateTime = new Date(
+    dontSlice ? dateTime : dateTime.slice(0, dateTime.length - 1)
+  );
+  const amPm = format(newDateTime, "a").toLowerCase();
+  return format(newDateTime, "MMMM dd, yyyy h:mm") + amPm;
 }
 
 export function teamOrder(sport) {
@@ -38,21 +47,17 @@ export const cookieOptions = {
   sameSite: "Lax",
 };
 
-export const modalStyle = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    height: "50%",
-    width: "50%",
-    backgroundColor: "#e6e6e6",
-    border: `1px solid #831fe0`,
-  },
-};
-
 export function splitName(name) {
   return name.split(" ")[0];
+}
+export function translateRound(round, finalRound) {
+  const translation = [
+    "Final",
+    "Semi-Final",
+    "Quarter-Final",
+    "Round of 16",
+    "Round of 32",
+    "Round of 64",
+  ];
+  return translation[finalRound - round];
 }
