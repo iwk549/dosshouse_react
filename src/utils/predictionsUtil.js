@@ -1,4 +1,5 @@
 import { getFinalRound } from "./bracketsUtil";
+import { toast } from "react-toastify";
 
 const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
   let newGroups = { ...state };
@@ -24,11 +25,12 @@ const handleReorder = (selectedTeam, direction, groupName, state) => {
   return handleDrop(selectedTeam, { position }, groupName, state);
 };
 
-const cascadeGroupChanges = (groups, playoffMatches) => {
+const cascadeGroupChanges = (groups, playoffMatches, misc) => {
   let newPlayoffMatches = [];
   let newPlayoffs = [];
   let previousTeams = {};
   let newTeams = {};
+  let newMisc = { ...misc };
   playoffMatches.forEach((m) => {
     let newMatch = { ...m };
     if (newMatch.round === 1) {
@@ -44,7 +46,6 @@ const cascadeGroupChanges = (groups, playoffMatches) => {
       // for all other rounds:
       // check for previous predictions
       // if team was updated due to group switching then update picks
-      const getTeamsFrom = m.getTeamsFrom;
       ["home", "away"].forEach((t) => {
         const currentPick = m[t + "TeamName"];
         if (
@@ -61,6 +62,12 @@ const cascadeGroupChanges = (groups, playoffMatches) => {
           });
           if (!matchesPreviousRound) {
             newMatch[t + "TeamName"] = newPicks[pickIndex];
+          }
+          if (newMatch.round === getFinalRound(playoffMatches)) {
+            if (currentPick === misc.winner && newPicks[pickIndex]) {
+              newMisc.winner = newPicks[pickIndex];
+              toast.info(`Updated champion to ${newPicks[pickIndex]}`);
+            }
           }
         }
       });
@@ -82,17 +89,20 @@ const cascadeGroupChanges = (groups, playoffMatches) => {
       newMatch.awayTeamName,
     ];
   });
-  return { playoffs: newPlayoffs, playoffMatches: newPlayoffMatches };
+  return {
+    playoffs: newPlayoffs,
+    playoffMatches: newPlayoffMatches,
+    misc: newMisc,
+  };
 };
 
 const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
   let playoffs = [];
   let newPlayoffMatches = [];
-  let thisTeam;
+  let teamToReplace;
   let newMisc = { ...misc };
-
-  if (match.round === getFinalRound(playoffMatches))
-    newMisc.winner = match[winner + "TeamName"];
+  const finalRound = getFinalRound(playoffMatches);
+  if (match.round === finalRound) newMisc.winner = match[winner + "TeamName"];
 
   playoffMatches.forEach((m) => {
     let newMatch = { ...m };
@@ -103,16 +113,31 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
           (match.metadata?.matchNumber || match.matchNumber)
         ) {
           newMatch[t + "TeamName"] = match[winner + "TeamName"];
-          thisTeam = m[t + "TeamName"];
+          teamToReplace = m[t + "TeamName"];
         }
       });
-      if (thisTeam) {
+      if (
+        misc.thirdPlace &&
+        newMatch.round === finalRound - 1 &&
+        [m.homeTeamName, m.awayTeamName].includes(match[winner + "TeamName"])
+      ) {
+        if (match[winner + "TeamName"] === misc.thirdPlace) {
+          const newThirdPlace =
+            m.homeTeamName === misc.thirdPlace
+              ? m.awayTeamName
+              : m.homeTeamName;
+          newMisc.thirdPlace = newThirdPlace;
+          toast.info(`Updated third place pick to ${newThirdPlace}`);
+        }
+      }
+
+      if (teamToReplace) {
         ["home", "away"].forEach((t) => {
-          if (newMatch[t + "TeamName"] === thisTeam) {
+          if (newMatch[t + "TeamName"] === teamToReplace) {
             newMatch[t + "TeamName"] = match[winner + "TeamName"];
             if (
-              newMatch.round === getFinalRound(playoffMatches) &&
-              thisTeam === misc.winner
+              newMatch.round === finalRound &&
+              teamToReplace === misc.winner
             ) {
               newMisc.winner = match[winner + "TeamName"];
             }
@@ -191,7 +216,7 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
   });
 
   competition.miscPicks.forEach((pick) => {
-    if (!misc[pick._id] || misc[pick._id].toLowerCase().includes("winner"))
+    if (!misc[pick.name] || misc[pick.name].toLowerCase().includes("winner"))
       missingItems.push({ label: "Miscellaneous", text: pick.label });
   });
   return missingItems;
@@ -245,6 +270,7 @@ export function predictionReducer(state, action) {
     isSaved = true;
     isLocked = action.isLocked;
     competition = action.competition;
+    misc = action.misc;
   } else if (action.type === "update") {
     groups = handleDrop(
       action.draggedTeam,
@@ -272,10 +298,12 @@ export function predictionReducer(state, action) {
   } else if (action.type === "misc") {
     misc = updateMiscItems(misc, action.selection);
   }
-  const updated = cascadeGroupChanges(groups, playoffMatches);
+  const updated = cascadeGroupChanges(groups, playoffMatches, misc);
   playoffMatches = updated.playoffMatches;
   playoffs = updated.playoffs;
+  misc = updated.misc;
   missingItems = checkForCompletion(playoffs, misc, competition);
+  toast.clearWaitingQueue();
   return {
     groups,
     playoffs,

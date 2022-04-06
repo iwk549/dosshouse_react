@@ -43,7 +43,7 @@ const Miscellaneous = ({
               semiFinal[(t1 === "home" ? "away" : "home") + "TeamName"];
           }
         });
-        thirdPlaceMatch.push({ label: losingTeam, id: idx });
+        thirdPlaceMatch.push({ label: losingTeam, _id: t });
       }
     });
     return thirdPlaceMatch;
@@ -52,13 +52,15 @@ const Miscellaneous = ({
   return (
     <div>
       {competition?.miscPicks.map((p) => (
-        <React.Fragment key={p._id}>
+        <React.Fragment key={p.name}>
           <Select
-            name={p._id}
+            name={p.name}
             label={p.label}
-            onChange={(value) => onChange(p._id, value)}
-            options={mappedTeams}
-            selectedOption={misc[p._id]}
+            onChange={(value) => onChange(p.name, value)}
+            options={
+              p.name === "thirdPlace" ? getThirdPlacePlayoff() : mappedTeams
+            }
+            selectedOption={misc[p.name]}
             tooltip={{
               direction: "right",
               content: (

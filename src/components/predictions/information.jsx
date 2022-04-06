@@ -4,8 +4,7 @@ import { titleCase } from "../../utils/allowables";
 import rules from "../../textMaps/rules";
 import scoring from "../../textMaps/scoring";
 
-const Rules = ({ competition }) => {
-  console.log(scoring);
+const Information = ({ competition }) => {
   const lists = {
     rules,
     scoring,
@@ -23,6 +22,7 @@ const Rules = ({ competition }) => {
       </React.Fragment>
     );
   };
+
   return (
     <div className="row">
       {Object.keys(lists).map((key, i) => (
@@ -32,6 +32,13 @@ const Rules = ({ competition }) => {
           </h3>
           <ul className="custom-unordered-list">
             {lists[key].map((item, ii) => renderItem(item, ii))}
+            {key === "scoring" && (
+              <>
+                {competition.miscPicks.map((p) =>
+                  renderItem({ header: p.label, body: p.points + " points" })
+                )}
+              </>
+            )}
           </ul>
         </div>
       ))}
@@ -39,4 +46,4 @@ const Rules = ({ competition }) => {
   );
 };
 
-export default Rules;
+export default Information;

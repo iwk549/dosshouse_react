@@ -43,10 +43,18 @@ const HeaderLine = ({
       <div style={{ height: 20 }} />
       {
         <div
-          className={"row custom-alert " + (isComplete ? "success" : "danger")}
+          className={
+            "row custom-alert " +
+            (isComplete ? (isSaved ? "success" : "warning") : "danger")
+          }
         >
           <div className="col">
             This submission is {!isComplete ? "not " : ""}complete
+            {isComplete
+              ? isSaved
+                ? " and has been saved."
+                : ". Save it to lock in your predictions."
+              : "."}
           </div>
           {!isComplete && (
             <div className="col">

@@ -23,7 +23,7 @@ import { getCompetition } from "../../services/competitionService";
 import HeaderLine from "./headerLine";
 import TabbedArea from "../common/pageSections/tabbedArea";
 import Miscellaneous from "./miscellaneous";
-import Rules from "./rules";
+import Information from "./information";
 
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
@@ -97,6 +97,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
             groups: predictionsRes.data.groupPredictions,
             playoffs: predictionsRes.data.playoffPredictions,
             playoffMatches: filtered.playoffMatches,
+            misc: predictionsRes.data.misc,
             competition: competitionRes.data,
             isLocked,
           });
@@ -132,11 +133,13 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         teamOrder: predictions.groups[k].map((t) => t.name),
       });
     });
+
     const res = await savePredictions(predictionID, {
       name: predictionName,
       competitionID,
       groupPredictions,
       playoffPredictions: predictions.playoffs,
+      misc: predictions.misc,
     });
     if (res.status === 200) {
       dispatchPredictions({ type: "save" });
@@ -201,7 +204,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               allTeams={allTeams}
             />
           ) : selectedTab.includes("info") ? (
-            <Rules competition={predictions.competition} />
+            <Information competition={predictions.competition} />
           ) : null}
         </div>
       </TabbedArea>

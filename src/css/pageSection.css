@@ -1,6 +1,5 @@
 .custom-alert {
-  background-color: var(--alert-bg-color);
-  color: var(--light-text);
+  color: var(--dark-text);
   border-radius: 5px;
   font-weight: bold;
   padding-top: 5px;
@@ -13,10 +12,13 @@
 }
 .custom-alert.danger {
   background-color: var(--alert-bg-color);
+  color: var(--light-text);
 }
 .custom-alert.success {
   background-color: var(--minus10-light-bg-color);
-  color: var(--dark-text);
+}
+.custom-alert.warning {
+  background-color: var(--info-bg-color);
 }
 .pop-box {
   border: 1px solid var(--secondary);
