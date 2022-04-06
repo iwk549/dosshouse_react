@@ -8,6 +8,7 @@ import {
   BiSave,
 } from "react-icons/bi";
 import { BsSpotify } from "react-icons/bs";
+import { IoMdTrophy } from "react-icons/io";
 import { MdOutlineBatchPrediction, MdWebStories } from "react-icons/md";
 
 const icons = {
@@ -19,6 +20,7 @@ const icons = {
   prediction: MdOutlineBatchPrediction,
   save: BiSave,
   spotify: BsSpotify,
+  trophy: IoMdTrophy,
 };
 
 const IconRender = ({ type, size }) => {

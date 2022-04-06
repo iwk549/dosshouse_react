@@ -103,9 +103,9 @@ const DraggableTableRow = ({
         </tr>
       )}
       <tr className={isOver ? "dark-bg" : "muted-bg"}>
-        {!isLocked ? renderBlankHoverCell() : null}
+        {renderBlankHoverCell()}
         {columns.map((c, idx) => renderBlankHoverCell(idx))}
-        {!isLocked ? renderBlankHoverCell() : null}
+        {renderBlankHoverCell()}
       </tr>
     </IconContext.Provider>
   );

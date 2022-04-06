@@ -1,3 +1,5 @@
+import { getFinalRound } from "./bracketsUtil";
+
 const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
   let newGroups = { ...state };
   let newTeams = [...newGroups[groupName]];
@@ -88,7 +90,8 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
   let newPlayoffMatches = [];
   let thisTeam;
   let newMisc = { ...misc };
-  if (match.round === Math.max(...playoffMatches.map((m) => m.round)))
+
+  if (match.round === getFinalRound(playoffMatches))
     newMisc.winner = match[winner + "TeamName"];
 
   playoffMatches.forEach((m) => {
@@ -107,6 +110,12 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
         ["home", "away"].forEach((t) => {
           if (newMatch[t + "TeamName"] === thisTeam) {
             newMatch[t + "TeamName"] = match[winner + "TeamName"];
+            if (
+              newMatch.round === getFinalRound(playoffMatches) &&
+              thisTeam === misc.winner
+            ) {
+              newMisc.winner = match[winner + "TeamName"];
+            }
           }
         });
       }
@@ -161,9 +170,14 @@ const getMiscItems = (playoffMatches, playoffPredictions, misc) => {
   return newMisc;
 };
 
-const checkForCompletion = (playoffPredictions, misc) => {
+const checkForCompletion = (playoffPredictions, misc, competition) => {
   // ! NEED TO IMPLEMENT CHECKS
   let missingItems = [];
+  if (!misc.winner || misc.winner.toLowerCase().includes("winner"))
+    missingItems.push({
+      label: "Bracket",
+      text: "Pick the tournament champion",
+    });
   playoffPredictions.forEach((p) => {
     if (
       p.homeTeam.toLowerCase().includes("winner") ||
@@ -174,11 +188,11 @@ const checkForCompletion = (playoffPredictions, misc) => {
         text: `Match #${p.metadata?.matchNumbr || p.matchNumber} Missing Teams`,
       });
   });
-  if (!misc.winner)
-    missingItems.push({
-      label: "Bracket",
-      text: "Pick the tournament champion",
-    });
+
+  competition.miscPicks.forEach((pick) => {
+    if (!misc[pick._id] || misc[pick._id].toLowerCase().includes("winner"))
+      missingItems.push({ label: "Miscellaneous", text: pick.label });
+  });
   return missingItems;
 };
 
@@ -187,24 +201,37 @@ export function predictionReducer(state, action) {
   let playoffs = state.playoffs;
   let playoffMatches = state.playoffMatches;
   let misc = state.misc;
+  let competition = state.competition;
   let isSaved = false;
   let missingItems = state.missingItems;
+  let isLocked = state.isLocked;
   if (action.type === "save") {
     return {
       groups,
       playoffs,
       playoffMatches,
       misc,
+      competition,
       isSaved: true,
       missingItems,
     };
   } else if (action.type === "edit") {
-    return { groups, playoffs, playoffMatches, misc, isSaved, missingItems };
+    return {
+      groups,
+      playoffs,
+      playoffMatches,
+      competition,
+      misc,
+      isSaved,
+      missingItems,
+    };
   }
   if (action.type === "initial") {
     groups = action.groups;
     playoffs = action.playoffs;
     playoffMatches = action.playoffMatches;
+    competition = action.competition;
+    isLocked = action.isLocked;
   } else if (action.type === "populate") {
     const populated = handlePopulateBracket(
       action.groups,
@@ -215,6 +242,8 @@ export function predictionReducer(state, action) {
     playoffs = populated.playoffs;
     playoffMatches = populated.playoffMatches;
     isSaved = true;
+    isLocked = action.isLocked;
+    competition = action.competition;
   } else if (action.type === "update") {
     groups = handleDrop(
       action.draggedTeam,
@@ -244,6 +273,15 @@ export function predictionReducer(state, action) {
   playoffMatches = updated.playoffMatches;
   playoffs = updated.playoffs;
   misc = getMiscItems(playoffMatches, playoffs, misc);
-  missingItems = checkForCompletion(playoffs, misc);
-  return { groups, playoffs, playoffMatches, misc, isSaved, missingItems };
+  missingItems = checkForCompletion(playoffs, misc, competition);
+  return {
+    groups,
+    playoffs,
+    playoffMatches,
+    misc,
+    competition,
+    isSaved,
+    missingItems,
+    isLocked,
+  };
 }

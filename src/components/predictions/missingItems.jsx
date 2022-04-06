@@ -15,6 +15,12 @@ const MissingItems = ({ items, isOpen, setIsOpen }) => {
       }
     >
       <div className="text-center">
+        <p className="custom-alert danger">
+          Submissions with missing items can be saved and completed later.
+          <br />
+          If the submission is not completed before the deadline it will be
+          scored as is.
+        </p>
         {items.map((item, idx) =>
           renderInfoLine(item.label, item.text, "", idx)
         )}

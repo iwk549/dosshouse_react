@@ -27,15 +27,16 @@ import Miscellaneous from "./miscellaneous";
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
   const { user, setLoading } = useContext(LoadingContext);
-  const [isLocked, setIsLocked] = useState(true);
   const [predictions, dispatchPredictions] = useReducer(predictionReducer, {
     groups: {},
     playoffs: [],
     playoffMatches: [],
+    competition: {},
     misc: {
       winner: "",
     },
     isSaved: false,
+    isLocked: false,
     missingItems: [],
   });
   const [groupMatches, setGroupMatches] = useState({});
@@ -43,11 +44,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const tabs = ["group", "bracket", "miscellaneous", "rules"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  const [competition, setCompetition] = useState({});
 
   const loadData = async () => {
     setLoading(true);
-    let locked = false;
+    let isLocked = false;
 
     // get matches from db
     const filtered = {
@@ -59,12 +59,11 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
     const matchesRes = await getMatches(competitionID);
     // get competition info
     const competitionRes = await getCompetition(competitionID);
-    if (competitionRes.status === 200) setCompetition(competitionRes.data);
-    else toast.error(competitionRes.data);
+    if (competitionRes.status !== 200) toast.error(competitionRes.data);
 
     if (matchesRes.status === 200) {
       matchesRes.data.forEach((m) => {
-        if (locked) locked = true;
+        if (m.locked) isLocked = true;
         if (m.type === "Group") {
           if (!filtered.groups[m.groupName]) {
             filtered.groups[m.groupName] = [];
@@ -83,7 +82,6 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           });
         } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
       });
-      setIsLocked(locked);
       setGroupMatches(filtered.groupMatches);
 
       // get saved predictions or set new predictions
@@ -96,6 +94,8 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
             groups: predictionsRes.data.groupPredictions,
             playoffs: predictionsRes.data.playoffPredictions,
             playoffMatches: filtered.playoffMatches,
+            competition: competitionRes.data,
+            isLocked,
           });
           setPredictionName(predictionsRes.data.name);
         } else toast.error(predictionsRes.data);
@@ -105,6 +105,8 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           groups: filtered.groups,
           playoffs: [],
           playoffMatches: filtered.playoffMatches,
+          competition: competitionRes.data,
+          isLocked,
         });
         if (user) setPredictionName(splitName(user.name) + "'s Bracket");
       }
@@ -120,7 +122,6 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const handleSavePredictions = async () => {
     if (!user) return setRegisterFormOpen(true);
     setLoading(true);
-    console.log(predictions);
     const groupPredictions = [];
     Object.keys(predictions.groups).forEach((k) => {
       groupPredictions.push({
@@ -158,7 +159,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           dispatchPredictions({ type: "edit" });
         }}
         isSaved={predictions.isSaved}
-        competition={competition}
+        competition={predictions.competition}
         missingItems={predictions.missingItems}
       />
       <br />
@@ -174,14 +175,14 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               groups={predictions.groups}
               onDrop={dispatchPredictions}
               onReorder={dispatchPredictions}
-              isLocked={isLocked}
+              isLocked={predictions.isLocked}
               groupMatches={groupMatches}
             />
           ) : selectedTab.includes("bracket") ? (
             <BracketPicker
               matches={predictions.playoffMatches}
               onSelectTeam={handleSelectTeam}
-              isLocked={isLocked}
+              isLocked={predictions.isLocked}
               misc={predictions.misc}
             />
           ) : selectedTab.includes("misc") ? (

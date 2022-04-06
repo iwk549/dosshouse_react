@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import PlayoffBracketCanvas from "../common/brackets/playoffBracketCanvas";
 import SingleMatchModal from "./singleMatchModal";
+import IconRender from "../common/icons/iconRender";
 
 const BracketPicker = ({ matches, onSelectTeam, isLocked, misc }) => {
   const [matchModalOpen, setMatchModalOpen] = useState(false);
@@ -14,7 +15,13 @@ const BracketPicker = ({ matches, onSelectTeam, isLocked, misc }) => {
   return (
     <div>
       <h1 className="pop-box">
-        <small className="muted-text">Champion:</small> {misc.winner}
+        <small className="muted-text">
+          <IconRender type="trophy" />
+        </small>{" "}
+        {misc.winner || "Pick the Champion"}{" "}
+        <small className="muted-text">
+          <IconRender type="trophy" />
+        </small>
       </h1>
       <PlayoffBracketCanvas
         matches={matches}
