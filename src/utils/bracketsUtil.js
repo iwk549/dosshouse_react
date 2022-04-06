@@ -51,7 +51,6 @@ export const getDataUrl = (image) => {
       var reader = new FileReader();
       reader.readAsDataURL(request.response);
       reader.onload = function (e) {
-        // console.log("DataURL:", e.target.result);
         resolve(e.target.result);
       };
     };

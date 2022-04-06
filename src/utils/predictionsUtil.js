@@ -165,8 +165,9 @@ const handlePopulateBracket = (
   };
 };
 
-const getMiscItems = (playoffMatches, playoffPredictions, misc) => {
+const updateMiscItems = (misc, selection) => {
   let newMisc = { ...misc };
+  newMisc[selection.name] = selection.value;
   return newMisc;
 };
 
@@ -268,11 +269,12 @@ export function predictionReducer(state, action) {
     playoffs = winners.playoffs;
     playoffMatches = winners.playoffMatches;
     misc = winners.misc;
+  } else if (action.type === "misc") {
+    misc = updateMiscItems(misc, action.selection);
   }
   const updated = cascadeGroupChanges(groups, playoffMatches);
   playoffMatches = updated.playoffMatches;
   playoffs = updated.playoffs;
-  misc = getMiscItems(playoffMatches, playoffs, misc);
   missingItems = checkForCompletion(playoffs, misc, competition);
   return {
     groups,

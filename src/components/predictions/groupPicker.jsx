@@ -5,7 +5,7 @@ const GroupPicker = ({ groups, onDrop, onReorder, isLocked, groupMatches }) => {
   const keys = Object.keys(groups);
   const halfway = Math.ceil(keys.length / 2);
   const halfs = [keys.slice(0, halfway), keys.slice(-halfway)];
-  console.log(isLocked);
+
   return (
     <div className="row">
       {halfs.map((h, i) => (

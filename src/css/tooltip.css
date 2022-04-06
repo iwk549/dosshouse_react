@@ -7,17 +7,18 @@
 }
 .tooltip-tip {
   position: absolute;
-  border: 1px solid var(--dark-grey);
+  border: 1px solid var(--main-bg-color);
   border-radius: 4px;
-  padding: 4px;
+  padding: 6px;
   color: black;
   background: var(--light-bg-color);
-  font-size: 12px;
+  font-size: 14px;
   font-family: sans-serif;
   line-height: 1;
   z-index: 100;
-  white-space: nowrap;
-  box-shadow: 2px 2px 5px var(--dark-grey);
+}
+.tooltip-sm {
+  width: 250px;
 }
 .tooltip-tip.bottom {
   left: 50%;
@@ -43,4 +44,9 @@
 .tooltip-tip.top-right {
   bottom: 105%;
   left: 105%;
+}
+.tooltip-content-mini {
+  inline-size: 150px;
+  overflow-wrap: normal;
+  background-color: blue;
 }

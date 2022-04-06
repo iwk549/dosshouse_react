@@ -23,6 +23,7 @@ import { getCompetition } from "../../services/competitionService";
 import HeaderLine from "./headerLine";
 import TabbedArea from "../common/pageSections/tabbedArea";
 import Miscellaneous from "./miscellaneous";
+import Rules from "./rules";
 
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
@@ -42,8 +43,9 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const [groupMatches, setGroupMatches] = useState({});
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
-  const tabs = ["group", "bracket", "miscellaneous", "rules"];
+  const tabs = ["group", "bracket", "miscellaneous", "information"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [allTeams, setAllTeams] = useState([]);
 
   const loadData = async () => {
     setLoading(true);
@@ -83,6 +85,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
       });
       setGroupMatches(filtered.groupMatches);
+      setAllTeams(addedTeamTracker);
 
       // get saved predictions or set new predictions
       if (predictionID !== "new") {
@@ -145,8 +148,12 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
     setLoading(false);
   };
 
-  const handleSelectTeam = (match, team) => {
+  const handleSelectBracketWinner = (match, team) => {
     dispatchPredictions({ type: "winner", match, winner: team });
+  };
+
+  const handleChangeMiscValue = (name, value) => {
+    dispatchPredictions({ type: "misc", selection: { name, value } });
   };
 
   return (
@@ -181,15 +188,20 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           ) : selectedTab.includes("bracket") ? (
             <BracketPicker
               matches={predictions.playoffMatches}
-              onSelectTeam={handleSelectTeam}
+              onSelectTeam={handleSelectBracketWinner}
               isLocked={predictions.isLocked}
               misc={predictions.misc}
             />
           ) : selectedTab.includes("misc") ? (
             <Miscellaneous
+              onChange={handleChangeMiscValue}
               misc={predictions.misc}
               playoffMatches={predictions.playoffMatches}
+              competition={predictions.competition}
+              allTeams={allTeams}
             />
+          ) : selectedTab.includes("info") ? (
+            <Rules competition={predictions.competition} />
           ) : null}
         </div>
       </TabbedArea>

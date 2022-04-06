@@ -7,3 +7,8 @@
 .muted-text {
   color: var(--minus10-dark-bg-color);
 }
+.custom-unordered-list {
+  padding: 0;
+  margin: 0;
+  list-style-position: inside;
+}

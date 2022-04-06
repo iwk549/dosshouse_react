@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 
 import IconRender from "../icons/iconRender";
+import Tooltip from "../tooltip/tooltip";
 
 const Select = ({
   name,
@@ -14,24 +15,38 @@ const Select = ({
   hideLabel,
   style,
   valueBoxStyle,
+  tooltip,
 }) => {
-  const [selectOpen, setSelectOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
   const finalLabel = boldHeader ? <b>{label}</b> : label;
-  const handleSelect = (value, disabled) => {
-    if (!disabled) {
-      setSelectOpen(false);
-      onChange(value);
-    }
+
+  const renderLabel = () => {
+    return (
+      <label htmlFor={name} className="custom-input-label">
+        {tooltip ? (
+          <Tooltip direction={tooltip.direction} content={tooltip.content}>
+            {finalLabel}
+          </Tooltip>
+        ) : (
+          <>
+            {finalLabel}
+            <br />
+          </>
+        )}
+      </label>
+    );
   };
   return (
     <div className="form-group">
-      <label htmlFor={name} className="custom-input-label">
-        {label}
-      </label>
-      <br />
-      <select name={name}>
-        <option value="" id=""></option>
+      {renderLabel()}
+      <select
+        name={name}
+        onChange={(event) => onChange(event.target.value)}
+        className="custom-select"
+        value={selectedOption}
+      >
+        <option value="" id="">
+          {placeholder || "Make a selection..."}
+        </option>
         {options.map((o) => (
           <option value={o.value} id={o.value} key={o._id}>
             {o.label}
