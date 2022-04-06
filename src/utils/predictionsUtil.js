@@ -117,7 +117,6 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
   let newMisc = { ...misc };
   const finalRound = getFinalRound(playoffMatches);
   const teamToInsert = match[winner + "TeamName"];
-  if (match.round === finalRound) newMisc.winner = teamToInsert;
 
   playoffMatches.forEach((m) => {
     let newMatch = { ...m };
@@ -171,6 +170,8 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
     }
     newPlayoffMatches.push(newMatch);
   });
+
+  if (match.round === finalRound) newMisc.winner = teamToInsert;
 
   return {
     playoffs: playoffs,

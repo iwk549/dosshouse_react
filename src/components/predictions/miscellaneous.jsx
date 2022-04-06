@@ -30,7 +30,7 @@ const Miscellaneous = ({
       if (finalist.toLowerCase().includes("winner"))
         thirdPlaceMatch.push({
           label: "Loser " + final.getTeamsFrom[t].matchNumber,
-          id: idx,
+          _id: idx,
         });
       else {
         let losingTeam = "";
