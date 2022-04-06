@@ -43,13 +43,12 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const [groupMatches, setGroupMatches] = useState({});
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
-  const tabs = ["group", "bracket", "miscellaneous", "information"];
+  const tabs = ["group", "bracket", "bonus", "information"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [allTeams, setAllTeams] = useState([]);
 
   const loadData = async () => {
     setLoading(true);
-    let isLocked = false;
 
     // get matches from db
     const filtered = {
@@ -62,10 +61,11 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
     // get competition info
     const competitionRes = await getCompetition(competitionID);
     if (competitionRes.status !== 200) toast.error(competitionRes.data);
+    const isLocked =
+      new Date(competitionRes.data?.submissionDeadline) <= new Date();
 
     if (matchesRes.status === 200) {
       matchesRes.data.forEach((m) => {
-        if (m.locked) isLocked = true;
         if (m.type === "Group") {
           if (!filtered.groups[m.groupName]) {
             filtered.groups[m.groupName] = [];
@@ -169,6 +169,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           dispatchPredictions({ type: "edit" });
         }}
         isSaved={predictions.isSaved}
+        isLocked={predictions.isLocked}
         competition={predictions.competition}
         missingItems={predictions.missingItems}
       />
@@ -195,7 +196,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               isLocked={predictions.isLocked}
               misc={predictions.misc}
             />
-          ) : selectedTab.includes("misc") ? (
+          ) : selectedTab.includes("bonus") ? (
             <Miscellaneous
               onChange={handleChangeMiscValue}
               misc={predictions.misc}

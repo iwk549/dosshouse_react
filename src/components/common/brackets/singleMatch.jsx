@@ -17,6 +17,7 @@ const SingleMatch = ({
   onSelectMatch,
   showFullTeamNames,
   onSelectTeam,
+  isLocked,
 }) => {
   const handleSelectMatch = () => {
     onSelectMatch(match);
@@ -44,6 +45,7 @@ const SingleMatch = ({
               spectate={spectate}
               showFullTeamNames={showFullTeamNames}
               onSelectTeam={onSelectTeam}
+              isLocked={isLocked}
             />
             {i === 0 && (
               <MatchLink

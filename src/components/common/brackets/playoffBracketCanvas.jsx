@@ -162,6 +162,7 @@ const PlayoffBracketCanvas = ({
                   onSelectMatch={onSelectMatch}
                   onSelectTeam={onSelectTeam}
                   showFullTeamNames={true}
+                  isLocked={isLocked}
                 />
                 <MatchConnector
                   position={{

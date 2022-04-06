@@ -27,10 +27,10 @@ const Navbar = () => {
         }}
       >
         <img
-          src="/assets/profilePic.jpeg"
+          src="/assets/logo4.png"
           height={50}
           width={50}
-          alt="Ian Kendall"
+          alt="Dosshouse"
           style={{ borderRadius: 10 }}
         />
       </div>

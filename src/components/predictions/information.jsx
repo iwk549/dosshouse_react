@@ -17,8 +17,6 @@ const Information = ({ competition }) => {
           <b>{item.header}</b>
         </li>
         {item.body}
-        <br />
-        <br />
       </React.Fragment>
     );
   };
@@ -34,8 +32,18 @@ const Information = ({ competition }) => {
             {lists[key].map((item, ii) => renderItem(item, ii))}
             {key === "scoring" && (
               <>
-                {competition.miscPicks.map((p) =>
-                  renderItem({ header: p.label, body: p.points + " points" })
+                <hr />
+                <h3>
+                  <u>Bonus Scoring</u>
+                </h3>
+                {competition.miscPicks.map((p, ii) =>
+                  renderItem(
+                    {
+                      header: p.label,
+                      body: <p>{p.points} points</p>,
+                    },
+                    ii
+                  )
                 )}
               </>
             )}

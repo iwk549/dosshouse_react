@@ -61,7 +61,7 @@ function App() {
         pauseOnHover
         pauseOnFocusLoss
         theme="dark"
-        limit={1}
+        limit={3}
       />
     </LoadingContext.Provider>
   );
