@@ -127,20 +127,41 @@ const ActiveSites = () => {
       ],
     },
     {
-      urls: ["https://dosshouse.us"],
-      names: ["Dosshouse"],
+      urls: [
+        "https://dosshouse.us/predictions",
+        "https://dosshouse.us/spotify_api",
+      ],
+      names: ["Bracket Predictions", "Spotify API"],
       text: (
-        <p>
-          Dosshouse makes use of microservice architechture to provide multiple
-          functional apps in a single place.
-          <br />
-          Each page calls its own API performing different functions to keep the
-          site as lightweight and fast as possible.
-        </p>
+        <>
+          <p>
+            Dosshouse makes use of microservice architechture to provide
+            multiple functional apps in a single place.
+            <br />
+            Each page calls its own API performing different functions to keep
+            the site as lightweight and fast as possible.
+          </p>
+          Active Apps:
+          <ul>
+            <li>
+              <b>Bracket Predictions</b>
+            </li>
+            A fully functional bracket maker for professional sports tournaments
+            such as the World Cup and March Madness. Includes leaderboards with
+            group selections to track your results against your friends.
+            <br />
+            <br />
+            <li>
+              <b>Spotify API</b>
+            </li>
+            Using machine learning this app can accurately predict in which
+            playlist an artists song best fit.
+          </ul>
+        </>
       ),
       tech: [
         { type: "Front-End", stack: "ReactJS" },
-        { type: "Back-End", stack: "Flask" },
+        { type: "Back-End", stack: "Flask, NodeJS, Express" },
         { type: "DevOps", stack: "Render" },
       ],
       repos: [
@@ -150,6 +171,10 @@ const ActiveSites = () => {
         },
         {
           url: "https://github.com/iwk549/spotify_flask",
+          private: false,
+        },
+        {
+          url: "https://github.com/iwk549/dosshouse_backend",
           private: false,
         },
       ],

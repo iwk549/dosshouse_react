@@ -1,9 +1,11 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+const instance = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+});
 
-axios.interceptors.response.use(null, (error) => {
+instance.interceptors.response.use(null, (error) => {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
@@ -12,13 +14,14 @@ axios.interceptors.response.use(null, (error) => {
   if (!expectedError) {
     // logger.log(error);
     toast.error("An unexpected error occured");
+    toast.clearWaitingQueue();
   }
 
   return Promise.reject(error);
 });
 
 export default {
-  get: axios.get,
+  get: instance.get,
   audio_features_endpoint: "/spotify/audio_features",
   artist_endpoint: "/spotify/artist",
   playlist_endpoint: "/spotify/playlist",
