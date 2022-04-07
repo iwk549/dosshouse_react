@@ -242,6 +242,7 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
 };
 
 export function predictionReducer(state, action) {
+  console.log(action.type);
   let groups = state.groups;
   let playoffs = state.playoffs;
   let playoffMatches = state.playoffMatches;
@@ -320,10 +321,12 @@ export function predictionReducer(state, action) {
       misc = updateMiscItems(misc, action.selection);
     }
   }
-  const updated = cascadeGroupChanges(groups, playoffMatches, misc);
-  playoffMatches = updated.playoffMatches;
-  playoffs = updated.playoffs;
-  misc = updated.misc;
+  if (action.type !== "winner") {
+    const updated = cascadeGroupChanges(groups, playoffMatches, misc);
+    playoffMatches = updated.playoffMatches;
+    playoffs = updated.playoffs;
+    misc = updated.misc;
+  }
   missingItems = checkForCompletion(playoffs, misc, competition);
   toast.clearWaitingQueue();
   return {
