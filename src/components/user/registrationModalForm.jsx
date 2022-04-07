@@ -13,9 +13,9 @@ class RegistrationModalForm extends Form {
   static contextType = LoadingContext;
   state = {
     data: {
-      name: "Ian",
-      email: "iwk549@gmail.com",
-      password: "Password1",
+      name: "",
+      email: "",
+      password: "",
     },
     errors: {},
     selectedTab: this.props.selectedTab || "register",
