@@ -1,6 +1,8 @@
 import { getFinalRound } from "./bracketsUtil";
 import { toast } from "react-toastify";
 
+import logos from "../textMaps/logos";
+
 const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
   let newGroups = { ...state };
   let newTeams = [...newGroups[groupName]];
@@ -39,9 +41,11 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
       ["home", "away"].forEach((t) => {
         const group = newMatch.getTeamsFrom[t].groupName;
         const position = newMatch.getTeamsFrom[t].position;
-        newMatch[t + "TeamName"] = groups[group]
+        const teamToInsert = groups[group]
           ? groups[group][position - 1].name
           : newMatch[t + "TeamName"];
+        newMatch[t + "TeamName"] = teamToInsert;
+        newMatch[t + "TeamLogo"] = logos[teamToInsert];
       });
     } else if (m.round < 1000) {
       // for all other rounds:
@@ -63,6 +67,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
           });
           if (!matchesPreviousRound) {
             newMatch[t + "TeamName"] = newPicks[pickIndex];
+            newMatch[t + "TeamLogo"] = logos[newPicks[pickIndex]];
           }
           if (newMatch.round === finalRound) {
             if (
@@ -127,6 +132,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
           (match.metadata?.matchNumber || match.matchNumber)
         ) {
           newMatch[t + "TeamName"] = teamToInsert;
+          newMatch[t + "TeamLogo"] = logos[teamToInsert];
           teamToReplace = m[t + "TeamName"];
         }
         if (newMatch.round === finalRound && teamToReplace === misc.winner) {
@@ -158,7 +164,8 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
       if (teamToReplace) {
         ["home", "away"].forEach((t) => {
           if (newMatch[t + "TeamName"] === teamToReplace) {
-            newMatch[t + "TeamName"] = match[winner + "TeamName"];
+            newMatch[t + "TeamName"] = teamToInsert;
+            newMatch[t + "TeamLogo"] = logos[teamToInsert];
           }
         });
       }
@@ -242,7 +249,6 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
 };
 
 export function predictionReducer(state, action) {
-  console.log(action.type);
   let groups = state.groups;
   let playoffs = state.playoffs;
   let playoffMatches = state.playoffMatches;

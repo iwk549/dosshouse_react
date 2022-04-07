@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import BasicModal from "../common/modal/basicModal";
 import { renderInfoLine } from "../../utils/textUtils";
 
-const MissingItems = ({ items, isOpen, setIsOpen }) => {
+const MissingItems = ({ items, isOpen, setIsOpen, name }) => {
   return (
     <BasicModal
       isOpen={isOpen}
@@ -21,6 +21,13 @@ const MissingItems = ({ items, isOpen, setIsOpen }) => {
           If the submission is not completed before the deadline it will be
           scored as is.
         </p>
+        {(!name || name.length < 3) &&
+          renderInfoLine(
+            "Name",
+            name
+              ? "Bracket name must be at least 3 characters"
+              : "Give your bracket a name"
+          )}
         {items.map((item, idx) =>
           renderInfoLine(item.label, item.text, "", idx)
         )}

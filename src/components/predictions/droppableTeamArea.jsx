@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import MatchesModal from "./matchesModal";
 import DraggableTable from "../common/table/draggableTable";
 import ExternalImage from "../common/image/externalImage";
+import logos from "../../textMaps/logos";
 
 const DroppableTeamArea = ({
   teams,
@@ -14,7 +15,11 @@ const DroppableTeamArea = ({
 }) => {
   const [matchesOpen, setMatchesOpen] = useState(false);
   const columns = [
-    { content: (t) => <ExternalImage uri={t.flag} width={50} height={35} /> },
+    {
+      content: (t) => (
+        <ExternalImage uri={logos[t.name]} width={30} height={20} />
+      ),
+    },
     { content: (t) => t.name },
   ];
 

@@ -81,6 +81,7 @@ const HeaderLine = ({
         items={missingItems}
         isOpen={missingItemsOpen}
         setIsOpen={setMissingItemsOpen}
+        name={predictionName}
       />
     </>
   );

@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 function setJwt(jwt) {
-  axios.defaults.headers.common["x-auth-token"] = jwt;
+  instance.defaults.headers.common["x-auth-token"] = jwt;
 }
 
 export default {

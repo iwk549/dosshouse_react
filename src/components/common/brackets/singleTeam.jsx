@@ -123,9 +123,7 @@ const SingleTeam = ({
     return teamText;
   };
 
-  const hasLogo =
-    match[team + "TeamLogo"]?.logo &&
-    !match[team + "TeamLogo"].logo.includes("blocked");
+  const hasLogo = match[team + "TeamLogo"];
 
   return (
     <g>
@@ -160,9 +158,7 @@ const SingleTeam = ({
       {renderJoinLine()}
       {hasLogo ? (
         <image
-          href={`https://storage.googleapis.com/ultimatescoreboard-teamlogos/${
-            match[team + "TeamLogo"]?.logo
-          }.png`}
+          href={match[team + "TeamLogo"]}
           x={
             textAnchor == "middle"
               ? offsets.text
@@ -175,9 +171,7 @@ const SingleTeam = ({
       ) : null}
       {hasLogo && textAnchor === "middle" && (
         <image
-          href={`https://storage.googleapis.com/ultimatescoreboard-teamlogos/${
-            match[team + "TeamLogo"]?.logo
-          }.png`}
+          href={match[team + "TeamLogo"]}
           x={width - 28}
           y={Y - 17 + verticalPosition}
           width={20}

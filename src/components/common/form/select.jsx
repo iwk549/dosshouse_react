@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import OutsideClickHandler from "react-outside-click-handler";
+import Select from "react-select";
 
 import IconRender from "../icons/iconRender";
 import Tooltip from "../tooltip/tooltip";
 
-const Select = ({
+const FormSelect = ({
   name,
   label,
   options,
@@ -17,6 +17,11 @@ const Select = ({
   valueBoxStyle,
   tooltip,
 }) => {
+  const [fullSelectedOption, setFullSelectedOption] = useState(null);
+
+  useEffect(() => {
+    setFullSelectedOption(options.find((o) => o.value === selectedOption));
+  }, []);
   const finalLabel = boldHeader ? <b>{label}</b> : label;
 
   const renderLabel = () => {
@@ -35,6 +40,22 @@ const Select = ({
       </label>
     );
   };
+
+  const raiseChange = (value) => {
+    setFullSelectedOption(value);
+    onChange(value.value);
+  };
+
+  return (
+    <>
+      {renderLabel()}
+      <Select
+        options={options}
+        onChange={raiseChange}
+        value={fullSelectedOption}
+      />
+    </>
+  );
 
   return (
     <div className="form-group">
@@ -58,4 +79,4 @@ const Select = ({
   );
 };
 
-export default Select;
+export default FormSelect;
