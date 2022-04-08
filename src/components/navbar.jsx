@@ -7,6 +7,7 @@ import Confirm from "./common/modal/confirm";
 import { logout } from "../services/userService";
 import LoadingContext from "../context/loadingContext";
 import RegistrationModalForm from "./user/registrationModalForm";
+import LogoRender from "./common/image/logoRender";
 
 const Navbar = () => {
   const { user, setUser, setLoading } = useContext(LoadingContext);
@@ -26,13 +27,7 @@ const Navbar = () => {
           marginTop: 5,
         }}
       >
-        <img
-          src="/assets/logo4.png"
-          height={50}
-          width={50}
-          alt="Dosshouse"
-          style={{ borderRadius: 10 }}
-        />
+        <LogoRender />
       </div>
       <nav className="main-nav">
         <NavLink className={getActiveLink} to="/home">

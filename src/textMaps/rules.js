@@ -5,7 +5,7 @@ export default [
       <p>
         The bracket competition and leaderboards are for use in friendly
         competitions only. This website does not accept, facilitate, or condone
-        any real money wagers.
+        any real money wagers or pools.
       </p>
     ),
   },
@@ -20,10 +20,10 @@ export default [
         bracket is invalid.
         <br />
         <br />
-        A bracket that has not been completely filled out (ie: one or more teams
-        in the playoff bracket are still listed as "Winner", or all bonus picks
-        have not been selected) is considered to be a valid bracket. No points
-        will be awarded for the missing items, but it will still be in
+        A bracket that has not been completely filled out (i.e. one or more
+        teams in the playoff bracket are still listed as "Winner", or all bonus
+        picks have not been selected) is considered to be a valid bracket. No
+        points will be awarded for the missing items, but it will still be in
         contention for the leaderboard.
         <br />
         <br />

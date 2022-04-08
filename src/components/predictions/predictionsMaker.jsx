@@ -6,7 +6,6 @@ import React, {
   useReducer,
 } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { splitName } from "../../utils/allowables";
 import BracketPicker from "./bracketPicker";
 import GroupPicker from "./groupPicker";
@@ -41,24 +40,25 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
     missingItems: [],
   });
   const [groupMatches, setGroupMatches] = useState({});
+  const [originalPlayoffMatches, setOriginalPlayoffMatches] = useState([]);
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const tabs = ["group", "bracket", "bonus", "information"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [allTeams, setAllTeams] = useState([]);
+  const [bracketIsPortrait, setBracketIsPortrait] = useState(false);
 
   const loadData = async () => {
-    setLoading(true);
+    setLoading(true); // get matches from db
 
-    // get matches from db
     const filtered = {
       groups: {},
       groupMatches: {},
       playoffMatches: [],
     };
     let addedTeamTracker = [];
-    const matchesRes = await getMatches(competitionID);
-    // get competition info
+    const matchesRes = await getMatches(competitionID); // get competition info
+
     const competitionRes = await getCompetition(competitionID);
     if (competitionRes.status !== 200) toast.error(competitionRes.data);
     const isLocked =
@@ -73,8 +73,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           } else {
             filtered.groupMatches[m.groupName].push(m);
           }
+
           ["home", "away"].forEach((t) => {
             const teamName = m[t + "TeamName"];
+
             if (!addedTeamTracker.includes(teamName)) {
               addedTeamTracker.push(teamName);
               filtered.groups[m.groupName].push({
@@ -85,12 +87,14 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
       });
       setGroupMatches(filtered.groupMatches);
+      setOriginalPlayoffMatches(filtered.playoffMatches);
       setAllTeams(addedTeamTracker);
 
       // get saved predictions or set new predictions
       if (predictionID !== "new") {
         // grab predictions from db
         const predictionsRes = await getPrediction(predictionID);
+
         if (predictionsRes.status === 200) {
           dispatchPredictions({
             type: "populate",
@@ -133,7 +137,6 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         teamOrder: predictions.groups[k].map((t) => t.name),
       });
     });
-
     const res = await savePredictions(predictionID, {
       name: predictionName,
       competitionID,
@@ -141,22 +144,36 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
       playoffPredictions: predictions.playoffs,
       misc: predictions.misc,
     });
+
     if (res.status === 200) {
-      dispatchPredictions({ type: "save" });
+      dispatchPredictions({
+        type: "save",
+      });
       toast.success("Predictions saved");
       navigate(`/predictions?id=${res.data}&competitionID=${competitionID}`, {
         replace: true,
       });
     } else toast.error(res.data);
+
     setLoading(false);
   };
 
   const handleSelectBracketWinner = (match, team) => {
-    dispatchPredictions({ type: "winner", match, winner: team });
+    dispatchPredictions({
+      type: "winner",
+      match,
+      winner: team,
+    });
   };
 
   const handleChangeMiscValue = (name, value) => {
-    dispatchPredictions({ type: "misc", selection: { name, value } });
+    dispatchPredictions({
+      type: "misc",
+      selection: {
+        name,
+        value,
+      },
+    });
   };
 
   return (
@@ -166,7 +183,9 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         predictionName={predictionName}
         setPredictionName={(value) => {
           setPredictionName(value);
-          dispatchPredictions({ type: "edit" });
+          dispatchPredictions({
+            type: "edit",
+          });
         }}
         isSaved={predictions.isSaved}
         isLocked={predictions.isLocked}
@@ -195,6 +214,9 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               onSelectTeam={handleSelectBracketWinner}
               isLocked={predictions.isLocked}
               misc={predictions.misc}
+              isPortrait={bracketIsPortrait}
+              setIsPortrait={setBracketIsPortrait}
+              originalPlayoffMatches={originalPlayoffMatches}
             />
           ) : selectedTab.includes("bonus") ? (
             <Miscellaneous
@@ -209,7 +231,12 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           ) : null}
         </div>
       </TabbedArea>
-      <div style={{ float: "right" }}>
+      <br />
+      <div
+        style={{
+          float: "right",
+        }}
+      >
         <button
           className="btn btn-sm btn-danger"
           onClick={() => navigate("/predictions")}

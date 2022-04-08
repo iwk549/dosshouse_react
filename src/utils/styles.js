@@ -19,7 +19,7 @@ export const modalStyle = {
 
 export const confirmModalStyle = {
   content: {
-    maxHeight: "25%",
+    maxHeight: "50%",
     width: "25%",
     ...commonModalStyles,
   },

@@ -242,7 +242,11 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
   });
 
   competition.miscPicks.forEach((pick) => {
-    if (!misc[pick.name] || misc[pick.name].toLowerCase().includes("winner"))
+    if (
+      !misc[pick.name] ||
+      misc[pick.name].toLowerCase().includes("winner") ||
+      misc[pick.name].toLowerCase().includes("loser")
+    )
       missingItems.push({ label: "Miscellaneous", text: pick.label });
   });
   return missingItems;

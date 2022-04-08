@@ -16,8 +16,8 @@ const HeaderLine = ({
   const isComplete = missingItems.length === 0;
   return (
     <>
-      <h2 className="text-center">
-        <div style={{ float: "left" }}>
+      <div className="row">
+        <div className="col">
           <Input
             name="bracketName"
             label="Name this Bracket"
@@ -25,38 +25,40 @@ const HeaderLine = ({
             onChange={(event) => setPredictionName(event.target.value)}
           />
         </div>
-        {competition.name}
-        <div style={{ float: "right" }}>
+        <div className="col">
+          <h1>
+            <b>{competition.name}</b>
+          </h1>
+        </div>
+        <div className="col">
           {isSaved ? (
             <button className="pop-box">
               <IconRender type="checkmark" /> Predictions Saved
             </button>
           ) : (
             <button
-              className="btn btn-sm btn-block btn-dark submit-button"
+              className="btn btn-md btn-block btn-dark submit-button"
               onClick={onSave}
             >
-              <IconRender type="save" size={12} /> Save Predictions
+              <IconRender type="save" size={15} /> Save Predictions
             </button>
           )}
         </div>
-      </h2>
-      <div style={{ height: 20 }} />
-      {
-        <div
-          className={
-            "row custom-alert " +
-            (isComplete && !isLocked
-              ? isSaved
-                ? "success"
-                : "warning"
-              : "danger")
-          }
-        >
-          <div className="col">
-            {isLocked
-              ? "The submission deadline for this competition is over"
-              : `This submission is ${!isComplete ? "not " : ""}complete
+      </div>
+      <div
+        className={
+          "row custom-alert " +
+          (isComplete && !isLocked
+            ? isSaved
+              ? "success"
+              : "warning"
+            : "danger")
+        }
+      >
+        <div className="col">
+          {isLocked
+            ? "The submission deadline for this competition is over"
+            : `This submission is ${!isComplete ? "not " : ""}complete
             ${
               isComplete
                 ? isSaved
@@ -64,19 +66,18 @@ const HeaderLine = ({
                   : ". Save it to lock in your predictions."
                 : "."
             }`}
-          </div>
-          {!isComplete && (
-            <div className="col">
-              <button
-                className="btn btn-sm btn-info"
-                onClick={() => setMissingItemsOpen(true)}
-              >
-                See What's Missing
-              </button>
-            </div>
-          )}
         </div>
-      }
+        {!isComplete && (
+          <div className="col">
+            <button
+              className="btn btn-sm btn-info"
+              onClick={() => setMissingItemsOpen(true)}
+            >
+              See What's Missing
+            </button>
+          </div>
+        )}
+      </div>
       <MissingItems
         items={missingItems}
         isOpen={missingItemsOpen}

@@ -1,7 +1,14 @@
 export default [
   {
     header: "Group Selection",
-    body: <p>1 point for each correctly placed team</p>,
+    body: (
+      <>
+        <p>
+          1 point for each correctly placed team
+          <br />1 point per group where <i>all</i> teams are correctly placed
+        </p>
+      </>
+    ),
   },
   {
     header: "Playoff Bracket",

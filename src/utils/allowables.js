@@ -41,6 +41,16 @@ export function teamOrder(sport) {
   const lowerSport = sport.toLowerCase();
   return ["soccer"].includes(lowerSport) ? ["home", "away"] : ["away", "home"];
 }
+export function atOrVs(sport) {
+  const lowerSport = sport.toLowerCase();
+  return ["soccer"].includes(lowerSport) ? "vs" : "at";
+}
+export function matchStartText(sport) {
+  const lowerSport = sport.toLowerCase();
+  return ["soccer", "football"].includes(lowerSport)
+    ? "Kick Off"
+    : "First Pitch";
+}
 
 export const cookieOptions = {
   expires: 9999,

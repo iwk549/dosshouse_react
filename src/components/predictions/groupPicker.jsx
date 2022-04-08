@@ -9,8 +9,11 @@ const GroupPicker = ({ groups, onDrop, onReorder, isLocked, groupMatches }) => {
   return (
     <>
       <p className="text-center">
-        Rearrange the order you predict that each team will finish within their
-        group by dragging and dropping or using the arrow buttons.
+        Rearrange the teams by dragging and dropping or using the arrow buttons.
+        The position of the teams in their groups will effect where they will be
+        placed in the bracket. Changing the group order after you have already
+        made selections in the bracket will cascade those changes through the
+        whole bracket.
       </p>
       <div className="row">
         {halfs.map((h, i) => (

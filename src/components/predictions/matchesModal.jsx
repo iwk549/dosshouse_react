@@ -3,21 +3,33 @@ import { shortDate } from "../../utils/allowables";
 import BasicModal from "../common/modal/basicModal";
 import Table from "../common/table/table";
 
-const MatchesModal = ({ matches, isOpen, setIsOpen }) => {
+import { teamOrder, titleCase, matchStartText } from "../../utils/allowables";
+
+const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
+  const teams = teamOrder(matches[0]?.sport);
+
   const [sortColumn, setSortColumn] = useState({
     path: "dateTime",
     order: "asc",
   });
   if (!matches || matches.length === 0) return null;
   const columns = [
-    { path: "homeTeamName", label: "Home Team" },
-    { path: "homeTeamGoals", label: "" },
-    { path: "awayTeamGoals", label: "" },
-    { path: "awayTeamName", label: "Away Team" },
+    { path: `${teams[0]}TeamName`, label: `${titleCase(teams[0])} Team` },
+    {
+      path: `${teams[0]} TeamGoals`,
+      label: "",
+      content: (m) => (m.matchAccepted ? m[teams[0] + "TeamGoals"] : ""),
+    },
+    { path: `${teams[1]}TeamName`, label: `${titleCase(teams[1])} Team` },
+    {
+      path: `${teams[1]} TeamGoals`,
+      label: "",
+      content: (m) => (m.matchAccepted ? m[teams[1] + "TeamGoals"] : ""),
+    },
     { path: "location", label: "Location" },
     {
       path: "dateTime",
-      label: "Kick Off",
+      label: matchStartText(matches[0]?.sport),
       content: (m) => shortDate(m.dateTime, true),
     },
   ];
@@ -38,7 +50,7 @@ const MatchesModal = ({ matches, isOpen, setIsOpen }) => {
   return (
     <BasicModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <h3 className="text-center">
-        <b>Group {matches[0].groupName} Matches</b>
+        <b>{header}</b>
       </h3>
       <Table
         columns={columns}

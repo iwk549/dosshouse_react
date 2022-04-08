@@ -66,6 +66,7 @@ const DroppableTeamArea = ({
         isOpen={matchesOpen}
         setIsOpen={setMatchesOpen}
         matches={matches}
+        header={`Group ${groupName} Matches`}
       />
     </>
   );

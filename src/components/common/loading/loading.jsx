@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { IconContext } from "react-icons";
 import IconRender from "../icons/iconRender";
 import LoadingAnimation from "./loadingAnimation";
+import LogoRender from "../image/logoRender";
 
 const style = {
   content: {
@@ -32,7 +33,7 @@ const Loading = ({ loading, showText }) => {
       <IconContext.Provider value={{ className: "loading-icon" }}>
         <div className="text-center">
           <h1 className="light-text">dosshouse</h1>
-          <IconRender type="home" size={40} />
+          <LogoRender />
           <br />
           <br />
           <LoadingAnimation />
@@ -53,6 +54,14 @@ const Loading = ({ loading, showText }) => {
                 onClick={() => window.location.reload()}
               >
                 Reload the Page
+              </button>
+              <br />
+              <br />
+              <button
+                className="btn btn-sm btn-info"
+                onClick={() => (window.location = "/")}
+              >
+                Home Page
               </button>
             </>
           )}

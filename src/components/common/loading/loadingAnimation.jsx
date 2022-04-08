@@ -1,44 +1,26 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { motion } from "framer-motion";
 
+import LogoRender from "../image/logoRender";
+
 const LoadingAnimation = ({}) => {
   return (
     <div className="loading-animation-container">
       <motion.div
-        className="loading-animation"
-        animate={{
-          backgroundColor: ["#fff", "#000", "#fff"],
-        }}
-        transition={{
-          repeat: Infinity,
-          duration: 2,
-          ease: "easeOut",
-        }}
-      />
-      <div
         style={{
           position: "absolute",
-          height: 20,
-          width: 20,
-          backgroundColor: "#000",
-          borderRadius: "50%",
-        }}
-      />
-      <motion.div
-        style={{
-          position: "absolute",
-          height: 10,
+          height: 5,
           width: 10,
-          backgroundColor: "#fff",
-          borderRadius: "50%",
+          backgroundColor: "#ccffd0",
+          borderRadius: 5,
         }}
         animate={{
-          backgroundColor: ["#fff", "#000", "#fff"],
+          width: [10, 150, 10],
         }}
         transition={{
           repeat: Infinity,
-          duration: 2,
-          ease: "easeOut",
+          duration: 3,
+          ease: "easeInOut",
         }}
       />
     </div>

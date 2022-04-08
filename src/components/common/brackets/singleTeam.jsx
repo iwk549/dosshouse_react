@@ -109,7 +109,7 @@ const SingleTeam = ({
         ? teamName
         : teamAbbreviation;
 
-    let goals = match.matchComplete
+    let goals = match.matchAccepted
       ? `${match[team + "TeamGoals"]}${
           match[team + "TeamGoals"] === match[otherTeam + "TeamGoals"]
             ? ` (${match[team + "TeamPKs"]})`

@@ -11,6 +11,8 @@ const Information = ({ competition }) => {
   };
 
   const renderItem = (item, idx) => {
+    if (item.header.toLowerCase().includes("group") && !competition.groupPicks)
+      return null;
     return (
       <React.Fragment key={idx}>
         <li>

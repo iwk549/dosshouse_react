@@ -12,9 +12,9 @@ const PlayoffBracketCanvas = ({
   onSelectMatch,
   onSelectTeam,
   isLocked,
+  orientation,
 }) => {
   const { width, height } = useWindowDimensions();
-  const [orientation, setOrientation] = useState("landscape");
   const [selectedBracket] = useState("main");
   const [bracketSize, setBracketSize] = useState({
     width: 1280,
@@ -23,12 +23,12 @@ const PlayoffBracketCanvas = ({
   });
 
   useEffect(() => {
-    // setBracketSize({
-    //   width: width < 1280 ? width - 100 : 1280,
-    //   height: height < 720 ? height : 920,
-    //   matchHeight: 100,
-    // });
-  }, []);
+    setBracketSize({
+      width: orientation === "portrait" ? 500 : 1280,
+      height: 720,
+      matchHeight: orientation === "portrait" ? 75 : 100,
+    });
+  }, [orientation]);
 
   if (matches.length === 0) return null;
 
