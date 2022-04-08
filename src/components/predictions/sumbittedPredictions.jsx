@@ -57,38 +57,42 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
 
   return user ? (
     <div>
-      {predictions.map((p) => (
-        <React.Fragment key={p._id}>
-          <div className="row">
-            {renderInfo(p)}
-            {renderPoints(p.points)}
-            <div className="col-2">
-              <br />
-              <button
-                className="btn btn-sm btn-dark"
-                onClick={() =>
-                  navigate(
-                    `/predictions?id=${p._id}&competitionID=${p.competitionID._id}`
-                  )
-                }
-              >
-                Edit
-              </button>
-              <div style={{ height: 50 }} />
-              <button
-                className="btn btn-sm btn-danger"
-                onClick={() => {
-                  setSelectedSubmission(p);
-                  setConfirmDeleteOpen(true);
-                }}
-              >
-                Delete
-              </button>
+      {predictions.length > 0 ? (
+        predictions.map((p) => (
+          <React.Fragment key={p._id}>
+            <div className="row">
+              {renderInfo(p)}
+              {renderPoints(p.points)}
+              <div className="col-2">
+                <br />
+                <button
+                  className="btn btn-sm btn-dark"
+                  onClick={() =>
+                    navigate(
+                      `/predictions?id=${p._id}&competitionID=${p.competitionID._id}`
+                    )
+                  }
+                >
+                  Edit
+                </button>
+                <div style={{ height: 50 }} />
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => {
+                    setSelectedSubmission(p);
+                    setConfirmDeleteOpen(true);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-          <hr />
-        </React.Fragment>
-      ))}
+            <hr />
+          </React.Fragment>
+        ))
+      ) : (
+        <p>You have not made any submissions</p>
+      )}
       {selectedSubmission && (
         <Confirm
           header="Confirm Delete Submission"

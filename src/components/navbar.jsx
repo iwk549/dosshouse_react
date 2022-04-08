@@ -8,6 +8,7 @@ import { logout } from "../services/userService";
 import LoadingContext from "../context/loadingContext";
 import RegistrationModalForm from "./user/registrationModalForm";
 import LogoRender from "./common/image/logoRender";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, setUser, setLoading } = useContext(LoadingContext);
@@ -67,6 +68,7 @@ const Navbar = () => {
         focus="cancel"
         onConfirm={() => {
           logout();
+          toast.info("Logged out");
           setUser(null);
         }}
       >

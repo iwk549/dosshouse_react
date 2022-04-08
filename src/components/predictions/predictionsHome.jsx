@@ -35,6 +35,9 @@ const PredictionsHome = () => {
         setExpiredCompetitions(expiredCompetitionsRes.data);
       } else toast.error(expiredCompetitionsRes.data);
     } else toast.error(activeCompetitionsRes.data);
+
+    // no error displayed here
+    // this is to gather users submissions, if not logged in will give error
     if (predictionsRes.status === 200) setPredictions(predictionsRes.data);
     setLoading(false);
   };

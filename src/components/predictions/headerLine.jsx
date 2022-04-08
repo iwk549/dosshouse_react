@@ -20,7 +20,7 @@ const HeaderLine = ({
         <div className="col">
           <Input
             name="bracketName"
-            label="Name this Bracket"
+            label="Name this Submission"
             value={predictionName}
             onChange={(event) => setPredictionName(event.target.value)}
           />
