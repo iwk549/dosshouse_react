@@ -22,7 +22,7 @@ class RegistrationModalForm extends Form {
   };
 
   schema = {
-    name: Joi.string().required().min(1).max(50).label("Name"),
+    name: Joi.string().allow("").min(1).max(50).label("Name"),
     email: Joi.string().required().email().label("Email"),
     password: Joi.string().required().min(8).max(100).label("Password"),
   };
