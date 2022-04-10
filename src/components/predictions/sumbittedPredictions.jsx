@@ -20,15 +20,15 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
           <b>Info</b>
         </h4>
         {renderInfoLine("Submission Name", prediction.name)}
-        {renderInfoLine("Competition", prediction.competitionID.name)}
+        {renderInfoLine("Competition", prediction.competitionID?.name)}
         {renderInfoLine(
           "Submissions Allowed",
-          prediction.competitionID.maxSubmissions
+          prediction.competitionID?.maxSubmissions
         )}
         {renderInfoLine(
           "Submissions Made",
           predictions.filter(
-            (p) => p.competitionID._id === prediction.competitionID._id
+            (p) => p.competitionID?._id === prediction.competitionID?._id
           ).length
         )}
       </div>
@@ -69,7 +69,7 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
                   className="btn btn-sm btn-dark"
                   onClick={() =>
                     navigate(
-                      `/predictions?id=${p._id}&competitionID=${p.competitionID._id}`
+                      `/predictions?id=${p._id}&competitionID=${p.competitionID?._id}`
                     )
                   }
                 >

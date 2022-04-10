@@ -61,6 +61,7 @@ export function splitName(name) {
   return name.split(" ")[0];
 }
 export function translateRound(round, finalRound) {
+  if (round === 1001) return "Third Place";
   const translation = [
     "Final",
     "Semi-Final",

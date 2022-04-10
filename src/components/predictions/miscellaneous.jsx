@@ -3,8 +3,8 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import FormSelect from "../common/form/select";
 import { getFinalRound } from "../../utils/bracketsUtil";
 import logos from "../../textMaps/logos";
-import ExternalImage from "../common/image/externalImage";
 import { renderSelectLabel } from "../../utils/rendering";
+import SingleMatchModal from "./singleMatchModal";
 
 const Miscellaneous = ({
   playoffMatches,
@@ -13,6 +13,8 @@ const Miscellaneous = ({
   competition,
   allTeams,
 }) => {
+  const [matchModalOpen, setMatchModalOpen] = useState(false);
+
   const mappedTeams = allTeams
     .sort((a, b) => (a > b ? 1 : -1))
     .map((t) => {
@@ -61,7 +63,6 @@ const Miscellaneous = ({
             label={p.label}
             boldHeader={true}
             onChange={(value) => {
-              console.log(p.name, value);
               onChange(p.name, value);
             }}
             options={
@@ -81,6 +82,23 @@ const Miscellaneous = ({
               ),
             }}
           />
+          {p.name === "thirdPlace" && (
+            <>
+              <br />
+              <button
+                className="btn btn-block btn-info"
+                onClick={() => setMatchModalOpen(true)}
+              >
+                View Match Details
+              </button>
+              <SingleMatchModal
+                isOpen={matchModalOpen}
+                setIsOpen={setMatchModalOpen}
+                match={p.info}
+              />
+              <br />
+            </>
+          )}
           <br />
         </React.Fragment>
       ))}

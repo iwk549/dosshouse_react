@@ -8,8 +8,9 @@ const Competitions = ({ competitions, predictions, expired }) => {
 
   return competitions.map((c) => {
     const submissionsMade = predictions.filter(
-      (p) => p.competitionID._id === c._id
+      (p) => p.competitionID?._id === c._id
     ).length;
+
     return (
       <React.Fragment key={c._id}>
         <h3>{c.name}</h3>
