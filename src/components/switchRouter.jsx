@@ -5,6 +5,7 @@ import ActiveSites from "./activeSites/activeSites";
 import Home from "./home/home";
 import SpotifyMain from "./spotifyApi/spotifyMain";
 import PredictionsRedirect from "./predictions/predictionsRedirect";
+import Profile from "./user/profile";
 
 const SwitchRouter = ({}) => {
   return (
@@ -14,6 +15,7 @@ const SwitchRouter = ({}) => {
         <Route path="/spotify_api" element={<SpotifyMain />} />
         <Route path="/active_sites" element={<ActiveSites />} />
         <Route path="/predictions" element={<PredictionsRedirect />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Navigate replace to="/home" />} />
       </Routes>
     </div>

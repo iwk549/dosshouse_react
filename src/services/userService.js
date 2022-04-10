@@ -60,3 +60,23 @@ export async function refreshUser() {
     return ex.response;
   }
 }
+
+export async function editUser(info) {
+  try {
+    const res = await http.put(http.users, info);
+    setUser(res.data);
+    return res;
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
+export async function deleteUser() {
+  try {
+    const res = await http.delete(http.users);
+    logout();
+    return res;
+  } catch (ex) {
+    return ex.response;
+  }
+}

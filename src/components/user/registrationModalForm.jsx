@@ -7,7 +7,6 @@ import BasicModal from "../common/modal/basicModal";
 import { registerUser, loginUser } from "../../services/userService";
 import TabbedArea from "../common/pageSections/tabbedArea";
 import LoadingContext from "../../context/loadingContext";
-import { titleCase } from "../../utils/allowables";
 
 class RegistrationModalForm extends Form {
   static contextType = LoadingContext;
@@ -76,9 +75,13 @@ class RegistrationModalForm extends Form {
             </h3>
             <form onSubmit={this.handleSubmit}>
               {this.state.selectedTab === "register"
-                ? this.renderInput("name", "Name")
+                ? this.renderInput("name", "Name", "autofocus")
                 : null}
-              {this.renderInput("email", "Email")}
+              {this.renderInput(
+                "email",
+                "Email",
+                this.state.selectedTab === "login"
+              )}
               {this.renderInput("password", "Password", "", "password")}
               {this.renderValidatedButton("Submit")}
             </form>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { IconContext } from "react-icons";
 import IconRender from "./common/icons/iconRender";
@@ -11,6 +11,7 @@ import LogoRender from "./common/image/logoRender";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
+  let navigate = useNavigate();
   const { user, setUser, setLoading } = useContext(LoadingContext);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
@@ -52,28 +53,15 @@ const Navbar = () => {
         }}
       >
         <button
-          className={"btn btn-sm btn-" + (user ? "danger" : "dark")}
+          className={"btn btn-sm btn-" + (user ? "info" : "dark")}
           onClick={() =>
-            user ? setLogoutOpen(true) : setRegisterFormOpen(true)
+            user ? navigate("/profile") : setRegisterFormOpen(true)
           }
         >
-          <IconRender type={"log" + (user ? "out" : "in")} size={12} /> Log
-          {user ? "out" : "in"}
+          <IconRender type={user ? "profile" : "login"} size={12} />{" "}
+          {user ? "Profile" : "Login"}
         </button>
       </div>
-      <Confirm
-        header="Logout"
-        isOpen={logoutOpen}
-        setIsOpen={() => setLogoutOpen(false)}
-        focus="cancel"
-        onConfirm={() => {
-          logout();
-          toast.info("Logged out");
-          setUser(null);
-        }}
-      >
-        Are you sure you want to log out?
-      </Confirm>
       <RegistrationModalForm
         header="Login or Register"
         isOpen={registerFormOpen}
@@ -83,6 +71,7 @@ const Navbar = () => {
           setUser();
           setLoading(false);
         }}
+        selectedTab="login"
       />
     </IconContext.Provider>
   );

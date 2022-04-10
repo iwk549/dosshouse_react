@@ -8,8 +8,9 @@ import {
   BiSave,
 } from "react-icons/bi";
 import { BsSpotify } from "react-icons/bs";
-import { IoMdTrophy } from "react-icons/io";
+import { IoMdTrophy, IoMdSettings } from "react-icons/io";
 import { MdOutlineBatchPrediction, MdWebStories } from "react-icons/md";
+import { RiUserSettingsLine } from "react-icons/ri";
 
 const icons = {
   app: MdWebStories,
@@ -18,7 +19,9 @@ const icons = {
   login: BiLogInCircle,
   logout: BiLogOutCircle,
   prediction: MdOutlineBatchPrediction,
+  profile: RiUserSettingsLine,
   save: BiSave,
+  settings: IoMdSettings,
   spotify: BsSpotify,
   trophy: IoMdTrophy,
 };
