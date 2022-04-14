@@ -38,3 +38,11 @@ export async function deletePrediction(predictionID) {
     return ex.response;
   }
 }
+
+export async function getLeaderboard(competitionID) {
+  try {
+    return await http.get(http.predictions + "/leaderboard/" + competitionID);
+  } catch (ex) {
+    return ex.response;
+  }
+}

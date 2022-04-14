@@ -48,6 +48,15 @@ const Competitions = ({ competitions, predictions, expired }) => {
                 )}
               </>
             )}
+            <div style={{ height: 50 }} />
+            <button
+              className="btn btn-info"
+              onClick={() =>
+                navigate(`/predictions?leaderboard=show&competitionID=${c._id}`)
+              }
+            >
+              View Leaderboard
+            </button>
           </div>
           <hr />
         </div>
