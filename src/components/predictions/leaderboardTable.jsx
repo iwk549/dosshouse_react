@@ -54,7 +54,7 @@ const LeaderboardTable = ({ leaderboard }) => {
     {
       path: "totalPoints",
       label: "Total Points",
-      content: (p) => p.points.group + p.points.playoff + p.points.misc,
+      content: (p) => p.totalPoints,
     },
   ];
 

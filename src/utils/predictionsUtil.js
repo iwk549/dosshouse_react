@@ -96,6 +96,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
       matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
       homeTeam: newMatch.homeTeamName,
       awayTeam: newMatch.awayTeamName,
+      round: newMatch.round,
     });
 
     // add match teams for later use
@@ -173,6 +174,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
         matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
         homeTeam: newMatch.homeTeamName,
         awayTeam: newMatch.awayTeamName,
+        round: newMatch.round,
       });
     }
     newPlayoffMatches.push(newMatch);
@@ -181,7 +183,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
   if (match.round === finalRound) newMisc.winner = teamToInsert;
 
   return {
-    playoffs: playoffs,
+    playoffs,
     playoffMatches: newPlayoffMatches,
     misc: newMisc,
   };

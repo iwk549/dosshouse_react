@@ -35,8 +35,7 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
     );
   };
 
-  const renderPoints = (points) => {
-    const totalPoints = points.group + points.playoff + points.misc;
+  const renderPoints = (points, totalPoints) => {
     return (
       <div className="col">
         <h4>
@@ -62,7 +61,7 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
           <React.Fragment key={p._id}>
             <div className="row">
               {renderInfo(p)}
-              {renderPoints(p.points)}
+              {renderPoints(p.points, p.totalPoints)}
               <div className="col-2">
                 <br />
                 <button
