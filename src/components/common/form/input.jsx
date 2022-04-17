@@ -8,13 +8,7 @@ const Input = ({ name, label, error, debounceTimeout, ...rest }) => {
         {label}
       </label>
       <br />
-      <DebounceInput
-        debounceTimeout={debounceTimeout}
-        {...rest}
-        name={name}
-        id={name}
-        className="custom-input"
-      />
+      <input {...rest} name={name} id={name} className="custom-input" />
       {error && <div className="form-input-error">{error}</div>}
     </div>
   );

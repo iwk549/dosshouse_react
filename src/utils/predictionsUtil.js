@@ -171,13 +171,13 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
           }
         });
       }
-      playoffs.push({
-        matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
-        homeTeam: newMatch.homeTeamName,
-        awayTeam: newMatch.awayTeamName,
-        round: newMatch.round,
-      });
     }
+    playoffs.push({
+      matchNumber: newMatch.metadata?.matchNumber || newMatch.matchNumber,
+      homeTeam: newMatch.homeTeamName,
+      awayTeam: newMatch.awayTeamName,
+      round: newMatch.round,
+    });
     newPlayoffMatches.push(newMatch);
   });
 
@@ -201,7 +201,8 @@ const handlePopulateBracket = (
       return { name: t };
     });
   });
-  let populatedPlayoffMatches = playoffMatches.filter((m) => m.round === 1);
+
+  let populatedPlayoffMatches = [];
   playoffPredictions.forEach((p) => {
     let playoffMatch = {
       ...playoffMatches.find(

@@ -8,12 +8,13 @@ import {
   BiSave,
 } from "react-icons/bi";
 import { BsSpotify } from "react-icons/bs";
-import { IoMdTrophy, IoMdSettings } from "react-icons/io";
+import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import { MdOutlineBatchPrediction, MdWebStories } from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
 
 const icons = {
   app: MdWebStories,
+  check: IoMdCheckmark,
   checkmark: BiCheckDouble,
   home: BiHome,
   login: BiLogInCircle,

@@ -44,8 +44,6 @@ const Competitions = ({ competitions, predictions, expired }) => {
                   <p>
                     You have already made the maximum amount of submissions for
                     this competition.
-                    <br />
-                    Delete or edit one of your existing submissions
                   </p>
                 )}
               </>
@@ -59,6 +57,8 @@ const Competitions = ({ competitions, predictions, expired }) => {
             >
               View Leaderboard
             </button>
+            <br />
+            <br />
           </div>
           <hr />
         </div>

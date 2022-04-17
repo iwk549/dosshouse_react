@@ -5,6 +5,7 @@ import Table from "../common/table/table";
 import SearchBox from "../common/table/searchBox";
 import ExternalImage from "../common/image/externalImage";
 import logos from "../../textMaps/logos";
+import IconRender from "../common/icons/iconRender";
 
 const LeaderboardTable = ({ leaderboard }) => {
   let navigate = useNavigate();
@@ -15,18 +16,13 @@ const LeaderboardTable = ({ leaderboard }) => {
   const [search, setSearch] = useState("");
   const [tableData, setTableData] = useState([]);
 
-  const sortTable = () => {
-    let sortedLeaderboard = [...leaderboard];
-    sortedLeaderboard.sort((a, b) => {
-      let sort = 0;
-      if (a[sortColumn.path] > b[sortColumn.path]) sort = 1;
-      else sort = -1;
-      return sortColumn.order === "desc" ? sort * -1 : sort;
-    });
+  const sortTable = (data) => {
+    let sortedLeaderboard = [...data];
+
     setTableData(sortedLeaderboard);
   };
 
-  const filterTable = () => {
+  const sortAndFilterTable = () => {
     let filteredLeaderboard = [...leaderboard];
     if (search) {
       const lcSearch = search.toLowerCase();
@@ -37,47 +33,72 @@ const LeaderboardTable = ({ leaderboard }) => {
         );
       });
     }
+    const splitSortPath = sortColumn.path.split(".");
+    filteredLeaderboard.sort((a, b) => {
+      const aSort =
+        splitSortPath[0] === "points"
+          ? a.points[splitSortPath[1]][splitSortPath[2]]
+          : a[sortColumn.path];
+      const bSort =
+        splitSortPath[0] === "points"
+          ? b.points[splitSortPath[1]][splitSortPath[2]]
+          : b[sortColumn.path];
+      let sort = 0;
+      if (aSort > bSort) sort = 1;
+      else sort = -1;
+      return sortColumn.order === "desc" ? sort * -1 : sort;
+    });
     setTableData(filteredLeaderboard);
   };
 
   useEffect(() => {
-    filterTable();
-  }, [search]);
-
-  useEffect(() => {
-    sortTable();
-  }, [sortColumn, leaderboard]);
+    sortAndFilterTable();
+  }, [search, sortColumn, leaderboard]);
 
   const columns = [
     {
       path: "userID.name",
       label: "User Name",
-      content: (p) => p.userID?.name,
     },
     { path: "name", label: "Bracket Name" },
     {
-      path: "points.group",
-      label: "Group Stage Points",
-      content: (p) => p.points.group,
+      path: "points.group.points",
+      label: "Group Stage",
+      content: (p) => (
+        <>
+          {p.points.group.correctPicks} <IconRender type="check" /> |{" "}
+          {p.points.group.points} pts
+        </>
+      ),
     },
     {
-      path: "points.playoff",
-      label: "Playoff Points",
-      content: (p) => p.points.playoff,
+      path: "points.playoff.points",
+      label: "Playoff",
+      content: (p) => (
+        <>
+          {p.points.playoff.correctPicks} <IconRender type="check" /> |{" "}
+          {p.points.playoff.points} pts
+        </>
+      ),
     },
     {
-      path: "points.misc",
-      label: "Misc Points",
-      content: (p) => p.points.misc,
+      path: "points.misc.points",
+      label: "Misc",
+      content: (p) => (
+        <>
+          {p.points.misc.correctPicks} <IconRender type="check" /> |{" "}
+          {p.points.misc.points} pts
+        </>
+      ),
     },
     {
-      path: "points.champion",
-      label: "Champion Points",
-      content: (p) => p.points.champion,
+      path: "points.champion.points",
+      label: "Champion",
+      content: (p) => `${p.points.champion.points} pts`,
     },
     {
       path: "misc.winner",
-      label: "Picked Champion",
+      label: "Champion Picked",
       content: (p) =>
         !p.misc ? (
           "Hidden until after submission deadline"

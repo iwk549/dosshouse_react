@@ -9,7 +9,7 @@ class TableHeader extends Component {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     else {
       sortColumn.path = path;
-      sortColumn.order = "asc";
+      sortColumn.order = path.toLowerCase().includes("points") ? "desc" : "asc";
     }
     this.props.onSort(sortColumn);
   };

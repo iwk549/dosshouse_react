@@ -42,9 +42,10 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
           <b>Points</b>
         </h4>
         {renderInfoLine("Total", totalPoints)}
-        {renderInfoLine("Group", points.group)}
-        {renderInfoLine("Bracket", points.playoff)}
-        {renderInfoLine("Miscellaneous", points.misc)}
+        {renderInfoLine("Group", points.group.points)}
+        {renderInfoLine("Bracket", points.playoff.points)}
+        {renderInfoLine("Champion", points.champion.points)}
+        {renderInfoLine("Miscellaneous", points.misc.points)}
       </div>
     );
   };
