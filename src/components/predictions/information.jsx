@@ -2,16 +2,18 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { titleCase } from "../../utils/allowables";
 import rules from "../../textMaps/rules";
-import scoring from "../../textMaps/scoring";
+import Scoring from "./scoring";
 
 const Information = ({ competition }) => {
   const lists = {
     rules,
-    scoring,
   };
 
   const renderItem = (item, idx) => {
-    if (item.header.toLowerCase().includes("group") && !competition.groupPicks)
+    if (
+      item.header.toLowerCase().includes("group") &&
+      !competition.scoring.group
+    )
       return null;
     return (
       <React.Fragment key={idx}>
@@ -52,6 +54,9 @@ const Information = ({ competition }) => {
           </ul>
         </div>
       ))}
+      <div className="col">
+        <Scoring competition={competition} renderItem={renderItem} />
+      </div>
     </div>
   );
 };

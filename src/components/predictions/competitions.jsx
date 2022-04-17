@@ -26,10 +26,12 @@ const Competitions = ({ competitions, predictions, expired }) => {
             {renderInfoLine("Competition Start", c.competitionStart, "date")}
             {renderInfoLine("Competition End", c.competitionEnd, "date")}
           </div>
-          <div className="col-3">
+          <div className="col-2">
             {!expired && (
               <>
-                {submissionsMade < c.maxSubmissions ? (
+                {new Date(c.submissionDeadline) < new Date() ? (
+                  <p>The submission deadline for this competition has passed</p>
+                ) : submissionsMade < c.maxSubmissions ? (
                   <button
                     className="btn btn-dark"
                     onClick={() =>

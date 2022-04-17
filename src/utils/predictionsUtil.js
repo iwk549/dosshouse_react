@@ -34,6 +34,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
   let newTeams = {};
   let newMisc = { ...misc };
   const finalRound = getFinalRound(playoffMatches);
+
   playoffMatches.forEach((m) => {
     let newMatch = { ...m };
     if (newMatch.round === 1) {
@@ -200,7 +201,7 @@ const handlePopulateBracket = (
       return { name: t };
     });
   });
-  let populatedPlayoffMatches = [];
+  let populatedPlayoffMatches = playoffMatches.filter((m) => m.round === 1);
   playoffPredictions.forEach((p) => {
     let playoffMatch = {
       ...playoffMatches.find(
@@ -208,7 +209,9 @@ const handlePopulateBracket = (
       ),
     };
     playoffMatch.homeTeamName = p.homeTeam;
+    playoffMatch.homeTeamLogo = logos[p.homeTeam];
     playoffMatch.awayTeamName = p.awayTeam;
+    playoffMatch.awayTeamLogo = logos[p.awayTeam];
     populatedPlayoffMatches.push(playoffMatch);
   });
 

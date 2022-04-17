@@ -26,7 +26,7 @@ export function shortDate(dateTime, dontSlice, noTime) {
     dontSlice ? dateTime : dateTime.slice(0, dateTime.length - 1)
   );
   const time = format(newDateTime, "h:mma").toLowerCase();
-  return format(newDateTime, "yyyy-M-dd") + (noTime ? "" : " " + time);
+  return format(newDateTime, "yyyy-MM-dd") + (noTime ? "" : " " + time);
 }
 export function longDate(dateTime, dontSlice) {
   if (!dateTime) return "";
