@@ -1,5 +1,4 @@
 import React from "react";
-import { DebounceInput } from "react-debounce-input";
 
 const SearchBox = ({ value, onChange, placeholder }) => {
   return (
