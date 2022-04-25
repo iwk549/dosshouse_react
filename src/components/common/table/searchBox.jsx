@@ -19,7 +19,6 @@ const SearchBox = ({ name, search, onSearch, placeholder }) => {
       placeholder={placeholder}
       onChange={(event) => onSearch(event.target.value)}
       value={search}
-      debounceTimeout={2000}
     />
   );
 };

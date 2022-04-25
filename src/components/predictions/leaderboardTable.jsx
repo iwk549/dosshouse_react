@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Table from "../common/table/table";
@@ -6,54 +6,40 @@ import SearchBox from "../common/table/searchBox";
 import ExternalImage from "../common/image/externalImage";
 import logos from "../../textMaps/logos";
 import IconRender from "../common/icons/iconRender";
+import { sortAndFilterTable } from "../../utils/leaderboardUtil";
 
 const LeaderboardTable = ({ leaderboard }) => {
   let navigate = useNavigate();
-  const [sortColumn, setSortColumn] = useState({
-    path: "totalPoints",
-    order: "desc",
+
+  const [state, dispatch] = useReducer(reducer, {
+    sortColumn: { path: "totalPoints", order: "desc" },
+    search: "",
+    tableData: [],
+    timer: undefined,
   });
-  const [search, setSearch] = useState("");
-  const [tableData, setTableData] = useState([]);
 
-  const sortTable = (data) => {
-    let sortedLeaderboard = [...data];
-
-    setTableData(sortedLeaderboard);
-  };
-
-  const sortAndFilterTable = () => {
-    let filteredLeaderboard = [...leaderboard];
-    if (search) {
-      const lcSearch = search.toLowerCase();
-      filteredLeaderboard = filteredLeaderboard.filter((l) => {
-        return (
-          l.userID?.name.toLowerCase().includes(lcSearch) ||
-          l.name.toLowerCase().includes(lcSearch)
-        );
-      });
+  function reducer(state, action) {
+    let search =
+      typeof action.search === "string" ? action.search : state.search;
+    let sortColumn = action.sortColumn || state.sortColumn;
+    let tableData = state.tableData;
+    let timer = action.type === "search" ? undefined : state.timer;
+    if (action.type === "search") {
+      clearTimeout(state.timer);
+      if (!timer) {
+        timer = setTimeout(() => {
+          dispatch({ type: "timerExpired" });
+        }, 300);
+      }
+    } else {
+      tableData = sortAndFilterTable(leaderboard, search, sortColumn);
     }
-    const splitSortPath = sortColumn.path.split(".");
-    filteredLeaderboard.sort((a, b) => {
-      const aSort =
-        splitSortPath[0] === "points"
-          ? a.points[splitSortPath[1]][splitSortPath[2]]
-          : a[sortColumn.path];
-      const bSort =
-        splitSortPath[0] === "points"
-          ? b.points[splitSortPath[1]][splitSortPath[2]]
-          : b[sortColumn.path];
-      let sort = 0;
-      if (aSort > bSort) sort = 1;
-      else sort = -1;
-      return sortColumn.order === "desc" ? sort * -1 : sort;
-    });
-    setTableData(filteredLeaderboard);
-  };
+    return { tableData, search, sortColumn, timer };
+  }
 
   useEffect(() => {
-    sortAndFilterTable();
-  }, [search, sortColumn, leaderboard]);
+    dispatch({});
+  }, [leaderboard]);
 
   const columns = [
     {
@@ -130,15 +116,15 @@ const LeaderboardTable = ({ leaderboard }) => {
       </button>
       <SearchBox
         name="leaderboardSearch"
-        search={search}
-        onSearch={setSearch}
+        search={state.search}
+        onSearch={(value) => dispatch({ type: "search", search: value })}
         placeholder="Search by user or bracket name..."
       />
       <Table
         columns={columns}
-        data={tableData}
-        sortColumn={sortColumn}
-        onSort={setSortColumn}
+        data={state.tableData}
+        sortColumn={state.sortColumn}
+        onSort={(sortColumn) => dispatch({ type: "sort", sortColumn })}
         keyProperty="_id"
       />
     </>
