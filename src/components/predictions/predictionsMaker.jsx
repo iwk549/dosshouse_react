@@ -225,6 +225,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               playoffMatches={predictions.playoffMatches}
               competition={predictions.competition}
               allTeams={allTeams}
+              isLocked={predictions.isLocked}
             />
           ) : selectedTab.includes("info") ? (
             <Information competition={predictions.competition} />

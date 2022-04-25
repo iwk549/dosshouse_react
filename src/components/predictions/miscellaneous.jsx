@@ -12,6 +12,7 @@ const Miscellaneous = ({
   onChange,
   competition,
   allTeams,
+  isLocked,
 }) => {
   const [matchModalOpen, setMatchModalOpen] = useState(false);
 
@@ -81,6 +82,7 @@ const Miscellaneous = ({
                 </span>
               ),
             }}
+            isLocked={isLocked}
           />
           {p.name === "thirdPlace" && (
             <>

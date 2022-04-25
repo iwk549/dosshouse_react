@@ -8,7 +8,7 @@ import logos from "../../textMaps/logos";
 import IconRender from "../common/icons/iconRender";
 import { sortAndFilterTable } from "../../utils/leaderboardUtil";
 
-const LeaderboardTable = ({ leaderboard }) => {
+const LeaderboardTable = ({ leaderboard, onSelectPrediction }) => {
   let navigate = useNavigate();
 
   const [state, dispatch] = useReducer(reducer, {
@@ -48,6 +48,28 @@ const LeaderboardTable = ({ leaderboard }) => {
     },
     { path: "name", label: "Bracket Name" },
     {
+      path: "totalPoints",
+      label: "Total Points",
+      content: (p) => p.totalPoints,
+    },
+    {
+      path: "misc.winner",
+      label: "Champion Picked",
+      content: (p) =>
+        !p.misc ? (
+          "Hidden until after submission deadline"
+        ) : (
+          <>
+            <ExternalImage
+              uri={logos[p.misc?.winner]}
+              height={15}
+              width="auto"
+            />
+            &nbsp;{p.misc?.winner}
+          </>
+        ),
+    },
+    {
       path: "points.group.points",
       label: "Group Stage",
       content: (p) => (
@@ -82,34 +104,12 @@ const LeaderboardTable = ({ leaderboard }) => {
       label: "Champion",
       content: (p) => `${p.points.champion.points} pts`,
     },
-    {
-      path: "misc.winner",
-      label: "Champion Picked",
-      content: (p) =>
-        !p.misc ? (
-          "Hidden until after submission deadline"
-        ) : (
-          <>
-            <ExternalImage
-              uri={logos[p.misc?.winner]}
-              height={15}
-              width="auto"
-            />
-            &nbsp;{p.misc?.winner}
-          </>
-        ),
-    },
-    {
-      path: "totalPoints",
-      label: "Total Points",
-      content: (p) => p.totalPoints,
-    },
   ];
 
   return (
     <>
       <button
-        className="btn btn-block btn-danger"
+        className="btn btn-light"
         onClick={() => navigate("/predictions")}
       >
         Go Back
@@ -126,6 +126,7 @@ const LeaderboardTable = ({ leaderboard }) => {
         sortColumn={state.sortColumn}
         onSort={(sortColumn) => dispatch({ type: "sort", sortColumn })}
         keyProperty="_id"
+        onSelect={onSelectPrediction}
       />
     </>
   );

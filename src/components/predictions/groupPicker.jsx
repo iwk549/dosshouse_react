@@ -8,13 +8,15 @@ const GroupPicker = ({ groups, onDrop, onReorder, isLocked, groupMatches }) => {
 
   return (
     <>
-      <p className="text-center">
-        Rearrange the teams by dragging and dropping or using the arrow buttons.
-        The position of the teams in their groups will effect where they will be
-        placed in the bracket. Changing the group order after you have already
-        made selections in the bracket will cascade those changes through the
-        whole bracket.
-      </p>
+      {!isLocked && (
+        <p className="text-center">
+          Rearrange the teams by dragging and dropping or using the arrow
+          buttons. The position of the teams in their groups will effect where
+          they will be placed in the bracket. Changing the group order after you
+          have already made selections in the bracket will cascade those changes
+          through the whole bracket.
+        </p>
+      )}
       <div className="row">
         {halfs.map((h, i) => (
           <div className="row" key={i}>
@@ -27,7 +29,7 @@ const GroupPicker = ({ groups, onDrop, onReorder, isLocked, groupMatches }) => {
                     onDrop={onDrop}
                     onReorder={onReorder}
                     isLocked={isLocked}
-                    matches={groupMatches[g]}
+                    matches={groupMatches ? groupMatches[g] : null}
                   />
                 </div>
               );

@@ -27,8 +27,17 @@ class TableBody extends Component {
       <tbody>
         {data.map((item, idx) => (
           <tr
-            className={"table-row" + (idx % 2 === 1 ? " alternate" : "")}
+            className={
+              "table-row" +
+              (idx % 2 === 1 ? " alternate" : "") +
+              (this.props.onSelect ? " clickable" : "")
+            }
             key={item[keyProperty]}
+            onClick={
+              this.props.onSelect
+                ? () => this.props.onSelect(item, idx)
+                : () => {}
+            }
           >
             {columns.map((column) => (
               <td

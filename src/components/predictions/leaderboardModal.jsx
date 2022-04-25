@@ -1,0 +1,99 @@
+import React, { useState, useEffect } from "react";
+
+import BasicModal from "../common/modal/basicModal";
+import TabbedArea from "../common/pageSections/tabbedArea";
+import GroupPicker from "./groupPicker";
+import BracketPicker from "./bracketPicker";
+import Miscellaneous from "./miscellaneous";
+import { handlePopulateBracket } from "../../utils/predictionsUtil";
+
+const LeaderboardModal = ({
+  prediction,
+  isOpen,
+  setIsOpen,
+  originalMatches,
+  competition,
+  allTeams,
+}) => {
+  const tabs = ["group", "playoff", "bonus"];
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [groups, setGroups] = useState({});
+  const [playoffMatches, setPlayoffMatches] = useState([]);
+  const [orientation, setOrientation] = useState("portrait");
+
+  const isTab = (tab) => {
+    return selectedTab.toLowerCase().includes(tab);
+  };
+
+  useEffect(() => {
+    convertData();
+  }, [prediction]);
+
+  const convertData = () => {
+    if (!prediction.playoffPredictions) return;
+    const { groups: populatedGroups, playoffMatches: populatedPlayoffMatches } =
+      handlePopulateBracket(
+        prediction.groupPredictions,
+        prediction.playoffPredictions,
+        originalMatches
+      );
+    setGroups(populatedGroups);
+    setPlayoffMatches(populatedPlayoffMatches);
+  };
+
+  if (!prediction) return null;
+  return (
+    <BasicModal
+      isOpen={isOpen}
+      onClose={setIsOpen}
+      header={
+        <h3>
+          <b>{prediction.name}</b>
+        </h3>
+      }
+      style={{
+        width: "80%",
+        height: "85%",
+      }}
+    >
+      {prediction.playoffPredictions ? (
+        <TabbedArea
+          tabs={tabs}
+          selectedTab={selectedTab}
+          onSelectTab={setSelectedTab}
+          tabPlacement="top"
+        >
+          <div className="text-center">
+            {isTab("group") ? (
+              <GroupPicker groups={groups} isLocked={true} />
+            ) : isTab("playoff") ? (
+              <BracketPicker
+                matches={playoffMatches}
+                misc={prediction.misc}
+                isLocked={true}
+                isPortrait={orientation}
+                setIsPortrait={setOrientation}
+                originalPlayoffMatches={originalMatches}
+              />
+            ) : isTab("bonus") ? (
+              <Miscellaneous
+                misc={prediction.misc}
+                playoffMatches={playoffMatches}
+                competition={competition}
+                allTeams={allTeams}
+                isLocked={true}
+              />
+            ) : null}
+          </div>
+        </TabbedArea>
+      ) : (
+        <p className="text-center">
+          You will be able to view all the picks once the sumbission deadline
+          has passed
+        </p>
+      )}
+    </BasicModal>
+  );
+};
+
+export default LeaderboardModal;

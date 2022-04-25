@@ -127,6 +127,7 @@ const ActiveSites = () => {
       ],
     },
     {
+      imageSrc: "/assets/logo4.png",
       urls: [
         "https://dosshouse.us/predictions",
         "https://dosshouse.us/spotify_api",
@@ -141,14 +142,16 @@ const ActiveSites = () => {
             Each page calls its own API performing different functions to keep
             the site as lightweight and fast as possible.
           </p>
-          Active Apps:
+          <b>Active Apps:</b>
           <ul>
             <li>
               <b>Bracket Predictions</b>
             </li>
-            A fully functional bracket maker for professional sports tournaments
-            such as the World Cup and March Madness. Includes leaderboards with
-            group selections to track your results against your friends.
+            A bracket maker for professional sports tournaments such as the
+            World Cup and March Madness.
+            <br />
+            Includes leaderboards with group creation to track your results
+            against your friends.
             <br />
             <br />
             <li>

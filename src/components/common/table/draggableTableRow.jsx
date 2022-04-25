@@ -88,9 +88,11 @@ const DraggableTableRow = ({
               {c.content(data)}
             </td>
           ))}
-          <td>
-            <FaGripLines />
-          </td>
+          {!isLocked ? (
+            <td>
+              <FaGripLines />
+            </td>
+          ) : null}
         </tr>
       ) : (
         <tr

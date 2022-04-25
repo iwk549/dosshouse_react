@@ -51,21 +51,26 @@ const BracketPicker = ({
             name="orientation"
           />
         </div>
-        <div className="col">
-          <p className="text-center">
-            Pick your winner from each match by tapping or clicking the team
-            name. Pick your tournament champion by tapping or clicking the team
-            in the final match.
-          </p>
-        </div>
-        <div className="col-2">
-          <button
-            className="btn btn-sm btn-info"
-            onClick={() => setMatchesOpen(true)}
-          >
-            See All Matches
-          </button>
-        </div>
+        {!isLocked && (
+          <>
+            <div className="col">
+              <p className="text-center">
+                Pick your winner from each match by tapping or clicking the team
+                name. Pick your tournament champion by tapping or clicking the
+                team in the final match.
+              </p>
+            </div>
+
+            <div className="col-2">
+              <button
+                className="btn btn-sm btn-info"
+                onClick={() => setMatchesOpen(true)}
+              >
+                See All Matches
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <h1 className="pop-box">
         {renderImage(misc.winner)}
@@ -75,7 +80,7 @@ const BracketPicker = ({
       </h1>
       <PlayoffBracketCanvas
         matches={matches}
-        onSelectMatch={handleSelectMatch}
+        onSelectMatch={originalPlayoffMatches ? handleSelectMatch : null}
         onSelectTeam={onSelectTeam}
         isLocked={isLocked}
         orientation={isPortrait ? "portrait" : "landscape"}
@@ -88,12 +93,14 @@ const BracketPicker = ({
           finalRoundNumber={Math.max(...matches.map((m) => m.round))}
         />
       )}
-      <MatchesModal
-        isOpen={matchesOpen}
-        setIsOpen={setMatchesOpen}
-        matches={originalPlayoffMatches}
-        header="Playoff Matches"
-      />
+      {originalPlayoffMatches && (
+        <MatchesModal
+          isOpen={matchesOpen}
+          setIsOpen={setMatchesOpen}
+          matches={originalPlayoffMatches}
+          header="Playoff Matches"
+        />
+      )}
     </>
   );
 };

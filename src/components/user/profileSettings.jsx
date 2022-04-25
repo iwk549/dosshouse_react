@@ -8,20 +8,14 @@ const ProfileSettings = ({ onLogout, onDelete }) => {
 
   return (
     <div>
-      <button
-        className="btn btn-block btn-dark"
-        onClick={() => setLogoutOpen(true)}
-      >
+      <button className="btn btn-dark" onClick={() => setLogoutOpen(true)}>
         Logout
       </button>
       <br />
       <br />
       <br />
       <br />
-      <button
-        className="btn btn-block btn-danger"
-        onClick={() => setDeleteOpen(true)}
-      >
+      <button className="btn btn-danger" onClick={() => setDeleteOpen(true)}>
         Delete My Account
       </button>
 

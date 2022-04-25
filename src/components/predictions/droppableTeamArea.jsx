@@ -54,20 +54,24 @@ const DroppableTeamArea = ({
         isLocked={isLocked}
       />
       <div style={{ height: 5 }} />
-      <div className="text-center">
-        <button
-          className="btn btn-sm btn-info"
-          onClick={() => setMatchesOpen(true)}
-        >
-          See Matches
-        </button>
-      </div>
-      <MatchesModal
-        isOpen={matchesOpen}
-        setIsOpen={setMatchesOpen}
-        matches={matches}
-        header={`Group ${groupName} Matches`}
-      />
+      {matches && (
+        <>
+          <div className="text-center">
+            <button
+              className="btn btn-sm btn-info"
+              onClick={() => setMatchesOpen(true)}
+            >
+              See Matches
+            </button>
+          </div>
+          <MatchesModal
+            isOpen={matchesOpen}
+            setIsOpen={setMatchesOpen}
+            matches={matches}
+            header={`Group ${groupName} Matches`}
+          />
+        </>
+      )}
     </>
   );
 };

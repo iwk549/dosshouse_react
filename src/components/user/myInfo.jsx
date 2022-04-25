@@ -12,10 +12,7 @@ const MyInfo = ({ user, onEdit }) => {
 
   return (
     <div>
-      <button
-        className="btn btn-block btn-info"
-        onClick={() => setEditing(!editing)}
-      >
+      <button className="btn btn-info" onClick={() => setEditing(!editing)}>
         {editing ? "Cancel" : "Edit My Info"}
       </button>
       {editing ? (

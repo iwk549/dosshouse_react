@@ -190,7 +190,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
   };
 };
 
-const handlePopulateBracket = (
+export const handlePopulateBracket = (
   groupPredictions,
   playoffPredictions,
   playoffMatches

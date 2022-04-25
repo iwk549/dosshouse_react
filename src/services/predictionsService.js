@@ -46,3 +46,11 @@ export async function getLeaderboard(competitionID) {
     return ex.response;
   }
 }
+
+export async function getUnownedPrediction(predictionID) {
+  try {
+    return await http.get(http.predictions + "/unowned/" + predictionID);
+  } catch (ex) {
+    return ex.response;
+  }
+}

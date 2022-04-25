@@ -14,6 +14,7 @@ const Table = ({
   backgroundKey,
   backgroundStyle,
   thisID,
+  onSelect,
 }) => {
   return (
     <div>
@@ -32,6 +33,7 @@ const Table = ({
           backgroundKey={backgroundKey}
           backgroundStyle={backgroundStyle}
           thisID={thisID}
+          onSelect={onSelect}
         />
       </table>
     </div>

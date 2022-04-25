@@ -17,7 +17,7 @@ const CLinkSvg = ({
     <text
       x={x}
       y={y}
-      className={`${className} ${disabled ? "" : "svg-link"}`}
+      className={`${className} ${disabled || !clickHandler ? "" : "svg-link"}`}
       onClick={disabled ? () => {} : clickHandler}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}

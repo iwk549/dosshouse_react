@@ -16,6 +16,7 @@ const FormSelect = ({
   style,
   valueBoxStyle,
   tooltip,
+  isLocked,
 }) => {
   const [fullSelectedOption, setFullSelectedOption] = useState(null);
 
@@ -53,6 +54,7 @@ const FormSelect = ({
         options={options}
         onChange={raiseChange}
         value={fullSelectedOption}
+        isDisabled={isLocked}
       />
     </>
   );
