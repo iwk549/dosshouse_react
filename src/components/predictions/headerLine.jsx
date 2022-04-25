@@ -30,20 +30,7 @@ const HeaderLine = ({
             <b>{competition.name}</b>
           </h1>
         </div>
-        <div className="col">
-          {isSaved ? (
-            <button className="pop-box">
-              <IconRender type="checkmark" /> Predictions Saved
-            </button>
-          ) : (
-            <button
-              className="btn btn-md btn-block btn-dark submit-button"
-              onClick={onSave}
-            >
-              <IconRender type="save" size={15} /> Save Predictions
-            </button>
-          )}
-        </div>
+        <div className="col"></div>
       </div>
       <div
         className={
@@ -76,6 +63,20 @@ const HeaderLine = ({
               See What's Missing
             </button>
           </div>
+        )}
+      </div>
+      <div className="sticky-top">
+        {isSaved ? (
+          <button className="pop-box">
+            <IconRender type="checkmark" /> Predictions Saved
+          </button>
+        ) : (
+          <button
+            className="btn btn-md btn-block btn-dark submit-button sticky-top"
+            onClick={onSave}
+          >
+            <IconRender type="save" size={15} /> Save Predictions
+          </button>
         )}
       </div>
       <MissingItems

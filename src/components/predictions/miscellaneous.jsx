@@ -86,7 +86,7 @@ const Miscellaneous = ({
             <>
               <br />
               <button
-                className="btn btn-block btn-info"
+                className="btn btn-info"
                 onClick={() => setMatchModalOpen(true)}
               >
                 View Match Details

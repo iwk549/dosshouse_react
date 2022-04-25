@@ -60,7 +60,7 @@ export default [
         to coaching staff or disciplinary action taken against unruly fans will
         not be considered.
         <br />
-        In the case a a tie on points the team with the most red cards will be
+        In the case of a tie on points the team with the most red cards will be
         considered to have the worst discipline. If it is still tied then all
         submissions which picked any of the tied teams will be awarded full
         points.

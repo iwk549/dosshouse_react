@@ -23,6 +23,10 @@
   font-size: 16px;
 }
 
+.btn-block {
+  width: 95%;
+}
+
 .btn-light {
   background-color: var(--light-bg-color);
   border-color: var(--minus10-light-bg-color);

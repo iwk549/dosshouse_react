@@ -23,7 +23,16 @@
   --minus20-dagner-bg-color: #ff3333;
 }
 
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -54,4 +63,8 @@ code {
 .external-image {
   border-radius: 10px;
   border: 1px solid var(--info-bg-color);
+}
+
+.bg-light {
+  background-color: var(--light-bg-color);
 }
