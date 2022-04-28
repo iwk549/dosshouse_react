@@ -39,9 +39,21 @@ export async function deletePrediction(predictionID) {
   }
 }
 
-export async function getLeaderboard(competitionID) {
+export async function getLeaderboard(
+  competitionID,
+  pageNumber,
+  resultsPerPage = 25
+) {
   try {
-    return await http.get(http.predictions + "/leaderboard/" + competitionID);
+    return await http.get(
+      http.predictions +
+        "/leaderboard/" +
+        competitionID +
+        "/" +
+        resultsPerPage +
+        "/" +
+        pageNumber
+    );
   } catch (ex) {
     return ex.response;
   }

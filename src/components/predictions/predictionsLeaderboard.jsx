@@ -18,10 +18,11 @@ const PredictionsLeaderboard = ({ competitionID }) => {
   const [allTeams, setAllTeams] = useState([]);
   const [selectedPrediction, setSelectedPrediction] = useState(null);
   const [singlePredictionOpen, setSinglePredictionOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
   const loadData = async () => {
     setLoading(true);
-    const leaderboardRes = await getLeaderboard(competitionID);
+    const leaderboardRes = await getLeaderboard(competitionID, page);
     const matchesRes = await getMatches(competitionID);
     const competitionRes = await getCompetition(competitionID);
 
