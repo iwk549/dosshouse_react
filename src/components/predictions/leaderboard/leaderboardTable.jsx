@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 
 import Table from "../../common/table/table";
 import SearchBox from "../../common/table/searchBox";
@@ -6,14 +6,25 @@ import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
 import IconRender from "../../common/icons/iconRender";
 import { sortAndFilterTable } from "../../../utils/leaderboardUtil";
+import LoadingContext from "../../../context/loadingContext";
+import Confirm from "../../common/modal/confirm";
 
-const LeaderboardTable = ({ leaderboard, onSelectPrediction }) => {
+const LeaderboardTable = ({
+  leaderboard,
+  groupInfo,
+  onSelectPrediction,
+  onForceRemovePrediction,
+}) => {
+  const { user } = useContext(LoadingContext);
   const [state, dispatch] = useReducer(reducer, {
     sortColumn: { path: "totalPoints", order: "desc" },
     search: "",
     tableData: [],
     timer: undefined,
   });
+
+  const [forceRemoveOpen, setForceRemoveOpen] = useState(false);
+  const [selectedPrediction, setSelectedPrediction] = useState(null);
 
   function reducer(state, action) {
     let search =
@@ -103,6 +114,24 @@ const LeaderboardTable = ({ leaderboard, onSelectPrediction }) => {
     },
   ];
 
+  if (groupInfo?.ownerID._id === user._id)
+    columns.push({
+      path: "forceRemove",
+      label: "",
+      content: (p) => (
+        <button
+          className="btn btn-danger"
+          onClick={() => {
+            setForceRemoveOpen(true);
+            setSelectedPrediction(p);
+          }}
+        >
+          <IconRender type="remove" />
+        </button>
+      ),
+      nonSelectable: true,
+    });
+
   return (
     <>
       <SearchBox
@@ -119,6 +148,22 @@ const LeaderboardTable = ({ leaderboard, onSelectPrediction }) => {
         keyProperty="_id"
         onSelect={onSelectPrediction}
       />
+      {selectedPrediction && (
+        <Confirm
+          header="Confirm Remove Prediction"
+          isOpen={forceRemoveOpen}
+          setIsOpen={() => setForceRemoveOpen(false)}
+          focus="cancel"
+          onConfirm={() => onForceRemovePrediction(selectedPrediction)}
+        >
+          <b>{selectedPrediction.name}</b>
+          <br />
+          Are you sure you want to remove this submission from your group?
+          <br />
+          If you do not want the user to be able to re-add their prediction to
+          this group you should change the group passcode.
+        </Confirm>
+      )}
     </>
   );
 };

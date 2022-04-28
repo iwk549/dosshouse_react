@@ -234,7 +234,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
       >
         <button
           className="btn btn-sm btn-light"
-          onClick={() => navigate("/predictions")}
+          onClick={() => navigate("/predictions?tab=submissions")}
         >
           Exit
         </button>

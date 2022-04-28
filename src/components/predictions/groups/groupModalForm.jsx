@@ -116,24 +116,28 @@ class GroupModalForm extends Component {
           tabPlacement="top"
         >
           <div className="text-center">
-            {this.isTab("manage") ? (
-              <MyGroupsList
-                groups={this.state.groups}
-                onEditGroup={this.handleEditGroup}
-                onDeleteGroup={this.handleDeleteGroup}
-              />
+            {this.isTab("manage") && this.state.groups.length === 0 ? (
+              <p>You have not created any groups yet</p>
             ) : (
+              descriptionText[this.state.selectedTab]
+            )}
+            {this.isTab("manage") ? (
               <>
-                {descriptionText[this.state.selectedTab]}
-                <GroupEditForm
-                  onSubmit={this.handleCreateAndJoin}
-                  buttonText={
-                    this.state.selectedTab === "edit"
-                      ? "Save"
-                      : titleCase(this.state.selectedTab)
-                  }
+                <MyGroupsList
+                  groups={this.state.groups}
+                  onEditGroup={this.handleEditGroup}
+                  onDeleteGroup={this.handleDeleteGroup}
                 />
               </>
+            ) : (
+              <GroupEditForm
+                onSubmit={this.handleCreateAndJoin}
+                buttonText={
+                  this.state.selectedTab === "edit"
+                    ? "Save"
+                    : titleCase(this.state.selectedTab)
+                }
+              />
             )}
           </div>
         </TabbedArea>

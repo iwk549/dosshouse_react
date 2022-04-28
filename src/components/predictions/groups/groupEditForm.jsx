@@ -11,6 +11,10 @@ class GroupEditForm extends Form {
     errors: "",
   };
 
+  componentDidMount() {
+    this.setState({ data: { name: this.props.groupName || "", passcode: "" } });
+  }
+
   schema = {
     name: Joi.string().allow("").min(1).max(50).label("Name"),
     passcode: Joi.string().required().min(8).max(100).label("Passcode"),

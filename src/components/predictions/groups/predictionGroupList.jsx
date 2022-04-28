@@ -70,11 +70,11 @@ const PredictionGroupList = ({
           focus="cancel"
           onConfirm={() => onRemoveGroup(selectedGroup)}
         >
-          Are you sure you want to remove group {selectedGroup.name} from this
-          prediction?
+          Are you sure you want to remove {prediction.name} from{" "}
+          {selectedGroup.name}?
           <br />
           <br />
-          The group can be added back at any time with the name and passcode.
+          You can add the group back at any time with the name and passcode.
         </Confirm>
       )}
     </div>

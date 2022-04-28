@@ -91,3 +91,14 @@ export async function removePredictionFromGroup(predictionID, group) {
     return ex.response;
   }
 }
+
+export async function forceRemovePredictionFromGroup(predictionID, group) {
+  try {
+    return await http.put(
+      http.predictions + "/forceremovefromgroup/" + predictionID,
+      group
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}

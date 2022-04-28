@@ -33,16 +33,16 @@ class TableBody extends Component {
               (this.props.onSelect ? " clickable" : "")
             }
             key={item[keyProperty]}
-            onClick={
-              this.props.onSelect
-                ? () => this.props.onSelect(item, idx)
-                : () => {}
-            }
           >
             {columns.map((column) => (
               <td
                 key={this.createKey(item, column, keyProperty)}
                 className="table-cell"
+                onClick={
+                  this.props.onSelect && !column.nonSelectable
+                    ? () => this.props.onSelect(item, idx)
+                    : () => {}
+                }
               >
                 {this.renderCell(item, column)}
               </td>

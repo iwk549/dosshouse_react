@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import {
   getLeaderboard,
   getUnownedPrediction,
+  forceRemovePredictionFromGroup,
 } from "../../../services/predictionsService";
 import LoadingContext from "../../../context/loadingContext";
 import LeaderboardTable from "./leaderboardTable";
@@ -75,14 +76,24 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   }, []);
 
   const handleSelectPrediction = async (prediction) => {
+    if (!prediction) return;
     setLoading(true);
     const res = await getUnownedPrediction(prediction._id);
-
     if (res.status === 200) {
       setSelectedPrediction(res.data);
       setSinglePredictionOpen(true);
     } else toast.error(res.data);
 
+    setLoading(false);
+  };
+
+  const handleForceRemovePrediction = async (prediction) => {
+    setLoading(true);
+    const res = await forceRemovePredictionFromGroup(prediction._id, groupInfo);
+    if (res.status === 200) {
+      toast.success(`${prediction.name} has been removed from your group`);
+      return loadLeaderboard();
+    } else toast.error(res.data);
     setLoading(false);
   };
 
@@ -106,6 +117,8 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}
+        onForceRemovePrediction={handleForceRemovePrediction}
+        groupInfo={groupInfo}
       />
       <PageSelection
         totalCount={predictionCount}

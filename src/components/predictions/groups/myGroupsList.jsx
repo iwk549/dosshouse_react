@@ -36,6 +36,7 @@ const MyGroupsList = ({ groups, onDeleteGroup, onEditGroup }) => {
                   <GroupEditForm
                     onSubmit={(data) => onEditGroup(data, g)}
                     buttonText="Save"
+                    groupName={g.name}
                   />
                 )}
               </div>
