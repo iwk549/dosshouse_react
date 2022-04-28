@@ -86,6 +86,7 @@ const PredictionsHome = () => {
             predictions={predictions}
             onDelete={handleDeletePrediction}
             onLogin={loadData}
+            onGroupSuccess={loadData}
           />
         ) : null}
       </TabbedArea>

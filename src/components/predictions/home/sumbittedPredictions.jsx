@@ -6,8 +6,14 @@ import Confirm from "../../common/modal/confirm";
 import RegistrationModalForm from "../../user/registrationModalForm";
 import LoadingContext from "../../../context/loadingContext";
 import GroupModalForm from "../groups/groupModalForm";
+import IconRender from "../../common/icons/iconRender";
 
-const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
+const SumbittedPredictions = ({
+  predictions,
+  onDelete,
+  onLogin,
+  onGroupSuccess,
+}) => {
   const { user } = useContext(LoadingContext);
   let navigate = useNavigate();
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -57,6 +63,11 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
     onLogin();
   };
 
+  const raiseGroupSuccess = () => {
+    setGroupFormOpen(false);
+    onGroupSuccess();
+  };
+
   return user ? (
     <div>
       {predictions.length > 0 ? (
@@ -89,7 +100,35 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
                 </button>
               </div>
             </div>
+            <div className="mini-div-line" />
             <div className="row">
+              <div className="col">
+                {p.groups.map((g, idx) => (
+                  <React.Fragment key={idx}>
+                    <div className="row">
+                      <div className="col" key={idx}>
+                        <b>{g.name}</b>
+                        <button
+                          className="btn btn-block btn-info"
+                          onClick={() =>
+                            navigate(
+                              `/predictions?leaderboard=show&competitionID=${p.competitionID?._id}&groupID=${g._id}`
+                            )
+                          }
+                        >
+                          View Group Leaderboard
+                        </button>
+                      </div>
+                      <div className="col">
+                        <button className="btn btn-sm btn-danger">
+                          <IconRender type="remove" size={15} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="mini-div-line" />
+                  </React.Fragment>
+                ))}
+              </div>
               <div className="col">
                 <button
                   className="btn btn-sm btn-dark"
@@ -99,17 +138,13 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
                 </button>
               </div>
             </div>
-            <div className="row">
-              {p.groups.map((g, idx) => (
-                <div className="col" key={idx}></div>
-              ))}
-            </div>
             <hr />
             <GroupModalForm
               isOpen={groupFormOpen}
               setIsOpen={setGroupFormOpen}
               header="Manage Groups"
-              competitionID={p.competitionID}
+              submission={p}
+              onSuccess={raiseGroupSuccess}
             />
           </React.Fragment>
         ))

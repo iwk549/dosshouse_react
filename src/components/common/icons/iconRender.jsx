@@ -10,7 +10,11 @@ import {
 import { BsSpotify } from "react-icons/bs";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
-import { MdOutlineBatchPrediction, MdWebStories } from "react-icons/md";
+import {
+  MdOutlineBatchPrediction,
+  MdWebStories,
+  MdOutlineRemoveCircle,
+} from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
 
 const icons = {
@@ -23,6 +27,7 @@ const icons = {
   logout: BiLogOutCircle,
   prediction: MdOutlineBatchPrediction,
   profile: RiUserSettingsLine,
+  remove: MdOutlineRemoveCircle,
   right: FaCaretRight,
   save: BiSave,
   settings: IoMdSettings,
@@ -30,7 +35,7 @@ const icons = {
   trophy: IoMdTrophy,
 };
 
-const IconRender = ({ type, size, ...rest }) => {
+const IconRender = ({ type, size }) => {
   if (!icons[type]) return null;
   return React.createElement(icons[type], { size });
 };

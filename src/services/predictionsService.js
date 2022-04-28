@@ -66,3 +66,14 @@ export async function getUnownedPrediction(predictionID) {
     return ex.response;
   }
 }
+
+export async function addPredictionToGroup(predictionID, group) {
+  try {
+    return await http.put(
+      http.predictions + "/addtogroup/" + predictionID,
+      group
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
