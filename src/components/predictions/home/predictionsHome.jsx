@@ -11,16 +11,19 @@ import {
 import {
   getPredictions,
   deletePrediction,
+  removePredictionFromGroup,
 } from "../../../services/predictionsService";
 import Competitions from "./competitions";
 import SumbittedPredictions from "./sumbittedPredictions";
 
-const PredictionsHome = () => {
+const PredictionsHome = ({ paramTab }) => {
   const { setLoading, user } = useContext(LoadingContext);
   const [activeCompetitions, setActiveCompetitions] = useState([]);
   const [expiredCompetitions, setExpiredCompetitions] = useState([]);
   const [predictions, setPredictions] = useState([]);
-  const [selectedTab, setSelectedTab] = useState("active Competitions");
+  const [selectedTab, setSelectedTab] = useState(
+    paramTab || "active Competitions"
+  );
   const tabs = ["active Competitions", "expired Competitions", "submissions"];
 
   const loadData = async () => {
@@ -60,6 +63,16 @@ const PredictionsHome = () => {
     setLoading(false);
   };
 
+  const handleRemoveGroup = async (prediction, group) => {
+    setLoading(true);
+    const res = await removePredictionFromGroup(prediction._id, group);
+    if (res.status === 200) {
+      toast.success("Group Removed");
+      return loadData();
+    } else toast.error(res.data);
+    setLoading(false);
+  };
+
   return (
     <div>
       <Header text="Predictions" />
@@ -87,6 +100,7 @@ const PredictionsHome = () => {
             onDelete={handleDeletePrediction}
             onLogin={loadData}
             onGroupSuccess={loadData}
+            onRemoveGroup={handleRemoveGroup}
           />
         ) : null}
       </TabbedArea>

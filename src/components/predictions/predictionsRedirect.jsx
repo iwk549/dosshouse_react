@@ -12,6 +12,7 @@ const PredictionsRedirect = ({}) => {
   const leaderboard = searchParams.get("leaderboard");
   const competitionID = searchParams.get("competitionID");
   const groupID = searchParams.get("groupID");
+  const selectedTab = searchParams.get("tab");
 
   const redirect = () => {
     setComponent(
@@ -26,7 +27,7 @@ const PredictionsRedirect = ({}) => {
           groupID={groupID}
         />
       ) : (
-        <PredictionsHome />
+        <PredictionsHome paramTab={selectedTab} />
       )
     );
   };

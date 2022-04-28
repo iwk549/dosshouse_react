@@ -11,11 +11,13 @@ import LeaderboardModal from "./leaderboardModal";
 import { getMatches } from "../../../services/matchService";
 import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
+import GroupInfo from "./groupInfo";
 
 const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   let navigate = useNavigate();
   const { setLoading } = useContext(LoadingContext);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [groupInfo, setGroupInfo] = useState(null);
   const [competition, setCompetition] = useState([]);
   const [originalMatches, setOriginalMatches] = useState([]);
   const [allTeams, setAllTeams] = useState([]);
@@ -40,6 +42,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
       setResultsPerPage(updatedResultsPerPage || resultsPerPage);
       setLeaderboard(leaderboardRes.data.predictions);
       setPredictionCount(leaderboardRes.data.count);
+      setGroupInfo(leaderboardRes.data.groupInfo);
     } else toast.error(leaderboardRes.data);
     setLoading(false);
   };
@@ -87,13 +90,19 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     <div>
       <button
         className="btn btn-light"
-        onClick={() => navigate("/predictions")}
+        onClick={() =>
+          navigate(`/predictions?tab=${groupID === "all" ? "" : "submissions"}`)
+        }
       >
         Go Back
       </button>
       <br />
       <br />
-      <b>Overall Leaderboard</b>
+      {groupInfo ? (
+        <GroupInfo groupInfo={groupInfo} />
+      ) : (
+        <b>Overall Leaderboard</b>
+      )}
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}

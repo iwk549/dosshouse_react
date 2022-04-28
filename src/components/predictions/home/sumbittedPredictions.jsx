@@ -6,13 +6,14 @@ import Confirm from "../../common/modal/confirm";
 import RegistrationModalForm from "../../user/registrationModalForm";
 import LoadingContext from "../../../context/loadingContext";
 import GroupModalForm from "../groups/groupModalForm";
-import IconRender from "../../common/icons/iconRender";
+import PredictionGroupList from "../groups/predictionGroupList";
 
 const SumbittedPredictions = ({
   predictions,
   onDelete,
   onLogin,
   onGroupSuccess,
+  onRemoveGroup,
 }) => {
   const { user } = useContext(LoadingContext);
   let navigate = useNavigate();
@@ -101,46 +102,12 @@ const SumbittedPredictions = ({
               </div>
             </div>
             <div className="mini-div-line" />
-            <div className="row">
-              <div className="col">
-                {p.groups.map((g, idx) => (
-                  <React.Fragment key={idx}>
-                    <div className="row">
-                      <div className="col" key={idx}>
-                        <b>{g.name}</b>
-                        <button
-                          className="btn btn-block btn-info"
-                          onClick={() =>
-                            navigate(
-                              `/predictions?leaderboard=show&competitionID=${p.competitionID?._id}&groupID=${g._id}`
-                            )
-                          }
-                        >
-                          View Group Leaderboard
-                        </button>
-                      </div>
-                      <div className="col">
-                        <button className="btn btn-sm btn-danger">
-                          <IconRender type="remove" size={15} />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="mini-div-line" />
-                  </React.Fragment>
-                ))}
-              </div>
-              <div className="col">
-                <button
-                  className="btn btn-sm btn-dark"
-                  onClick={() => {
-                    setSelectedSubmission(p);
-                    setGroupFormOpen(true);
-                  }}
-                >
-                  Manage Groups
-                </button>
-              </div>
-            </div>
+            <PredictionGroupList
+              prediction={p}
+              setSelectedSubmission={setSelectedSubmission}
+              setGroupFormOpen={setGroupFormOpen}
+              onRemoveGroup={(group) => onRemoveGroup(p, group)}
+            />
             <hr />
           </React.Fragment>
         ))

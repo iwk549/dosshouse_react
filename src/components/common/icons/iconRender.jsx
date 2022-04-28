@@ -14,6 +14,7 @@ import {
   MdOutlineBatchPrediction,
   MdWebStories,
   MdOutlineRemoveCircle,
+  MdDeleteSweep,
 } from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
 
@@ -21,6 +22,7 @@ const icons = {
   app: MdWebStories,
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
+  delete: MdDeleteSweep,
   home: BiHome,
   left: FaCaretLeft,
   login: BiLogInCircle,

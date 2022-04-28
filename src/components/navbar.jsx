@@ -3,8 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import { IconContext } from "react-icons";
 import IconRender from "./common/icons/iconRender";
-import Confirm from "./common/modal/confirm";
-import { logout } from "../services/userService";
 import LoadingContext from "../context/loadingContext";
 import RegistrationModalForm from "./user/registrationModalForm";
 import LogoRender from "./common/image/logoRender";

@@ -1,17 +1,19 @@
-import React from "react";
+import React, { Component } from "react";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 
-import Form from "../../common/form/form";
 import BasicModal from "../../common/modal/basicModal";
 import TabbedArea from "../../common/pageSections/tabbedArea";
 import LoadingContext from "../../../context/loadingContext";
 import { titleCase } from "../../../utils/allowables";
 import descriptionText from "../../../textMaps/groups";
-import { saveGroup } from "../../../services/groupsService";
+import { deleteGroup, saveGroup } from "../../../services/groupsService";
 import { addPredictionToGroup } from "../../../services/predictionsService";
+import MyGroupsList from "./myGroupsList";
+import { getGroups } from "../../../services/groupsService";
+import GroupEditForm from "./groupEditForm";
 
-class GroupModalForm extends Form {
+class GroupModalForm extends Component {
   static contextType = LoadingContext;
   state = {
     data: {
@@ -20,23 +22,35 @@ class GroupModalForm extends Form {
     },
     errors: {},
     selectedTab: "join",
+    groups: [],
   };
+
+  async componentDidMount() {
+    this.context.setLoading(true);
+    const res = await getGroups();
+    if (res.status === 200) this.setState({ groups: res.data });
+    else toast.error(res.data);
+    this.context.setLoading(false);
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (this.props.isOpen !== prevProps.isOpen) this.componentDidMount();
+  }
 
   schema = {
     name: Joi.string().allow("").min(1).max(50).label("Name"),
     passcode: Joi.string().required().min(8).max(100).label("Passcode"),
   };
-  tabs = ["join", "create"];
+  tabs = ["join", "create", "manage"];
 
   setSelectedTab = (selectedTab) => {
     this.setState({ selectedTab });
   };
 
-  doSubmit = async () => {
+  handleCreateAndJoin = async (data) => {
     this.context.setLoading(true);
     let error = false;
     const type = this.state.selectedTab;
-    let data = { ...this.state.data };
     if (type === "create") {
       const res = await saveGroup(null, data);
       if (res.status !== 200) {
@@ -60,6 +74,27 @@ class GroupModalForm extends Form {
     this.context.setLoading(false);
   };
 
+  handleDeleteGroup = async (group) => {
+    this.context.setLoading(true);
+    const res = await deleteGroup(group._id);
+    if (res.status === 200) {
+      toast.success("Group Deleted");
+      this.props.onSuccess();
+      return this.componentDidMount();
+    } else toast.error(res.data);
+    this.context.setLoading(false);
+  };
+
+  handleEditGroup = async (data, group) => {
+    this.context.setLoading(true);
+
+    this.context.setLoading(false);
+  };
+
+  isTab = (tab) => {
+    return this.state.selectedTab.toLowerCase().includes(tab.toLowerCase());
+  };
+
   render() {
     return (
       <BasicModal
@@ -81,16 +116,25 @@ class GroupModalForm extends Form {
           tabPlacement="top"
         >
           <div className="text-center">
-            <form onSubmit={this.handleSubmit}>
-              {descriptionText[this.state.selectedTab]}
-              {this.renderInput("name", "Name", "autofocus")}
-              {this.renderInput("passcode", "Passcode", "", "passcode")}
-              {this.renderValidatedButton(
-                this.state.selectedTab === "edit"
-                  ? "Save"
-                  : titleCase(this.state.selectedTab)
-              )}
-            </form>
+            {this.isTab("manage") ? (
+              <MyGroupsList
+                groups={this.state.groups}
+                onEditGroup={this.handleEditGroup}
+                onDeleteGroup={this.handleDeleteGroup}
+              />
+            ) : (
+              <>
+                {descriptionText[this.state.selectedTab]}
+                <GroupEditForm
+                  onSubmit={this.handleCreateAndJoin}
+                  buttonText={
+                    this.state.selectedTab === "edit"
+                      ? "Save"
+                      : titleCase(this.state.selectedTab)
+                  }
+                />
+              </>
+            )}
           </div>
         </TabbedArea>
       </BasicModal>

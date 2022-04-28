@@ -16,3 +16,11 @@ export async function getGroups() {
     return ex.response;
   }
 }
+
+export async function deleteGroup(groupID) {
+  try {
+    return await http.delete(http.groups + "/" + groupID);
+  } catch (ex) {
+    return ex.response;
+  }
+}

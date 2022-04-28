@@ -80,3 +80,14 @@ export async function addPredictionToGroup(predictionID, group) {
     return ex.response;
   }
 }
+
+export async function removePredictionFromGroup(predictionID, group) {
+  try {
+    return await http.put(
+      http.predictions + "/removefromgroup/" + predictionID,
+      group
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
