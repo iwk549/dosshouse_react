@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { useNavigate } from "react-router-dom";
 
-import Table from "../common/table/table";
-import SearchBox from "../common/table/searchBox";
-import ExternalImage from "../common/image/externalImage";
-import logos from "../../textMaps/logos";
-import IconRender from "../common/icons/iconRender";
-import { sortAndFilterTable } from "../../utils/leaderboardUtil";
+import Table from "../../common/table/table";
+import SearchBox from "../../common/table/searchBox";
+import ExternalImage from "../../common/image/externalImage";
+import logos from "../../../textMaps/logos";
+import IconRender from "../../common/icons/iconRender";
+import { sortAndFilterTable } from "../../../utils/leaderboardUtil";
 
 const LeaderboardTable = ({ leaderboard, onSelectPrediction }) => {
-  let navigate = useNavigate();
-
   const [state, dispatch] = useReducer(reducer, {
     sortColumn: { path: "totalPoints", order: "desc" },
     search: "",
@@ -108,12 +105,6 @@ const LeaderboardTable = ({ leaderboard, onSelectPrediction }) => {
 
   return (
     <>
-      <button
-        className="btn btn-light"
-        onClick={() => navigate("/predictions")}
-      >
-        Go Back
-      </button>
       <SearchBox
         name="leaderboardSearch"
         search={state.search}

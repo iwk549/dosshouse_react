@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import PredictionsHome from "./predictionsHome";
-import PredictionMaker from "./predictionsMaker";
-import PredictionsLeaderboard from "./predictionsLeaderboard";
+import PredictionsHome from "./home/predictionsHome";
+import PredictionMaker from "./maker/predictionsMaker";
+import PredictionsLeaderboard from "./leaderboard/predictionsLeaderboard";
 
 const PredictionsRedirect = ({}) => {
   const [Component, setComponent] = useState(<div />);

@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Header from "../common/pageSections/header";
-import LoadingContext from "../../context/loadingContext";
-import TabbedArea from "../common/pageSections/tabbedArea";
+import Header from "../../common/pageSections/header";
+import LoadingContext from "../../../context/loadingContext";
+import TabbedArea from "../../common/pageSections/tabbedArea";
 import {
   getActiveCompetitions,
   getExpiredCompetitions,
-} from "../../services/competitionService";
+} from "../../../services/competitionService";
 import {
   getPredictions,
   deletePrediction,
-} from "../../services/predictionsService";
+} from "../../../services/predictionsService";
 import Competitions from "./competitions";
 import SumbittedPredictions from "./sumbittedPredictions";
 

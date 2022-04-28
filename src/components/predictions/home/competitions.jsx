@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { renderInfoLine } from "../../utils/textUtils";
+import { renderInfoLine } from "../../../utils/textUtils";
 
 const Competitions = ({ competitions, predictions, expired }) => {
   let navigate = useNavigate();

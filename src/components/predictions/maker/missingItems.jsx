@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
-import BasicModal from "../common/modal/basicModal";
-import { renderInfoLine } from "../../utils/textUtils";
+import BasicModal from "../../common/modal/basicModal";
+import { renderInfoLine } from "../../../utils/textUtils";
 
 const MissingItems = ({ items, isOpen, setIsOpen, name }) => {
   return (

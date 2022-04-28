@@ -1,26 +1,20 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  useReducer,
-} from "react";
+import React, { useState, useEffect, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import { splitName } from "../../utils/allowables";
+import { splitName } from "../../../utils/allowables";
 import BracketPicker from "./bracketPicker";
 import GroupPicker from "./groupPicker";
 import { toast } from "react-toastify";
-import LoadingContext from "../../context/loadingContext";
-import RegistrationModalForm from "../user/registrationModalForm";
-import { getMatches } from "../../services/matchService";
-import { predictionReducer } from "../../utils/predictionsUtil";
+import LoadingContext from "../../../context/loadingContext";
+import RegistrationModalForm from "../../user/registrationModalForm";
+import { getMatches } from "../../../services/matchService";
+import { predictionReducer } from "../../../utils/predictionsUtil";
 import {
   savePredictions,
   getPrediction,
-} from "../../services/predictionsService";
-import { getCompetition } from "../../services/competitionService";
+} from "../../../services/predictionsService";
+import { getCompetition } from "../../../services/competitionService";
 import HeaderLine from "./headerLine";
-import TabbedArea from "../common/pageSections/tabbedArea";
+import TabbedArea from "../../common/pageSections/tabbedArea";
 import Miscellaneous from "./miscellaneous";
 import Information from "./information";
 
@@ -239,7 +233,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         }}
       >
         <button
-          className="btn btn-sm btn-danger"
+          className="btn btn-sm btn-light"
           onClick={() => navigate("/predictions")}
         >
           Exit

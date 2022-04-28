@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getLeaderboard,
   getUnownedPrediction,
-} from "../../services/predictionsService";
-import LoadingContext from "../../context/loadingContext";
+} from "../../../services/predictionsService";
+import LoadingContext from "../../../context/loadingContext";
 import LeaderboardTable from "./leaderboardTable";
 import LeaderboardModal from "./leaderboardModal";
-import { getMatches } from "../../services/matchService";
-import { getCompetition } from "../../services/competitionService";
-import PageSelection from "../common/pageSections/pageSelection";
+import { getMatches } from "../../../services/matchService";
+import { getCompetition } from "../../../services/competitionService";
+import PageSelection from "../../common/pageSections/pageSelection";
 
 const PredictionsLeaderboard = ({ competitionID }) => {
+  let navigate = useNavigate();
   const { setLoading } = useContext(LoadingContext);
   const [leaderboard, setLeaderboard] = useState([]);
   const [competition, setCompetition] = useState([]);
@@ -21,39 +23,45 @@ const PredictionsLeaderboard = ({ competitionID }) => {
   const [singlePredictionOpen, setSinglePredictionOpen] = useState(false);
   const [predictionCount, setPredictionCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(2);
+  const [resultsPerPage, setResultsPerPage] = useState(1);
 
-  const loadData = async () => {
+  const loadLeaderboard = async (selectedPage, updatedResultsPerPage) => {
     setLoading(true);
     const leaderboardRes = await getLeaderboard(
       competitionID,
-      page,
-      resultsPerPage
+      selectedPage || page,
+      updatedResultsPerPage || resultsPerPage
     );
+    if (leaderboardRes.status === 200) {
+      setPage(selectedPage || page);
+      setResultsPerPage(updatedResultsPerPage || resultsPerPage);
+      setLeaderboard(leaderboardRes.data.predictions);
+      setPredictionCount(leaderboardRes.data.count);
+    } else toast.error(leaderboardRes.data);
+    setLoading(false);
+  };
+
+  const loadData = async () => {
+    setLoading(true);
     const matchesRes = await getMatches(competitionID);
     const competitionRes = await getCompetition(competitionID);
 
-    if (leaderboardRes.status === 200) {
-      setLeaderboard(leaderboardRes.data.predictions);
-      setPredictionCount(leaderboardRes.data.count);
+    if (matchesRes.status) {
+      let playoffMatches = [];
+      let allTeams = [];
+      matchesRes.data.forEach((m) => {
+        if (m.type === "Playoff") playoffMatches.push(m);
+        if (!allTeams.includes(m.homeTeamName)) allTeams.push(m.homeTeamName);
+        if (!allTeams.includes(m.awayTeamName)) allTeams.push(m.awayTeamName);
+      });
+      setOriginalMatches(playoffMatches);
+      setAllTeams(allTeams);
+      if (competitionRes.status === 200) {
+        setCompetition(competitionRes.data);
+      } else toast.error(competitionRes.data);
+    } else toast.error(matchesRes.data);
 
-      if (matchesRes.status) {
-        let playoffMatches = [];
-        let allTeams = [];
-        matchesRes.data.forEach((m) => {
-          if (m.type === "Playoff") playoffMatches.push(m);
-          if (!allTeams.includes(m.homeTeamName)) allTeams.push(m.homeTeamName);
-          if (!allTeams.includes(m.awayTeamName)) allTeams.push(m.awayTeamName);
-        });
-        setOriginalMatches(playoffMatches);
-        setAllTeams(allTeams);
-        if (competitionRes.status === 200) {
-          setCompetition(competitionRes.data);
-        } else toast.error(competitionRes.data);
-      } else toast.error(matchesRes.data);
-    } else toast.error(leaderboardRes.data);
-
-    setLoading(false);
+    loadLeaderboard();
   };
 
   useEffect(() => {
@@ -74,6 +82,15 @@ const PredictionsLeaderboard = ({ competitionID }) => {
 
   return (
     <div>
+      <button
+        className="btn btn-light"
+        onClick={() => navigate("/predictions")}
+      >
+        Go Back
+      </button>
+      <br />
+      <br />
+      <b>Overall Leaderboard</b>
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}
@@ -82,6 +99,10 @@ const PredictionsLeaderboard = ({ competitionID }) => {
         totalCount={predictionCount}
         displayPerPage={resultsPerPage}
         pageNumber={page}
+        onSelectPage={(page) => loadLeaderboard(page)}
+        onClickCaret={(movement) => loadLeaderboard(page + movement)}
+        resultsSelectionArray={[25, 50, 100]}
+        onUpdateResultsPerPage={(selection) => loadLeaderboard(1, selection)}
       />
       {selectedPrediction && (
         <LeaderboardModal

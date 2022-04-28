@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { renderInfoLine } from "../../utils/textUtils";
-import Confirm from "../common/modal/confirm";
-import RegistrationModalForm from "../user/registrationModalForm";
-import LoadingContext from "../../context/loadingContext";
+import { renderInfoLine } from "../../../utils/textUtils";
+import Confirm from "../../common/modal/confirm";
+import RegistrationModalForm from "../../user/registrationModalForm";
+import LoadingContext from "../../../context/loadingContext";
+import GroupModalForm from "../groups/groupModalForm";
 
 const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
   const { user } = useContext(LoadingContext);
@@ -12,6 +13,7 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
+  const [groupFormOpen, setGroupFormOpen] = useState(false);
 
   const renderInfo = (prediction) => {
     return (
@@ -87,7 +89,28 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
                 </button>
               </div>
             </div>
+            <div className="row">
+              <div className="col">
+                <button
+                  className="btn btn-sm btn-dark"
+                  onClick={() => setGroupFormOpen(true)}
+                >
+                  Manage Groups
+                </button>
+              </div>
+            </div>
+            <div className="row">
+              {p.groups.map((g, idx) => (
+                <div className="col" key={idx}></div>
+              ))}
+            </div>
             <hr />
+            <GroupModalForm
+              isOpen={groupFormOpen}
+              setIsOpen={setGroupFormOpen}
+              header="Manage Groups"
+              competitionID={p.competitionID}
+            />
           </React.Fragment>
         ))
       ) : (
