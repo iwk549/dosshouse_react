@@ -36,3 +36,35 @@
   position: sticky;
   top: 0;
 }
+.page-numbers {
+  margin-top: 8px;
+  height: 50px;
+  padding: 5px;
+}
+.page-navigation {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top: 5px;
+  font-size: 20px;
+  display: inline;
+  color: var(--dark-text);
+  border: 2px solid var(--secondary);
+  border-radius: 3px;
+}
+.page-navigation.selected {
+  background-color: var(--secondary);
+  color: var(--light-text);
+}
+.page-navigation.disabled {
+  background-color: var(--light-grey);
+  border: 1px solid var(--dark-text);
+}
+.mini-div-line {
+  margin: 8px;
+  margin-left: 50px;
+  margin-right: 50px;
+  border-top: 1px solid var(--minus10-info-bg-color);
+}

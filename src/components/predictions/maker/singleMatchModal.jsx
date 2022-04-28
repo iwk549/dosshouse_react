@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import BasicModal from "../common/modal/basicModal";
+import React from "react";
 
-import { longDate, translateRound, teamOrder } from "../../utils/allowables";
-import { confirmModalStyle } from "../../utils/styles";
+import BasicModal from "../../common/modal/basicModal";
+import { longDate, translateRound, teamOrder } from "../../../utils/allowables";
+import { confirmModalStyle } from "../../../utils/styles";
 
 const SingleMatchModal = ({ isOpen, setIsOpen, match, finalRoundNumber }) => {
   const teams = teamOrder(match.sport);

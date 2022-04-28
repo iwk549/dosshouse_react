@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { renderInfoLine } from "../../utils/textUtils";
-import Confirm from "../common/modal/confirm";
-import RegistrationModalForm from "../user/registrationModalForm";
-import LoadingContext from "../../context/loadingContext";
+import { renderInfoLine } from "../../../utils/textUtils";
+import Confirm from "../../common/modal/confirm";
+import RegistrationModalForm from "../../user/registrationModalForm";
+import LoadingContext from "../../../context/loadingContext";
+import GroupModalForm from "../groups/groupModalForm";
+import PredictionGroupList from "../groups/predictionGroupList";
 
-const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
+const SumbittedPredictions = ({
+  predictions,
+  onDelete,
+  onLogin,
+  onGroupSuccess,
+  onRemoveGroup,
+}) => {
   const { user } = useContext(LoadingContext);
   let navigate = useNavigate();
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
+  const [groupFormOpen, setGroupFormOpen] = useState(false);
 
   const renderInfo = (prediction) => {
     return (
@@ -55,6 +64,11 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
     onLogin();
   };
 
+  const raiseGroupSuccess = () => {
+    setGroupFormOpen(false);
+    onGroupSuccess();
+  };
+
   return user ? (
     <div>
       {predictions.length > 0 ? (
@@ -87,6 +101,13 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
                 </button>
               </div>
             </div>
+            <div className="mini-div-line" />
+            <PredictionGroupList
+              prediction={p}
+              setSelectedSubmission={setSelectedSubmission}
+              setGroupFormOpen={setGroupFormOpen}
+              onRemoveGroup={(group) => onRemoveGroup(p, group)}
+            />
             <hr />
           </React.Fragment>
         ))
@@ -94,19 +115,28 @@ const SumbittedPredictions = ({ predictions, onDelete, onLogin }) => {
         <p>You have not made any submissions</p>
       )}
       {selectedSubmission && (
-        <Confirm
-          header="Confirm Delete Submission"
-          isOpen={confirmDeleteOpen}
-          setIsOpen={() => setConfirmDeleteOpen(false)}
-          focus="cancel"
-          onConfirm={() => onDelete(selectedSubmission)}
-        >
-          <b>{selectedSubmission.name}</b>
-          <br />
-          Are you sure you want to delete this submission?
-          <br />
-          This cannot be undone.
-        </Confirm>
+        <>
+          <GroupModalForm
+            isOpen={groupFormOpen}
+            setIsOpen={setGroupFormOpen}
+            header="Manage Groups"
+            submission={selectedSubmission}
+            onSuccess={raiseGroupSuccess}
+          />
+          <Confirm
+            header="Confirm Delete Submission"
+            isOpen={confirmDeleteOpen}
+            setIsOpen={() => setConfirmDeleteOpen(false)}
+            focus="cancel"
+            onConfirm={() => onDelete(selectedSubmission)}
+          >
+            <b>{selectedSubmission.name}</b>
+            <br />
+            Are you sure you want to delete this submission?
+            <br />
+            This cannot be undone.
+          </Confirm>
+        </>
       )}
     </div>
   ) : (

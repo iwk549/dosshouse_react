@@ -1,26 +1,29 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Header from "../common/pageSections/header";
-import LoadingContext from "../../context/loadingContext";
-import TabbedArea from "../common/pageSections/tabbedArea";
+import Header from "../../common/pageSections/header";
+import LoadingContext from "../../../context/loadingContext";
+import TabbedArea from "../../common/pageSections/tabbedArea";
 import {
   getActiveCompetitions,
   getExpiredCompetitions,
-} from "../../services/competitionService";
+} from "../../../services/competitionService";
 import {
   getPredictions,
   deletePrediction,
-} from "../../services/predictionsService";
+  removePredictionFromGroup,
+} from "../../../services/predictionsService";
 import Competitions from "./competitions";
 import SumbittedPredictions from "./sumbittedPredictions";
 
-const PredictionsHome = () => {
+const PredictionsHome = ({ paramTab }) => {
   const { setLoading, user } = useContext(LoadingContext);
   const [activeCompetitions, setActiveCompetitions] = useState([]);
   const [expiredCompetitions, setExpiredCompetitions] = useState([]);
   const [predictions, setPredictions] = useState([]);
-  const [selectedTab, setSelectedTab] = useState("active Competitions");
+  const [selectedTab, setSelectedTab] = useState(
+    paramTab || "active Competitions"
+  );
   const tabs = ["active Competitions", "expired Competitions", "submissions"];
 
   const loadData = async () => {
@@ -60,6 +63,16 @@ const PredictionsHome = () => {
     setLoading(false);
   };
 
+  const handleRemoveGroup = async (prediction, group) => {
+    setLoading(true);
+    const res = await removePredictionFromGroup(prediction._id, group);
+    if (res.status === 200) {
+      toast.success("Group Removed");
+      return loadData();
+    } else toast.error(res.data);
+    setLoading(false);
+  };
+
   return (
     <div>
       <Header text="Predictions" />
@@ -86,6 +99,8 @@ const PredictionsHome = () => {
             predictions={predictions}
             onDelete={handleDeletePrediction}
             onLogin={loadData}
+            onGroupSuccess={loadData}
+            onRemoveGroup={handleRemoveGroup}
           />
         ) : null}
       </TabbedArea>

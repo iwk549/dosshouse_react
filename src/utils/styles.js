@@ -1,5 +1,5 @@
 const commonModalStyles = {
-  backgroundColor: "#e6e6e6",
+  backgroundColor: "#f2f2f2",
   border: "1px solid #831fe0",
   top: "50%",
   left: "50%",

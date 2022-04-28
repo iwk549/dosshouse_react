@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
-import FormSelect from "../common/form/select";
-import { getFinalRound } from "../../utils/bracketsUtil";
-import logos from "../../textMaps/logos";
-import { renderSelectLabel } from "../../utils/rendering";
+import FormSelect from "../../common/form/select";
+import { getFinalRound } from "../../../utils/bracketsUtil";
+import logos from "../../../textMaps/logos";
+import { renderSelectLabel } from "../../../utils/rendering";
 import SingleMatchModal from "./singleMatchModal";
 
 const Miscellaneous = ({

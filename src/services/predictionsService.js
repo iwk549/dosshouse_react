@@ -39,9 +39,24 @@ export async function deletePrediction(predictionID) {
   }
 }
 
-export async function getLeaderboard(competitionID) {
+export async function getLeaderboard(
+  competitionID,
+  pageNumber,
+  resultsPerPage = 25,
+  groupID = "all"
+) {
   try {
-    return await http.get(http.predictions + "/leaderboard/" + competitionID);
+    return await http.get(
+      http.predictions +
+        "/leaderboard/" +
+        competitionID +
+        "/" +
+        resultsPerPage +
+        "/" +
+        pageNumber +
+        "/" +
+        groupID
+    );
   } catch (ex) {
     return ex.response;
   }
@@ -50,6 +65,39 @@ export async function getLeaderboard(competitionID) {
 export async function getUnownedPrediction(predictionID) {
   try {
     return await http.get(http.predictions + "/unowned/" + predictionID);
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
+export async function addPredictionToGroup(predictionID, group) {
+  try {
+    return await http.put(
+      http.predictions + "/addtogroup/" + predictionID,
+      group
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
+export async function removePredictionFromGroup(predictionID, group) {
+  try {
+    return await http.put(
+      http.predictions + "/removefromgroup/" + predictionID,
+      group
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
+export async function forceRemovePredictionFromGroup(predictionID, group) {
+  try {
+    return await http.put(
+      http.predictions + "/forceremovefromgroup/" + predictionID,
+      group
+    );
   } catch (ex) {
     return ex.response;
   }

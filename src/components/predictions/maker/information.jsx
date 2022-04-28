@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
-import { titleCase } from "../../utils/allowables";
-import rules from "../../textMaps/rules";
+import { titleCase } from "../../../utils/allowables";
+import rules from "../../../textMaps/rules";
 import Scoring from "./scoring";
 
 const Information = ({ competition }) => {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import BasicModal from "../common/modal/basicModal";
-import TabbedArea from "../common/pageSections/tabbedArea";
-import GroupPicker from "./groupPicker";
-import BracketPicker from "./bracketPicker";
-import Miscellaneous from "./miscellaneous";
-import { handlePopulateBracket } from "../../utils/predictionsUtil";
+import BasicModal from "../../common/modal/basicModal";
+import TabbedArea from "../../common/pageSections/tabbedArea";
+import GroupPicker from "../maker/groupPicker";
+import BracketPicker from "../maker/bracketPicker";
+import Miscellaneous from "../maker/miscellaneous";
+import { handlePopulateBracket } from "../../../utils/predictionsUtil";
 
 const LeaderboardModal = ({
   prediction,

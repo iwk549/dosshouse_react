@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { shortDate } from "../../utils/allowables";
-import BasicModal from "../common/modal/basicModal";
-import Table from "../common/table/table";
+import React, { useState } from "react";
 
-import { teamOrder, titleCase, matchStartText } from "../../utils/allowables";
+import { shortDate } from "../../../utils/allowables";
+import BasicModal from "../../common/modal/basicModal";
+import Table from "../../common/table/table";
+import {
+  teamOrder,
+  titleCase,
+  matchStartText,
+} from "../../../utils/allowables";
 
 const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
   const teams = teamOrder(matches[0]?.sport);

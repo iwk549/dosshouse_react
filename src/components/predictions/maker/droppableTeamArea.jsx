@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import MatchesModal from "./matchesModal";
-import DraggableTable from "../common/table/draggableTable";
-import ExternalImage from "../common/image/externalImage";
-import logos from "../../textMaps/logos";
+import DraggableTable from "../../common/table/draggableTable";
+import ExternalImage from "../../common/image/externalImage";
+import logos from "../../../textMaps/logos";
 
 const DroppableTeamArea = ({
   teams,

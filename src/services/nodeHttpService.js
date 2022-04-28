@@ -35,5 +35,6 @@ export default {
   matches: "/matches",
   competitions: "/competitions",
   predictions: "/predictions",
+  groups: "/groups",
   setJwt,
 };

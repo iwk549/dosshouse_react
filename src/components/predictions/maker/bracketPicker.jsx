@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
-import PlayoffBracketCanvas from "../common/brackets/playoffBracketCanvas";
+import PlayoffBracketCanvas from "../../common/brackets/playoffBracketCanvas";
 import SingleMatchModal from "./singleMatchModal";
-import IconRender from "../common/icons/iconRender";
-import logos from "../../textMaps/logos";
-import ExternalImage from "../common/image/externalImage";
-import Switch from "../common/form/switch";
+import IconRender from "../../common/icons/iconRender";
+import logos from "../../../textMaps/logos";
+import ExternalImage from "../../common/image/externalImage";
+import Switch from "../../common/form/switch";
 import MatchesModal from "./matchesModal";
 
 const BracketPicker = ({
