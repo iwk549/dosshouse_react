@@ -20,6 +20,9 @@ const style = {
     borderRadius: 10,
     zIndex: 999,
   },
+  overlay: {
+    zIndex: 999,
+  },
 };
 
 const Loading = ({ loading, showText }) => {
