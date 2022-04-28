@@ -9,6 +9,7 @@ import LeaderboardTable from "./leaderboardTable";
 import LeaderboardModal from "./leaderboardModal";
 import { getMatches } from "../../services/matchService";
 import { getCompetition } from "../../services/competitionService";
+import PageSelection from "../common/pageSections/pageSelection";
 
 const PredictionsLeaderboard = ({ competitionID }) => {
   const { setLoading } = useContext(LoadingContext);
@@ -18,16 +19,23 @@ const PredictionsLeaderboard = ({ competitionID }) => {
   const [allTeams, setAllTeams] = useState([]);
   const [selectedPrediction, setSelectedPrediction] = useState(null);
   const [singlePredictionOpen, setSinglePredictionOpen] = useState(false);
+  const [predictionCount, setPredictionCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [resultsPerPage, setResultsPerPage] = useState(2);
 
   const loadData = async () => {
     setLoading(true);
-    const leaderboardRes = await getLeaderboard(competitionID, page);
+    const leaderboardRes = await getLeaderboard(
+      competitionID,
+      page,
+      resultsPerPage
+    );
     const matchesRes = await getMatches(competitionID);
     const competitionRes = await getCompetition(competitionID);
 
     if (leaderboardRes.status === 200) {
-      setLeaderboard(leaderboardRes.data);
+      setLeaderboard(leaderboardRes.data.predictions);
+      setPredictionCount(leaderboardRes.data.count);
 
       if (matchesRes.status) {
         let playoffMatches = [];
@@ -69,6 +77,11 @@ const PredictionsLeaderboard = ({ competitionID }) => {
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}
+      />
+      <PageSelection
+        totalCount={predictionCount}
+        displayPerPage={resultsPerPage}
+        pageNumber={page}
       />
       {selectedPrediction && (
         <LeaderboardModal

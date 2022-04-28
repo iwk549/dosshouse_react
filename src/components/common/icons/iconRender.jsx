@@ -8,6 +8,7 @@ import {
   BiSave,
 } from "react-icons/bi";
 import { BsSpotify } from "react-icons/bs";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import { MdOutlineBatchPrediction, MdWebStories } from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
@@ -17,17 +18,19 @@ const icons = {
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
   home: BiHome,
+  left: FaCaretLeft,
   login: BiLogInCircle,
   logout: BiLogOutCircle,
   prediction: MdOutlineBatchPrediction,
   profile: RiUserSettingsLine,
+  right: FaCaretRight,
   save: BiSave,
   settings: IoMdSettings,
   spotify: BsSpotify,
   trophy: IoMdTrophy,
 };
 
-const IconRender = ({ type, size }) => {
+const IconRender = ({ type, size, ...rest }) => {
   if (!icons[type]) return null;
   return React.createElement(icons[type], { size });
 };
