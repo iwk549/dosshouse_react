@@ -42,7 +42,8 @@ export async function deletePrediction(predictionID) {
 export async function getLeaderboard(
   competitionID,
   pageNumber,
-  resultsPerPage = 25
+  resultsPerPage = 25,
+  groupID = "all"
 ) {
   try {
     return await http.get(
@@ -52,7 +53,9 @@ export async function getLeaderboard(
         "/" +
         resultsPerPage +
         "/" +
-        pageNumber
+        pageNumber +
+        "/" +
+        groupID
     );
   } catch (ex) {
     return ex.response;

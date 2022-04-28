@@ -12,7 +12,7 @@ import { getMatches } from "../../../services/matchService";
 import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
 
-const PredictionsLeaderboard = ({ competitionID }) => {
+const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   let navigate = useNavigate();
   const { setLoading } = useContext(LoadingContext);
   const [leaderboard, setLeaderboard] = useState([]);
@@ -23,14 +23,17 @@ const PredictionsLeaderboard = ({ competitionID }) => {
   const [singlePredictionOpen, setSinglePredictionOpen] = useState(false);
   const [predictionCount, setPredictionCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(1);
+  const [resultsPerPage, setResultsPerPage] = useState(
+    groupID === "all" ? 25 : 100
+  );
 
   const loadLeaderboard = async (selectedPage, updatedResultsPerPage) => {
     setLoading(true);
     const leaderboardRes = await getLeaderboard(
       competitionID,
       selectedPage || page,
-      updatedResultsPerPage || resultsPerPage
+      updatedResultsPerPage || resultsPerPage,
+      groupID
     );
     if (leaderboardRes.status === 200) {
       setPage(selectedPage || page);

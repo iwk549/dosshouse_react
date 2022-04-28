@@ -132,39 +132,44 @@ const SumbittedPredictions = ({
               <div className="col">
                 <button
                   className="btn btn-sm btn-dark"
-                  onClick={() => setGroupFormOpen(true)}
+                  onClick={() => {
+                    setSelectedSubmission(p);
+                    setGroupFormOpen(true);
+                  }}
                 >
                   Manage Groups
                 </button>
               </div>
             </div>
             <hr />
-            <GroupModalForm
-              isOpen={groupFormOpen}
-              setIsOpen={setGroupFormOpen}
-              header="Manage Groups"
-              submission={p}
-              onSuccess={raiseGroupSuccess}
-            />
           </React.Fragment>
         ))
       ) : (
         <p>You have not made any submissions</p>
       )}
       {selectedSubmission && (
-        <Confirm
-          header="Confirm Delete Submission"
-          isOpen={confirmDeleteOpen}
-          setIsOpen={() => setConfirmDeleteOpen(false)}
-          focus="cancel"
-          onConfirm={() => onDelete(selectedSubmission)}
-        >
-          <b>{selectedSubmission.name}</b>
-          <br />
-          Are you sure you want to delete this submission?
-          <br />
-          This cannot be undone.
-        </Confirm>
+        <>
+          <GroupModalForm
+            isOpen={groupFormOpen}
+            setIsOpen={setGroupFormOpen}
+            header="Manage Groups"
+            submission={selectedSubmission}
+            onSuccess={raiseGroupSuccess}
+          />
+          <Confirm
+            header="Confirm Delete Submission"
+            isOpen={confirmDeleteOpen}
+            setIsOpen={() => setConfirmDeleteOpen(false)}
+            focus="cancel"
+            onConfirm={() => onDelete(selectedSubmission)}
+          >
+            <b>{selectedSubmission.name}</b>
+            <br />
+            Are you sure you want to delete this submission?
+            <br />
+            This cannot be undone.
+          </Confirm>
+        </>
       )}
     </div>
   ) : (

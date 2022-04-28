@@ -52,7 +52,9 @@ const Competitions = ({ competitions, predictions, expired }) => {
             <button
               className="btn btn-info"
               onClick={() =>
-                navigate(`/predictions?leaderboard=show&competitionID=${c._id}`)
+                navigate(
+                  `/predictions?leaderboard=show&competitionID=${c._id}&groupID=all`
+                )
               }
             >
               View Leaderboard

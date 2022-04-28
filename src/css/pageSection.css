@@ -63,7 +63,7 @@
   border: 1px solid var(--dark-text);
 }
 .mini-div-line {
-  margin: 5px;
+  margin: 8px;
   margin-left: 50px;
   margin-right: 50px;
   border-top: 1px solid var(--minus10-info-bg-color);
