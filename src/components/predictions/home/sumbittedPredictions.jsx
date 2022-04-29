@@ -7,6 +7,7 @@ import RegistrationModalForm from "../../user/registrationModalForm";
 import LoadingContext from "../../../context/loadingContext";
 import GroupModalForm from "../groups/groupModalForm";
 import PredictionGroupList from "../groups/predictionGroupList";
+import PredictionInfo from "./predictionInfo";
 
 const SumbittedPredictions = ({
   predictions,
@@ -16,48 +17,10 @@ const SumbittedPredictions = ({
   onRemoveGroup,
 }) => {
   const { user } = useContext(LoadingContext);
-  let navigate = useNavigate();
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const [groupFormOpen, setGroupFormOpen] = useState(false);
-
-  const renderInfo = (prediction) => {
-    return (
-      <div className="col">
-        <h4>
-          <b>Info</b>
-        </h4>
-        {renderInfoLine("Submission Name", prediction.name)}
-        {renderInfoLine("Competition", prediction.competitionID?.name)}
-        {renderInfoLine(
-          "Submissions Allowed",
-          prediction.competitionID?.maxSubmissions
-        )}
-        {renderInfoLine(
-          "Submissions Made",
-          predictions.filter(
-            (p) => p.competitionID?._id === prediction.competitionID?._id
-          ).length
-        )}
-      </div>
-    );
-  };
-
-  const renderPoints = (points, totalPoints) => {
-    return (
-      <div className="col">
-        <h4>
-          <b>Points</b>
-        </h4>
-        {renderInfoLine("Total", totalPoints)}
-        {renderInfoLine("Group", points.group.points)}
-        {renderInfoLine("Bracket", points.playoff.points)}
-        {renderInfoLine("Champion", points.champion.points)}
-        {renderInfoLine("Miscellaneous", points.misc.points)}
-      </div>
-    );
-  };
 
   const raiseLoginSuccess = () => {
     setRegisterFormOpen(false);
@@ -74,39 +37,17 @@ const SumbittedPredictions = ({
       {predictions.length > 0 ? (
         predictions.map((p) => (
           <React.Fragment key={p._id}>
-            <div className="row">
-              {renderInfo(p)}
-              {renderPoints(p.points, p.totalPoints)}
-              <div className="col-2">
-                <br />
-                <button
-                  className="btn btn-sm btn-dark"
-                  onClick={() =>
-                    navigate(
-                      `/predictions?id=${p._id}&competitionID=${p.competitionID?._id}`
-                    )
-                  }
-                >
-                  Edit
-                </button>
-                <div style={{ height: 50 }} />
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => {
-                    setSelectedSubmission(p);
-                    setConfirmDeleteOpen(true);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-            <div className="mini-div-line" />
-            <PredictionGroupList
+            <PredictionInfo
               prediction={p}
+              onRemoveGroup={onRemoveGroup}
               setSelectedSubmission={setSelectedSubmission}
+              setConfirmDeleteOpen={setConfirmDeleteOpen}
               setGroupFormOpen={setGroupFormOpen}
-              onRemoveGroup={(group) => onRemoveGroup(p, group)}
+              submissionsMade={
+                predictions.filter(
+                  (pred) => pred.competitionID?._id === p.competitionID?._id
+                ).length
+              }
             />
             <hr />
           </React.Fragment>
