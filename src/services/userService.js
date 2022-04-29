@@ -80,3 +80,11 @@ export async function deleteUser() {
     return ex.response;
   }
 }
+
+export async function requestPasswordReset(email) {
+  try {
+    return await http.put(http.users + "/resetpassword/" + email);
+  } catch (ex) {
+    return ex.response;
+  }
+}

@@ -114,7 +114,7 @@ const LeaderboardTable = ({
     },
   ];
 
-  if (groupInfo?.ownerID._id === user._id)
+  if (groupInfo?.ownerID._id === user?._id)
     columns.push({
       path: "forceRemove",
       label: "",

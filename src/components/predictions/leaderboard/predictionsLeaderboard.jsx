@@ -79,10 +79,13 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     if (!prediction) return;
     setLoading(true);
     const res = await getUnownedPrediction(prediction._id);
+    console.log(res);
     if (res.status === 200) {
       setSelectedPrediction(res.data);
       setSinglePredictionOpen(true);
-    } else toast.error(res.data);
+    } else if (res.data.toLowerCase().includes("token"))
+      toast.error("You must be logged in to view individual submissions");
+    else toast.error(res.data);
 
     setLoading(false);
   };

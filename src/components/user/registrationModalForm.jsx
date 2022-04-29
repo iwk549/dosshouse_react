@@ -4,16 +4,21 @@ import { toast } from "react-toastify";
 
 import Form from "../common/form/form";
 import BasicModal from "../common/modal/basicModal";
-import { registerUser, loginUser } from "../../services/userService";
+import {
+  registerUser,
+  loginUser,
+  requestPasswordReset,
+} from "../../services/userService";
 import TabbedArea from "../common/pageSections/tabbedArea";
 import LoadingContext from "../../context/loadingContext";
+import { titleCase } from "../../utils/allowables";
 
 class RegistrationModalForm extends Form {
   static contextType = LoadingContext;
   state = {
     data: {
       name: "",
-      email: "",
+      email: this.props.reset?.email || "",
       password: "",
     },
     errors: {},
@@ -25,7 +30,7 @@ class RegistrationModalForm extends Form {
     email: Joi.string().required().email().label("Email"),
     password: Joi.string().required().min(8).max(100).label("Password"),
   };
-  tabs = ["register", "login"];
+  tabs = this.props.reset ? ["reset"] : ["register", "login"];
 
   setSelectedTab = (selectedTab) => {
     this.setState({ selectedTab });
@@ -37,6 +42,7 @@ class RegistrationModalForm extends Form {
     const type = this.state.selectedTab;
     if (type === "register") res = await registerUser(this.state.data);
     else if (type === "login") res = await loginUser(this.state.data);
+    // else if (type === 'reset') res =
     if (res.status === 200) {
       this.context.setUser();
       toast.success(
@@ -47,16 +53,31 @@ class RegistrationModalForm extends Form {
     this.context.setLoading(false);
   };
 
+  handleResetRequest = async (event) => {
+    event.preventDefault();
+    if (!this.state.data.email)
+      return toast.info("Enter your email address to request a password reset");
+    this.context.setLoading(true);
+    const res = await requestPasswordReset(this.state.data.email);
+    if (res.status === 200) toast.success(res.data);
+    else toast.error(res.data);
+    this.context.setLoading(false);
+  };
+
   render() {
     return (
       <BasicModal
         isOpen={this.props.isOpen}
         onClose={this.props.setIsOpen}
+        hideClose={!this.props.setIsOpen}
         header={
           this.props.header ? (
             <h4 className="text-center">{this.props.header}</h4>
           ) : (
-            <br />
+            <>
+              <br />
+              <br />
+            </>
           )
         }
       >
@@ -68,10 +89,11 @@ class RegistrationModalForm extends Form {
         >
           <div className="text-center">
             <h3>
-              {this.state.selectedTab === "register"
-                ? "Register for a New"
-                : "Login to your"}{" "}
-              Account
+              {this.props.reset
+                ? "Reset your Password"
+                : this.state.selectedTab === "register"
+                ? "Register for a New Account"
+                : "Login to your Account"}
             </h3>
             <form onSubmit={this.handleSubmit}>
               {this.state.selectedTab === "register"
@@ -82,8 +104,29 @@ class RegistrationModalForm extends Form {
                 "Email",
                 this.state.selectedTab === "login"
               )}
-              {this.renderInput("password", "Password", "", "password")}
-              {this.renderValidatedButton("Submit")}
+              {this.renderInput(
+                "password",
+                "Password",
+                this.state.reset ? "autofocus" : "",
+                "password"
+              )}
+              {this.renderValidatedButton(titleCase(this.state.selectedTab))}
+              <br />
+              <br />
+              {this.state.selectedTab === "login" && (
+                <>
+                  <p>
+                    Enter your email address and click the button below to
+                    request a password reset
+                  </p>
+                  <button
+                    className="btn btn-block btn-info"
+                    onClick={this.handleResetRequest}
+                  >
+                    Forgot Password?
+                  </button>
+                </>
+              )}
             </form>
           </div>
         </TabbedArea>
