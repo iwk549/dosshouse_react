@@ -87,7 +87,12 @@ class GroupModalForm extends Component {
 
   handleEditGroup = async (data, group) => {
     this.context.setLoading(true);
-
+    const res = await saveGroup(group._id, data);
+    if (res.status === 200) {
+      toast.success("Group Updated");
+      this.props.onSuccess();
+      return this.componentDidMount();
+    } else toast.error(res.data);
     this.context.setLoading(false);
   };
 
