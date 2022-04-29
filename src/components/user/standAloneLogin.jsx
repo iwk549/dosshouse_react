@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import RegistrationModalForm from "./registrationModalForm";

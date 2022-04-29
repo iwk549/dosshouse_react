@@ -9,7 +9,7 @@ import SwitchRouter from "./components/switchRouter";
 import Navbar from "./components/navbar";
 import LoadingContext from "./context/loadingContext";
 import Loading from "./components/common/loading/loading";
-import { getCurrentUser } from "./services/userService";
+import { getCurrentUser, refreshUser } from "./services/userService";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -21,9 +21,14 @@ function App() {
     setUser(getCurrentUser());
   };
 
+  const refresh = async () => {
+    await refreshUser();
+    setLoading(false);
+  };
+
   useEffect(() => {
     setCurrentUser();
-    setLoading(false);
+    refresh();
   }, []);
 
   const handleUpdateLoading = (bool) => {

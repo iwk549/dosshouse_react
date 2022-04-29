@@ -8,6 +8,7 @@ import {
   registerUser,
   loginUser,
   requestPasswordReset,
+  updatePassword,
 } from "../../services/userService";
 import TabbedArea from "../common/pageSections/tabbedArea";
 import LoadingContext from "../../context/loadingContext";
@@ -42,7 +43,12 @@ class RegistrationModalForm extends Form {
     const type = this.state.selectedTab;
     if (type === "register") res = await registerUser(this.state.data);
     else if (type === "login") res = await loginUser(this.state.data);
-    // else if (type === 'reset') res =
+    else if (type === "reset")
+      res = await updatePassword(
+        this.props.reset.token,
+        this.state.data.email,
+        this.state.data.password
+      );
     if (res.status === 200) {
       this.context.setUser();
       toast.success(

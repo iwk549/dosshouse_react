@@ -88,3 +88,17 @@ export async function requestPasswordReset(email) {
     return ex.response;
   }
 }
+
+export async function updatePassword(token, email, password) {
+  try {
+    const res = await http.put(http.users + "/updatepassword", {
+      token,
+      email,
+      password,
+    });
+    setUser(res.data);
+    return res;
+  } catch (ex) {
+    return ex.response;
+  }
+}
