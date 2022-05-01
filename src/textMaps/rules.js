@@ -29,7 +29,7 @@ export default [
         <br />
         Brackets are only checked for validity during the scoring portion at
         which point it will be too late to amend your bracket. If submitting a
-        custom bracket to our open API you must check it for validitiy yourself.
+        custom bracket to our open API you must check it for validity yourself.
         Invalid brackets are not eligible for the leaderboard and are subject to
         disqualification.
       </p>

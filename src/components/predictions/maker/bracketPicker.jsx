@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import TournamentBracket from "react-svg-tournament-bracket";
 
-import PlayoffBracketCanvas from "../../common/brackets/playoffBracketCanvas";
 import SingleMatchModal from "./singleMatchModal";
 import IconRender from "../../common/icons/iconRender";
 import logos from "../../../textMaps/logos";
@@ -78,12 +78,14 @@ const BracketPicker = ({
         {misc.winner || "Pick the Champion"}&nbsp;&nbsp;
         {renderImage(misc.winner)}
       </h1>
-      <PlayoffBracketCanvas
+      <TournamentBracket
         matches={matches}
-        onSelectMatch={originalPlayoffMatches ? handleSelectMatch : null}
-        onSelectTeam={onSelectTeam}
-        isLocked={isLocked}
+        onSelectMatch={handleSelectMatch}
+        onSelectTeam={isLocked ? null : onSelectTeam}
         orientation={isPortrait ? "portrait" : "landscape"}
+        backgroundColor="#eeccff"
+        lineColor="#999999"
+        popColor="#831fe0"
       />
       {selectedMatch && (
         <SingleMatchModal
