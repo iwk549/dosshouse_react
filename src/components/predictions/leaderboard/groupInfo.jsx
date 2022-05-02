@@ -2,13 +2,14 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 const GroupInfo = ({ groupInfo }) => {
   return (
-    <div className="pop-box">
-      <div className="mini-div-line" />
-      Group Name: <b>{groupInfo.name}</b>
-      <br />
+    <>
+      <div className="pop-box">
+        <h2>
+          <b>{groupInfo.name}</b>
+        </h2>
+      </div>
       Group Owner: <b>{groupInfo.ownerID.name}</b>
-      <div className="mini-div-line" />
-    </div>
+    </>
   );
 };
 

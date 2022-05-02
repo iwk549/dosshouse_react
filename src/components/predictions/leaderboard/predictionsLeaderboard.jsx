@@ -77,15 +77,20 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
 
   const handleSelectPrediction = async (prediction) => {
     if (!prediction) return;
-    setLoading(true);
-    const res = await getUnownedPrediction(prediction._id);
-    console.log(res);
-    if (res.status === 200) {
-      setSelectedPrediction(res.data);
+
+    if (new Date(competition.submissionDeadline) > new Date()) {
+      setSelectedPrediction(prediction);
       setSinglePredictionOpen(true);
-    } else if (res.data.toLowerCase().includes("token"))
-      toast.error("You must be logged in to view individual submissions");
-    else toast.error(res.data);
+    } else {
+      setLoading(true);
+      const res = await getUnownedPrediction(prediction._id);
+      if (res.status === 200) {
+        setSelectedPrediction(res.data);
+        setSinglePredictionOpen(true);
+      } else if (res.data.toLowerCase().includes("token"))
+        toast.error("You must be logged in to view individual submissions");
+      else toast.error(res.data);
+    }
 
     setLoading(false);
   };
