@@ -13,6 +13,7 @@ import { getMatches } from "../../../services/matchService";
 import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
 import GroupInfo from "./groupInfo";
+import { getResult } from "../../../services/resultsService";
 
 const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   let navigate = useNavigate();
@@ -29,6 +30,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   const [resultsPerPage, setResultsPerPage] = useState(
     groupID === "all" ? 25 : 100
   );
+  const [result, setResult] = useState(null);
 
   const loadLeaderboard = async (selectedPage, updatedResultsPerPage) => {
     setLoading(true);
@@ -52,6 +54,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     setLoading(true);
     const matchesRes = await getMatches(competitionID);
     const competitionRes = await getCompetition(competitionID);
+    const resultRes = await getResult(competitionID);
 
     if (matchesRes.status) {
       let playoffMatches = [];
@@ -65,6 +68,10 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
       setAllTeams(allTeams);
       if (competitionRes.status === 200) {
         setCompetition(competitionRes.data);
+        if (resultRes.status === 200) {
+          setResult(resultRes.data);
+          // do not give error here, results may not exist yet
+        }
       } else toast.error(competitionRes.data);
     } else toast.error(matchesRes.data);
 
@@ -107,12 +114,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
 
   return (
     <div>
-      <button
-        className="btn btn-light"
-        onClick={() =>
-          navigate(`/predictions?tab=${groupID === "all" ? "" : "submissions"}`)
-        }
-      >
+      <button className="btn btn-light" onClick={() => navigate(-1)}>
         Go Back
       </button>
       <br />
@@ -145,6 +147,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
           originalMatches={originalMatches}
           competition={competition}
           allTeams={allTeams}
+          result={result}
         />
       )}
     </div>

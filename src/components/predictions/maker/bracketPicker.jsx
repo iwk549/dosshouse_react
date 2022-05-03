@@ -86,6 +86,10 @@ const BracketPicker = ({
         backgroundColor="#eeccff"
         lineColor="#999999"
         popColor="#831fe0"
+        highlightColor={{
+          backgroundColor: "#66ff73",
+          color: "#000",
+        }}
       />
       {selectedMatch && (
         <SingleMatchModal

@@ -10,11 +10,13 @@ const DraggableTable = ({
   onReorder,
   type,
   isLocked,
+  highlight,
 }) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <table className="draggable-table">
         <tbody>
+          {/* Header droppable area */}
           <DraggableTableRow
             columns={columns}
             type={type}
@@ -35,6 +37,7 @@ const DraggableTable = ({
               position={idx}
               isLastRow={idx === data.length - 1}
               isLocked={isLocked}
+              highlight={highlight}
             />
           ))}
         </tbody>

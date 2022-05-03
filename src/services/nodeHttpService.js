@@ -36,5 +36,6 @@ export default {
   competitions: "/competitions",
   predictions: "/predictions",
   groups: "/groups",
+  results: "/results",
   setJwt,
 };

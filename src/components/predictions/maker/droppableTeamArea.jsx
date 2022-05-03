@@ -12,6 +12,7 @@ const DroppableTeamArea = ({
   onReorder,
   isLocked,
   matches,
+  highlight,
 }) => {
   const [matchesOpen, setMatchesOpen] = useState(false);
   const columns = [
@@ -52,6 +53,7 @@ const DroppableTeamArea = ({
         onReorder={raiseReorder}
         type="team"
         isLocked={isLocked}
+        highlight={highlight}
       />
       <div style={{ height: 5 }} />
       {matches && (

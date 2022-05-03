@@ -193,12 +193,19 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
 export const handlePopulateBracket = (
   groupPredictions,
   playoffPredictions,
-  playoffMatches
+  playoffMatches,
+  result
 ) => {
   let groups = {};
   groupPredictions.forEach((g) => {
-    groups[g.groupName] = g.teamOrder.map((t) => {
-      return { name: t };
+    let thisGroup;
+    if (result) {
+      thisGroup = result.group.find((rg) => rg.groupName === g.groupName);
+    }
+    groups[g.groupName] = g.teamOrder.map((t, idx) => {
+      let order = { name: t };
+      if (thisGroup?.teamOrder[idx] === t) order.correct = true;
+      return order;
     });
   });
 
@@ -214,6 +221,16 @@ export const handlePopulateBracket = (
     playoffMatch.awayTeamName = p.awayTeam;
     playoffMatch.awayTeamLogo = logos[p.awayTeam];
     populatedPlayoffMatches.push(playoffMatch);
+    if (result) {
+      const thisRound = result.playoff.find((round) => round.round === p.round);
+      if (thisRound) {
+        playoffMatch.highlight = [];
+        if (thisRound.teams.includes(p.homeTeam))
+          playoffMatch.highlight.push("home");
+        if (thisRound.teams.includes(p.awayTeam))
+          playoffMatch.highlight.push("away");
+      }
+    }
   });
 
   return {

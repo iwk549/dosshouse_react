@@ -17,6 +17,7 @@ const DraggableTableRow = ({
   isLocked,
   isLastRow,
   isDummy,
+  highlight,
 }) => {
   const [, drag] = useDrag(
     () => ({
@@ -84,7 +85,11 @@ const DraggableTableRow = ({
             </td>
           ) : null}
           {columns.map((c, idx) => (
-            <td key={idx} className="d-table-cell">
+            <td
+              key={idx}
+              className={"d-table-cell"}
+              style={highlight && data[highlight.key] ? highlight : {}}
+            >
               {c.content(data)}
             </td>
           ))}

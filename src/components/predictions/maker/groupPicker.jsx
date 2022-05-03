@@ -1,7 +1,14 @@
 import React from "react";
 import DroppableTeamArea from "./droppableTeamArea";
 
-const GroupPicker = ({ groups, onDrop, onReorder, isLocked, groupMatches }) => {
+const GroupPicker = ({
+  groups,
+  onDrop,
+  onReorder,
+  isLocked,
+  groupMatches,
+  highlight,
+}) => {
   const keys = Object.keys(groups);
   const halfway = Math.ceil(keys.length / 2);
   const halfs = [keys.slice(0, halfway), keys.slice(-halfway)];
@@ -30,6 +37,7 @@ const GroupPicker = ({ groups, onDrop, onReorder, isLocked, groupMatches }) => {
                     onReorder={onReorder}
                     isLocked={isLocked}
                     matches={groupMatches ? groupMatches[g] : null}
+                    highlight={highlight}
                   />
                 </div>
               );

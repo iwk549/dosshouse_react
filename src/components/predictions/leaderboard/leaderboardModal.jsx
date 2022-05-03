@@ -14,6 +14,7 @@ const LeaderboardModal = ({
   originalMatches,
   competition,
   allTeams,
+  result,
 }) => {
   const tabs = ["group", "playoff", "bonus"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -35,7 +36,8 @@ const LeaderboardModal = ({
       handlePopulateBracket(
         prediction.groupPredictions,
         prediction.playoffPredictions,
-        originalMatches
+        originalMatches,
+        result
       );
     setGroups(populatedGroups);
     setPlayoffMatches(populatedPlayoffMatches);
@@ -65,7 +67,15 @@ const LeaderboardModal = ({
         >
           <div className="text-center">
             {isTab("group") ? (
-              <GroupPicker groups={groups} isLocked={true} />
+              <GroupPicker
+                groups={groups}
+                isLocked={true}
+                highlight={{
+                  backgroundColor: "#66ff73",
+                  color: "#000",
+                  key: "correct",
+                }}
+              />
             ) : isTab("playoff") ? (
               <BracketPicker
                 matches={playoffMatches}

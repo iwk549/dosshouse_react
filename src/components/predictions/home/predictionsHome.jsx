@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 import Header from "../../common/pageSections/header";
 import LoadingContext from "../../../context/loadingContext";
 import TabbedArea from "../../common/pageSections/tabbedArea";
@@ -17,6 +18,7 @@ import Competitions from "./competitions";
 import SumbittedPredictions from "./sumbittedPredictions";
 
 const PredictionsHome = ({ paramTab }) => {
+  let navigate = useNavigate();
   const { setLoading, user } = useContext(LoadingContext);
   const [activeCompetitions, setActiveCompetitions] = useState([]);
   const [expiredCompetitions, setExpiredCompetitions] = useState([]);
@@ -49,8 +51,13 @@ const PredictionsHome = ({ paramTab }) => {
     loadData();
   }, [user]);
 
-  const onTab = (tab) => {
+  const isTab = (tab) => {
     return selectedTab.toLowerCase().includes(tab);
+  };
+
+  const handleSelectTab = (tab) => {
+    navigate(`/predictions?tab=${tab}`, { replace: true });
+    setSelectedTab(tab);
   };
 
   const handleDeletePrediction = async (prediction) => {
@@ -79,22 +86,22 @@ const PredictionsHome = ({ paramTab }) => {
       <TabbedArea
         tabs={tabs}
         selectedTab={selectedTab}
-        onSelectTab={setSelectedTab}
+        onSelectTab={handleSelectTab}
         tabPlacement="top"
       >
-        {onTab("competitions") ? (
+        {isTab("competitions") ? (
           <Competitions
             competitions={
-              onTab("active")
+              isTab("active")
                 ? activeCompetitions
-                : onTab("expired")
+                : isTab("expired")
                 ? expiredCompetitions
                 : []
             }
             predictions={predictions}
-            expired={onTab("expired")}
+            expired={isTab("expired")}
           />
-        ) : onTab("submission") ? (
+        ) : isTab("submission") ? (
           <SumbittedPredictions
             predictions={predictions}
             onDelete={handleDeletePrediction}
