@@ -23,8 +23,10 @@ const MyGroupsList = ({ groups, onDeleteGroup, onEditGroup }) => {
                     "btn btn-" + (editOpen && isSelected ? "light" : "info")
                   }
                   onClick={() => {
-                    if (isSelected) setEditOpen(false);
-                    else {
+                    if (isSelected) {
+                      setSelectedGroup(null);
+                      setEditOpen(false);
+                    } else {
                       setEditOpen(true);
                       setSelectedGroup(g);
                     }
