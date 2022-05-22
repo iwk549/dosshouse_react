@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
+import TabbedArea from "react-tabbed-area";
 
 import BasicModal from "../../common/modal/basicModal";
-import TabbedArea from "../../common/pageSections/tabbedArea";
 import LoadingContext from "../../../context/loadingContext";
 import { titleCase } from "../../../utils/allowables";
 import descriptionText from "../../../textMaps/groups";
@@ -21,7 +21,7 @@ class GroupModalForm extends Component {
       passcode: "",
     },
     errors: {},
-    selectedTab: "join",
+    selectedTab: "Join",
     groups: [],
   };
 
@@ -41,7 +41,7 @@ class GroupModalForm extends Component {
     name: Joi.string().allow("").min(1).max(50).label("Name"),
     passcode: Joi.string().required().min(8).max(100).label("Passcode"),
   };
-  tabs = ["join", "create", "manage"];
+  tabs = ["Join", "Create", "Manage"];
 
   setSelectedTab = (selectedTab) => {
     this.setState({ selectedTab });

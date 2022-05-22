@@ -11,14 +11,16 @@ const commonModalStyles = {
 
 export const modalStyle = {
   content: {
-    height: "50%",
-    width: "50%",
+    minHeight: "auto",
+    maxHeight: "75%",
+    width: "75%",
     ...commonModalStyles,
   },
 };
 
 export const confirmModalStyle = {
   height: "auto",
+  minHeight: "auto",
   maxHeight: "50%",
   width: "25%",
   ...commonModalStyles,

@@ -15,16 +15,20 @@ import {
   MdWebStories,
   MdOutlineRemoveCircle,
   MdDeleteSweep,
+  MdOutlineLocationOn,
+  MdCalendarToday,
 } from "react-icons/md";
 import { RiUserSettingsLine } from "react-icons/ri";
 
 const icons = {
   app: MdWebStories,
+  calendar: MdCalendarToday,
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
   delete: MdDeleteSweep,
   home: BiHome,
   left: FaCaretLeft,
+  location: MdOutlineLocationOn,
   login: BiLogInCircle,
   logout: BiLogOutCircle,
   prediction: MdOutlineBatchPrediction,

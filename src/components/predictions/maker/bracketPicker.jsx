@@ -7,6 +7,7 @@ import logos from "../../../textMaps/logos";
 import ExternalImage from "../../common/image/externalImage";
 import Switch from "../../common/form/switch";
 import MatchesModal from "./matchesModal";
+import { shortDate } from "../../../utils/allowables";
 
 const BracketPicker = ({
   matches,
@@ -90,6 +91,7 @@ const BracketPicker = ({
           backgroundColor: "#66ff73",
           color: "#000",
         }}
+        dateTimeFormatter={shortDate}
       />
       {selectedMatch && (
         <SingleMatchModal

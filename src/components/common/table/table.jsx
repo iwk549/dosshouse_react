@@ -1,6 +1,7 @@
 import React from "react";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const Table = ({
   columns,
@@ -15,8 +16,13 @@ const Table = ({
   backgroundStyle,
   thisID,
   onSelect,
+  CardComponent,
 }) => {
-  return (
+  // return a card view if on mobile
+  const { isMobile } = useWindowDimensions();
+  return isMobile && CardComponent ? (
+    <CardComponent data={data} />
+  ) : (
     <div>
       {label && <h5>{label}</h5>}
       <table className={tableClass ? "table " + tableClass : "custom-table"}>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
+import TabbedArea from "react-tabbed-area";
+
 import { splitName } from "../../../utils/allowables";
 import BracketPicker from "./bracketPicker";
 import GroupPicker from "./groupPicker";
@@ -14,7 +16,6 @@ import {
 } from "../../../services/predictionsService";
 import { getCompetition } from "../../../services/competitionService";
 import HeaderLine from "./headerLine";
-import TabbedArea from "../../common/pageSections/tabbedArea";
 import Miscellaneous from "./miscellaneous";
 import Information from "./information";
 

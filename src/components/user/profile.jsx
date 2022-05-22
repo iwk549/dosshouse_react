@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import TabbedArea from "react-tabbed-area";
 
 import LoadingContext from "../../context/loadingContext";
 import Header from "../common/pageSections/header";
-import TabbedArea from "../common/pageSections/tabbedArea";
 import MyInfo from "./myInfo";
 import ProfileSettings from "./profileSettings";
 import RegistrationModalForm from "./registrationModalForm";
@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 const Profile = () => {
   let navigate = useNavigate();
   const { user, setLoading, setUser } = useContext(LoadingContext);
-  const tabs = ["my Info", "settings"];
+  const tabs = ["My Info", "Settings"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [registerFormOpen, setRegisterFormOpen] = useState(!user);
 
@@ -35,7 +35,7 @@ const Profile = () => {
   }, []);
 
   const isTab = (includes) => {
-    return selectedTab.toLowerCase().includes(includes);
+    return selectedTab.toLowerCase().includes(includes.toLowerCase());
   };
 
   const handleEdit = async (info) => {

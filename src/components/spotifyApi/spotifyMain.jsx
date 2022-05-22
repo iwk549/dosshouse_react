@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import TabbedArea from "react-tabbed-area";
 
-import TabbedArea from "../common/pageSections/tabbedArea";
 import ComingSoon from "../common/comingSoon";
 import PlaylistRecommendations from "./playlistRecommendations/playlistRecommendations";
 import Header from "../common/pageSections/header";

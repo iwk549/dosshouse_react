@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
 function getWindowDimensions() {
+  const mobileWidth = 400;
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
     height,
+    isMobile: width <= mobileWidth,
   };
 }
 

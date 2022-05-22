@@ -8,6 +8,7 @@ import {
   titleCase,
   matchStartText,
 } from "../../../utils/allowables";
+import MatchCard from "../../common/cards/matchCard";
 
 const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
   const teams = teamOrder(matches[0]?.sport);
@@ -20,16 +21,16 @@ const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
   const columns = [
     { path: `${teams[0]}TeamName`, label: `${titleCase(teams[0])} Team` },
     {
-      path: `${teams[0]} TeamGoals`,
+      path: `${teams[0]}TeamGoals`,
       label: "",
       content: (m) => (m.matchAccepted ? m[teams[0] + "TeamGoals"] : ""),
     },
-    { path: `${teams[1]}TeamName`, label: `${titleCase(teams[1])} Team` },
     {
-      path: `${teams[1]} TeamGoals`,
+      path: `${teams[1]}TeamGoals`,
       label: "",
       content: (m) => (m.matchAccepted ? m[teams[1] + "TeamGoals"] : ""),
     },
+    { path: `${teams[1]}TeamName`, label: `${titleCase(teams[1])} Team` },
     { path: "location", label: "Location" },
     {
       path: "dateTime",
@@ -63,6 +64,7 @@ const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
         onSort={setSortColumn}
         keyProperty={"_id"}
         headerClass="thead-light"
+        CardComponent={MatchCard}
       />
     </BasicModal>
   );

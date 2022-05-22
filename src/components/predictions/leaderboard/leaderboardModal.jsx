@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import TabbedArea from "react-tabbed-area";
 
 import BasicModal from "../../common/modal/basicModal";
-import TabbedArea from "../../common/pageSections/tabbedArea";
 import GroupPicker from "../maker/groupPicker";
 import BracketPicker from "../maker/bracketPicker";
 import Miscellaneous from "../maker/miscellaneous";
