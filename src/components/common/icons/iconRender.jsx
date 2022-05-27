@@ -6,35 +6,43 @@ import {
   BiLogInCircle,
   BiCheckDouble,
   BiSave,
+  BiRename,
 } from "react-icons/bi";
 import { BsSpotify } from "react-icons/bs";
-import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import { FaCaretLeft, FaCaretRight, FaSortAmountUp } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
   MdOutlineBatchPrediction,
   MdWebStories,
   MdOutlineRemoveCircle,
   MdDeleteSweep,
+  MdOutlineLocationOn,
+  MdCalendarToday,
 } from "react-icons/md";
-import { RiUserSettingsLine } from "react-icons/ri";
+import { RiUserSettingsLine, RiUserFill } from "react-icons/ri";
 
 const icons = {
   app: MdWebStories,
+  calendar: MdCalendarToday,
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
   delete: MdDeleteSweep,
   home: BiHome,
   left: FaCaretLeft,
+  location: MdOutlineLocationOn,
   login: BiLogInCircle,
   logout: BiLogOutCircle,
+  name: BiRename,
   prediction: MdOutlineBatchPrediction,
   profile: RiUserSettingsLine,
+  ranking: FaSortAmountUp,
   remove: MdOutlineRemoveCircle,
   right: FaCaretRight,
   save: BiSave,
   settings: IoMdSettings,
   spotify: BsSpotify,
   trophy: IoMdTrophy,
+  user: RiUserFill,
 };
 
 const IconRender = ({ type, size }) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import TabbedArea from "react-tabbed-area";
 
 import BasicModal from "../../common/modal/basicModal";
-import TabbedArea from "../../common/pageSections/tabbedArea";
 import GroupPicker from "../maker/groupPicker";
 import BracketPicker from "../maker/bracketPicker";
 import Miscellaneous from "../maker/miscellaneous";
@@ -16,14 +16,14 @@ const LeaderboardModal = ({
   allTeams,
   result,
 }) => {
-  const tabs = ["group", "playoff", "bonus"];
+  const tabs = ["Group", "Playoff", "Bonus"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [groups, setGroups] = useState({});
   const [playoffMatches, setPlayoffMatches] = useState([]);
   const [orientation, setOrientation] = useState("portrait");
 
   const isTab = (tab) => {
-    return selectedTab.toLowerCase().includes(tab);
+    return selectedTab.toLowerCase().includes(tab.toLowerCase());
   };
 
   useEffect(() => {

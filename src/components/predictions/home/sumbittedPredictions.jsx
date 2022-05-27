@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { renderInfoLine } from "../../../utils/textUtils";
 import Confirm from "../../common/modal/confirm";
 import RegistrationModalForm from "../../user/registrationModalForm";
 import LoadingContext from "../../../context/loadingContext";
 import GroupModalForm from "../groups/groupModalForm";
-import PredictionGroupList from "../groups/predictionGroupList";
 import PredictionInfo from "./predictionInfo";
+import Header from "../../common/pageSections/header";
 
 const SumbittedPredictions = ({
   predictions,
@@ -33,10 +31,11 @@ const SumbittedPredictions = ({
   };
 
   return user ? (
-    <div>
+    <>
       {predictions.length > 0 ? (
         predictions.map((p) => (
           <React.Fragment key={p._id}>
+            <Header text={p.name} secondary={true} />
             <PredictionInfo
               prediction={p}
               onRemoveGroup={onRemoveGroup}
@@ -79,7 +78,7 @@ const SumbittedPredictions = ({
           </Confirm>
         </>
       )}
-    </div>
+    </>
   ) : (
     <>
       <p>Login to view your submissions</p>

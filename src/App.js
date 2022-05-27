@@ -3,8 +3,8 @@ import logo from "./logo.svg";
 import "./css/App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "bootstrap/dist/css/bootstrap-grid.min.css";
 
+import PageBottom from "./components/common/pageBottom";
 import SwitchRouter from "./components/switchRouter";
 import Navbar from "./components/navbar";
 import LoadingContext from "./context/loadingContext";
@@ -58,6 +58,7 @@ function App() {
       <div className="App">
         <Navbar />
         <SwitchRouter />
+        <PageBottom />
       </div>
       <ToastContainer
         position="bottom-center"

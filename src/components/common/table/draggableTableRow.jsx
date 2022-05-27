@@ -6,6 +6,7 @@ import {
   FaCaretSquareDown,
 } from "react-icons/fa";
 import { IconContext } from "react-icons";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const DraggableTableRow = ({
   data,
@@ -19,6 +20,8 @@ const DraggableTableRow = ({
   isDummy,
   highlight,
 }) => {
+  const { isMobile } = useWindowDimensions();
+
   const [, drag] = useDrag(
     () => ({
       type,
@@ -93,7 +96,7 @@ const DraggableTableRow = ({
               {c.content(data)}
             </td>
           ))}
-          {!isLocked ? (
+          {!isLocked && !isMobile ? (
             <td>
               <FaGripLines />
             </td>

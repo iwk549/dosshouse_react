@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
 import BasicModal from "./basicModal";
-import { confirmModalStyle } from "../../../utils/styles";
+import { confirmModalStyle, modalStyle } from "../../../utils/styles";
+import SideBySideView from "../pageSections/sideBySideView";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const Confirm = ({
   header,
@@ -14,6 +16,7 @@ const Confirm = ({
   buttonText = ["Cancel", "OK"],
   focus = "confirm",
 }) => {
+  const { isMobile } = useWindowDimensions();
   const handleClick = (fn) => {
     setIsOpen(false);
     if (fn) fn();
@@ -23,35 +26,38 @@ const Confirm = ({
       header={header && <h4>{header}</h4>}
       isOpen={isOpen}
       onClose={setIsOpen}
-      style={confirmModalStyle}
+      style={!isMobile ? confirmModalStyle : null}
       hideClose={true}
     >
       <div className="text-center">
         {children}
         <br />
         <hr />
-        <div className="row">
-          {!confirmOnly && (
-            <div className="col">
+        <SideBySideView
+          Components={[
+            !confirmOnly ? (
+              <div className="col">
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleClick(onCancel)}
+                  autoFocus={focus === "cancel"}
+                >
+                  {buttonText[0]}
+                </button>
+              </div>
+            ) : null,
+            <>
               <button
-                className="btn btn-danger btn-sm"
-                onClick={() => handleClick(onCancel)}
-                autoFocus={focus === "cancel"}
+                className="btn btn-dark btn-sm"
+                onClick={() => handleClick(onConfirm)}
+                autoFocus={focus === "confirm"}
               >
-                {buttonText[0]}
+                {buttonText[1]}
               </button>
-            </div>
-          )}
-          <div className="col">
-            <button
-              className="btn btn-dark btn-sm"
-              onClick={() => handleClick(onConfirm)}
-              autoFocus={focus === "confirm"}
-            >
-              {buttonText[1]}
-            </button>
-          </div>
-        </div>
+            </>,
+          ]}
+          mobileWidth={200}
+        />
       </div>
     </BasicModal>
   );

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import TabbedArea from "react-tabbed-area";
 
 import Header from "../../common/pageSections/header";
 import LoadingContext from "../../../context/loadingContext";
-import TabbedArea from "../../common/pageSections/tabbedArea";
 import {
   getActiveCompetitions,
   getExpiredCompetitions,
@@ -16,6 +16,7 @@ import {
 } from "../../../services/predictionsService";
 import Competitions from "./competitions";
 import SumbittedPredictions from "./sumbittedPredictions";
+import { titleCase } from "../../../utils/allowables";
 
 const PredictionsHome = ({ paramTab }) => {
   let navigate = useNavigate();
@@ -23,10 +24,10 @@ const PredictionsHome = ({ paramTab }) => {
   const [activeCompetitions, setActiveCompetitions] = useState([]);
   const [expiredCompetitions, setExpiredCompetitions] = useState([]);
   const [predictions, setPredictions] = useState([]);
+  const tabs = ["Active Competitions", "Expired Competitions", "Submissions"];
   const [selectedTab, setSelectedTab] = useState(
-    paramTab || "active Competitions"
+    titleCase(paramTab) || tabs[0]
   );
-  const tabs = ["active Competitions", "expired Competitions", "submissions"];
 
   const loadData = async () => {
     setLoading(true);

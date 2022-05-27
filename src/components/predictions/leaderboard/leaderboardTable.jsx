@@ -8,6 +8,7 @@ import IconRender from "../../common/icons/iconRender";
 import { sortAndFilterTable } from "../../../utils/leaderboardUtil";
 import LoadingContext from "../../../context/loadingContext";
 import Confirm from "../../common/modal/confirm";
+import LeaderboardCard from "../../common/cards/leaderboardCard";
 
 const LeaderboardTable = ({
   leaderboard,
@@ -147,6 +148,7 @@ const LeaderboardTable = ({
         onSort={(sortColumn) => dispatch({ type: "sort", sortColumn })}
         keyProperty="_id"
         onSelect={onSelectPrediction}
+        CardComponent={LeaderboardCard}
       />
       {selectedPrediction && (
         <Confirm

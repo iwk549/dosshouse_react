@@ -23,7 +23,9 @@ const BasicModal = ({
         if (alsoRunOnClose) alsoRunOnClose();
       }}
       ariaHideApp={false}
-      style={{ content: { ...modalStyle.content, ...style } }}
+      style={{
+        content: { ...modalStyle.content, ...style },
+      }}
     >
       <div className="text-center">
         {!hideClose && (

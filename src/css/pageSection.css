@@ -68,3 +68,14 @@
   margin-right: 50px;
   border-top: 1px solid var(--minus10-info-bg-color);
 }
+.row {
+  display: grid;
+  grid-template-columns: (auto-fit, minmax(100px, 1fr));
+}
+.single-card {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  box-shadow: 1px 1px var(--minus10-info-bg-color);
+  background-color: var(--light-grey);
+}
