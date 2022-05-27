@@ -21,7 +21,7 @@ const Table = ({
   // return a card view if on mobile
   const { isMobile } = useWindowDimensions();
   return isMobile && CardComponent ? (
-    <CardComponent data={data} />
+    <CardComponent data={data} onSelect={onSelect} />
   ) : (
     <div>
       {label && <h5>{label}</h5>}

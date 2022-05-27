@@ -15,7 +15,9 @@ const SideBySideView = ({ Components, mobileWidth }) => {
       ))}
     </div>
   ) : (
-    Components.map((Component) => Component)
+    Components.map((Component, idx) => (
+      <React.Fragment key={idx}>{Component}</React.Fragment>
+    ))
   );
 };
 

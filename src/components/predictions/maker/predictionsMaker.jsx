@@ -18,9 +18,11 @@ import { getCompetition } from "../../../services/competitionService";
 import HeaderLine from "./headerLine";
 import Miscellaneous from "./miscellaneous";
 import Information from "./information";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
+  const { isMobile } = useWindowDimensions();
   const { user, setLoading } = useContext(LoadingContext);
   const [predictions, dispatchPredictions] = useReducer(predictionReducer, {
     groups: {},
@@ -38,10 +40,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const [originalPlayoffMatches, setOriginalPlayoffMatches] = useState([]);
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
-  const tabs = ["group", "bracket", "bonus", "information"];
+  const tabs = ["Group", "Bracket", "Bonus", "Information"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [allTeams, setAllTeams] = useState([]);
-  const [bracketIsPortrait, setBracketIsPortrait] = useState(false);
+  const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
 
   const loadData = async () => {
     setLoading(true); // get matches from db
@@ -171,6 +173,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
     });
   };
 
+  const isTab = (tab) => {
+    return selectedTab.toLowerCase().includes(tab.toLowerCase());
+  };
+
   return (
     <div>
       <HeaderLine
@@ -195,7 +201,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         tabPlacement="top"
       >
         <div className="text-center">
-          {selectedTab.includes("group") ? (
+          {isTab("group") ? (
             <GroupPicker
               groups={predictions.groups}
               onDrop={dispatchPredictions}
@@ -203,7 +209,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               isLocked={predictions.isLocked}
               groupMatches={groupMatches}
             />
-          ) : selectedTab.includes("bracket") ? (
+          ) : isTab("bracket") ? (
             <BracketPicker
               matches={predictions.playoffMatches}
               onSelectTeam={handleSelectBracketWinner}
@@ -213,7 +219,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               setIsPortrait={setBracketIsPortrait}
               originalPlayoffMatches={originalPlayoffMatches}
             />
-          ) : selectedTab.includes("bonus") ? (
+          ) : isTab("bonus") ? (
             <Miscellaneous
               onChange={handleChangeMiscValue}
               misc={predictions.misc}
@@ -222,7 +228,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
               allTeams={allTeams}
               isLocked={predictions.isLocked}
             />
-          ) : selectedTab.includes("info") ? (
+          ) : isTab("info") ? (
             <Information competition={predictions.competition} />
           ) : null}
         </div>

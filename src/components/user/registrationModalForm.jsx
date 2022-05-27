@@ -97,18 +97,18 @@ class RegistrationModalForm extends Form {
             <h3>
               {this.props.reset
                 ? "Reset your Password"
-                : this.state.selectedTab === "register"
+                : this.state.selectedTab === "Register"
                 ? "Register for a New Account"
                 : "Login to your Account"}
             </h3>
             <form onSubmit={this.handleSubmit}>
-              {this.state.selectedTab === "register"
+              {this.state.selectedTab === "Register"
                 ? this.renderInput("name", "Name", "autofocus")
                 : null}
               {this.renderInput(
                 "email",
                 "Email",
-                this.state.selectedTab === "login"
+                this.state.selectedTab === "Login"
               )}
               {this.renderInput(
                 "password",
