@@ -3,7 +3,7 @@ import { getPlaylistRecommendations } from "../../../services/audioFeaturesServi
 import TrackTable from "./trackTable";
 import _ from "lodash";
 import PlaylistForm from "./playlistForm";
-import SearchBox from "../../common/searchBox";
+import SearchBox from "../../common/searchSort/searchBox";
 import { toast } from "react-toastify";
 import TrackTableProbs from "./trackTableWithProbs";
 // import ExcelDownload from "../../common/excelDownload";

@@ -10,7 +10,7 @@ const LeaderboardCard = ({ data, onSelect }) => {
       {data.map((d, idx) => {
         return (
           <div
-            className="single-card row"
+            className="single-card row clickable"
             key={idx}
             onClick={() => onSelect(d)}
           >

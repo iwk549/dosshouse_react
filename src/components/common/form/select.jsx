@@ -21,6 +21,7 @@ const FormSelect = ({
   const finalLabel = boldHeader ? <b>{label}</b> : label;
 
   const renderLabel = () => {
+    if (!label) return null;
     return (
       <label htmlFor={name} className="custom-input-label">
         {tooltip ? (

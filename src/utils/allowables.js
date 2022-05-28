@@ -72,3 +72,12 @@ export function translateRound(round, finalRound) {
   ];
   return translation[finalRound - round];
 }
+export function decideSortOrder(sortColumn, path) {
+  if (sortColumn.path === path)
+    sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+  else {
+    sortColumn.path = path;
+    sortColumn.order = path.toLowerCase().includes("points") ? "desc" : "asc";
+  }
+  return sortColumn;
+}

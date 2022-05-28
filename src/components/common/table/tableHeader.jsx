@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 
-import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs";
+import { decideSortOrder } from "../../../utils/allowables";
+import IconRender from "../icons/iconRender";
 
 class TableHeader extends Component {
   raiseSort = (path) => {
-    const sortColumn = { ...this.props.sortColumn };
-    if (sortColumn.path === path)
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    else {
-      sortColumn.path = path;
-      sortColumn.order = path.toLowerCase().includes("points") ? "desc" : "asc";
-    }
+    const sortColumn = decideSortOrder(this.props.sortColumn, path);
     this.props.onSort(sortColumn);
   };
 
@@ -18,8 +13,8 @@ class TableHeader extends Component {
     const { sortColumn } = this.props;
     if (sortColumn) {
       if (column.path !== sortColumn.path) return null;
-      if (sortColumn.order === "asc") return <BsCaretUpFill />;
-      return <BsCaretDownFill />;
+      if (sortColumn.order === "asc") return <IconRender type="up" />;
+      return <IconRender type="down" />;
     }
   };
 

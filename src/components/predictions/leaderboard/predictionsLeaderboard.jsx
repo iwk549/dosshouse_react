@@ -63,7 +63,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     setLoading(false);
   };
 
-  const loadData = async (search) => {
+  const loadData = async () => {
     setLoading(true);
     const matchesRes = await getMatches(competitionID);
     const competitionRes = await getCompetition(competitionID);
@@ -131,7 +131,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         Go Back
       </button>
       <br />
-      <GroupInfo groupInfo={groupInfo || { name: "Overall Leaderboard" }} />
+      <GroupInfo groupInfo={groupInfo || { name: "Sitewide" }} />
 
       <LeaderboardTable
         leaderboard={leaderboard}
@@ -139,6 +139,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         onForceRemovePrediction={handleForceRemovePrediction}
         groupInfo={groupInfo}
         onSearch={(value) => loadLeaderboard(null, null, value)}
+        hasSearched={searched}
       />
       {searched && leaderboard.length === 0 && (
         <b>No predictions found using the search terms</b>

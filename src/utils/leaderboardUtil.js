@@ -11,14 +11,22 @@ export const sortAndFilterTable = (leaderboard, search, sortColumn) => {
   }
   const splitSortPath = sortColumn.path.split(".");
   filteredLeaderboard.sort((a, b) => {
-    const aSort =
+    let aSort =
       splitSortPath[0] === "points"
         ? a.points[splitSortPath[1]][splitSortPath[2]]
+        : splitSortPath.length === 2
+        ? a[splitSortPath[0]][splitSortPath[1]]
         : a[sortColumn.path];
-    const bSort =
+    let bSort =
       splitSortPath[0] === "points"
         ? b.points[splitSortPath[1]][splitSortPath[2]]
+        : splitSortPath.length === 2
+        ? b[splitSortPath[0]][splitSortPath[1]]
         : b[sortColumn.path];
+
+    if (typeof aSort === "string") aSort = aSort.toLowerCase();
+    if (typeof bSort === "string") bSort = bSort.toLowerCase();
+
     let sort = 0;
     if (aSort > bSort) sort = 1;
     else sort = -1;

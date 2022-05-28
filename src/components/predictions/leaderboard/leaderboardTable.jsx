@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 
 import Table from "../../common/table/table";
-import SearchBoxSubmit from "../../common/table/searchBoxSubmit";
+import SearchBoxSubmit from "../../common/searchSort/searchBoxSubmit";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
 import IconRender from "../../common/icons/iconRender";
@@ -16,6 +16,7 @@ const LeaderboardTable = ({
   onSelectPrediction,
   onForceRemovePrediction,
   onSearch,
+  hasSearched,
 }) => {
   const { user } = useContext(LoadingContext);
   const [state, dispatch] = useReducer(reducer, {
@@ -51,7 +52,7 @@ const LeaderboardTable = ({
   }, [leaderboard]);
 
   const columns = [
-    { path: "ranking", label: "#" },
+    { path: "ranking", label: "Sitewide Rank" },
     {
       path: "userID.name",
       label: "User Name",
@@ -140,6 +141,7 @@ const LeaderboardTable = ({
         name="leaderboardSearch"
         onSearch={(value) => onSearch(value)}
         placeholder="Search by user or bracket name..."
+        hasSearched={hasSearched}
       />
       <Table
         columns={columns}
@@ -149,6 +151,7 @@ const LeaderboardTable = ({
         keyProperty="_id"
         onSelect={onSelectPrediction}
         CardComponent={LeaderboardCard}
+        cardSearchColumns={columns.slice(0, 5)}
       />
       {selectedPrediction && (
         <Confirm

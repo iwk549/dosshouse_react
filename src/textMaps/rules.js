@@ -1,3 +1,5 @@
+import React from "react";
+
 export default [
   {
     header: "Gambling/Wagering Disclaimer",
@@ -21,10 +23,10 @@ export default [
         <br />
         <br />
         A bracket that has not been completely filled out (i.e. one or more
-        teams in the playoff bracket are still listed as "Winner", or all bonus
-        picks have not been selected) is considered to be a valid bracket. No
-        points will be awarded for the missing items, but it will still be in
-        contention for the leaderboard.
+        teams in the playoff bracket are still listed as &quot;Winner&quot;, or
+        all bonus picks have not been selected) is considered to be a valid
+        bracket. No points will be awarded for the missing items, but it will
+        still be in contention for the leaderboard.
         <br />
         <br />
         Brackets are only checked for validity during the scoring portion at

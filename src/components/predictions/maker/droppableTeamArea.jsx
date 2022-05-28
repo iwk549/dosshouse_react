@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import MatchesModal from "./matchesModal";
 import DraggableTable from "../../common/table/draggableTable";
@@ -15,6 +15,15 @@ const DroppableTeamArea = ({
   highlight,
 }) => {
   const [matchesOpen, setMatchesOpen] = useState(false);
+  const [sortColumn, setSortColumn] = useState({
+    path: "dateTime",
+    order: "asc",
+  });
+
+  useEffect(() => {
+    getData(matches);
+  }, [matches]);
+
   const columns = [
     {
       content: (t) => (
@@ -39,6 +48,27 @@ const DroppableTeamArea = ({
       direction,
       groupName,
     });
+  };
+
+  const handleSort = (sortColumn) => {
+    setTimeout(() => {
+      setMatchesOpen(true);
+    }, 0);
+    setMatchesOpen(false);
+    setSortColumn(sortColumn);
+  };
+
+  const getData = () => {
+    const sortedMatches = matches.sort((a, b) => {
+      if (!b[sortColumn.path]) return -1;
+      if (!a[sortColumn.path]) return 1;
+      const isGreater = a[sortColumn.path] > b[sortColumn.path];
+      return (isGreater && sortColumn.order === "asc") ||
+        (!isGreater && sortColumn.order === "desc")
+        ? 1
+        : -1;
+    });
+    return sortedMatches;
   };
 
   return (
@@ -69,8 +99,10 @@ const DroppableTeamArea = ({
           <MatchesModal
             isOpen={matchesOpen}
             setIsOpen={setMatchesOpen}
-            matches={matches}
+            matches={getData()}
             header={`Group ${groupName} Matches`}
+            sortColumn={sortColumn}
+            onSort={handleSort}
           />
         </>
       )}

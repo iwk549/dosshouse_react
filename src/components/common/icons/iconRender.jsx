@@ -9,7 +9,7 @@ import {
   BiRename,
   BiSearchAlt,
 } from "react-icons/bi";
-import { BsSpotify } from "react-icons/bs";
+import { BsSpotify, BsCaretUpFill, BsCaretDownFill } from "react-icons/bs";
 import { FaCaretLeft, FaCaretRight, FaSortAmountUp } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
@@ -19,15 +19,18 @@ import {
   MdDeleteSweep,
   MdOutlineLocationOn,
   MdCalendarToday,
+  MdCancel,
 } from "react-icons/md";
 import { RiUserSettingsLine, RiUserFill } from "react-icons/ri";
 
 const icons = {
   app: MdWebStories,
   calendar: MdCalendarToday,
+  cancel: MdCancel,
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
   delete: MdDeleteSweep,
+  down: BsCaretDownFill,
   home: BiHome,
   left: FaCaretLeft,
   location: MdOutlineLocationOn,
@@ -44,6 +47,7 @@ const icons = {
   settings: IoMdSettings,
   spotify: BsSpotify,
   trophy: IoMdTrophy,
+  up: BsCaretUpFill,
   user: RiUserFill,
 };
 
