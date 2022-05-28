@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 
 import Confirm from "../common/modal/confirm";
 
@@ -8,6 +8,7 @@ const ProfileSettings = ({ onLogout, onDelete }) => {
 
   return (
     <div>
+      <br />
       <button className="btn btn-dark" onClick={() => setLogoutOpen(true)}>
         Logout
       </button>

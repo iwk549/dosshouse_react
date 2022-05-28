@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 import { shortDate, teamOrder } from "../../../utils/allowables";
 import IconRender from "../icons/iconRender";
+import logos from "../../../textMaps/logos";
+import ExternalImage from "../image/externalImage";
 
 const MatchCard = ({ data }) => {
   if (data.length === 0) return null;
   const order = teamOrder(data[0].sport);
+
+  const renderLogo = (teamName) => {
+    return <ExternalImage uri={logos[teamName]} width={15} height={15} />;
+  };
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -28,7 +34,13 @@ const MatchCard = ({ data }) => {
             {order.map((team, idx) => {
               const otherTeam = team === "home" ? "away" : "home";
               return (
-                <div key={team}>
+                <React.Fragment key={team}>
+                  <div style={{ position: "absolute", left: 35 }}>
+                    {renderLogo(d[team + "TeamName"])}
+                  </div>
+                  <div style={{ position: "absolute", right: 35 }}>
+                    {renderLogo(d[team + "TeamName"])}
+                  </div>
                   <div
                     style={{
                       fontWeight: winner === team ? "bold" : "",
@@ -44,7 +56,7 @@ const MatchCard = ({ data }) => {
                       {d[otherTeam + "TeamGoals"]}
                     </div>
                   )}
-                </div>
+                </React.Fragment>
               );
             })}
             <div className="mini-div-line" />

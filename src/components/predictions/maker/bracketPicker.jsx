@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 import TournamentBracket from "react-svg-tournament-bracket";
 
 import SingleMatchModal from "./singleMatchModal";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 import BasicModal from "./basicModal";
 import { confirmModalStyle, modalStyle } from "../../../utils/styles";

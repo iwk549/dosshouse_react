@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const PageBottom = ({}) => {
   return <div style={{ height: 50 }}></div>;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 
 import UserInfoForm from "./userInfoForm";
 
@@ -12,6 +12,7 @@ const MyInfo = ({ user, onEdit }) => {
 
   return (
     <div>
+      <br />
       <button className="btn btn-info" onClick={() => setEditing(!editing)}>
         {editing ? "Cancel" : "Edit My Info"}
       </button>

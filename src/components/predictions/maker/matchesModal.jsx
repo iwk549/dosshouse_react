@@ -9,9 +9,15 @@ import {
   matchStartText,
 } from "../../../utils/allowables";
 import MatchCard from "../../common/cards/matchCard";
+import logos from "../../../textMaps/logos";
+import ExternalImage from "../../common/image/externalImage";
 
 const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
   const teams = teamOrder(matches[0]?.sport);
+
+  const renderLogo = (teamName) => {
+    return <ExternalImage uri={logos[teamName]} width={25} height={25} />;
+  };
 
   const [sortColumn, setSortColumn] = useState({
     path: "dateTime",
@@ -19,6 +25,11 @@ const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
   });
   if (!matches || matches.length === 0) return null;
   const columns = [
+    {
+      path: `${teams[0]}TeamLogo`,
+      label: "",
+      content: (m) => renderLogo(m[teams[0] + "TeamName"]),
+    },
     { path: `${teams[0]}TeamName`, label: `${titleCase(teams[0])} Team` },
     {
       path: `${teams[0]}TeamGoals`,
@@ -31,6 +42,11 @@ const MatchesModal = ({ matches, isOpen, setIsOpen, header }) => {
       content: (m) => (m.matchAccepted ? m[teams[1] + "TeamGoals"] : ""),
     },
     { path: `${teams[1]}TeamName`, label: `${titleCase(teams[1])} Team` },
+    {
+      path: `${teams[1]}TeamLogo`,
+      label: "",
+      content: (m) => renderLogo(m[teams[1] + "TeamName"]),
+    },
     { path: "location", label: "Location" },
     {
       path: "dateTime",

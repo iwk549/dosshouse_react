@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useContext } from "react";
 
 import Confirm from "../../common/modal/confirm";
 import RegistrationModalForm from "../../user/registrationModalForm";
@@ -35,7 +35,6 @@ const SumbittedPredictions = ({
       {predictions.length > 0 ? (
         predictions.map((p) => (
           <React.Fragment key={p._id}>
-            <Header text={p.name} secondary={true} />
             <PredictionInfo
               prediction={p}
               onRemoveGroup={onRemoveGroup}
@@ -48,7 +47,6 @@ const SumbittedPredictions = ({
                 ).length
               }
             />
-            <hr />
           </React.Fragment>
         ))
       ) : (

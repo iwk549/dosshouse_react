@@ -50,7 +50,7 @@ class GroupModalForm extends Component {
   handleCreateAndJoin = async (data) => {
     this.context.setLoading(true);
     let error = false;
-    const type = this.state.selectedTab;
+    const type = this.state.selectedTab.toLowerCase();
     if (type === "create") {
       const res = await saveGroup(null, data);
       if (res.status !== 200) {

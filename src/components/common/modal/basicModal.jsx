@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 
 import { modalStyle } from "../../../utils/styles";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const BasicModal = ({
   id,
@@ -13,6 +14,7 @@ const BasicModal = ({
   style,
   hideClose,
 }) => {
+  const { isMobile } = useWindowDimensions();
   return (
     <Modal
       id={id}
@@ -24,7 +26,7 @@ const BasicModal = ({
       }}
       ariaHideApp={false}
       style={{
-        content: { ...modalStyle.content, ...style },
+        content: { ...modalStyle.content, ...(!isMobile ? style : {}) },
       }}
     >
       <div className="text-center">

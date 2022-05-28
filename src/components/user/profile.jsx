@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import TabbedArea from "react-tabbed-area";
 
@@ -52,7 +52,7 @@ const Profile = () => {
     logout();
     toast.info("Logged out");
     setUser();
-    navigate("/home");
+    window.location = "/home";
   };
 
   const handleDelete = async () => {

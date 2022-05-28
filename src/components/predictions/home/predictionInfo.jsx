@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { renderInfoLine } from "../../../utils/textUtils";
@@ -6,6 +6,7 @@ import PredictionGroupList from "../groups/predictionGroupList";
 import SideBySideView from "../../common/pageSections/sideBySideView";
 
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import Header from "../../common/pageSections/header";
 
 const PredictionInfo = ({
   prediction,
@@ -52,7 +53,8 @@ const PredictionInfo = ({
   };
 
   return (
-    <>
+    <div className="single-card" style={{ backgroundColor: "#f2f2f2" }}>
+      <Header text={prediction.name} secondary={true} />
       <SideBySideView
         Components={[
           renderInfo(prediction),
@@ -72,8 +74,7 @@ const PredictionInfo = ({
                 ? "View"
                 : "Edit"}
             </button>
-            <br />
-            <br />
+            <div style={{ height: 10 }} />
             <button
               className="btn btn-sm btn-danger"
               onClick={() => {
@@ -93,7 +94,7 @@ const PredictionInfo = ({
         setGroupFormOpen={setGroupFormOpen}
         onRemoveGroup={(group) => onRemoveGroup(prediction, group)}
       />
-    </>
+    </div>
   );
 };
 

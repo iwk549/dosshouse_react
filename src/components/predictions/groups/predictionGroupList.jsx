@@ -22,12 +22,12 @@ const PredictionGroupList = ({
           <>
             {prediction.groups.map((g, idx) => (
               <React.Fragment key={idx}>
-                <SideBySideView
-                  Components={[
-                    <>
-                      Group Name: <b>{g.name}</b>
-                      <br />
-                      Group Owner: <b>{g.ownerID?.name}</b>
+                <>
+                  Group Name: <b>{g.name}</b>
+                  <br />
+                  Group Owner: <b>{g.ownerID?.name}</b>
+                  <div className="row">
+                    <div style={{ gridColumn: 1 }}>
                       <button
                         className="btn btn-block btn-info"
                         onClick={() =>
@@ -38,8 +38,8 @@ const PredictionGroupList = ({
                       >
                         View Group Leaderboard
                       </button>
-                    </>,
-                    <>
+                    </div>
+                    <div style={{ gridColumn: 2 }}>
                       <button
                         className="btn btn-sm btn-danger"
                         onClick={() => {
@@ -49,24 +49,22 @@ const PredictionGroupList = ({
                       >
                         <IconRender type="remove" size={15} />
                       </button>
-                    </>,
-                  ]}
-                />
+                    </div>
+                  </div>
+                </>
                 <div className="mini-div-line" />
               </React.Fragment>
             ))}
           </>,
-          <>
-            <button
-              className="btn btn-sm btn-dark"
-              onClick={() => {
-                setSelectedSubmission(prediction);
-                setGroupFormOpen(true);
-              }}
-            >
-              Manage Groups
-            </button>
-          </>,
+          <button
+            className="btn btn-sm btn-dark"
+            onClick={() => {
+              setSelectedSubmission(prediction);
+              setGroupFormOpen(true);
+            }}
+          >
+            Manage Groups
+          </button>,
         ]}
       />
       {selectedGroup && (

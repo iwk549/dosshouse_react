@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 import IconRender from "../icons/iconRender";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../image/externalImage";

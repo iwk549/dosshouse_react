@@ -270,7 +270,7 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
       misc[pick.name].toLowerCase().includes("winner") ||
       misc[pick.name].toLowerCase().includes("loser")
     )
-      missingItems.push({ label: "Miscellaneous", text: pick.label });
+      missingItems.push({ label: "Bonus", text: pick.label });
   });
   return missingItems;
 };
