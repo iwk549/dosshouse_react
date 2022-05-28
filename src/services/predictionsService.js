@@ -62,6 +62,26 @@ export async function getLeaderboard(
   }
 }
 
+export async function searchLeaderboard(
+  competitionID,
+  groupID = "all",
+  searchParam
+) {
+  try {
+    return await http.get(
+      http.predictions +
+        "/leaderboard/" +
+        competitionID +
+        "/" +
+        groupID +
+        "/" +
+        searchParam
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
 export async function getUnownedPrediction(predictionID) {
   try {
     return await http.get(http.predictions + "/unowned/" + predictionID);

@@ -7,6 +7,7 @@ import {
   BiCheckDouble,
   BiSave,
   BiRename,
+  BiSearchAlt,
 } from "react-icons/bi";
 import { BsSpotify } from "react-icons/bs";
 import { FaCaretLeft, FaCaretRight, FaSortAmountUp } from "react-icons/fa";
@@ -39,6 +40,7 @@ const icons = {
   remove: MdOutlineRemoveCircle,
   right: FaCaretRight,
   save: BiSave,
+  search: BiSearchAlt,
   settings: IoMdSettings,
   spotify: BsSpotify,
   trophy: IoMdTrophy,

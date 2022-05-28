@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 
 import Table from "../../common/table/table";
-import SearchBox from "../../common/table/searchBox";
+import SearchBoxSubmit from "../../common/table/searchBoxSubmit";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
 import IconRender from "../../common/icons/iconRender";
@@ -15,11 +15,11 @@ const LeaderboardTable = ({
   groupInfo,
   onSelectPrediction,
   onForceRemovePrediction,
+  onSearch,
 }) => {
   const { user } = useContext(LoadingContext);
   const [state, dispatch] = useReducer(reducer, {
     sortColumn: { path: "totalPoints", order: "desc" },
-    search: "",
     tableData: [],
     timer: undefined,
   });
@@ -51,6 +51,7 @@ const LeaderboardTable = ({
   }, [leaderboard]);
 
   const columns = [
+    { path: "ranking", label: "#" },
     {
       path: "userID.name",
       label: "User Name",
@@ -135,10 +136,9 @@ const LeaderboardTable = ({
 
   return (
     <>
-      <SearchBox
+      <SearchBoxSubmit
         name="leaderboardSearch"
-        search={state.search}
-        onSearch={(value) => dispatch({ type: "search", search: value })}
+        onSearch={(value) => onSearch(value)}
         placeholder="Search by user or bracket name..."
       />
       <Table

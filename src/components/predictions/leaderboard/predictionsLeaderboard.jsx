@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getLeaderboard,
+  searchLeaderboard,
   getUnownedPrediction,
   forceRemovePredictionFromGroup,
 } from "../../../services/predictionsService";
@@ -31,15 +32,27 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     groupID === "all" ? 25 : 100
   );
   const [result, setResult] = useState(null);
+  const [searched, setSearched] = useState(false);
 
-  const loadLeaderboard = async (selectedPage, updatedResultsPerPage) => {
+  const loadLeaderboard = async (
+    selectedPage,
+    updatedResultsPerPage,
+    search
+  ) => {
     setLoading(true);
-    const leaderboardRes = await getLeaderboard(
-      competitionID,
-      selectedPage || page,
-      updatedResultsPerPage || resultsPerPage,
-      groupID
-    );
+    let leaderboardRes;
+    if (search) {
+      setSearched(true);
+      leaderboardRes = await searchLeaderboard(competitionID, groupID, search);
+    } else {
+      setSearched(false);
+      leaderboardRes = await getLeaderboard(
+        competitionID,
+        selectedPage || page,
+        updatedResultsPerPage || resultsPerPage,
+        groupID
+      );
+    }
     if (leaderboardRes.status === 200) {
       setPage(selectedPage || page);
       setResultsPerPage(updatedResultsPerPage || resultsPerPage);
@@ -50,7 +63,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     setLoading(false);
   };
 
-  const loadData = async () => {
+  const loadData = async (search) => {
     setLoading(true);
     const matchesRes = await getMatches(competitionID);
     const competitionRes = await getCompetition(competitionID);
@@ -118,26 +131,29 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         Go Back
       </button>
       <br />
-      {groupInfo ? (
-        <GroupInfo groupInfo={groupInfo} />
-      ) : (
-        <b>Overall Leaderboard</b>
-      )}
+      <GroupInfo groupInfo={groupInfo || { name: "Overall Leaderboard" }} />
+
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}
         onForceRemovePrediction={handleForceRemovePrediction}
         groupInfo={groupInfo}
+        onSearch={(value) => loadLeaderboard(null, null, value)}
       />
-      <PageSelection
-        totalCount={predictionCount}
-        displayPerPage={resultsPerPage}
-        pageNumber={page}
-        onSelectPage={(page) => loadLeaderboard(page)}
-        onClickCaret={(movement) => loadLeaderboard(page + movement)}
-        resultsSelectionArray={[25, 50, 100]}
-        onUpdateResultsPerPage={(selection) => loadLeaderboard(1, selection)}
-      />
+      {searched && leaderboard.length === 0 && (
+        <b>No predictions found using the search terms</b>
+      )}
+      {!searched && (
+        <PageSelection
+          totalCount={predictionCount}
+          displayPerPage={resultsPerPage}
+          pageNumber={page}
+          onSelectPage={(page) => loadLeaderboard(page)}
+          onClickCaret={(movement) => loadLeaderboard(page + movement)}
+          resultsSelectionArray={[25, 50, 100]}
+          onUpdateResultsPerPage={(selection) => loadLeaderboard(1, selection)}
+        />
+      )}
       {selectedPrediction && (
         <LeaderboardModal
           prediction={selectedPrediction}

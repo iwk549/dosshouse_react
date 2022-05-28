@@ -4,7 +4,11 @@ const GroupInfo = ({ groupInfo }) => {
   return (
     <>
       <div className="standout-header">{groupInfo.name}</div>
-      Group Owner: <b>{groupInfo.ownerID.name}</b>
+      {groupInfo.ownerID?.name && (
+        <>
+          Group Owner: <b>{groupInfo.ownerID.name}</b>
+        </>
+      )}
     </>
   );
 };
