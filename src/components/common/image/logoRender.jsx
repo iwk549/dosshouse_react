@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const LogoRender = ({ width = 50, height = 50, borderRadius = 10 }) => {
   return (

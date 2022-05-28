@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import PredictionsHome from "./home/predictionsHome";
 import PredictionMaker from "./maker/predictionsMaker";
 import PredictionsLeaderboard from "./leaderboard/predictionsLeaderboard";
 
-const PredictionsRedirect = ({}) => {
+const PredictionsRedirect = () => {
   const [Component, setComponent] = useState(<div />);
   const [searchParams] = useSearchParams();
   const predictionID = searchParams.get("id");

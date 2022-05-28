@@ -38,7 +38,7 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
           </li>
           <li>
             Enter a single artist id. Again this is a 22 character string and
-            can be found at the end of the artist's page.
+            can be found at the end of the artist&apos;s page.
           </li>
           <li>There are two checkboxes.</li>
           <ul>
@@ -111,8 +111,8 @@ const ReadMe = ({ id, popupOpen, closeModal }) => {
           If only a single playlist was selected then the output is the average
           Euclidean Distance between each song in the playlist and each song for
           the selected artist. A lower number here means that the song matches
-          better with each of the songs in the playlist (it's values are closer
-          in distance).
+          better with each of the songs in the playlist (it&apos;s values are
+          closer in distance).
         </p>
       </div>
     </Modal>

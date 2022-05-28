@@ -33,7 +33,7 @@ class GroupModalForm extends Component {
     this.context.setLoading(false);
   }
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps) {
     if (this.props.isOpen !== prevProps.isOpen) this.componentDidMount();
   }
 

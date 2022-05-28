@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import {
-  VictoryBar,
   VictoryScatter,
   VictoryChart,
   VictoryAxis,
-  VictoryTheme,
   VictoryTooltip,
-  VictoryGroup,
 } from "victory";
 
 const axisStyle = {

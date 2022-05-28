@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 // import ReactExport from "react-export-excel";
 
-class ExcelDownload extends Component {
+class ExcelDownload extends React.Component {
   render() {
     // ! Need to reqrite excel download, react-export-excel import causing error
     return null;

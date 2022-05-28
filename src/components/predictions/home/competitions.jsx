@@ -17,7 +17,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
         <h3>{c.name}</h3>
         <SideBySideView
           Components={[
-            <div>
+            <div key="info">
               {renderInfoLine(
                 "Submission Deadline",
                 c.submissionDeadline,
@@ -28,7 +28,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
               {renderInfoLine("Competition Start", c.competitionStart, "date")}
               {renderInfoLine("Competition End", c.competitionEnd, "date")}
             </div>,
-            <div>
+            <div key="buttons">
               {!expired && (
                 <>
                   {new Date(c.submissionDeadline) < new Date() ? (

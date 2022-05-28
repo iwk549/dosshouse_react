@@ -5,7 +5,7 @@ import ComingSoon from "../common/comingSoon";
 import PlaylistRecommendations from "./playlistRecommendations/playlistRecommendations";
 import Header from "../common/pageSections/header";
 
-const SpotifyMain = ({}) => {
+const SpotifyMain = () => {
   const tabs = ["playlist Recommendations", "Other"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (

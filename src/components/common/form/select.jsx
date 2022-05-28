@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 
-import IconRender from "../icons/iconRender";
 import Tooltip from "../tooltip/tooltip";
 
 const FormSelect = ({
@@ -10,11 +9,7 @@ const FormSelect = ({
   options,
   selectedOption,
   onChange,
-  placeholder,
   boldHeader,
-  hideLabel,
-  style,
-  valueBoxStyle,
   tooltip,
   isLocked,
 }) => {
@@ -57,27 +52,6 @@ const FormSelect = ({
         isDisabled={isLocked}
       />
     </>
-  );
-
-  return (
-    <div className="form-group">
-      {renderLabel()}
-      <select
-        name={name}
-        onChange={(event) => onChange(event.target.value)}
-        className="custom-select"
-        value={selectedOption}
-      >
-        <option value="" id="">
-          {placeholder || "Make a selection..."}
-        </option>
-        {options.map((o) => (
-          <option value={o.value} id={o.value} key={o._id}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </div>
   );
 };
 

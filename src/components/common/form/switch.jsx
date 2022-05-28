@@ -1,7 +1,7 @@
 import React from "react";
 
 const Switch = ({ value, onChange, label, name }) => {
-  const handleChange = (event) => {
+  const handleChange = () => {
     onChange(!value, name);
   };
 
@@ -10,11 +10,7 @@ const Switch = ({ value, onChange, label, name }) => {
       {label}
       <br />
       <label className="switch">
-        <input
-          type="checkbox"
-          onChange={(event) => handleChange(event)}
-          checked={value}
-        />
+        <input type="checkbox" onChange={handleChange} checked={value} />
         <span className="slider" data-testid="custom-switch"></span>
       </label>
     </div>

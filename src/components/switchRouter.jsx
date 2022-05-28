@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import ActiveSites from "./activeSites/activeSites";
 
@@ -8,7 +8,7 @@ import PredictionsRedirect from "./predictions/predictionsRedirect";
 import Profile from "./user/profile";
 import StandAloneLogin from "./user/standAloneLogin";
 
-const SwitchRouter = ({}) => {
+const SwitchRouter = () => {
   return (
     <div className="content">
       <Routes>

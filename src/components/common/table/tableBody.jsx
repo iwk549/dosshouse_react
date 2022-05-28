@@ -13,15 +13,8 @@ class TableBody extends Component {
     return item[keyProperty] + (column.path || column.key);
   };
 
-  getBackgroundColor(item, backgroundKey, backgroundStyle) {
-    if (backgroundKey === "_id" && item._id === this.props.thisID)
-      return backgroundStyle;
-    else if (item[backgroundKey] > 0) return backgroundStyle;
-  }
-
   render() {
-    const { data, columns, keyProperty, backgroundKey, backgroundStyle } =
-      this.props;
+    const { data, columns, keyProperty } = this.props;
 
     return (
       <tbody>

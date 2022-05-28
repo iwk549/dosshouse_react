@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import RegistrationModalForm from "./registrationModalForm";
 import LoadingContext from "../../context/loadingContext";
 
-const StandAloneLogin = ({}) => {
+const StandAloneLogin = () => {
   const { setLoading } = useContext(LoadingContext);
   const [searchParams] = useSearchParams();
   let navigate = useNavigate();

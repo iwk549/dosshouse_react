@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const ExternalImage = ({ uri, height, width }) => {
   if (!uri) return null;

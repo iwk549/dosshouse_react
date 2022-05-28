@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
-import LogoRender from "../image/logoRender";
-
-const LoadingAnimation = ({}) => {
+const LoadingAnimation = () => {
   return (
     <div className="loading-animation-container">
       <motion.div

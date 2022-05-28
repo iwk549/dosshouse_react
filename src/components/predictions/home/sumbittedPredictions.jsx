@@ -5,7 +5,6 @@ import RegistrationModalForm from "../../user/registrationModalForm";
 import LoadingContext from "../../../context/loadingContext";
 import GroupModalForm from "../groups/groupModalForm";
 import PredictionInfo from "./predictionInfo";
-import Header from "../../common/pageSections/header";
 
 const SumbittedPredictions = ({
   predictions,

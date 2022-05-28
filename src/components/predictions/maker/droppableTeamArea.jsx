@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 
 import MatchesModal from "./matchesModal";
 import DraggableTable from "../../common/table/draggableTable";

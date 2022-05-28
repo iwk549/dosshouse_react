@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const ComingSoon = () => {
-  return <p>There's nothing here right now. Check back later for more.</p>;
+  return <p>There&apos;s nothing here right now. Check back later for more.</p>;
 };
 
 export default ComingSoon;

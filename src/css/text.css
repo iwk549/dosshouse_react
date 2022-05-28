@@ -12,3 +12,14 @@
   margin: 0;
   list-style-position: inside;
 }
+.standout-header {
+  width: 75%;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 1.5em;
+  border-radius: 5px;
+  background-color: var(--info-bg-color);
+}

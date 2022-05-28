@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 
 import FormSelect from "../../common/form/select";
 import { getFinalRound } from "../../../utils/bracketsUtil";
@@ -30,7 +30,7 @@ const Miscellaneous = ({
       (m) => m.round === getFinalRound(playoffMatches) - 1
     );
     const thirdPlaceMatch = [];
-    ["home", "away"].forEach((t, idx) => {
+    ["home", "away"].forEach((t) => {
       let losingTeam = "";
       const finalist = final[t + "TeamName"];
       if (finalist.toLowerCase().includes("winner")) {

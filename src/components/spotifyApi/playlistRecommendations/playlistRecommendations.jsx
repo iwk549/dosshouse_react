@@ -6,7 +6,7 @@ import PlaylistForm from "./playlistForm";
 import SearchBox from "../../common/searchBox";
 import { toast } from "react-toastify";
 import TrackTableProbs from "./trackTableWithProbs";
-import ExcelDownload from "../../common/excelDownload";
+// import ExcelDownload from "../../common/excelDownload";
 import ReadMe from "./readMe";
 import { round } from "mathjs";
 import { getArtistInfo, getPlaylistInfo } from "../../../services/nameService";
@@ -124,10 +124,9 @@ class PlaylistRecommendations extends Component {
     this.setState({ readMeOpen });
   };
 
-  renderExcelDownload(data, columns) {
-    return null;
-    // return <ExcelDownload data={data} columns={columns} />;
-  }
+  // renderExcelDownload(data, columns) {
+  //   return <ExcelDownload data={data} columns={columns} />;
+  // }
 
   handleReset = () => {
     this.setState({
@@ -275,9 +274,9 @@ class PlaylistRecommendations extends Component {
           onRemovePlaylist={this.handleRemovePlaylist}
         />
         <hr />
-        {data.length > 0 &&
+        {/* {data.length > 0 &&
           dataColumns.length > 0 &&
-          this.renderExcelDownload(data, dataColumns)}
+          this.renderExcelDownload(data, dataColumns)} */}
         {data.length > 0 && (
           <React.Fragment>
             <SearchBox

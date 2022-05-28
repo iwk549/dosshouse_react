@@ -2,7 +2,6 @@ import React from "react";
 import Joi from "joi-browser";
 
 import Form from "../common/form/form";
-import { MdOutlineEditRoad } from "react-icons/md";
 
 class UserInfoForm extends Form {
   state = {

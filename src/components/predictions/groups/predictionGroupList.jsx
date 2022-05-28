@@ -57,6 +57,7 @@ const PredictionGroupList = ({
             ))}
           </>,
           <button
+            key="button"
             className="btn btn-sm btn-dark"
             onClick={() => {
               setSelectedSubmission(prediction);

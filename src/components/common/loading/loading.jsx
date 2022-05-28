@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
 import { IconContext } from "react-icons";
-import IconRender from "../icons/iconRender";
 import LoadingAnimation from "./loadingAnimation";
 import LogoRender from "../image/logoRender";
 
@@ -51,7 +50,7 @@ const Loading = ({ loading, showText }) => {
                 .<br />
                 They may take a minute or two to wake up.
               </p>
-              <p className="light-text">Don't want to wait?</p>
+              <p className="light-text">Don&apos;t want to wait?</p>
               <button
                 className="btn btn-sm btn-light"
                 onClick={() => window.location.reload()}

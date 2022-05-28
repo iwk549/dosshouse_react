@@ -1,7 +1,7 @@
 import React from "react";
 
 import BasicModal from "./basicModal";
-import { confirmModalStyle, modalStyle } from "../../../utils/styles";
+import { confirmModalStyle } from "../../../utils/styles";
 import SideBySideView from "../pageSections/sideBySideView";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 

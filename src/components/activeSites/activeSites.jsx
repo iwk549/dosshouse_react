@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 import Header from "../common/pageSections/header";
 import Site from "./site";
@@ -58,11 +58,11 @@ const ActiveSites = () => {
       names: ["StructureMate"],
       text: (
         <p>
-          StructureMate is an engineering calculator being built in
-          collaboration with a master in civil engineering.
+          StructureMate is an engineering calculator built in collaboartion with
+          a civil engineer.
           <br />
           The calculator provides a fast and easy way to perform complex
-          calculations such as load bearing capacity, shear, and many more.
+          calculations such as load bearing capacity, shear, and more.
           <br />
           All calculations are specific to the type of material selected.
         </p>
@@ -108,8 +108,8 @@ const ActiveSites = () => {
               Update player names without having to start a new scorecard.
             </li>
             <li>
-              A "Brad" timer which can be reset and restarted with a single
-              button to keep turns moving
+              A &quot;Brad&quot; timer which can be reset and restarted with a
+              single button to keep turns moving
             </li>
             <li>A full Sudoku game within the app, play while you wait</li>
           </ul>

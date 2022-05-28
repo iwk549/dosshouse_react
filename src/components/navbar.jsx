@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { IconContext } from "react-icons";
@@ -6,12 +6,10 @@ import IconRender from "./common/icons/iconRender";
 import LoadingContext from "../context/loadingContext";
 import RegistrationModalForm from "./user/registrationModalForm";
 import LogoRender from "./common/image/logoRender";
-import { toast } from "react-toastify";
 
 const Navbar = () => {
   let navigate = useNavigate();
   const { user, setUser, setLoading } = useContext(LoadingContext);
-  const [logoutOpen, setLogoutOpen] = useState(false);
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
 
   const getActiveLink = ({ isActive }) => {

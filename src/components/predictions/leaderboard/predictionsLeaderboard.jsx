@@ -118,7 +118,6 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         Go Back
       </button>
       <br />
-      <br />
       {groupInfo ? (
         <GroupInfo groupInfo={groupInfo} />
       ) : (

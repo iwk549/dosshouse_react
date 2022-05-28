@@ -60,7 +60,7 @@ const HeaderLine = ({
               className="btn btn-sm btn-info"
               onClick={() => setMissingItemsOpen(true)}
             >
-              See What's Missing
+              See What&apos;s Missing
             </button>
           </div>
         )}

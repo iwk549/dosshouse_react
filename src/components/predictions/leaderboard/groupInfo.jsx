@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React from "react";
 
 const GroupInfo = ({ groupInfo }) => {
   return (
     <>
-      <div className="pop-box">
-        <h2>
-          <b>{groupInfo.name}</b>
-        </h2>
-      </div>
+      <div className="standout-header">{groupInfo.name}</div>
       Group Owner: <b>{groupInfo.ownerID.name}</b>
     </>
   );

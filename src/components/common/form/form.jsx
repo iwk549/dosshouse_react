@@ -110,7 +110,7 @@ class Form extends Component {
 
   renderCheckbox(name, label) {
     const { data } = this.state;
-    const onChange = (event) => {
+    const onChange = () => {
       this.handleChange({
         currentTarget: {
           name,
