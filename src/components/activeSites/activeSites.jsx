@@ -198,7 +198,6 @@ const ActiveSites = () => {
           {s.text}
         </Site>
       ))}
-      <hr />
     </div>
   );
 };

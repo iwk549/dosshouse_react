@@ -11,6 +11,7 @@ export const sortAndFilterTable = (leaderboard, search, sortColumn) => {
   }
   const splitSortPath = sortColumn.path.split(".");
   filteredLeaderboard.sort((a, b) => {
+    if (splitSortPath[0] === "misc" && !a.misc) return 0;
     let aSort =
       splitSortPath[0] === "points"
         ? a.points[splitSortPath[1]][splitSortPath[2]]

@@ -79,3 +79,6 @@
   box-shadow: 1px 1px var(--minus10-info-bg-color);
   background-color: var(--light-grey);
 }
+.announcement {
+  background-color: var(--minus10-light-bg-color);
+}

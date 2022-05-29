@@ -9,7 +9,7 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
     borderRadius: 5,
   };
   return (
-    <div>
+    <div className="single-card">
       {imageSrc ? (
         <img src={imageSrc} alt={names[0]} style={imageStyle} />
       ) : (
@@ -48,8 +48,6 @@ const Site = ({ imageSrc, urls, names, children, tech, repos, icon }) => {
             <br />
           </React.Fragment>
         ))}
-      <br />
-      <hr />
     </div>
   );
 };

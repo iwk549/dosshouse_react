@@ -33,6 +33,8 @@ const LeaderboardTable = ({
       typeof action.search === "string" ? action.search : state.search;
     let sortColumn = action.sortColumn || state.sortColumn;
     let tableData = state.tableData;
+
+    // this logic os for old style of debounced local searching
     let timer = action.type === "search" ? undefined : state.timer;
     if (action.type === "search") {
       clearTimeout(state.timer);
@@ -44,6 +46,7 @@ const LeaderboardTable = ({
     } else {
       tableData = sortAndFilterTable(leaderboard, search, sortColumn);
     }
+
     return { tableData, search, sortColumn, timer };
   }
 

@@ -141,10 +141,10 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         onSearch={(value) => loadLeaderboard(null, null, value)}
         hasSearched={searched}
       />
-      {searched && leaderboard.length === 0 && (
-        <b>No predictions found using the search terms</b>
+      {leaderboard.length === 0 && (
+        <b>No submissions found{searched ? " using the search terms" : ""}.</b>
       )}
-      {!searched && (
+      {!searched && leaderboard.length > 0 && (
         <PageSelection
           totalCount={predictionCount}
           displayPerPage={resultsPerPage}

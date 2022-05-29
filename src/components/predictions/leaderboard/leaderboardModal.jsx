@@ -49,9 +49,12 @@ const LeaderboardModal = ({
       isOpen={isOpen}
       onClose={setIsOpen}
       header={
-        <h3>
-          <b>{prediction.name}</b>
-        </h3>
+        <>
+          <h3>
+            <b>{prediction.name}</b>
+          </h3>
+          Correct picks are higlighted in green
+        </>
       }
       style={{
         width: "80%",

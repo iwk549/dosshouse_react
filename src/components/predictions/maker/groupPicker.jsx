@@ -26,7 +26,7 @@ const GroupPicker = ({
       i += groupsPerRow;
     }
     setGroupMaps(maps);
-  }, [width]);
+  }, [width, groups]);
 
   return (
     <>

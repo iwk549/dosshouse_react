@@ -33,17 +33,17 @@ const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
         style={{ position: "relative" }}
       >
         {hasSearched && (
-          <div
-            className="clickable"
-            style={{ position: "absolute", left: "10%", top: "40%" }}
+          <button
+            className="btn btn-light"
+            style={{ position: "absolute", left: -10, top: "30%" }}
             onClick={resetSearch}
           >
             <IconRender type="cancel" />
-          </div>
+          </button>
         )}
         <button
-          className="btn btn-dark clickable"
-          style={{ position: "absolute", top: "30%", right: 0 }}
+          className="btn btn-dark"
+          style={{ position: "absolute", top: "30%", right: -10 }}
         >
           <IconRender type="search" />
         </button>
@@ -52,7 +52,6 @@ const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
           placeholder={placeholder}
           onChange={(event) => setValue(event.target.value)}
           value={value}
-          style={{ paddingLeft: hasSearched ? "10%" : 0 }}
         />
       </form>
     </>
