@@ -44,7 +44,8 @@ const PredictionsHome = ({ paramTab }) => {
 
     // no error displayed here
     // this is to gather users submissions, if not logged in will give error
-    if (predictionsRes.status === 200) setPredictions(predictionsRes.data);
+    if (predictionsRes && predictionsRes.status === 200)
+      setPredictions(predictionsRes.data);
     setLoading(false);
   };
 

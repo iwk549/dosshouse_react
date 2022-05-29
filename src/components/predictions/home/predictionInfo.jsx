@@ -53,7 +53,11 @@ const PredictionInfo = ({
   };
 
   return (
-    <div className="single-card" style={{ backgroundColor: "#f2f2f2" }}>
+    <div
+      className="single-card"
+      style={{ backgroundColor: "#f2f2f2" }}
+      data-testid="prediction-info"
+    >
       <Header text={prediction.name} secondary={true} />
       <SideBySideView
         Components={[
@@ -81,6 +85,7 @@ const PredictionInfo = ({
                 setSelectedSubmission(prediction);
                 setConfirmDeleteOpen(true);
               }}
+              data-testid="delete-prediction-button"
             >
               Delete
             </button>

@@ -86,7 +86,7 @@ const SumbittedPredictions = ({
         Login
       </button>
       <RegistrationModalForm
-        header="Login or Register to View Your Submissions"
+        header="Login or Register to View your Submissions"
         isOpen={registerFormOpen}
         setIsOpen={setRegisterFormOpen}
         onSuccess={raiseLoginSuccess}

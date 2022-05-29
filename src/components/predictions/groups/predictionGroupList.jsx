@@ -63,6 +63,7 @@ const PredictionGroupList = ({
               setSelectedSubmission(prediction);
               setGroupFormOpen(true);
             }}
+            data-testid="manage-groups-button"
           >
             Manage Groups
           </button>,

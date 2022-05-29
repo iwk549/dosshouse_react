@@ -81,7 +81,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
       setAllTeams(allTeams);
       if (competitionRes.status === 200) {
         setCompetition(competitionRes.data);
-        if (resultRes.status === 200) {
+        if (resultRes && resultRes.status === 200) {
           setResult(resultRes.data);
           // do not give error here, results may not exist yet
         }
