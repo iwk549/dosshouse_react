@@ -1,6 +1,6 @@
 import React from "react";
 
-import { shortDate, teamOrder } from "../../../utils/allowables";
+import { longDate, teamOrder } from "../../../utils/allowables";
 import IconRender from "../icons/iconRender";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../image/externalImage";
@@ -64,7 +64,7 @@ const MatchCard = ({ data }) => {
               <IconRender type="location" /> {d.location}
             </div>
             <div>
-              <IconRender type="calendar" /> {shortDate(d.dateTime)}
+              <IconRender type="calendar" /> {longDate(d.dateTime)}
             </div>
           </div>
         );

@@ -54,7 +54,7 @@ const MatchesModal = ({
     {
       path: "dateTime",
       label: matchStartText(matches[0]?.sport),
-      content: (m) => shortDate(m.dateTime, true),
+      content: (m) => shortDate(m.dateTime),
     },
   ];
 

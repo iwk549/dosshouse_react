@@ -45,7 +45,7 @@ const SingleMatchModal = ({ isOpen, setIsOpen, match, finalRoundNumber }) => {
           </div>
         )}
         <p>{match.location}</p>
-        <p>{longDate(match.dateTime, true)}</p>
+        <p>{longDate(match.dateTime)}</p>
       </div>
     </BasicModal>
   );

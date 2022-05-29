@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-
 export const toastOptions = {
   position: "top-right",
   autoClose: 5000,
@@ -20,21 +18,27 @@ export function titleCase(words) {
   return titled.join(" ");
 }
 
-export function shortDate(dateTime, dontSlice, noTime) {
+const dateOptions = {
+  year: "2-digit",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  hour12: false,
+  minute: "2-digit",
+};
+export function shortDate(dateTime) {
   if (!dateTime) return "";
-  const newDateTime = new Date(
-    dontSlice ? dateTime : dateTime.slice(0, dateTime.length - 1)
-  );
-  const time = format(newDateTime, "h:mma").toLowerCase();
-  return format(newDateTime, "yyyy-MM-dd") + (noTime ? "" : " " + time);
+  return new Date(dateTime).toLocaleString(undefined, dateOptions);
 }
-export function longDate(dateTime, dontSlice) {
+export function longDate(dateTime) {
   if (!dateTime) return "";
-  const newDateTime = new Date(
-    dontSlice ? dateTime : dateTime.slice(0, dateTime.length - 1)
-  );
-  const amPm = format(newDateTime, "a").toLowerCase();
-  return format(newDateTime, "MMMM dd, yyyy h:mm") + amPm;
+  return new Date(dateTime).toLocaleString(undefined, {
+    ...dateOptions,
+    month: "short",
+    year: "numeric",
+    hour12: true,
+    timeZoneName: "short",
+  });
 }
 
 export function teamOrder(sport) {

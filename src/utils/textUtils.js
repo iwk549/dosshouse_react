@@ -1,9 +1,9 @@
 import React from "react";
 
-import { shortDate } from "./allowables";
+import { longDate } from "./allowables";
 
 export function renderInfoLine(label, value, type, key) {
-  const formattedValue = type == "date" ? shortDate(value, true) : value;
+  const formattedValue = type == "date" ? longDate(value, true) : value;
   return (
     <div key={key}>
       <p>
