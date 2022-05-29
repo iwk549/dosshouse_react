@@ -67,6 +67,7 @@ const DraggableTableRow = ({
         <tr
           ref={isLocked ? null : dragDrop}
           className={"d-table-row" + (isLocked ? " locked" : "")}
+          data-testid="draggable-table-row"
         >
           {!isLocked ? (
             <td>
@@ -74,6 +75,7 @@ const DraggableTableRow = ({
                 <FaCaretSquareUp
                   onClick={() => onReorder(data, "up", position)}
                   className="clickable"
+                  data-testid="move-up"
                 />
               )}
               <br />
@@ -81,6 +83,7 @@ const DraggableTableRow = ({
                 <FaCaretSquareDown
                   onClick={() => onReorder(data, "down", position)}
                   className="clickable"
+                  data-testid="move-down"
                 />
               ) : (
                 <br />
