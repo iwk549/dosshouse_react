@@ -4,6 +4,7 @@ import MatchesModal from "./matchesModal";
 import DraggableTable from "../../common/table/draggableTable";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const DroppableTeamArea = ({
   teams,
@@ -14,24 +15,25 @@ const DroppableTeamArea = ({
   matches,
   highlight,
 }) => {
+  const { isSuperSmall } = useWindowDimensions();
   const [matchesOpen, setMatchesOpen] = useState(false);
   const [sortColumn, setSortColumn] = useState({
     path: "dateTime",
     order: "asc",
   });
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    getData(matches);
-  }, [matches]);
-
-  const columns = [
-    {
-      content: (t) => (
-        <ExternalImage uri={logos[t.name]} width={30} height={20} />
-      ),
-    },
-    { content: (t) => t.name },
-  ];
+    let newColumns = [{ content: (t) => t.name }];
+    if (!isSuperSmall) {
+      newColumns.unshift({
+        content: (t) => (
+          <ExternalImage uri={logos[t.name]} width={30} height={20} />
+        ),
+      });
+    }
+    setColumns(newColumns);
+  }, [isSuperSmall]);
 
   const raiseDrop = ({ draggedItem, droppedOn }) => {
     onDrop({

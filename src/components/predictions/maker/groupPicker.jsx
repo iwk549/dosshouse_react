@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import DroppableTeamArea from "./droppableTeamArea";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const GroupPicker = ({
   groups,
@@ -9,9 +11,22 @@ const GroupPicker = ({
   groupMatches,
   highlight,
 }) => {
-  const keys = Object.keys(groups);
-  const halfway = Math.ceil(keys.length / 2);
-  const halfs = [keys.slice(0, halfway), keys.slice(-halfway)];
+  const { width } = useWindowDimensions();
+  const [groupMaps, setGroupMaps] = useState([]);
+
+  useEffect(() => {
+    // set number of groups displayed per row
+    // 300 pixels needed per group
+    let groupsPerRow = Math.floor(width / 300) || 1;
+    const keys = Object.keys(groups);
+    let maps = [];
+    let i = 0;
+    while (i < keys.length) {
+      maps.push(keys.slice(i, groupsPerRow + i));
+      i += groupsPerRow;
+    }
+    setGroupMaps(maps);
+  }, [width]);
 
   return (
     <>
@@ -25,11 +40,11 @@ const GroupPicker = ({
         </p>
       )}
       <div className="row">
-        {halfs.map((h, i) => (
+        {groupMaps.map((h, i) => (
           <div className="row" key={i}>
             {h.map((g, ii) => {
               return (
-                <div className="col" key={ii}>
+                <div key={ii} style={{ gridColumn: ii + 1 }}>
                   <DroppableTeamArea
                     groupName={g}
                     teams={groups[g]}

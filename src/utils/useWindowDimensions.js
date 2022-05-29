@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 
 function getWindowDimensions() {
   const mobileWidth = 750;
+  const superSmallWidth = 350;
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
     height,
     isMobile: width <= mobileWidth,
+    isSuperSmall: width <= superSmallWidth,
   };
 }
 
