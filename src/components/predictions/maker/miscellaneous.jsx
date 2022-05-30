@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-import FormSelect from "../../common/form/select";
+// import FormSelect from "../../common/form/select";
 import { getFinalRound } from "../../../utils/bracketsUtil";
 import logos from "../../../textMaps/logos";
 import { renderSelectLabel } from "../../../utils/rendering";
 import SingleMatchModal from "./singleMatchModal";
+import TeamSelectComponent from "./teamSelectComponent";
 
 const Miscellaneous = ({
   playoffMatches,
@@ -14,6 +15,7 @@ const Miscellaneous = ({
   allTeams,
   isLocked,
 }) => {
+  console.log(misc);
   const [matchModalOpen, setMatchModalOpen] = useState(false);
 
   const mappedTeams = allTeams
@@ -59,7 +61,7 @@ const Miscellaneous = ({
     <div>
       {competition?.miscPicks.map((p) => (
         <React.Fragment key={p.name}>
-          <FormSelect
+          {/* <FormSelect
             name={p.name}
             label={p.label}
             boldHeader={true}
@@ -83,24 +85,34 @@ const Miscellaneous = ({
               ),
             }}
             isLocked={isLocked}
-          />
-          {p.name === "thirdPlace" && (
-            <>
-              <br />
-              <button
-                className="btn btn-info"
-                onClick={() => setMatchModalOpen(true)}
-              >
-                View Match Details
-              </button>
-              <SingleMatchModal
-                isOpen={matchModalOpen}
-                setIsOpen={setMatchModalOpen}
-                match={p.info}
-              />
-              <br />
-            </>
-          )}
+          /> */}
+          <TeamSelectComponent
+            teams={
+              p.name === "thirdPlace" ? getThirdPlacePlayoff() : mappedTeams
+            }
+            title={p.label}
+            onSelect={(value) => onChange(p.name, value)}
+            isLocked={isLocked}
+            selectedOption={misc[p.name]}
+          >
+            {p.name === "thirdPlace" && (
+              <>
+                <br />
+                <button
+                  className="btn btn-info"
+                  onClick={() => setMatchModalOpen(true)}
+                >
+                  View Match Details
+                </button>
+                <SingleMatchModal
+                  isOpen={matchModalOpen}
+                  setIsOpen={setMatchModalOpen}
+                  match={p.info}
+                />
+                <br />
+              </>
+            )}
+          </TeamSelectComponent>
           <br />
         </React.Fragment>
       ))}

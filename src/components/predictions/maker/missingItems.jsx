@@ -2,8 +2,10 @@ import React from "react";
 
 import BasicModal from "../../common/modal/basicModal";
 import { renderInfoLine } from "../../../utils/textUtils";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const MissingItems = ({ items, isOpen, setIsOpen, name }) => {
+  const { isMobile } = useWindowDimensions();
   return (
     <BasicModal
       isOpen={isOpen}
@@ -26,10 +28,13 @@ const MissingItems = ({ items, isOpen, setIsOpen, name }) => {
             "Name",
             name
               ? "Bracket name must be at least 3 characters"
-              : "Give your bracket a name"
+              : "Give your bracket a name",
+            "",
+            "name",
+            isMobile
           )}
         {items.map((item, idx) =>
-          renderInfoLine(item.label, item.text, "", idx)
+          renderInfoLine(item.label, item.text, "", idx, isMobile)
         )}
       </div>
     </BasicModal>

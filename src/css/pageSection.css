@@ -79,6 +79,9 @@
   box-shadow: 1px 1px var(--minus10-info-bg-color);
   background-color: var(--light-grey);
 }
+.single-card.light-bg {
+  background-color: var(--light-text);
+}
 .announcement {
   background-color: var(--minus10-light-bg-color);
 }

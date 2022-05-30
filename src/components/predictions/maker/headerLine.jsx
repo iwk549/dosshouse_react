@@ -45,14 +45,13 @@ const HeaderLine = ({
         <div className="col">
           {isLocked
             ? "The submission deadline for this competition is over"
-            : `This submission is ${!isComplete ? "not " : ""}complete
-            ${
-              isComplete
-                ? isSaved
-                  ? " and has been saved."
-                  : ". Save it to lock in your predictions."
-                : "."
-            }`}
+            : `This submission is ${!isComplete ? "not " : ""}complete${
+                isComplete
+                  ? isSaved
+                    ? " and has been saved."
+                    : ". Save it to lock in your predictions."
+                  : "."
+              }`}
         </div>
         {!isComplete && (
           <div className="col">

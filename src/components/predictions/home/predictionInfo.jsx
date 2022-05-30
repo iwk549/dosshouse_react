@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { renderInfoLine } from "../../../utils/textUtils";
 import PredictionGroupList from "../groups/predictionGroupList";
 import SideBySideView from "../../common/pageSections/sideBySideView";
-
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import Header from "../../common/pageSections/header";
+import ExternalImage from "../../common/image/externalImage";
+import logos from "../../../textMaps/logos";
 
 const PredictionInfo = ({
   prediction,
@@ -22,7 +23,7 @@ const PredictionInfo = ({
   const renderInfo = (prediction) => {
     return (
       <div className="col">
-        {renderInfoLine("Competition", prediction.competitionID?.name)}
+        <b>{prediction.competitionID?.name}</b>
         {!isMobile && (
           <>
             {renderInfoLine(
@@ -39,7 +40,7 @@ const PredictionInfo = ({
   const renderPoints = (points, totalPoints) => {
     return (
       <div className="col">
-        {renderInfoLine("Total Points", totalPoints)}
+        {renderInfoLine("Total Points", totalPoints, "", "points", isMobile)}
         {!isMobile && (
           <>
             {renderInfoLine("Group", points.group.points)}
@@ -53,17 +54,22 @@ const PredictionInfo = ({
   };
 
   return (
-    <div
-      className="single-card"
-      style={{ backgroundColor: "#f2f2f2" }}
-      data-testid="prediction-info"
-    >
+    <div className="single-card light-bg" data-testid="prediction-info">
       <Header text={prediction.name} secondary={true} />
       <SideBySideView
         Components={[
           renderInfo(prediction),
           renderPoints(prediction.points, prediction.totalPoints),
           <>
+            {renderInfoLine(
+              "Champion",
+              prediction.misc?.winner,
+              "",
+              "champion",
+              isMobile
+            )}
+            <ExternalImage uri={logos[prediction.misc?.winner]} />
+            <br />
             {!isMobile && <div style={{ height: 25 }} />}
             <button
               className="btn btn-sm btn-dark"

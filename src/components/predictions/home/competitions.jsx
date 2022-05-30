@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 import { renderInfoLine } from "../../../utils/textUtils";
 import SideBySideView from "../../common/pageSections/sideBySideView";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const Competitions = ({ competitions, predictions, expired }) => {
+  const { isMobile } = useWindowDimensions();
   let navigate = useNavigate();
+
+  if (competitions.length === 0)
+    return (
+      <p>There a currently no {expired ? "expired" : "active"} competitions.</p>
+    );
 
   return competitions.map((c) => {
     const submissionsMade = predictions.filter(
@@ -13,7 +20,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
     ).length;
 
     return (
-      <React.Fragment key={c._id}>
+      <div className="single-card light-bg" key={c._id}>
         <h3>{c.name}</h3>
         <SideBySideView
           Components={[
@@ -21,12 +28,38 @@ const Competitions = ({ competitions, predictions, expired }) => {
               {renderInfoLine(
                 "Submission Deadline",
                 c.submissionDeadline,
-                "date"
+                "date",
+                "deadline",
+                isMobile
               )}
-              {renderInfoLine("Submissions Allowed", c.maxSubmissions)}
-              {renderInfoLine("Submissions Made", submissionsMade)}
-              {renderInfoLine("Competition Start", c.competitionStart, "date")}
-              {renderInfoLine("Competition End", c.competitionEnd, "date")}
+              {renderInfoLine(
+                "Submissions Allowed",
+                c.maxSubmissions,
+                "",
+                "allowed",
+                isMobile
+              )}
+              {renderInfoLine(
+                "Submissions Made",
+                submissionsMade,
+                "",
+                "made",
+                isMobile
+              )}
+              {renderInfoLine(
+                "Competition Start",
+                c.competitionStart,
+                "date",
+                "start",
+                isMobile
+              )}
+              {renderInfoLine(
+                "Competition End",
+                c.competitionEnd,
+                "date",
+                "end",
+                isMobile
+              )}
             </div>,
             <div key="buttons">
               {!expired && (
@@ -68,7 +101,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
             </div>,
           ]}
         />
-      </React.Fragment>
+      </div>
     );
   });
 };

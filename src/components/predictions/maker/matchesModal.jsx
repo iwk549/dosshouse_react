@@ -59,10 +59,15 @@ const MatchesModal = ({
   ];
 
   return (
-    <BasicModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-      <h3 className="text-center">
-        <b>{header}</b>
-      </h3>
+    <BasicModal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      header={
+        <h3 className="text-center">
+          <b>{header}</b>
+        </h3>
+      }
+    >
       <Table
         columns={columns}
         data={matches}

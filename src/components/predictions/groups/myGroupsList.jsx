@@ -42,6 +42,7 @@ const MyGroupsList = ({ groups, onDeleteGroup, onEditGroup }) => {
                   />
                 )}
               </div>
+              <br />
               <div className="col">
                 <button
                   className="btn btn-danger"

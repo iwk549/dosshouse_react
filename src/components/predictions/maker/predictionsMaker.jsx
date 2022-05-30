@@ -19,11 +19,13 @@ import HeaderLine from "./headerLine";
 import Miscellaneous from "./miscellaneous";
 import Information from "./information";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import NotAllowed from "./notAllowed";
 
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
   const { isMobile } = useWindowDimensions();
   const { user, setLoading } = useContext(LoadingContext);
+  const [notAllowed, setNotAllowed] = useState(200);
   const [predictions, dispatchPredictions] = useReducer(predictionReducer, {
     groups: {},
     playoffs: [],
@@ -103,7 +105,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
             isLocked,
           });
           setPredictionName(predictionsRes.data.name);
-        } else toast.error(predictionsRes.data);
+        } else {
+          toast.error("Could not retrive submission");
+          setNotAllowed(predictionsRes.status);
+        }
       } else {
         dispatchPredictions({
           type: "initial",
@@ -176,6 +181,8 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const isTab = (tab) => {
     return selectedTab.toLowerCase().includes(tab.toLowerCase());
   };
+
+  if (notAllowed > 200) return <NotAllowed code={notAllowed} />;
 
   return (
     <div>

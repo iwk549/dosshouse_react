@@ -9,7 +9,7 @@ const SideBySideView = ({ Components, mobileWidth }) => {
   return !isMobile || (mobileWidth && width > mobileWidth) ? (
     <div className="row">
       {ToMap.map((Component, idx) => (
-        <div key={idx} style={{ gridColumn: idx + 1 }}>
+        <div key={idx} style={{ gridColumn: idx + 1, margin: 15 }}>
           {Component}
         </div>
       ))}

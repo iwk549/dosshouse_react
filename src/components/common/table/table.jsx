@@ -25,11 +25,13 @@ const Table = ({
 
   return isMobile && CardComponent ? (
     <>
-      <DropdownSort
-        onSort={onSort}
-        columns={cardSearchColumns || columns}
-        sortColumn={sortColumn}
-      />
+      {sortColumn && onSort && (
+        <DropdownSort
+          onSort={onSort}
+          columns={cardSearchColumns || columns}
+          sortColumn={sortColumn}
+        />
+      )}
       <CardComponent data={data} onSelect={onSelect} />
     </>
   ) : (
