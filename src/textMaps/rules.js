@@ -43,7 +43,7 @@ export default [
       <p>
         If there is an official golden boot (or similar award for top
         goalscorer) handed out by the tournament then the winner will be based
-        of off that, with any tiebreakers coming from those official rules.
+        on that, with any tiebreakers coming from those official rules.
         <br />
         If there is no official award then only goals scored will be counted, no
         tiebreakers will be applied. In the case of a tie all submissions
