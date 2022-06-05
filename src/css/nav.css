@@ -68,22 +68,28 @@ a.dropdown-item {
 }
 
 .main-nav {
-  padding: 10px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 5px;
   margin: 10px;
   border-radius: 15px;
   background-color: var(--main-background);
   font-size: 18px;
 }
+.main-nav-dropdown {
+  position: absolute;
+  top: -10;
+  left: 10;
+  background-color: var(--main-background);
+  border: 2px solid var(--secondary);
+  border-radius: 5px;
+}
 
 .nav-link {
-  text-align: center;
+  align-content: center;
   margin-right: 50px;
   margin-left: 10px;
   margin-bottom: 10px;
   white-space: nowrap;
-  padding: 5px;
+  padding: 2px;
   border-radius: 5px;
   color: var(--light-text);
   text-decoration: none;

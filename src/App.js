@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import PageBottom from "./components/common/pageBottom";
 import SwitchRouter from "./components/switchRouter";
-import Navbar from "./components/navbar";
+import Navbar from "./components/navigation/navbar";
 import LoadingContext from "./context/loadingContext";
 import Loading from "./components/common/loading/loading";
 import { getCurrentUser, refreshUser } from "./services/userService";

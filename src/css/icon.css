@@ -46,6 +46,10 @@
 .nav-icon {
   color: var(--light-text);
 }
+.nav-options {
+  color: var(--secondary);
+  cursor: pointer;
+}
 .icon-info {
   color: var(--secondary);
   margin: 2px;

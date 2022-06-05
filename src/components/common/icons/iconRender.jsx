@@ -22,6 +22,7 @@ import {
   MdCancel,
 } from "react-icons/md";
 import { RiUserSettingsLine, RiUserFill } from "react-icons/ri";
+import { VscThreeBars } from "react-icons/vsc";
 
 const icons = {
   app: MdWebStories,
@@ -37,6 +38,7 @@ const icons = {
   login: BiLogInCircle,
   logout: BiLogOutCircle,
   name: BiRename,
+  nav: VscThreeBars,
   prediction: MdOutlineBatchPrediction,
   profile: RiUserSettingsLine,
   ranking: FaSortAmountUp,
@@ -51,9 +53,9 @@ const icons = {
   user: RiUserFill,
 };
 
-const IconRender = ({ type, size }) => {
+const IconRender = ({ type, size, ...rest }) => {
   if (!icons[type]) return null;
-  return React.createElement(icons[type], { size });
+  return React.createElement(icons[type], { size, ...rest });
 };
 
 export default IconRender;
