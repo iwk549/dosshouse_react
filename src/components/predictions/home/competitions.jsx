@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { renderInfoLine } from "../../../utils/textUtils";
 import SideBySideView from "../../common/pageSections/sideBySideView";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import cookies from "../../../services/cookieService";
 
 const Competitions = ({ competitions, predictions, expired }) => {
   const { isMobile } = useWindowDimensions();
@@ -71,9 +72,10 @@ const Competitions = ({ competitions, predictions, expired }) => {
                   ) : submissionsMade < c.maxSubmissions ? (
                     <button
                       className="btn btn-dark"
-                      onClick={() =>
-                        navigate(`/predictions?id=new&competitionID=${c._id}`)
-                      }
+                      onClick={() => {
+                        cookies.addCookie(c.code, true);
+                        navigate(`/predictions?id=new&competitionID=${c._id}`);
+                      }}
                     >
                       Start New Submission
                     </button>

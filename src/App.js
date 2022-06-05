@@ -76,7 +76,7 @@ function App() {
         <Banner
           announcement="World Cup 2022 predictions are now live!!!"
           onClick={() => navigate("/predictions?tab=Active%20Competitions")}
-          cookieName="worldCup2022Announcement"
+          cookieName="worldCup2022"
         />
         <SwitchRouter />
         <PageBottom />

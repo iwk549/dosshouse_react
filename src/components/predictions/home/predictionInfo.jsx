@@ -8,6 +8,7 @@ import useWindowDimensions from "../../../utils/useWindowDimensions";
 import Header from "../../common/pageSections/header";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
+import cookies from "../../../services/cookieService";
 
 const PredictionInfo = ({
   prediction,
@@ -73,11 +74,12 @@ const PredictionInfo = ({
             {!isMobile && <div style={{ height: 25 }} />}
             <button
               className="btn btn-sm btn-dark"
-              onClick={() =>
+              onClick={() => {
+                cookies.addCookie(prediction.competitionID.code, true);
                 navigate(
                   `/predictions?id=${prediction._id}&competitionID=${prediction.competitionID?._id}`
-                )
-              }
+                );
+              }}
             >
               {new Date(prediction.competitionID?.submissionDeadline) <
               new Date()
