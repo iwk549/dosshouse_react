@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactGA from "react-ga4";
 
 import PageBottom from "./components/common/pageSections/pageBottom";
 import SwitchRouter from "./components/switchRouter";
@@ -12,6 +13,8 @@ import Loading from "./components/common/loading/loading";
 import { getCurrentUser, refreshUser } from "./services/userService";
 import Banner from "./components/common/pageSections/banner";
 import CookieBanner from "./components/common/pageSections/cookieBanner";
+
+ReactGA.initialize("G-TJW8WX427W");
 
 function App() {
   let navigate = useNavigate();
@@ -33,6 +36,15 @@ function App() {
     setCurrentUser();
     refresh();
   }, []);
+
+  useEffect(() => {
+    sendPageView();
+  }, [window.location.pathname]);
+
+  const sendPageView = () => {
+    console.log(window.location.pathname);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  };
 
   const handleUpdateLoading = (bool) => {
     if (bool)
