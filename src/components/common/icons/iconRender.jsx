@@ -10,7 +10,12 @@ import {
   BiSearchAlt,
 } from "react-icons/bi";
 import { BsSpotify, BsCaretUpFill, BsCaretDownFill } from "react-icons/bs";
-import { FaCaretLeft, FaCaretRight, FaSortAmountUp } from "react-icons/fa";
+import {
+  FaCaretLeft,
+  FaCaretRight,
+  FaSortAmountUp,
+  FaWindowClose,
+} from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
   MdOutlineBatchPrediction,
@@ -30,6 +35,7 @@ const icons = {
   cancel: MdCancel,
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
+  close: FaWindowClose,
   delete: MdDeleteSweep,
   down: BsCaretDownFill,
   home: BiHome,

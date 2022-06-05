@@ -37,13 +37,20 @@ const BasicModal = ({
               onClose(id ? id : false);
               if (alsoRunOnClose) alsoRunOnClose();
             }}
+            style={
+              {
+                // position: "sticky",
+                // top: 0,
+                // zIndex: 99,
+              }
+            }
           >
             Close
           </button>
         )}
         {header}
+        {children}
       </div>
-      {children}
     </Modal>
   );
 };

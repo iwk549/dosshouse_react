@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import PageBottom from "./components/common/pageBottom";
+import PageBottom from "./components/common/pageSections/pageBottom";
 import SwitchRouter from "./components/switchRouter";
 import Navbar from "./components/navigation/navbar";
 import LoadingContext from "./context/loadingContext";
 import Loading from "./components/common/loading/loading";
 import { getCurrentUser, refreshUser } from "./services/userService";
+import Banner from "./components/common/pageSections/banner";
+import CookieBanner from "./components/common/pageSections/cookieBanner";
 
 function App() {
+  let navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [showText, setShowText] = useState(false);
   const [textTimeout, setTextTimeout] = useState(null);
@@ -56,6 +60,12 @@ function App() {
       <Loading loading={loading} showText={showText} />
       <div className="App">
         <Navbar />
+        <CookieBanner />
+        <Banner
+          announcement="World Cup 2022 predictions are now live!!!"
+          onClick={() => navigate("/predictions?tab=Active%20Competitions")}
+          cookieName="worldCup2022Announcement"
+        />
         <SwitchRouter />
         <PageBottom />
       </div>

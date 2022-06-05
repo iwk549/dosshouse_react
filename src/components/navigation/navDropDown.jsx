@@ -6,7 +6,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import IconRender from "../common/icons/iconRender";
 
 const NavDropDown = ({ links }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getActiveLink = ({ isActive }) => {
     return isActive ? "nav-link active" : "nav-link";
@@ -19,13 +19,14 @@ const NavDropDown = ({ links }) => {
           <IconRender type="nav" size={40} onClick={() => setIsOpen(!isOpen)} />
         </IconContext.Provider>
         {isOpen && (
-          <div style={{ position: "relative", backgroundColor: "blue" }}>
+          <div style={{ position: "relative" }}>
             <div
               style={{
                 position: "absolute",
                 top: -20,
                 right: 20,
                 border: "1px solid #831fe0",
+                zIndex: 99,
               }}
               onClick={() => setIsOpen(false)}
               className="main-nav"

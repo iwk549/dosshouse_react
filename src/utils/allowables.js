@@ -56,11 +56,6 @@ export function matchStartText(sport) {
     : "First Pitch";
 }
 
-export const cookieOptions = {
-  expires: 9999,
-  sameSite: "Lax",
-};
-
 export function splitName(name) {
   return name.split(" ")[0];
 }

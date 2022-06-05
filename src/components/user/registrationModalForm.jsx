@@ -13,6 +13,8 @@ import {
 } from "../../services/userService";
 import LoadingContext from "../../context/loadingContext";
 import { titleCase } from "../../utils/allowables";
+import cookies from "../../services/cookieService";
+import CookieBanner from "../common/pageSections/cookieBanner";
 
 class RegistrationModalForm extends Form {
   static contextType = LoadingContext;
@@ -24,7 +26,17 @@ class RegistrationModalForm extends Form {
     },
     errors: {},
     selectedTab: titleCase(this.props.selectedTab) || "Register",
+    cookiesAccepted: false,
   };
+
+  checkCookieAcceptance = () => {
+    const accepted = cookies.getCookie(cookies.acceptedName);
+    if (accepted) this.setState({ cookiesAccepted: true });
+  };
+
+  componentDidMount() {
+    this.checkCookieAcceptance();
+  }
 
   schema = {
     name: Joi.string().allow("").min(1).max(50).label("Name"),
@@ -72,71 +84,83 @@ class RegistrationModalForm extends Form {
 
   render() {
     return (
-      <BasicModal
-        isOpen={this.props.isOpen}
-        onClose={this.props.setIsOpen}
-        hideClose={!this.props.setIsOpen}
-        header={
-          this.props.header ? (
-            <h4 className="text-center">{this.props.header}</h4>
-          ) : (
-            <>
-              <br />
-              <br />
-            </>
-          )
-        }
-      >
-        <TabbedArea
-          tabs={this.tabs}
-          selectedTab={this.state.selectedTab}
-          onSelectTab={this.setSelectedTab}
-          tabPlacement="top"
+      <>
+        <BasicModal
+          isOpen={this.props.isOpen}
+          onClose={this.props.setIsOpen}
+          hideClose={!this.props.setIsOpen}
+          header={
+            this.props.header ? (
+              <h4 className="text-center">{this.props.header}</h4>
+            ) : (
+              <>
+                <br />
+                <br />
+              </>
+            )
+          }
         >
-          <div className="text-center">
-            <h3>
-              {this.props.reset
-                ? "Reset your Password"
-                : this.state.selectedTab === "Register"
-                ? "Register for a New Account"
-                : "Login to your Account"}
-            </h3>
-            <form onSubmit={this.handleSubmit}>
-              {this.state.selectedTab === "Register"
-                ? this.renderInput("name", "Name", "autofocus")
-                : null}
-              {this.renderInput(
-                "email",
-                "Email",
-                this.state.selectedTab === "Login"
-              )}
-              {this.renderInput(
-                "password",
-                "Password",
-                this.state.reset ? "autofocus" : "",
-                "password"
-              )}
-              {this.renderValidatedButton(titleCase(this.state.selectedTab))}
-              <br />
-              <br />
-              {this.state.selectedTab === "Login" && (
-                <>
-                  <p>
-                    Enter your email address and click the button below to
-                    request a password reset
-                  </p>
-                  <button
-                    className="btn btn-block btn-info"
-                    onClick={this.handleResetRequest}
-                  >
-                    Forgot Password?
-                  </button>
-                </>
-              )}
-            </form>
-          </div>
-        </TabbedArea>
-      </BasicModal>
+          {!this.state.cookiesAccepted ? (
+            <CookieBanner
+              rejectionCallback={this.props.onSuccess}
+              acceptanceCallback={this.checkCookieAcceptance}
+              inModal={true}
+            />
+          ) : (
+            <TabbedArea
+              tabs={this.tabs}
+              selectedTab={this.state.selectedTab}
+              onSelectTab={this.setSelectedTab}
+              tabPlacement="top"
+            >
+              <div className="text-center">
+                <h3>
+                  {this.props.reset
+                    ? "Reset your Password"
+                    : this.state.selectedTab === "Register"
+                    ? "Register for a New Account"
+                    : "Login to your Account"}
+                </h3>
+                <form onSubmit={this.handleSubmit}>
+                  {this.state.selectedTab === "Register"
+                    ? this.renderInput("name", "Name", "autofocus")
+                    : null}
+                  {this.renderInput(
+                    "email",
+                    "Email",
+                    this.state.selectedTab === "Login"
+                  )}
+                  {this.renderInput(
+                    "password",
+                    "Password",
+                    this.state.reset ? "autofocus" : "",
+                    "password"
+                  )}
+                  {this.renderValidatedButton(
+                    titleCase(this.state.selectedTab)
+                  )}
+                  <br />
+                  <br />
+                  {this.state.selectedTab === "Login" && (
+                    <>
+                      <p>
+                        Enter your email address and click the button below to
+                        request a password reset
+                      </p>
+                      <button
+                        className="btn btn-block btn-info"
+                        onClick={this.handleResetRequest}
+                      >
+                        Forgot Password?
+                      </button>
+                    </>
+                  )}
+                </form>
+              </div>
+            </TabbedArea>
+          )}
+        </BasicModal>
+      </>
     );
   }
 }

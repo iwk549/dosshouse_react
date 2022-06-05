@@ -15,7 +15,6 @@ const Miscellaneous = ({
   allTeams,
   isLocked,
 }) => {
-  console.log(misc);
   const [matchModalOpen, setMatchModalOpen] = useState(false);
 
   const mappedTeams = allTeams

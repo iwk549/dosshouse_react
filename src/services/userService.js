@@ -1,24 +1,22 @@
 import http from "./nodeHttpService";
-import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-import { cookieOptions } from "../utils/allowables";
 
-const tokenKey = "dosshouseToken";
+import cookies from "./cookieService";
 
 http.setJwt(getJwt());
 
 function setUser(jwt) {
-  Cookies.set(tokenKey, jwt, cookieOptions);
+  cookies.addCookie(cookies.tokenName, jwt);
   http.setJwt(jwt);
 }
 
 export function getJwt() {
-  return Cookies.get(tokenKey);
+  return cookies.getCookie(cookies.tokenName);
 }
 
 export function getCurrentUser() {
   try {
-    let user = jwtDecode(Cookies.get(tokenKey));
+    let user = jwtDecode(cookies.getCookie(cookies.tokenName));
     user.firstName = user.name.split("%20%")[0];
     user.lastName = user.name.split("%20%")[1] || "";
     return user;
@@ -28,7 +26,7 @@ export function getCurrentUser() {
 }
 
 export function logout() {
-  Cookies.remove(tokenKey);
+  cookies.removeCookie(cookies.tokenName);
 }
 
 export async function registerUser(userData) {

@@ -18,7 +18,7 @@ const SwitchRouter = () => {
         <Route path="/predictions" element={<PredictionsRedirect />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<StandAloneLogin />} />
-        <Route path="*" element={<Navigate replace to="/home" />} />
+        <Route path="*" element={<Navigate replace to="/predictions" />} />
       </Routes>
     </div>
   );
