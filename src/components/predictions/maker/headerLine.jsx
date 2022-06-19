@@ -16,22 +16,15 @@ const HeaderLine = ({
   const isComplete = missingItems.length === 0;
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <Input
-            name="bracketName"
-            label="Name this Submission"
-            value={predictionName}
-            onChange={(event) => setPredictionName(event.target.value)}
-          />
-        </div>
-        <div className="col">
-          <h1>
-            <b>{competition.name}</b>
-          </h1>
-        </div>
-        <div className="col"></div>
-      </div>
+      <Input
+        name="bracketName"
+        label="Name this Submission"
+        value={predictionName}
+        onChange={(event) => setPredictionName(event.target.value)}
+      />
+      <h1>
+        <b>{competition.name}</b>
+      </h1>
       <div
         className={
           "row custom-alert " +

@@ -186,6 +186,12 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
 
   return (
     <div>
+      <button
+        className="btn btn-sm btn-light"
+        onClick={() => navigate("/predictions?tab=submissions")}
+      >
+        Go Back
+      </button>
       <HeaderLine
         onSave={handleSavePredictions}
         predictionName={predictionName}
@@ -200,7 +206,6 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         competition={predictions.competition}
         missingItems={predictions.missingItems}
       />
-      <br />
       <TabbedArea
         tabs={tabs}
         selectedTab={selectedTab}

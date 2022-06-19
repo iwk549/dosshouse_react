@@ -13,6 +13,7 @@ import Loading from "./components/common/loading/loading";
 import { getCurrentUser, refreshUser } from "./services/userService";
 import Banner from "./components/common/pageSections/banner";
 import CookieBanner from "./components/common/pageSections/cookieBanner";
+import setPageTitle from "./textMaps/pageTitles";
 
 ReactGA.initialize("G-TJW8WX427W");
 
@@ -39,10 +40,10 @@ function App() {
 
   useEffect(() => {
     sendPageView();
-  }, [window.location.pathname]);
+    setPageTitle(window.location.pathname);
+  }, [window.location.pathname, window.location.search]);
 
   const sendPageView = () => {
-    console.log(window.location.pathname);
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   };
 

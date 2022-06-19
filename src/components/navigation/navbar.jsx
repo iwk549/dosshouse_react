@@ -30,7 +30,7 @@ const Navbar = () => {
             <LogoRender
               key={2}
               className="clickable"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             />,
             <div key={3}>
               <button
