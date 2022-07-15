@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TournamentBracket from "react-svg-tournament-bracket";
 
 import SingleMatchModal from "./singleMatchModal";
@@ -8,6 +8,7 @@ import ExternalImage from "../../common/image/externalImage";
 import Switch from "../../common/form/switch";
 import MatchesModal from "./matchesModal";
 import { shortDate } from "../../../utils/allowables";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
 
 const BracketPicker = ({
   matches,
@@ -18,6 +19,8 @@ const BracketPicker = ({
   setIsPortrait,
   originalPlayoffMatches,
 }) => {
+  let { isSuperSmall, width, superSmallWidth, mobileWidth } =
+    useWindowDimensions();
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [matchesOpen, setMatchesOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState(null);
@@ -81,6 +84,15 @@ const BracketPicker = ({
       </h1>
       <TournamentBracket
         matches={matches}
+        width={
+          isPortrait
+            ? isSuperSmall
+              ? superSmallWidth
+              : width - 90
+            : 1000 >= width
+            ? 1000
+            : width - 90
+        }
         onSelectMatch={handleSelectMatch}
         onSelectTeam={isLocked ? null : onSelectTeam}
         orientation={isPortrait ? "portrait" : "landscape"}
@@ -91,7 +103,8 @@ const BracketPicker = ({
           backgroundColor: "#66ff73",
           color: "#000",
         }}
-        dateTimeFormatter={shortDate}
+        dateTimeFormatter={isPortrait ? null : shortDate}
+        showFullTeamNames={!isPortrait}
       />
       {selectedMatch && (
         <SingleMatchModal

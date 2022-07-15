@@ -1,4 +1,4 @@
-import { getFinalRound } from "./bracketsUtil";
+import { getFinalRound, getTeamAbbreviation } from "./bracketsUtil";
 import { toast } from "react-toastify";
 
 import logos from "../textMaps/logos";
@@ -46,6 +46,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
           ? groups[group][position - 1].name
           : newMatch[t + "TeamName"];
         newMatch[t + "TeamName"] = teamToInsert;
+        newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(teamToInsert);
         newMatch[t + "TeamLogo"] = logos[teamToInsert];
       });
     } else if (m.round < 1000) {
@@ -68,6 +69,9 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
           });
           if (!matchesPreviousRound) {
             newMatch[t + "TeamName"] = newPicks[pickIndex];
+            newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(
+              newPicks[pickIndex]
+            );
             newMatch[t + "TeamLogo"] = logos[newPicks[pickIndex]];
           }
           if (newMatch.round === finalRound) {
@@ -135,6 +139,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
         ) {
           newMatch[t + "TeamName"] = teamToInsert;
           newMatch[t + "TeamLogo"] = logos[teamToInsert];
+          newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(teamToInsert);
           teamToReplace = m[t + "TeamName"];
         }
         if (newMatch.round === finalRound && teamToReplace === misc.winner) {
@@ -167,6 +172,8 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
         ["home", "away"].forEach((t) => {
           if (newMatch[t + "TeamName"] === teamToReplace) {
             newMatch[t + "TeamName"] = teamToInsert;
+            newMatch[t + "TeamAbbreviation"] =
+              getTeamAbbreviation(teamToInsert);
             newMatch[t + "TeamLogo"] = logos[teamToInsert];
           }
         });
@@ -217,8 +224,10 @@ export const handlePopulateBracket = (
       ),
     };
     playoffMatch.homeTeamName = p.homeTeam;
+    playoffMatch.homeTeamAbbreviation = getTeamAbbreviation(p.homeTeam);
     playoffMatch.homeTeamLogo = logos[p.homeTeam];
     playoffMatch.awayTeamName = p.awayTeam;
+    playoffMatch.awayTeamAbbreviation = getTeamAbbreviation(p.awayTeam);
     playoffMatch.awayTeamLogo = logos[p.awayTeam];
     populatedPlayoffMatches.push(playoffMatch);
     if (result) {
@@ -308,7 +317,13 @@ export function predictionReducer(state, action) {
   if (action.type === "initial") {
     groups = action.groups;
     playoffs = action.playoffs;
-    playoffMatches = action.playoffMatches;
+    playoffMatches = action.playoffMatches.map((pm) => {
+      return {
+        ...pm,
+        homeTeamAbbreviation: getTeamAbbreviation(pm.homeTeamName),
+        awayTeamAbbreviation: getTeamAbbreviation(pm.awayTeamName),
+      };
+    });
     competition = action.competition;
     isLocked = action.isLocked;
   } else if (action.type === "populate") {

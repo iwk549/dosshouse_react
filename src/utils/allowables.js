@@ -26,9 +26,12 @@ const dateOptions = {
   hour12: false,
   minute: "2-digit",
 };
-export function shortDate(dateTime) {
+export function shortDate(dateTime, noTime) {
   if (!dateTime) return "";
-  return new Date(dateTime).toLocaleString(undefined, dateOptions);
+  const date = new Date(dateTime);
+  return noTime
+    ? date.toLocaleDateString(undefined)
+    : date.toLocaleString(undefined, dateOptions);
 }
 export function longDate(dateTime) {
   if (!dateTime) return "";

@@ -9,6 +9,8 @@ function getWindowDimensions() {
     height,
     isMobile: width <= mobileWidth,
     isSuperSmall: width <= superSmallWidth,
+    superSmallWidth,
+    mobileWidth,
   };
 }
 
