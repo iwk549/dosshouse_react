@@ -11,16 +11,20 @@ const Banner = ({
 }) => {
   const [isDismissed, setIsDismissed] = useState(false);
 
-  useEffect(() => {
+  const checkForCookie = () => {
     const dismissed = cookies.getCookie(cookieName);
-    if (dismissed === "dismissed") setIsDismissed(true);
+    if (dismissed) setIsDismissed(true);
+  };
+
+  useEffect(() => {
+    checkForCookie();
   }, []);
 
   if (isDismissed) return null;
 
   const handleDismiss = () => {
-    setIsDismissed(true);
     cookies.addCookie(cookieName, "dismissed");
+    checkForCookie();
   };
 
   const raiseClick = () => {
