@@ -61,13 +61,13 @@ class RegistrationModalForm extends Form {
         this.state.data.email,
         this.state.data.password
       );
-    if (res.status === 200) {
+    if (res?.status === 200) {
       this.context.setUser();
       toast.success(
         type === "register" ? "Registration Successful" : "Logged In"
       );
       return this.props.onSuccess();
-    } else toast.error(res.data);
+    } else toast.error(res?.data);
     this.context.setLoading(false);
   };
 

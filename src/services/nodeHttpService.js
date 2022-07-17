@@ -37,5 +37,6 @@ export default {
   predictions: "/predictions",
   groups: "/groups",
   results: "/results",
+  versions: "/versions",
   setJwt,
 };
