@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TabbedArea from "react-tabbed-area";
 
 import BasicModal from "../../common/modal/basicModal";
@@ -6,6 +6,8 @@ import GroupPicker from "../maker/groupPicker";
 import BracketPicker from "../maker/bracketPicker";
 import Miscellaneous from "../maker/miscellaneous";
 import { handlePopulateBracket } from "../../../utils/predictionsUtil";
+import IconRender from "../../common/icons/iconRender";
+import LoadingContext from "../../../context/loadingContext";
 
 const LeaderboardModal = ({
   prediction,
@@ -15,7 +17,11 @@ const LeaderboardModal = ({
   competition,
   allTeams,
   result,
+  setForceRemoveOpen,
+  setSelectedPrediction,
+  groupInfo,
 }) => {
+  const { user } = useContext(LoadingContext);
   const tabs = ["Group", "Playoff", "Bonus"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [groups, setGroups] = useState({});
@@ -53,7 +59,20 @@ const LeaderboardModal = ({
           <h3>
             <b>{prediction.name}</b>
           </h3>
-          Correct picks are higlighted in green
+          {groupInfo &&
+            groupInfo.ownerID &&
+            groupInfo.ownerID._id === user?._id && (
+              <button
+                className="btn btn-block btn-danger"
+                onClick={() => {
+                  setSelectedPrediction(prediction);
+                  setForceRemoveOpen(true);
+                }}
+              >
+                <IconRender type="remove" />
+              </button>
+            )}
+          <p>Correct picks are higlighted in green</p>
         </>
       }
       style={{

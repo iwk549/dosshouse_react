@@ -24,7 +24,7 @@ const TeamSelectComponent = ({
       <div className={"single-card light-bg"}>
         <div
           className={isLocked ? "" : " clickable"}
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(!isLocked)}
         >
           <h3>
             <b>{title}</b>
@@ -41,7 +41,7 @@ const TeamSelectComponent = ({
               </p>
             </>
           ) : (
-            <p>Tap to make your selection</p>
+            !isLocked && <p>Tap to make your selection</p>
           )}
         </div>
         {children}

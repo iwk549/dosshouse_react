@@ -7,16 +7,17 @@ import logos from "../../../textMaps/logos";
 import IconRender from "../../common/icons/iconRender";
 import { sortAndFilterTable } from "../../../utils/leaderboardUtil";
 import LoadingContext from "../../../context/loadingContext";
-import Confirm from "../../common/modal/confirm";
+
 import LeaderboardCard from "../../common/cards/leaderboardCard";
 
 const LeaderboardTable = ({
   leaderboard,
   groupInfo,
   onSelectPrediction,
-  onForceRemovePrediction,
   onSearch,
   hasSearched,
+  setForceRemoveOpen,
+  setSelectedPrediction,
 }) => {
   const { user } = useContext(LoadingContext);
   const [state, dispatch] = useReducer(reducer, {
@@ -24,9 +25,6 @@ const LeaderboardTable = ({
     tableData: [],
     timer: undefined,
   });
-
-  const [forceRemoveOpen, setForceRemoveOpen] = useState(false);
-  const [selectedPrediction, setSelectedPrediction] = useState(null);
 
   function reducer(state, action) {
     let search =
@@ -156,22 +154,6 @@ const LeaderboardTable = ({
         CardComponent={LeaderboardCard}
         cardSearchColumns={columns.slice(0, 5)}
       />
-      {selectedPrediction && (
-        <Confirm
-          header="Confirm Remove Prediction"
-          isOpen={forceRemoveOpen}
-          setIsOpen={() => setForceRemoveOpen(false)}
-          focus="cancel"
-          onConfirm={() => onForceRemovePrediction(selectedPrediction)}
-        >
-          <b>{selectedPrediction.name}</b>
-          <br />
-          Are you sure you want to remove this submission from your group?
-          <br />
-          If you do not want the user to be able to re-add their prediction to
-          this group you should change the group passcode.
-        </Confirm>
-      )}
     </>
   );
 };

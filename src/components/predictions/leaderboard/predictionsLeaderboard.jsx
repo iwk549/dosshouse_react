@@ -15,6 +15,7 @@ import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
 import GroupInfo from "./groupInfo";
 import { getResult } from "../../../services/resultsService";
+import Confirm from "../../common/modal/confirm";
 
 const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   let navigate = useNavigate();
@@ -33,6 +34,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   );
   const [result, setResult] = useState(null);
   const [searched, setSearched] = useState(false);
+  const [forceRemoveOpen, setForceRemoveOpen] = useState(false);
 
   const loadLeaderboard = async (
     selectedPage,
@@ -120,6 +122,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     const res = await forceRemovePredictionFromGroup(prediction._id, groupInfo);
     if (res.status === 200) {
       toast.success(`${prediction.name} has been removed from your group`);
+      setSinglePredictionOpen(false);
       return loadLeaderboard();
     } else toast.error(res.data);
     setLoading(false);
@@ -140,6 +143,8 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         groupInfo={groupInfo}
         onSearch={(value) => loadLeaderboard(null, null, value)}
         hasSearched={searched}
+        setForceRemoveOpen={setForceRemoveOpen}
+        setSelectedPrediction={setSelectedPrediction}
       />
       {leaderboard.length === 0 && (
         <b>No submissions found{searched ? " using the search terms" : ""}.</b>
@@ -164,7 +169,26 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
           competition={competition}
           allTeams={allTeams}
           result={result}
+          setForceRemoveOpen={setForceRemoveOpen}
+          setSelectedPrediction={setSelectedPrediction}
+          groupInfo={groupInfo}
         />
+      )}
+      {selectedPrediction && (
+        <Confirm
+          header="Confirm Remove Prediction"
+          isOpen={forceRemoveOpen}
+          setIsOpen={() => setForceRemoveOpen(false)}
+          focus="cancel"
+          onConfirm={() => handleForceRemovePrediction(selectedPrediction)}
+        >
+          <b>{selectedPrediction.name}</b>
+          <br />
+          Are you sure you want to remove this submission from your group?
+          <br />
+          If you do not want the user to be able to re-add their prediction to
+          this group you should change the group passcode.
+        </Confirm>
       )}
     </div>
   );

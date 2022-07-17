@@ -60,31 +60,6 @@ const Miscellaneous = ({
     <div>
       {competition?.miscPicks.map((p) => (
         <React.Fragment key={p.name}>
-          {/* <FormSelect
-            name={p.name}
-            label={p.label}
-            boldHeader={true}
-            onChange={(value) => {
-              onChange(p.name, value);
-            }}
-            options={
-              p.name === "thirdPlace" ? getThirdPlacePlayoff() : mappedTeams
-            }
-            selectedOption={misc[p.name]}
-            tooltip={{
-              direction: "right",
-              content: (
-                <span className="tooltip-content-mini">
-                  <p>
-                    <b>{p.label}</b>
-                    <br />
-                    {p.description}
-                  </p>
-                </span>
-              ),
-            }}
-            isLocked={isLocked}
-          /> */}
           <TeamSelectComponent
             teams={
               p.name === "thirdPlace" ? getThirdPlacePlayoff() : mappedTeams
