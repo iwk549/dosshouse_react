@@ -101,7 +101,7 @@ const LeaderboardModal = ({
         </TabbedArea>
       ) : (
         <p className="text-center">
-          You will be able to view all the picks once the sumbission deadline
+          You will be able to view all the picks once the submission deadline
           has passed
         </p>
       )}

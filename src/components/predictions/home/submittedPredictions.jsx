@@ -6,7 +6,7 @@ import LoadingContext from "../../../context/loadingContext";
 import GroupModalForm from "../groups/groupModalForm";
 import PredictionInfo from "./predictionInfo";
 
-const SumbittedPredictions = ({
+const SubmittedPredictions = ({
   predictions,
   onDelete,
   onLogin,
@@ -96,4 +96,4 @@ const SumbittedPredictions = ({
   );
 };
 
-export default SumbittedPredictions;
+export default SubmittedPredictions;

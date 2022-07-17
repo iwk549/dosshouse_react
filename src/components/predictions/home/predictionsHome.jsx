@@ -15,7 +15,7 @@ import {
   removePredictionFromGroup,
 } from "../../../services/predictionsService";
 import Competitions from "./competitions";
-import SumbittedPredictions from "./sumbittedPredictions";
+import SubmittedPredictions from "./submittedPredictions";
 import { titleCase } from "../../../utils/allowables";
 
 const PredictionsHome = ({ paramTab }) => {
@@ -104,7 +104,7 @@ const PredictionsHome = ({ paramTab }) => {
             expired={isTab("expired")}
           />
         ) : isTab("submission") ? (
-          <SumbittedPredictions
+          <SubmittedPredictions
             predictions={predictions}
             onDelete={handleDeletePrediction}
             onLogin={loadData}
