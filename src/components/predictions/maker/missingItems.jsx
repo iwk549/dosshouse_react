@@ -4,7 +4,30 @@ import BasicModal from "../../common/modal/basicModal";
 import { renderInfoLine } from "../../../utils/textUtils";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 
-const MissingItems = ({ items, isOpen, setIsOpen, name }) => {
+const MissingItems = ({
+  items,
+  isOpen,
+  setIsOpen,
+  name,
+  onClickMissingItem,
+}) => {
+  const raiseClickMissingItem = (item) => {
+    setIsOpen(false);
+    onClickMissingItem(item);
+  };
+
+  const renderMissingItem = (item, idx) => {
+    return (
+      <div
+        key={idx}
+        className="single-card"
+        onClick={() => raiseClickMissingItem(item)}
+      >
+        {renderInfoLine(item.label, item.text, "", idx, isMobile)}
+      </div>
+    );
+  };
+
   const { isMobile } = useWindowDimensions();
   return (
     <BasicModal
@@ -24,18 +47,13 @@ const MissingItems = ({ items, isOpen, setIsOpen, name }) => {
           scored as is.
         </p>
         {(!name || name.length < 3) &&
-          renderInfoLine(
-            "Name",
-            name
+          renderMissingItem({
+            label: "Name",
+            text: name
               ? "Bracket name must be at least 3 characters"
               : "Give your bracket a name",
-            "",
-            "name",
-            isMobile
-          )}
-        {items.map((item, idx) =>
-          renderInfoLine(item.label, item.text, "", idx, isMobile)
-        )}
+          })}
+        {items.map((item, idx) => renderMissingItem(item, idx))}
       </div>
     </BasicModal>
   );

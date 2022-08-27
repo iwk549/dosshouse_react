@@ -20,6 +20,7 @@ import Miscellaneous from "./miscellaneous";
 import Information from "./information";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import NotAllowed from "./notAllowed";
+import Confirm from "../../common/modal/confirm";
 
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
@@ -46,6 +47,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
+  const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
 
   const loadData = async () => {
     setLoading(true); // get matches from db
@@ -155,9 +157,11 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
       navigate(`/predictions?id=${res.data}&competitionID=${competitionID}`, {
         replace: true,
       });
+      return true;
     } else toast.error(res.data);
 
     setLoading(false);
+    return false;
   };
 
   const handleSelectBracketWinner = (match, team) => {
@@ -178,6 +182,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
     });
   };
 
+  const handleClickMissingItem = (item) => {
+    setSelectedTab(item.label);
+  };
+
   const isTab = (tab) => {
     return selectedTab.toLowerCase().includes(tab.toLowerCase());
   };
@@ -185,13 +193,40 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   if (notAllowed > 200) return <NotAllowed code={notAllowed} />;
 
   return (
-    <div>
+    <div id="scroller">
       <button
         className="btn btn-sm btn-light"
-        onClick={() => navigate("/predictions?tab=submissions")}
+        onClick={() => {
+          predictions.isSaved
+            ? navigate("/predictions?tab=submissions")
+            : setConfirmGoBackOpen(true);
+        }}
       >
         Go Back
       </button>
+      <Confirm
+        header="Are You Sure?"
+        isOpen={confirmGoBackOpen}
+        setIsOpen={() => setConfirmGoBackOpen(false)}
+        focus="cancel"
+        onConfirm={() => navigate("/predictions?tab=submissions")}
+        buttonText={["Cancel", "Go Back without Saving"]}
+      >
+        Your latest changes are unsaved. Are you sure you want to go back and
+        discard them?
+        <br />
+        <br />
+        <button
+          className="btn btn-dark btn-sm btn-block"
+          onClick={async () => {
+            const saved = await handleSavePredictions();
+            if (saved) navigate("/predictions?tab=submissions");
+            else setConfirmGoBackOpen(false);
+          }}
+        >
+          Save and Go Back
+        </button>
+      </Confirm>
       <HeaderLine
         onSave={handleSavePredictions}
         predictionName={predictionName}
@@ -205,6 +240,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         isLocked={predictions.isLocked}
         competition={predictions.competition}
         missingItems={predictions.missingItems}
+        onClickMissingItem={handleClickMissingItem}
       />
       <TabbedArea
         tabs={tabs}
@@ -252,10 +288,10 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         }}
       >
         <button
-          className="btn btn-sm btn-light"
-          onClick={() => navigate("/predictions?tab=submissions")}
+          className="btn btn-sm btn-info"
+          onClick={() => document.querySelector("body").scroll(0, 0)}
         >
-          Exit
+          Return To Top of Page
         </button>
       </div>
       <RegistrationModalForm

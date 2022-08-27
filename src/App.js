@@ -69,7 +69,7 @@ function App() {
     // do need to set loading to false here as some pages dont have any requests and are not setting loading to false
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
   }, []);
 
   useEffect(() => {

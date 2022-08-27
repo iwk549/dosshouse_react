@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Input from "../../common/form/input";
 import IconRender from "../../common/icons/iconRender";
 import MissingItems from "./missingItems";
@@ -11,9 +11,19 @@ const HeaderLine = ({
   isSaved,
   isLocked,
   missingItems,
+  onClickMissingItem,
 }) => {
+  const nameInputRef = useRef(null);
+
   const [missingItemsOpen, setMissingItemsOpen] = useState(false);
   const isComplete = missingItems.length === 0;
+
+  const raiseClickMissingItem = (item) => {
+    if (item.label.toLowerCase() === "name") {
+      nameInputRef.current.focus();
+    } else onClickMissingItem(item);
+  };
+
   return (
     <>
       <Input
@@ -21,6 +31,7 @@ const HeaderLine = ({
         label="Name this Submission"
         value={predictionName}
         onChange={(event) => setPredictionName(event.target.value)}
+        drillRef={nameInputRef}
       />
       <h1>
         <b>{competition.name}</b>
@@ -76,6 +87,7 @@ const HeaderLine = ({
         isOpen={missingItemsOpen}
         setIsOpen={setMissingItemsOpen}
         name={predictionName}
+        onClickMissingItem={raiseClickMissingItem}
       />
     </>
   );

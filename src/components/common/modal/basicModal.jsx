@@ -32,18 +32,11 @@ const BasicModal = ({
       <div className="text-center">
         {!hideClose && (
           <button
-            className="btn btn-block btn-sm btn-light"
+            className="btn btn-block btn-sm btn-light sticky-top"
             onClick={() => {
               onClose(id ? id : false);
               if (alsoRunOnClose) alsoRunOnClose();
             }}
-            style={
-              {
-                // position: "sticky",
-                // top: 0,
-                // zIndex: 99,
-              }
-            }
           >
             Close
           </button>
