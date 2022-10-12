@@ -157,6 +157,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
       navigate(`/predictions?id=${res.data}&competitionID=${competitionID}`, {
         replace: true,
       });
+      setLoading(false);
       return true;
     } else toast.error(res.data);
 
