@@ -26,6 +26,20 @@ const Competitions = ({ competitions, predictions, expired }) => {
         <SideBySideView
           Components={[
             <div key="info">
+              {c.prize &&
+                renderInfoLine(
+                  "Prize",
+                  <a
+                    href={c.prize.link}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {c.prize.text}
+                  </a>,
+                  "text",
+                  "prize",
+                  isMobile
+                )}
               {renderInfoLine(
                 "Submission Deadline",
                 c.submissionDeadline,
