@@ -21,6 +21,7 @@ import Information from "./information";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import NotAllowed from "./notAllowed";
 import Confirm from "../../common/modal/confirm";
+import GroupModalForm from "../groups/groupModalForm";
 
 const PredictionMaker = ({ competitionID, predictionID }) => {
   let navigate = useNavigate();
@@ -48,6 +49,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
   const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
+  const [groupModalOpen, setGroupModalOpen] = useState(false);
 
   const loadData = async () => {
     setLoading(true); // get matches from db
@@ -295,6 +297,16 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           Return To Top of Page
         </button>
       </div>
+      {predictionID !== "new" && (
+        <div style={{ float: "left" }}>
+          <button
+            className="btn btn-sm btn-dark"
+            onClick={() => setGroupModalOpen(true)}
+          >
+            Add to Group
+          </button>
+        </div>
+      )}
       <RegistrationModalForm
         header="Login or Register to Save Your Predictions"
         isOpen={registerFormOpen}
@@ -303,6 +315,17 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           setRegisterFormOpen(false);
           handleSavePredictions();
         }}
+      />
+      <GroupModalForm
+        isOpen={groupModalOpen}
+        setIsOpen={setGroupModalOpen}
+        header="Add Prediction to Group"
+        submission={{
+          _id: predictionID,
+          competitionID: { _id: competitionID },
+          name: predictionName,
+        }}
+        onSuccess={() => setGroupModalOpen(false)}
       />
     </div>
   );
