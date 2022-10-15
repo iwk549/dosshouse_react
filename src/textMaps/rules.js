@@ -16,10 +16,22 @@ export default [
     body: (
       <p>
         A bracket must be theoretically possible to occur in real life to be
-        valid. For example: if you pick a team as your champion but did not pick
-        that team to participate in the final, or if you place a team in the
-        playoff bracket that you picked to finish last in their group your
-        bracket is invalid.
+        valid.
+        <br />
+        <br />
+        Some examples include:
+        <br />
+        - Picking a champion that you did not pick to participate in the final
+        <br />
+        - Placing a team in the playoff bracket that you placed last in their
+        group
+        <br />
+        - Placing the same team on the playoff bracket in multiple spots in the
+        same round
+        <br />
+        <br />
+        If your bracket contains one of these or other similarly impossible
+        scenarios then it is invalid.
         <br />
         <br />
         A bracket that has not been completely filled out (i.e. one or more
@@ -29,10 +41,10 @@ export default [
         still be in contention for the leaderboard.
         <br />
         <br />
-        Brackets are only checked for validity during the scoring portion at
-        which point it will be too late to amend your bracket. If submitting a
-        custom bracket to our open API you must check it for validity yourself.
-        Invalid brackets are not eligible for the leaderboard and are subject to
+        Brackets are only checked for validity during official scoring at which
+        point it will be too late to amend your bracket. If submitting a custom
+        bracket to our open API you must check it for validity yourself. Invalid
+        brackets are not eligible for the leaderboard and are subject to
         disqualification.
       </p>
     ),

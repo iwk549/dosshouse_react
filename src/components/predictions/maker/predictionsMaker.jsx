@@ -316,17 +316,19 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
           handleSavePredictions();
         }}
       />
-      <GroupModalForm
-        isOpen={groupModalOpen}
-        setIsOpen={setGroupModalOpen}
-        header="Add Prediction to Group"
-        submission={{
-          _id: predictionID,
-          competitionID: { _id: competitionID },
-          name: predictionName,
-        }}
-        onSuccess={() => setGroupModalOpen(false)}
-      />
+      {predictionID !== "new" && (
+        <GroupModalForm
+          isOpen={groupModalOpen}
+          setIsOpen={setGroupModalOpen}
+          header="Add Prediction to Group"
+          submission={{
+            _id: predictionID,
+            competitionID: { _id: competitionID },
+            name: predictionName,
+          }}
+          onSuccess={() => setGroupModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
