@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import Header from "../common/pageSections/header";
 import ActiveSites from "../activeSites/activeSites";
+import LoadingContext from "../../context/loadingContext";
 
 const Home = () => {
+  const { setLoading } = useContext(LoadingContext);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <div>
       <Header text="Welcome to Dosshouse" />

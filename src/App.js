@@ -65,11 +65,6 @@ function App() {
     getCurrentVersion();
     setCurrentUser();
     refresh();
-    // wait a tick before setting loading to false to allow for other pages to complete their requests
-    // do need to set loading to false here as some pages dont have any requests and are not setting loading to false
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
   }, []);
 
   useEffect(() => {

@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 
 import Header from "../common/pageSections/header";
 import Site from "./site";
+import LoadingContext from "../../context/loadingContext";
 
 const ActiveSites = () => {
+  const { setLoading } = useContext(LoadingContext);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   const sites = [
     {
       imageSrc: "/assets/ultimateScoreboardLogo.ico",
@@ -58,7 +65,7 @@ const ActiveSites = () => {
       names: ["StructureMate"],
       text: (
         <p>
-          StructureMate is an engineering calculator built in collaboartion with
+          StructureMate is an engineering calculator built in collaboration with
           a civil engineer.
           <br />
           The calculator provides a fast and easy way to perform complex
