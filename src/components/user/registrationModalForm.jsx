@@ -49,6 +49,11 @@ class RegistrationModalForm extends Form {
     this.setState({ selectedTab });
   };
 
+  handleCookieRejection = () => {
+    this.props.setIsOpen(false);
+    toast.info("You must accept cookies to be able to log in or register");
+  };
+
   doSubmit = async () => {
     this.context.setLoading(true);
     let res;
@@ -102,7 +107,7 @@ class RegistrationModalForm extends Form {
         >
           {!this.state.cookiesAccepted ? (
             <CookieBanner
-              rejectionCallback={this.props.onSuccess}
+              rejectionCallback={this.handleCookieRejection}
               acceptanceCallback={this.checkCookieAcceptance}
               inModal={true}
             />

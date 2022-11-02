@@ -1,24 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import cookies from "../../../services/cookieService";
 import IconRender from "../icons/iconRender";
+import LoadingContext from "../../../context/loadingContext";
 
 const Banner = ({
   announcement,
   onClick,
   buttonText = "Get Started",
   cookieName,
+  showIfLoggedIn,
 }) => {
   const [isDismissed, setIsDismissed] = useState(false);
+  const { user } = useContext(LoadingContext);
 
   const checkForCookie = () => {
     const dismissed = cookies.getCookie(cookieName);
     if (dismissed) setIsDismissed(true);
+    else if (!showIfLoggedIn && user) setIsDismissed(true);
   };
 
   useEffect(() => {
     checkForCookie();
-  }, []);
+  }, [user]);
 
   if (isDismissed) return null;
 

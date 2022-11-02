@@ -69,7 +69,7 @@ function App() {
     // do need to set loading to false here as some pages dont have any requests and are not setting loading to false
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 3000);
   }, []);
 
   useEffect(() => {
@@ -114,8 +114,13 @@ function App() {
             <CookieBanner />
             <Banner
               announcement="World Cup 2022 predictions are now live!!!"
-              onClick={() => navigate("/predictions?tab=Active%20Competitions")}
+              onClick={() => {
+                navigate(
+                  "/predictions?id=new&competitionID=6252ebe1d595c7d6a7a76ded"
+                );
+              }}
               cookieName="worldCup2022"
+              showIfLoggedIn={false}
             />
             <SwitchRouter />
             <PageBottom />

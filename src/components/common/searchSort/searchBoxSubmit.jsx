@@ -24,37 +24,36 @@ const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
   }, []);
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
+      {hasSearched && (
+        <button
+          className="btn btn-light"
+          style={{ position: "absolute", left: -10, top: "30%" }}
+          onClick={resetSearch}
+        >
+          <IconRender type="cancel" />
+        </button>
+      )}
       <form
         onSubmit={(event) => {
           event.preventDefault();
           onSearch(value);
         }}
-        style={{ position: "relative" }}
       >
-        {hasSearched && (
-          <button
-            className="btn btn-light"
-            style={{ position: "absolute", left: -10, top: "30%" }}
-            onClick={resetSearch}
-          >
-            <IconRender type="cancel" />
-          </button>
-        )}
-        <button
-          className="btn btn-dark"
-          style={{ position: "absolute", top: "30%", right: -10 }}
-        >
-          <IconRender type="search" />
-        </button>
         <Input
           name={name}
           placeholder={placeholder}
           onChange={(event) => setValue(event.target.value)}
           value={value}
         />
+        <button
+          className="btn btn-dark"
+          style={{ position: "absolute", top: "30%", right: -10 }}
+        >
+          <IconRender type="search" />
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 
