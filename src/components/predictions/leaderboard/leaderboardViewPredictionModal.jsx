@@ -9,7 +9,7 @@ import { handlePopulateBracket } from "../../../utils/predictionsUtil";
 import IconRender from "../../common/icons/iconRender";
 import LoadingContext from "../../../context/loadingContext";
 
-const LeaderboardModal = ({
+const LeaderboardViewPredictionModal = ({
   prediction,
   isOpen,
   setIsOpen,
@@ -128,4 +128,4 @@ const LeaderboardModal = ({
   );
 };
 
-export default LeaderboardModal;
+export default LeaderboardViewPredictionModal;

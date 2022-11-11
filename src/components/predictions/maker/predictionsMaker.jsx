@@ -13,6 +13,7 @@ import { predictionReducer } from "../../../utils/predictionsUtil";
 import {
   savePredictions,
   getPrediction,
+  addPredictionToGroup,
 } from "../../../services/predictionsService";
 import { getCompetition } from "../../../services/competitionService";
 import HeaderLine from "./headerLine";
@@ -23,7 +24,12 @@ import NotAllowed from "./notAllowed";
 import Confirm from "../../common/modal/confirm";
 import GroupModalForm from "../groups/groupModalForm";
 
-const PredictionMaker = ({ competitionID, predictionID }) => {
+const PredictionMaker = ({
+  competitionID,
+  predictionID,
+  groupName,
+  groupPasscode,
+}) => {
   let navigate = useNavigate();
   const { isMobile } = useWindowDimensions();
   const { user, setLoading } = useContext(LoadingContext);
@@ -143,7 +149,7 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
         teamOrder: predictions.groups[k].map((t) => t.name),
       });
     });
-    const res = await savePredictions(predictionID, {
+    const predictionRes = await savePredictions(predictionID, {
       name: predictionName,
       competitionID,
       groupPredictions,
@@ -151,17 +157,30 @@ const PredictionMaker = ({ competitionID, predictionID }) => {
       misc: predictions.misc,
     });
 
-    if (res.status === 200) {
+    if (predictionRes.status === 200) {
       dispatchPredictions({
         type: "save",
       });
       toast.success("Predictions saved");
-      navigate(`/predictions?id=${res.data}&competitionID=${competitionID}`, {
-        replace: true,
-      });
+      if (groupName && groupPasscode) {
+        // if these two params exist attempt to add prediction to the group
+        const groupRes = await addPredictionToGroup(predictionRes.data, {
+          name: groupName,
+          passcode: groupPasscode,
+          fromUrl: true,
+        });
+        if (groupRes.status === 200) toast.success("Prediction added to group");
+        else toast.error(groupRes.data);
+      }
+      navigate(
+        `/predictions?id=${predictionRes.data}&competitionID=${competitionID}`,
+        {
+          replace: true,
+        }
+      );
       setLoading(false);
       return true;
-    } else toast.error(res.data);
+    } else toast.error(predictionRes.data);
 
     setLoading(false);
     return false;

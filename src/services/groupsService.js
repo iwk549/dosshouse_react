@@ -24,3 +24,13 @@ export async function deleteGroup(groupID) {
     return ex.response;
   }
 }
+
+export async function getGroupLink(groupID, competitionID) {
+  try {
+    return await http.get(
+      http.groups + "/link/" + groupID + "/" + competitionID
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}

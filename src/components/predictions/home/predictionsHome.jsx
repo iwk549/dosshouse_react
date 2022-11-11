@@ -12,13 +12,21 @@ import {
 import {
   getPredictions,
   deletePrediction,
+  addPredictionToGroup,
   removePredictionFromGroup,
 } from "../../../services/predictionsService";
 import Competitions from "./competitions";
 import SubmittedPredictions from "./submittedPredictions";
+import GroupAddFromLinkModal from "../groups/groupAddFromLinkModal";
 import { titleCase } from "../../../utils/allowables";
 
-const PredictionsHome = ({ paramTab }) => {
+const PredictionsHome = ({
+  paramTab,
+  type,
+  groupName,
+  groupPasscode,
+  competitionID,
+}) => {
   let navigate = useNavigate();
   const { setLoading, user } = useContext(LoadingContext);
   const [activeCompetitions, setActiveCompetitions] = useState([]);
@@ -28,6 +36,7 @@ const PredictionsHome = ({ paramTab }) => {
   const [selectedTab, setSelectedTab] = useState(
     titleCase(paramTab) || tabs[0]
   );
+  const [groupAddFromLinkOpen, setGroupAddFromLinkOpen] = useState(false);
 
   const loadData = async () => {
     setLoading(true);
@@ -46,6 +55,8 @@ const PredictionsHome = ({ paramTab }) => {
     // this is to gather users submissions, if not logged in will give error
     if (predictionsRes && predictionsRes.status === 200)
       setPredictions(predictionsRes.data);
+
+    if (type === "groupLink") setGroupAddFromLinkOpen(true);
     setLoading(false);
   };
 
@@ -82,6 +93,29 @@ const PredictionsHome = ({ paramTab }) => {
     setLoading(false);
   };
 
+  const handleAddPredictionToGroup = async (prediction, competitionID) => {
+    if (prediction._id === "new") {
+      navigate(
+        `/predictions?id=new&competitionID=${competitionID}&groupName=${groupName}&groupPasscode=${groupPasscode}`
+      );
+    } else {
+      setLoading(true);
+      const res = await addPredictionToGroup(prediction._id, {
+        name: groupName,
+        passcode: groupPasscode,
+        fromUrl: true,
+      });
+      if (res.status === 200) {
+        toast.success("Prediction added to group");
+        setGroupAddFromLinkOpen(false);
+        handleSelectTab("Submissions");
+        return loadData();
+      }
+      toast.error(res.data);
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Header text="Predictions" />
@@ -113,6 +147,16 @@ const PredictionsHome = ({ paramTab }) => {
           />
         ) : null}
       </TabbedArea>
+      {groupName && (
+        <GroupAddFromLinkModal
+          isOpen={groupAddFromLinkOpen}
+          setIsOpen={setGroupAddFromLinkOpen}
+          groupName={groupName}
+          groupPasscode={groupPasscode}
+          competition={activeCompetitions.find((c) => c._id === competitionID)}
+          onAddPredictionToGroup={handleAddPredictionToGroup}
+        />
+      )}
     </div>
   );
 };

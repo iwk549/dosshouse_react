@@ -82,6 +82,9 @@
 .single-card.light-bg {
   background-color: var(--light-text);
 }
+.single-card.selected {
+  background-color: var(--info-bg-color);
+}
 .announcement {
   background-color: var(--minus10-light-bg-color);
 }

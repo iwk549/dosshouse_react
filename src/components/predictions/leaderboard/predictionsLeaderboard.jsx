@@ -9,7 +9,8 @@ import {
 } from "../../../services/predictionsService";
 import LoadingContext from "../../../context/loadingContext";
 import LeaderboardTable from "./leaderboardTable";
-import LeaderboardModal from "./leaderboardModal";
+import LeaderboardViewPredictionModal from "./leaderboardViewPredictionModal";
+import LeaderboardInviteModal from "./leaderboardInviteModal";
 import { getMatches } from "../../../services/matchService";
 import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
@@ -35,6 +36,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
   const [result, setResult] = useState(null);
   const [searched, setSearched] = useState(false);
   const [forceRemoveOpen, setForceRemoveOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   const loadLeaderboard = async (
     selectedPage,
@@ -134,7 +136,10 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         Go Back
       </button>
       <br />
-      <GroupInfo groupInfo={groupInfo || { name: "Sitewide" }} />
+      <GroupInfo
+        groupInfo={groupInfo || { name: "Sitewide" }}
+        setInviteOpen={setInviteOpen}
+      />
 
       <LeaderboardTable
         leaderboard={leaderboard}
@@ -161,7 +166,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
         />
       )}
       {selectedPrediction && (
-        <LeaderboardModal
+        <LeaderboardViewPredictionModal
           prediction={selectedPrediction}
           isOpen={singlePredictionOpen}
           setIsOpen={setSinglePredictionOpen}
@@ -189,6 +194,14 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
           If you do not want the user to be able to re-add their prediction to
           this group you should change the group passcode.
         </Confirm>
+      )}
+      {groupInfo && (
+        <LeaderboardInviteModal
+          isOpen={inviteOpen}
+          setIsOpen={setInviteOpen}
+          group={groupInfo}
+          competition={competition}
+        />
       )}
     </div>
   );
