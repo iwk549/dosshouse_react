@@ -31,6 +31,14 @@ export async function getPredictions() {
   }
 }
 
+export async function getPredictionsByCompetition(competitionID) {
+  try {
+    return await http.get(http.predictions + "/competitions/" + competitionID);
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
 export async function deletePrediction(predictionID) {
   try {
     return await http.delete(http.predictions + "/" + predictionID);

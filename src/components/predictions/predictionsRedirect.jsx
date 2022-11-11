@@ -13,6 +13,9 @@ const PredictionsRedirect = () => {
   const competitionID = searchParams.get("competitionID");
   const groupID = searchParams.get("groupID");
   const selectedTab = searchParams.get("tab");
+  const type = searchParams.get("type");
+  const groupName = searchParams.get("groupName");
+  const groupPasscode = searchParams.get("groupPasscode");
 
   const redirect = () => {
     setComponent(
@@ -20,6 +23,8 @@ const PredictionsRedirect = () => {
         <PredictionMaker
           predictionID={predictionID}
           competitionID={competitionID}
+          groupName={groupName}
+          groupPasscode={groupPasscode}
         />
       ) : leaderboard ? (
         <PredictionsLeaderboard
@@ -27,7 +32,13 @@ const PredictionsRedirect = () => {
           groupID={groupID}
         />
       ) : (
-        <PredictionsHome paramTab={selectedTab} />
+        <PredictionsHome
+          paramTab={selectedTab}
+          type={type}
+          groupName={groupName}
+          groupPasscode={groupPasscode}
+          competitionID={competitionID}
+        />
       )
     );
   };
