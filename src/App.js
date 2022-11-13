@@ -27,6 +27,7 @@ function App() {
   const [textTimeout, setTextTimeout] = useState(null);
   const [user, setUser] = useState(null);
   const [apiRunning, setApiRunning] = useState(true);
+  const [cookiesAccepted, setCookiesAccepted] = useState(false);
 
   const setCurrentUser = () => {
     setUser(getCurrentUser());
@@ -97,6 +98,8 @@ function App() {
         setLoading: handleUpdateLoading,
         user,
         setUser: setCurrentUser,
+        cookiesAccepted,
+        setCookiesAccepted,
       }}
     >
       <Loading loading={loading} showText={showText} />

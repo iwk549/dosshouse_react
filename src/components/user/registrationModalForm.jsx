@@ -110,6 +110,8 @@ class RegistrationModalForm extends Form {
               rejectionCallback={this.handleCookieRejection}
               acceptanceCallback={this.checkCookieAcceptance}
               inModal={true}
+              resetOnRejection={true}
+              headerText="You must accept cookies in order to log in"
             />
           ) : (
             <TabbedArea
