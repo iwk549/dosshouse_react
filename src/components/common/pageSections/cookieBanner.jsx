@@ -1,30 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import BasicModal from "../modal/basicModal";
 import cookies from "../../../services/cookieService";
+import LoadingContext from "../../../context/loadingContext";
 
-const CookieBanner = ({ rejectionCallback, acceptanceCallback, inModal }) => {
-  const [cookiesAccepted, setCookiesAccepted] = useState(false);
+const CookieBanner = ({
+  rejectionCallback,
+  acceptanceCallback,
+  inModal,
+  resetOnRejection = false,
+  headerText,
+}) => {
+  const { cookiesAccepted, setCookiesAccepted } = useContext(LoadingContext);
+  const [hideThisBanner, setHideThisBanner] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const accepted = cookies.getCookie(cookies.acceptedName);
-    if (accepted) setCookiesAccepted(true);
+    if (accepted) {
+      handleAccept(false);
+    }
   }, []);
 
-  const handleAccept = () => {
+  const handleAccept = (addCookie = true) => {
     setModalOpen(false);
-    cookies.addCookie(cookies.acceptedName, true);
+    if (addCookie) {
+      cookies.addCookie(cookies.acceptedName, true);
+      if (acceptanceCallback) acceptanceCallback();
+    }
     setCookiesAccepted(true);
-    if (acceptanceCallback) acceptanceCallback();
+    setHideThisBanner(true);
   };
 
   const handleReject = () => {
-    setCookiesAccepted(true);
+    setHideThisBanner(!resetOnRejection);
     if (rejectionCallback) rejectionCallback();
   };
 
-  if (cookiesAccepted) return null;
+  if (cookiesAccepted || hideThisBanner) return null;
 
   const renderAcceptButton = () => {
     return (
@@ -52,7 +65,9 @@ const CookieBanner = ({ rejectionCallback, acceptanceCallback, inModal }) => {
       }}
       className="pop-box"
     >
-      <b>Please accept cookies</b>
+      <h3>
+        <b>{headerText || "Please accept cookies"}</b>
+      </h3>
       {renderAcceptButton()}
       {renderBreak()}
       Dosshouse relies on minimal cookies to maintain your account and
@@ -75,8 +90,8 @@ const CookieBanner = ({ rejectionCallback, acceptanceCallback, inModal }) => {
         Cookies stored include:
         <ul>
           <li>
-            <b>User Token</b>: For retrieving and storing your information in
-            our database
+            <b>User Token</b>: To keep you logged in and give you access to our
+            competitions
           </li>
           <li>
             <b>Cookies Accepted</b>: Your acceptance of our cookies is stored as
