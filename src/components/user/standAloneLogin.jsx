@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import RegistrationModalForm from "./registrationModalForm";
@@ -10,6 +10,10 @@ const StandAloneLogin = () => {
   let navigate = useNavigate();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
+
+  useEffect(() => {
+    setLoading(false);
+  });
 
   const handleResetSuccess = () => {
     navigate("/home");
