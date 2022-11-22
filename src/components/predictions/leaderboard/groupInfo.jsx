@@ -7,14 +7,14 @@ const GroupInfo = ({ groupInfo, setInviteOpen }) => {
 
   return (
     <div>
-      <div className="standout-header">{groupInfo.name} Leaderboard</div>
+      <div className="standout-header">{groupInfo?.name} Leaderboard</div>
       <div style={{ float: "right" }}></div>
-      {groupInfo.ownerID?.name && (
+      {groupInfo?.ownerID?.name && (
         <div>
-          Group Owner: <b>{groupInfo.ownerID.name}</b>
+          Group Owner: <b>{groupInfo?.ownerID?.name}</b>
         </div>
       )}
-      {groupInfo.ownerID?._id === user._id && (
+      {groupInfo?.ownerID?._id === user?._id && (
         <button
           className="btn btn-sm btn-dark"
           onClick={() => setInviteOpen(true)}

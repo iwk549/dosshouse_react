@@ -69,7 +69,7 @@ const PredictionInfo = ({
               "champion",
               isMobile
             )}
-            <ExternalImage uri={logos[prediction.misc?.winner]} />
+            <ExternalImage uri={logos[prediction.misc?.winner]} width="auto" />
             <br />
             {!isMobile && <div style={{ height: 25 }} />}
             <button

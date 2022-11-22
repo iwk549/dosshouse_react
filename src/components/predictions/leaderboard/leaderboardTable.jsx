@@ -71,14 +71,14 @@ const LeaderboardTable = ({
         !p.misc ? (
           "Hidden until after submission deadline"
         ) : (
-          <>
+          <div style={{ textAlign: "left" }}>
+            {p.misc?.winner} &nbsp;
             <ExternalImage
               uri={logos[p.misc?.winner]}
               height={15}
               width="auto"
             />
-            &nbsp;{p.misc?.winner}
-          </>
+          </div>
         ),
     },
     {

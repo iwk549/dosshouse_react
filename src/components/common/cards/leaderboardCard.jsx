@@ -14,13 +14,13 @@ const LeaderboardCard = ({ data, onSelect }) => {
             key={idx}
             onClick={() => onSelect(d)}
           >
-            <div style={{ gridColumn: 1 }}>
+            <div style={{ gridColumn: 1, textAlign: "left" }}>
               <div>
                 <IconRender type="ranking" /> {d.ranking}
               </div>
               <div>{d.totalPoints} Pts</div>
             </div>
-            <div style={{ gridColumn: 2 }}>
+            <div style={{ gridColumn: 2, textAlign: "center" }}>
               <div style={{ fontWeight: "bold" }}>
                 <IconRender type="name" /> {d.name}
               </div>
@@ -28,15 +28,16 @@ const LeaderboardCard = ({ data, onSelect }) => {
                 <IconRender type="user" /> {d.userID.name}
               </div>
             </div>
-            {d.misc?.winner && (
-              <div style={{ gridColumn: 3 }}>
+
+            <div style={{ gridColumn: 3, textAlign: "right" }}>
+              {d.misc?.winner && (
                 <ExternalImage
                   uri={logos[d.misc.winner]}
-                  height={30}
-                  width={30}
+                  height={25}
+                  width="auto"
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         );
       })}
