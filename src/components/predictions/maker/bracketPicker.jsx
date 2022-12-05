@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TournamentBracket from "react-svg-tournament-bracket";
 
 import SingleMatchModal from "./singleMatchModal";
@@ -19,8 +19,7 @@ const BracketPicker = ({
   setIsPortrait,
   originalPlayoffMatches,
 }) => {
-  let { isSuperSmall, width, superSmallWidth, mobileWidth } =
-    useWindowDimensions();
+  let { isSuperSmall, width, superSmallWidth } = useWindowDimensions();
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [matchesOpen, setMatchesOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState(null);
