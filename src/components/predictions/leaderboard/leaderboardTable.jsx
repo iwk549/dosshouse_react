@@ -158,7 +158,7 @@ const LeaderboardTable = ({
         keyProperty="_id"
         onSelect={onSelectPrediction}
         CardComponent={LeaderboardCard}
-        cardSearchColumns={columns.slice(0, 5)}
+        cardSearchColumns={columns.slice(0, 6)}
       />
     </>
   );
