@@ -38,10 +38,18 @@ const PredictionInfo = ({
     );
   };
 
-  const renderPoints = (points, totalPoints) => {
+  const renderPoints = (points, totalPoints, potentialPoints) => {
     return (
       <div className="col">
         {renderInfoLine("Total Points", totalPoints, "", "points", isMobile)}
+        {potentialPoints &&
+          renderInfoLine(
+            "Potential Points",
+            potentialPoints.realistic,
+            "",
+            "points",
+            isMobile
+          )}
         {!isMobile && (
           <>
             {renderInfoLine("Group", points.group.points)}
@@ -60,7 +68,11 @@ const PredictionInfo = ({
       <SideBySideView
         Components={[
           renderInfo(prediction),
-          renderPoints(prediction.points, prediction.totalPoints),
+          renderPoints(
+            prediction.points,
+            prediction.totalPoints,
+            prediction.potentialPoints
+          ),
           <>
             {renderInfoLine(
               "Champion",

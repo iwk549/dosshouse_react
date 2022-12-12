@@ -65,6 +65,12 @@ const LeaderboardTable = ({
       content: (p) => p.totalPoints,
     },
     {
+      path: "potentialPoints",
+      label: "Potential Points",
+      content: (p) =>
+        p.potentialPoints ? <>{p.potentialPoints?.realistic}</> : null,
+    },
+    {
       path: "misc.winner",
       label: "Champion Picked",
       content: (p) =>
