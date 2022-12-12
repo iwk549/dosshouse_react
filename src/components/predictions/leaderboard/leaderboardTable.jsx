@@ -65,7 +65,7 @@ const LeaderboardTable = ({
       content: (p) => p.totalPoints,
     },
     {
-      path: "potentialPoints",
+      path: "potentialPoints.realistic",
       label: "Potential Points",
       content: (p) =>
         p.potentialPoints ? <>{p.potentialPoints?.realistic}</> : null,
