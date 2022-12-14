@@ -60,11 +60,11 @@ const LeaderboardViewPredictionModal = ({
             <b>{prediction.name}</b>
           </h3>
           <h2>{prediction.totalPoints} Current Points</h2>
-          {prediction.potentialPoints ? (
+          {/* {prediction.potentialPoints ? (
             <>
               <h4>{prediction.potentialPoints.realistic} Potential</h4>
             </>
-          ) : null}
+          ) : null} */}
           {groupInfo &&
             groupInfo.ownerID &&
             groupInfo.ownerID._id === user?._id && (
