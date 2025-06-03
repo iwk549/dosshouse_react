@@ -14,7 +14,7 @@ const SingleMatchModal = ({ isOpen, setIsOpen, match, finalRoundNumber }) => {
     <BasicModal isOpen={isOpen} onClose={setIsOpen} style={confirmModalStyle}>
       <div className="text-center">
         <h3>
-          <b>Match Number {match.matchNumber}</b>
+          <b>Match Number {match.metadata?.matchNumber || match.matchNumber}</b>
         </h3>
         <p>{translateRound(match.round, finalRoundNumber)}</p>
         <p>
