@@ -27,6 +27,15 @@ const handleReorder = (selectedTeam, direction, groupName, state) => {
   return handleDrop(selectedTeam, { position }, groupName, state);
 };
 
+export const findCountryLogo = (teamName) => {
+  let countryLogo = teamName;
+  if (teamName[teamName.length - 1] === ")") {
+    const firstParen = teamName.indexOf("(");
+    countryLogo = teamName.slice(firstParen + 1, teamName.length - 1);
+  }
+  return countryLogo;
+};
+
 const cascadeGroupChanges = (groups, playoffMatches, misc) => {
   let newPlayoffMatches = [];
   let newPlayoffs = [];
@@ -45,9 +54,10 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
         const teamToInsert = groups[group]
           ? groups[group][position - 1].name
           : newMatch[t + "TeamName"];
+
         newMatch[t + "TeamName"] = teamToInsert;
         newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(teamToInsert);
-        newMatch[t + "TeamLogo"] = logos[teamToInsert];
+        newMatch[t + "TeamLogo"] = logos[findCountryLogo(teamToInsert)];
       });
     } else if (m.round < 1000) {
       // for all other rounds:
@@ -72,7 +82,8 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
             newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(
               newPicks[pickIndex]
             );
-            newMatch[t + "TeamLogo"] = logos[newPicks[pickIndex]];
+            newMatch[t + "TeamLogo"] =
+              logos[findCountryLogo(newPicks[pickIndex])];
           }
           if (newMatch.round === finalRound) {
             if (
@@ -138,7 +149,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
           (match.metadata?.matchNumber || match.matchNumber)
         ) {
           newMatch[t + "TeamName"] = teamToInsert;
-          newMatch[t + "TeamLogo"] = logos[teamToInsert];
+          newMatch[t + "TeamLogo"] = logos[findCountryLogo(teamToInsert)];
           newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(teamToInsert);
           teamToReplace = m[t + "TeamName"];
         }
@@ -174,7 +185,7 @@ const handleUpdateBracketWinners = (playoffMatches, match, winner, misc) => {
             newMatch[t + "TeamName"] = teamToInsert;
             newMatch[t + "TeamAbbreviation"] =
               getTeamAbbreviation(teamToInsert);
-            newMatch[t + "TeamLogo"] = logos[teamToInsert];
+            newMatch[t + "TeamLogo"] = logos[findCountryLogo(teamToInsert)];
           }
         });
       }
@@ -225,10 +236,10 @@ export const handlePopulateBracket = (
     };
     playoffMatch.homeTeamName = p.homeTeam;
     playoffMatch.homeTeamAbbreviation = getTeamAbbreviation(p.homeTeam);
-    playoffMatch.homeTeamLogo = logos[p.homeTeam];
+    playoffMatch.homeTeamLogo = logos[findCountryLogo(p.homeTeam)];
     playoffMatch.awayTeamName = p.awayTeam;
     playoffMatch.awayTeamAbbreviation = getTeamAbbreviation(p.awayTeam);
-    playoffMatch.awayTeamLogo = logos[p.awayTeam];
+    playoffMatch.awayTeamLogo = logos[findCountryLogo(p.awayTeam)];
     populatedPlayoffMatches.push(playoffMatch);
     if (result) {
       const thisRound = result.playoff.find((round) => round.round === p.round);

@@ -1,9 +1,12 @@
+import { findCountryLogo } from "./predictionsUtil";
+
 export const getFinalRound = (bracket) => {
   return Math.max(...bracket.map((m) => m.round));
 };
 
 export const getTeamAbbreviation = (teamName) => {
-  let lcName = teamName.toLowerCase();
+  const preAbr = findCountryLogo(teamName);
+  let lcName = preAbr.toLowerCase();
   let splitName = lcName.split(" ");
 
   // basic return value, 3 chars upper

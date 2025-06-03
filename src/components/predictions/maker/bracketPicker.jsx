@@ -9,6 +9,7 @@ import Switch from "../../common/form/switch";
 import MatchesModal from "./matchesModal";
 import { shortDate } from "../../../utils/allowables";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const BracketPicker = ({
   matches,
@@ -34,8 +35,12 @@ const BracketPicker = ({
   };
 
   const renderImage = (team) => {
-    return logos[team] ? (
-      <ExternalImage uri={logos[team]} height={20} width="auto" />
+    return logos[findCountryLogo(team)] ? (
+      <ExternalImage
+        uri={logos[findCountryLogo(team)]}
+        height={20}
+        width="auto"
+      />
     ) : (
       <small className="muted-text">
         <IconRender type="trophy" />

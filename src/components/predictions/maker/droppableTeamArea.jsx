@@ -5,6 +5,7 @@ import DraggableTable from "../../common/table/draggableTable";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const DroppableTeamArea = ({
   teams,
@@ -28,7 +29,11 @@ const DroppableTeamArea = ({
     if (!isSuperSmall) {
       newColumns.unshift({
         content: (t) => (
-          <ExternalImage uri={logos[t.name]} width={30} height={20} />
+          <ExternalImage
+            uri={logos[findCountryLogo(t.name)]}
+            width={30}
+            height={20}
+          />
         ),
       });
     }
