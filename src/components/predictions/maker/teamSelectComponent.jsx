@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import BasicModal from "../../common/modal/basicModal";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../../common/image/externalImage";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const TeamSelectComponent = ({
   teams,
@@ -32,7 +33,7 @@ const TeamSelectComponent = ({
           {selectedOption ? (
             <>
               <ExternalImage
-                uri={logos[selectedOption]}
+                uri={logos[findCountryLogo(selectedOption)]}
                 height={30}
                 width="auto"
               />
@@ -62,11 +63,19 @@ const TeamSelectComponent = ({
             onClick={() => raiseSelect(team.value)}
           >
             <div style={{ gridColumn: 1 }}>
-              <ExternalImage uri={logos[team.value]} height={15} width="auto" />
+              <ExternalImage
+                uri={logos[findCountryLogo(team.value)]}
+                height={15}
+                width="auto"
+              />
             </div>
             <div style={{ gridColumn: 2 }}>{team.value}</div>
             <div style={{ gridColumn: 3 }}>
-              <ExternalImage uri={logos[team.value]} height={15} width="auto" />
+              <ExternalImage
+                uri={logos[findCountryLogo(team.value)]}
+                height={15}
+                width="auto"
+              />
             </div>
           </div>
         ))}

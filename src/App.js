@@ -111,13 +111,13 @@ function App() {
           <>
             <CookieBanner />
             <Banner
-              announcement="World Cup 2022 predictions are now live!!!"
+              announcement="Club World Cup 2025 predictions are now live!!!"
               onClick={() => {
                 navigate(
-                  "/predictions?id=new&competitionID=6252ebe1d595c7d6a7a76ded"
+                  "/predictions?id=new&competitionID=683f0928dc52d0c36b3e3b5f"
                 );
               }}
-              cookieName="worldCup2022"
+              cookieName="clubWorldCup2022"
               showIfLoggedIn={false}
             />
             <SwitchRouter />
