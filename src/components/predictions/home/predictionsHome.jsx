@@ -54,7 +54,13 @@ const PredictionsHome = ({
     // no error displayed here
     // this is to gather users submissions, if not logged in will give error
     if (predictionsRes && predictionsRes.status === 200)
-      setPredictions(predictionsRes.data);
+      setPredictions(
+        predictionsRes.data.sort(
+          (a, b) =>
+            new Date(a.competitionID?.competitionStart) -
+            new Date(b.competitionID?.competitionStart)
+        )
+      );
 
     if (type === "groupLink") setGroupAddFromLinkOpen(true);
     setLoading(false);
