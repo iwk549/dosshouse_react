@@ -9,6 +9,7 @@ import Header from "../../common/pageSections/header";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
 import cookies from "../../../services/cookieService";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const PredictionInfo = ({
   prediction,
@@ -41,13 +42,19 @@ const PredictionInfo = ({
   const renderPoints = (points, totalPoints, potentialPoints) => {
     return (
       <div className="col">
-        {renderInfoLine("Total Points", totalPoints, "", "points", isMobile)}
+        {renderInfoLine(
+          "Total Points",
+          totalPoints,
+          "",
+          "totalPoints",
+          isMobile
+        )}
         {potentialPoints &&
           renderInfoLine(
             "Potential Points",
             potentialPoints.realistic,
             "",
-            "points",
+            "potentialPoints",
             isMobile
           )}
         {!isMobile && (
@@ -81,7 +88,10 @@ const PredictionInfo = ({
               "champion",
               isMobile
             )}
-            <ExternalImage uri={logos[prediction.misc?.winner]} width="auto" />
+            <ExternalImage
+              uri={logos[findCountryLogo(prediction.misc?.winner)]}
+              width="auto"
+            />
             <br />
             {!isMobile && <div style={{ height: 25 }} />}
             <button
@@ -108,6 +118,17 @@ const PredictionInfo = ({
               data-testid="delete-prediction-button"
             >
               Delete
+            </button>
+            <div style={{ height: 10 }} />
+            <button
+              className="btn btn-info"
+              onClick={() =>
+                navigate(
+                  `/predictions?leaderboard=show&competitionID=${prediction.competitionID._id}&groupID=all`
+                )
+              }
+            >
+              View Sitewide Leaderboard
             </button>
           </>,
         ]}
