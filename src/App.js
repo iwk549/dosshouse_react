@@ -34,7 +34,10 @@ function App() {
   };
 
   const refresh = async () => {
-    await refreshUser();
+    const res = await refreshUser();
+    if (res?.status === 200) {
+      setUser(res.data);
+    }
   };
 
   const getCurrentVersion = async () => {
@@ -45,7 +48,6 @@ function App() {
       const webMajor = webVersion[0];
       const webMinor = webVersion[1];
       const webPatch = webVersion[2];
-
       if (
         Number(webMajor) !== version.data.major ||
         Number(webMinor) !== version.data.minor ||
@@ -64,8 +66,8 @@ function App() {
 
   useEffect(() => {
     getCurrentVersion();
-    setCurrentUser();
     refresh();
+    setCurrentUser();
   }, []);
 
   useEffect(() => {

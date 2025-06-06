@@ -64,6 +64,7 @@ const CookieBanner = ({
         textAlign: "center",
       }}
       className="pop-box"
+      data-testid="cookie_banner"
     >
       <h3>
         <b>{headerText || "Please accept cookies"}</b>
