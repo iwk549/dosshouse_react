@@ -95,6 +95,7 @@ const PredictionMaker = ({
           });
         } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
       });
+
       setGroupMatches(filtered.groupMatches);
       setOriginalPlayoffMatches(filtered.playoffMatches);
       setAllTeams(addedTeamTracker);

@@ -12,7 +12,9 @@ const Competitions = ({ competitions, predictions, expired }) => {
 
   if (competitions.length === 0)
     return (
-      <p>There a currently no {expired ? "expired" : "active"} competitions.</p>
+      <p>
+        There are currently no {expired ? "expired" : "active"} competitions.
+      </p>
     );
 
   return competitions.map((c) => {
