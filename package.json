@@ -34,7 +34,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint **/*.jsx",
-    "cypress": "./node_modules/.bin/cypress open"
+    "cypress": "./node_modules/.bin/cypress open",
+    "test:all": "react-scripts test --watchAll=false"
   },
   "eslintConfig": {
     "extends": [
