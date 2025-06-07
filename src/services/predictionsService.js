@@ -1,6 +1,6 @@
 import http from "./nodeHttpService";
 
-export async function savePredictions(predictionID, predictions) {
+export async function savePrediction(predictionID, predictions) {
   if (!predictionID || predictionID === "new")
     try {
       return await http.post(http.predictions, predictions);

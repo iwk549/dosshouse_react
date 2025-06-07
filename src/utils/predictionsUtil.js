@@ -101,6 +101,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
             newPicks[pickIndex] &&
             previousPicks[pickIndex] === misc.thirdPlace
           ) {
+            // this doesn't work for brackets with only 2 rounds (semi-final and final)
             newMisc.thirdPlace = newPicks[pickIndex];
             toast.info(`Third place pick updated to ${newPicks[pickIndex]}`);
           }
@@ -284,7 +285,7 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
       });
   });
 
-  competition.miscPicks.forEach((pick) => {
+  competition?.miscPicks.forEach((pick) => {
     if (
       !misc[pick.name] ||
       misc[pick.name].toLowerCase().includes("winner") ||

@@ -57,8 +57,8 @@ const PredictionsHome = ({
       setPredictions(
         predictionsRes.data.sort(
           (a, b) =>
-            new Date(a.competitionID?.competitionStart) -
-            new Date(b.competitionID?.competitionStart)
+            new Date(b.competitionID?.competitionStart) -
+            new Date(a.competitionID?.competitionStart)
         )
       );
 

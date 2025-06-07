@@ -25,7 +25,7 @@ const DroppableTeamArea = ({
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    let newColumns = [{ content: (t) => t.name }];
+    let newColumns = [{ testid: "team_name", content: (t) => t.name }];
     if (!isSuperSmall) {
       newColumns.unshift({
         content: (t) => (

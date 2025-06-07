@@ -34,7 +34,7 @@ const HeaderLine = ({
         drillRef={nameInputRef}
       />
       <h1>
-        <b>{competition.name}</b>
+        <b>{competition?.name}</b>
       </h1>
       <div
         className={
@@ -71,14 +71,14 @@ const HeaderLine = ({
       <div className="sticky-top">
         {isSaved ? (
           <button className="pop-box">
-            <IconRender type="checkmark" /> Predictions Saved
+            <IconRender type="checkmark" /> Prediction Saved
           </button>
         ) : (
           <button
             className="btn btn-md btn-block btn-dark submit-button sticky-top"
             onClick={onSave}
           >
-            <IconRender type="save" size={15} /> Save Predictions
+            <IconRender type="save" size={15} /> Save Prediction
           </button>
         )}
       </div>
