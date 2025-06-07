@@ -58,7 +58,7 @@ const Miscellaneous = ({
 
   return (
     <div>
-      {competition?.miscPicks.map((p) => (
+      {competition?.miscPicks?.map((p) => (
         <React.Fragment key={p.name}>
           <TeamSelectComponent
             teams={

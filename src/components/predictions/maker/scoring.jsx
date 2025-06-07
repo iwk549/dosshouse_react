@@ -50,13 +50,17 @@ const Scoring = ({ competition, renderItem }) => {
           <h3>
             <u>Bonus Scoring</u>
           </h3>
-          {competition.miscPicks.map((p, ii) =>
-            renderItem(
-              {
-                header: p.label,
-                body: <p>{p.points} points</p>,
-              },
-              ii
+          {!competition?.miscPicks?.length ? (
+            <p>There are no bonus picks available for this competition</p>
+          ) : (
+            competition.miscPicks.map((p, ii) =>
+              renderItem(
+                {
+                  header: p.label,
+                  body: <p>{p.points} points</p>,
+                },
+                ii
+              )
             )
           )}
         </>

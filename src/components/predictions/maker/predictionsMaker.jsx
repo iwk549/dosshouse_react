@@ -9,7 +9,10 @@ import { toast } from "react-toastify";
 import LoadingContext from "../../../context/loadingContext";
 import RegistrationModalForm from "../../user/registrationModalForm";
 import { getMatches } from "../../../services/matchService";
-import { predictionReducer } from "../../../utils/predictionsUtil";
+import {
+  handleUpdateSpecialMatrix,
+  predictionReducer,
+} from "../../../utils/predictionsUtil";
 import {
   savePrediction,
   getPrediction,
@@ -50,7 +53,7 @@ const PredictionMaker = ({
   const [originalPlayoffMatches, setOriginalPlayoffMatches] = useState([]);
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
-  const tabs = ["Group", "Bracket", "Bonus", "Information"];
+  const [tabs, setTabs] = useState(["Group", "Bracket", "Information"]);
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
@@ -72,6 +75,10 @@ const PredictionMaker = ({
     if (competitionRes.status !== 200) toast.error(competitionRes.data);
     const isLocked =
       new Date(competitionRes.data?.submissionDeadline) <= new Date();
+
+    let newTabs = [...tabs];
+    if (competitionRes.data.miscPicks?.length) newTabs.splice(2, 0, "Bonus");
+    setTabs(newTabs);
 
     if (matchesRes.status === 200) {
       matchesRes.data.forEach((m) => {
@@ -95,6 +102,14 @@ const PredictionMaker = ({
           });
         } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
       });
+
+      if (competitionRes.data.groupMatrix) {
+        const rankingGroup = handleUpdateSpecialMatrix(
+          competitionRes.data,
+          filtered.groups
+        );
+        filtered.groups[competitionRes.data.groupMatrix.type] = rankingGroup;
+      }
 
       setGroupMatches(filtered.groupMatches);
       setOriginalPlayoffMatches(filtered.playoffMatches);
@@ -279,6 +294,7 @@ const PredictionMaker = ({
               onReorder={dispatchPredictions}
               isLocked={predictions.isLocked}
               groupMatches={groupMatches}
+              competition={predictions.competition}
             />
           ) : isTab("bracket") ? (
             <BracketPicker

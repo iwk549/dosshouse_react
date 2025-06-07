@@ -103,6 +103,7 @@ const LeaderboardViewPredictionModal = ({
                   color: "#000",
                   key: "correct",
                 }}
+                competition={competition}
               />
             ) : isTab("playoff") ? (
               <BracketPicker

@@ -10,6 +10,7 @@ import { findCountryLogo } from "../../../utils/predictionsUtil";
 const DroppableTeamArea = ({
   teams,
   groupName,
+  groupHeader,
   onDrop,
   onReorder,
   isLocked,
@@ -81,7 +82,7 @@ const DroppableTeamArea = ({
   return (
     <>
       <h3 className="text-center">
-        <b>Group {groupName}</b>
+        <b>{groupHeader}</b>
       </h3>
       <DraggableTable
         data={teams}
