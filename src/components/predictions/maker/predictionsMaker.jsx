@@ -11,7 +11,7 @@ import RegistrationModalForm from "../../user/registrationModalForm";
 import { getMatches } from "../../../services/matchService";
 import { predictionReducer } from "../../../utils/predictionsUtil";
 import {
-  savePredictions,
+  savePrediction,
   getPrediction,
   addPredictionToGroup,
 } from "../../../services/predictionsService";
@@ -108,14 +108,14 @@ const PredictionMaker = ({
         if (predictionsRes.status === 200) {
           dispatchPredictions({
             type: "populate",
-            groups: predictionsRes.data.groupPredictions,
-            playoffs: predictionsRes.data.playoffPredictions,
+            groups: predictionsRes.data?.groupPredictions || [],
+            playoffs: predictionsRes.data?.playoffPredictions || [],
             playoffMatches: filtered.playoffMatches,
-            misc: predictionsRes.data.misc,
+            misc: predictionsRes.data?.misc,
             competition: competitionRes.data,
             isLocked,
           });
-          setPredictionName(predictionsRes.data.name);
+          setPredictionName(predictionsRes.data?.name || "");
         } else {
           toast.error("Could not retrive submission");
           setNotAllowed(predictionsRes.status);
@@ -150,7 +150,7 @@ const PredictionMaker = ({
         teamOrder: predictions.groups[k].map((t) => t.name),
       });
     });
-    const predictionRes = await savePredictions(predictionID, {
+    const predictionRes = await savePrediction(predictionID, {
       name: predictionName,
       competitionID,
       groupPredictions,
@@ -162,7 +162,7 @@ const PredictionMaker = ({
       dispatchPredictions({
         type: "save",
       });
-      toast.success("Predictions saved");
+      toast.success("Prediction saved");
       if (groupName && groupPasscode) {
         // if these two params exist attempt to add prediction to the group
         const groupRes = await addPredictionToGroup(predictionRes.data, {

@@ -83,7 +83,10 @@ const BracketPicker = ({
       <h1 className="pop-box" data-testid="champion-box">
         {renderImage(misc.winner)}
         &nbsp;&nbsp;
-        {misc.winner || "Pick the Champion"}&nbsp;&nbsp;
+        <span data-testid="bracket_winner">
+          {misc.winner || "Pick the Champion"}
+        </span>
+        &nbsp;&nbsp;
         {renderImage(misc.winner)}
       </h1>
       <TournamentBracket

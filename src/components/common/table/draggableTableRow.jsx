@@ -1,12 +1,8 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import {
-  FaGripLines,
-  FaCaretSquareUp,
-  FaCaretSquareDown,
-} from "react-icons/fa";
 import { IconContext } from "react-icons";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import IconRender from "../icons/iconRender";
 
 const DraggableTableRow = ({
   data,
@@ -72,18 +68,18 @@ const DraggableTableRow = ({
           {!isLocked ? (
             <td>
               {position > 0 && (
-                <FaCaretSquareUp
+                <IconRender
+                  type="moveUp"
                   onClick={() => onReorder(data, "up", position)}
                   className="clickable"
-                  data-testid="move-up"
                 />
               )}
               <br />
               {!isLastRow ? (
-                <FaCaretSquareDown
+                <IconRender
+                  type="moveDown"
                   onClick={() => onReorder(data, "down", position)}
                   className="clickable"
-                  data-testid="move-down"
                 />
               ) : (
                 <br />
@@ -95,13 +91,14 @@ const DraggableTableRow = ({
               key={idx}
               className={"d-table-cell"}
               style={highlight && data[highlight.key] ? highlight : {}}
+              data-testid={c.testid}
             >
               {c.content(data)}
             </td>
           ))}
           {!isLocked && !isMobile ? (
             <td>
-              <FaGripLines />
+              <IconRender type="drag" />
             </td>
           ) : null}
         </tr>

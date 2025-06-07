@@ -60,7 +60,7 @@ export function matchStartText(sport) {
 }
 
 export function splitName(name) {
-  return name.split(" ")[0];
+  return name?.split(" ")[0] || "";
 }
 export function translateRound(round, finalRound) {
   if (round === 1001) return "Third Place";

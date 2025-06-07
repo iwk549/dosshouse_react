@@ -73,7 +73,7 @@ const MatchesModal = ({
         data={matches}
         sortColumn={sortColumn}
         onSort={onSort}
-        keyProperty={"_id"}
+        keyProperty="matchNumber"
         headerClass="thead-light"
         CardComponent={MatchCard}
         cardSearchColumns={columns.filter((c) => c.label)}

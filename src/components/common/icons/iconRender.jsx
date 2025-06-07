@@ -15,6 +15,9 @@ import {
   FaCaretRight,
   FaSortAmountUp,
   FaWindowClose,
+  FaCaretSquareDown,
+  FaCaretSquareUp,
+  FaGripLines,
 } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
@@ -38,11 +41,14 @@ const icons = {
   close: FaWindowClose,
   delete: MdDeleteSweep,
   down: BsCaretDownFill,
+  drag: FaGripLines,
   home: BiHome,
   left: FaCaretLeft,
   location: MdOutlineLocationOn,
   login: BiLogInCircle,
   logout: BiLogOutCircle,
+  moveDown: FaCaretSquareDown,
+  moveUp: FaCaretSquareUp,
   name: BiRename,
   nav: VscThreeBars,
   prediction: MdOutlineBatchPrediction,
@@ -61,7 +67,11 @@ const icons = {
 
 const IconRender = ({ type, size, ...rest }) => {
   if (!icons[type]) return null;
-  return React.createElement(icons[type], { size, ...rest });
+  return React.createElement(icons[type], {
+    size,
+    "data-testid": type + "_icon",
+    ...rest,
+  });
 };
 
 export default IconRender;
