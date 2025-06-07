@@ -3,7 +3,39 @@ import { toast } from "react-toastify";
 
 import logos from "../textMaps/logos";
 
-const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
+const getGroupNameFromSpecialGroup = (group) => {
+  return group?.map((team) => team.name.slice(0, team.name.indexOf(":")));
+};
+
+export const handleUpdateSpecialMatrices = (competition, groups) => {
+  let rankingGroups = {};
+
+  competition.groupMatrix?.forEach((matrix) => {
+    const rankingGroup = [];
+    const order = getGroupNameFromSpecialGroup(groups[matrix.key]);
+    if (order) {
+      order.forEach((group) => {
+        rankingGroup.push({
+          name: `${group}: ${groups[group][matrix.positionInGroup - 1].name}`,
+        });
+      });
+    } else {
+      for (let group in groups) {
+        if (group !== matrix.type) {
+          rankingGroup.push({
+            name: `${group}: ${groups[group][matrix.positionInGroup - 1].name}`,
+          });
+        }
+      }
+    }
+
+    rankingGroups[matrix.key] = rankingGroup;
+  });
+
+  return rankingGroups;
+};
+
+const handleDrop = (draggedTeam, droppedOn, groupName, state, competition) => {
   let newGroups = { ...state };
   let newTeams = [...newGroups[groupName]];
   const dropAt =
@@ -13,10 +45,22 @@ const handleDrop = (draggedTeam, droppedOn, groupName, state) => {
   let thisTeam = newTeams.splice(draggedTeam.position, 1)[0];
   newTeams.splice(dropAt, 0, thisTeam);
   newGroups[groupName] = newTeams;
+
+  if (competition?.groupMatrix?.length) {
+    const rankingGroups = handleUpdateSpecialMatrices(competition, newGroups);
+    Object.assign(newGroups, rankingGroups);
+  }
+
   return newGroups;
 };
 
-const handleReorder = (selectedTeam, direction, groupName, state) => {
+const handleReorder = (
+  selectedTeam,
+  direction,
+  groupName,
+  state,
+  competition
+) => {
   if (
     (selectedTeam.position === 0 && direction === "up") ||
     (selectedTeam.position === state[groupName].length - 1 &&
@@ -24,19 +68,22 @@ const handleReorder = (selectedTeam, direction, groupName, state) => {
   )
     return state;
   const position = selectedTeam.position + (direction === "up" ? -2 : 1);
-  return handleDrop(selectedTeam, { position }, groupName, state);
+  return handleDrop(selectedTeam, { position }, groupName, state, competition);
 };
 
 export const findCountryLogo = (teamName) => {
   let countryLogo = teamName;
-  if (teamName[teamName.length - 1] === ")") {
+  if (teamName?.includes(":")) {
+    countryLogo = teamName.slice(teamName.indexOf(":") + 2);
+  }
+  if (teamName?.[teamName.length - 1] === ")") {
     const firstParen = teamName.indexOf("(");
     countryLogo = teamName.slice(firstParen + 1, teamName.length - 1);
   }
   return countryLogo;
 };
 
-const cascadeGroupChanges = (groups, playoffMatches, misc) => {
+const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
   let newPlayoffMatches = [];
   let newPlayoffs = [];
   let previousTeams = {};
@@ -49,8 +96,20 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
     if (newMatch.round === 1) {
       // for first round get teams from group rankings
       ["home", "away"].forEach((t) => {
-        const group = newMatch.getTeamsFrom[t].groupName;
-        const position = newMatch.getTeamsFrom[t].position;
+        let group = newMatch.getTeamsFrom[t].groupName;
+        let position = newMatch.getTeamsFrom[t].position;
+        if (group.includes("groupMatrix") && competition?.groupMatrix?.length) {
+          const groupMatrix = competition.groupMatrix.find(
+            (m) => m.key === group.split(".")[1]
+          );
+          const order = getGroupNameFromSpecialGroup(groups[groupMatrix.key])
+            .slice(0, groupMatrix.teamsToIncludeInBracket)
+            .sort()
+            .join("");
+          const info = groupMatrix.matrix?.[newMatch.matchNumber]?.[order];
+          group = info?.groupName;
+          position = info?.position;
+        }
         const teamToInsert = groups[group]
           ? groups[group][position - 1].name
           : newMatch[t + "TeamName"];
@@ -73,7 +132,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc) => {
           let pickIndex = -1;
           const previousPicks = previousTeams[m.getTeamsFrom[t].matchNumber];
           const newPicks = newTeams[m.getTeamsFrom[t].matchNumber];
-          newPicks.forEach((p, i) => {
+          newPicks?.forEach((p, i) => {
             if (p === currentPick) matchesPreviousRound = true;
             else if (p !== previousPicks[i]) pickIndex = i;
           });
@@ -285,7 +344,7 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
       });
   });
 
-  competition?.miscPicks.forEach((pick) => {
+  competition?.miscPicks?.forEach((pick) => {
     if (
       !misc[pick.name] ||
       misc[pick.name].toLowerCase().includes("winner") ||
@@ -358,14 +417,16 @@ export function predictionReducer(state, action) {
         action.draggedTeam,
         action.droppedOn,
         action.groupName,
-        state.groups
+        state.groups,
+        competition
       );
     } else if (action.type === "reorder") {
       groups = handleReorder(
         action.selectedTeam,
         action.direction,
         action.groupName,
-        state.groups
+        state.groups,
+        competition
       );
     } else if (action.type === "winner") {
       const winners = handleUpdateBracketWinners(
@@ -382,7 +443,12 @@ export function predictionReducer(state, action) {
     }
   }
   if (action.type !== "winner") {
-    const updated = cascadeGroupChanges(groups, playoffMatches, misc);
+    const updated = cascadeGroupChanges(
+      groups,
+      playoffMatches,
+      misc,
+      competition
+    );
     playoffMatches = updated.playoffMatches;
     playoffs = updated.playoffs;
     misc = updated.misc;
