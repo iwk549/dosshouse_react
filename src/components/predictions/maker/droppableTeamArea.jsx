@@ -10,6 +10,8 @@ import { findCountryLogo } from "../../../utils/predictionsUtil";
 const DroppableTeamArea = ({
   teams,
   groupName,
+  groupHeader,
+  description,
   onDrop,
   onReorder,
   isLocked,
@@ -57,31 +59,19 @@ const DroppableTeamArea = ({
     });
   };
 
-  // const handleSort = (sortColumn) => {
-  //   setTimeout(() => {
-  //     setMatchesOpen(true);
-  //   }, 0);
-  //   setMatchesOpen(false);
-  //   setSortColumn(sortColumn);
-  // };
-
-  // const getData = () => {
-  //   const sortedMatches = matches.sort((a, b) => {
-  //     if (!b[sortColumn.path]) return -1;
-  //     if (!a[sortColumn.path]) return 1;
-  //     const isGreater = a[sortColumn.path] > b[sortColumn.path];
-  //     return (isGreater && sortColumn.order === "asc") ||
-  //       (!isGreater && sortColumn.order === "desc")
-  //       ? 1
-  //       : -1;
-  //   });
-  //   return sortedMatches;
-  // };
-
   return (
     <>
-      <h3 className="text-center">
-        <b>Group {groupName}</b>
+      <h3
+        className="text-center"
+        style={{ maxWidth: 300, justifySelf: "center" }}
+      >
+        <b>{groupHeader}</b>
+        {description && (
+          <>
+            <br />
+            <small style={{ fontWeight: "normal" }}>{description}</small>
+          </>
+        )}
       </h3>
       <DraggableTable
         data={teams}

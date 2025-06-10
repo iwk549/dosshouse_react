@@ -10,6 +10,7 @@ const GroupPicker = ({
   isLocked,
   groupMatches,
   highlight,
+  competition,
 }) => {
   const { width } = useWindowDimensions();
   const [groupMaps, setGroupMaps] = useState([]);
@@ -43,9 +44,22 @@ const GroupPicker = ({
         {groupMaps.map((h, i) => (
           <div className="row" key={i}>
             {h.map((g, ii) => {
+              const groupMatrix = competition.groupMatrix
+                ? competition.groupMatrix.find((m) => m.key === g)
+                : null;
               return (
                 <div key={ii} style={{ gridColumn: ii + 1 }}>
                   <DroppableTeamArea
+                    groupHeader={
+                      groupMatrix && g === groupMatrix.key
+                        ? groupMatrix.name
+                        : `Group ${g}`
+                    }
+                    description={
+                      groupMatrix && g === groupMatrix.key
+                        ? groupMatrix.description
+                        : ""
+                    }
                     groupName={g}
                     teams={groups[g]}
                     onDrop={onDrop}

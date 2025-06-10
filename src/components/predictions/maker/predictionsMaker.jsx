@@ -9,7 +9,10 @@ import { toast } from "react-toastify";
 import LoadingContext from "../../../context/loadingContext";
 import RegistrationModalForm from "../../user/registrationModalForm";
 import { getMatches } from "../../../services/matchService";
-import { predictionReducer } from "../../../utils/predictionsUtil";
+import {
+  handleUpdateSpecialMatrices,
+  predictionReducer,
+} from "../../../utils/predictionsUtil";
 import {
   savePrediction,
   getPrediction,
@@ -50,8 +53,8 @@ const PredictionMaker = ({
   const [originalPlayoffMatches, setOriginalPlayoffMatches] = useState([]);
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
-  const tabs = ["Group", "Bracket", "Bonus", "Information"];
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [tabs, setTabs] = useState([""]);
+  const [selectedTab, setSelectedTab] = useState("Group");
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
   const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
@@ -72,6 +75,10 @@ const PredictionMaker = ({
     if (competitionRes.status !== 200) toast.error(competitionRes.data);
     const isLocked =
       new Date(competitionRes.data?.submissionDeadline) <= new Date();
+
+    let newTabs = ["Group", "Bracket", "Information"];
+    if (competitionRes.data?.miscPicks?.length) newTabs.splice(2, 0, "Bonus");
+    setTabs(newTabs);
 
     if (matchesRes.status === 200) {
       matchesRes.data.forEach((m) => {
@@ -95,6 +102,14 @@ const PredictionMaker = ({
           });
         } else if (m.type === "Playoff") filtered.playoffMatches.push(m);
       });
+
+      if (competitionRes.data?.groupMatrix) {
+        const rankingGroups = handleUpdateSpecialMatrices(
+          competitionRes.data,
+          filtered.groups
+        );
+        Object.assign(filtered.groups, rankingGroups);
+      }
 
       setGroupMatches(filtered.groupMatches);
       setOriginalPlayoffMatches(filtered.playoffMatches);
@@ -279,6 +294,7 @@ const PredictionMaker = ({
               onReorder={dispatchPredictions}
               isLocked={predictions.isLocked}
               groupMatches={groupMatches}
+              competition={predictions.competition}
             />
           ) : isTab("bracket") ? (
             <BracketPicker

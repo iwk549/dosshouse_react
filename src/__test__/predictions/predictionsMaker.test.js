@@ -14,7 +14,13 @@ import { getMatches } from "../../services/matchService";
 import { act, screen } from "@testing-library/react";
 import PredictionMaker from "../../components/predictions/maker/predictionsMaker";
 import { getGroups } from "../../services/groupsService";
-import { competition, matches, user } from "../testData";
+import {
+  competition,
+  matches,
+  unevenMatches,
+  unevenMatchesCompetition,
+  user,
+} from "../testData";
 jest.mock("../../services/predictionsService", () => ({
   getPrediction: jest.fn(),
   savePrediction: jest.fn(),
@@ -78,7 +84,7 @@ describe("PredictionsMaker", () => {
       expect(screen.queryByText("Prediction Saved")).toBeInTheDocument();
       expect(screen.queryByText("Group")).toBeInTheDocument();
       expect(screen.queryByText("Bracket")).toBeInTheDocument();
-      expect(screen.queryByText("Bonus")).toBeInTheDocument();
+      expect(screen.queryByText("Bonus")).not.toBeInTheDocument();
       expect(screen.queryByText("Information")).toBeInTheDocument();
     });
     it("should offer to cancel when clicking go back if prediction is not saved", async () => {
@@ -218,6 +224,56 @@ describe("PredictionsMaker", () => {
       await clickByText("moveDown_icon", 1, true);
       await clickByText("Bracket");
       expect(screen.queryAllByText("Team A").length).toBe(0);
+    });
+    it("should handle groupMatrix extra group predictions", async () => {
+      await renderWithProps(
+        { predictionID: "new", competitionID: "testBracket1" },
+        {
+          getCompetition: {
+            data: unevenMatchesCompetition,
+          },
+          getMatches: {
+            data: unevenMatches,
+          },
+        },
+        user
+      );
+
+      // render the name and description with initial teams
+      expect(screen.queryByText("Test Group Matrix")).toBeInTheDocument();
+      expect(screen.queryByText("a description goes here")).toBeInTheDocument();
+      expect(screen.queryByText("A: Team C")).toBeInTheDocument();
+      expect(screen.queryByText("B: Team G")).toBeInTheDocument();
+      expect(screen.queryByText("C: Team K")).toBeInTheDocument();
+      expect(screen.queryByText("D: Team O")).toBeInTheDocument();
+      expect(screen.queryByText("E: Team S")).toBeInTheDocument();
+      expect(screen.queryByText("F: Team Y")).toBeInTheDocument();
+
+      // first four teams will populate onto the bracket
+      await clickByText("Bracket");
+      expect(screen.queryByText("Team C")).toBeInTheDocument();
+      expect(screen.queryByText("Team G")).toBeInTheDocument();
+      expect(screen.queryByText("Team K")).toBeInTheDocument();
+      expect(screen.queryByText("Team O")).toBeInTheDocument();
+      expect(screen.queryByText("Team S")).not.toBeInTheDocument();
+      expect(screen.queryByText("Team Y")).not.toBeInTheDocument();
+
+      // move Team D into third place, replacing Team C in group and bracket
+      await clickByText("Group");
+      await clickByText("moveDown_icon", 2, true);
+      expect(screen.queryByText("A: Team D")).toBeInTheDocument();
+      expect(screen.queryByText("A: Team C")).not.toBeInTheDocument();
+      await clickByText("Bracket");
+      expect(screen.queryByText("Team D")).toBeInTheDocument();
+      expect(screen.queryByText("Team C")).not.toBeInTheDocument();
+
+      // switch order of groups in groupMatrix, team from group E should populate through in place of group D team
+      await clickByText("Group");
+      const allMoveDowns = screen.queryAllByTestId("moveDown_icon");
+      await clickByText("moveDown_icon", allMoveDowns.length - 2, true);
+      await clickByText("Bracket");
+      expect(screen.queryByText("Team O")).not.toBeInTheDocument();
+      expect(screen.queryByText("Team S")).toBeInTheDocument();
     });
     it("should open a modal with all matches for the group", async () => {
       await renderWithProps(
