@@ -32,7 +32,7 @@ const PredictionGroupList = ({
                         className="btn btn-block btn-info"
                         onClick={() =>
                           navigate(
-                            `/predictions?leaderboard=show&competitionID=${prediction.competitionID?._id}&groupID=${g._id}`
+                            `/competitions?leaderboard=show&competitionID=${prediction.competitionID?._id}&groupID=${g._id}`
                           )
                         }
                       >

@@ -11,12 +11,9 @@ import {
 } from "../../../services/competitionService";
 import {
   getPredictions,
-  deletePrediction,
   addPredictionToGroup,
-  removePredictionFromGroup,
 } from "../../../services/predictionsService";
 import Competitions from "./competitions";
-import SubmittedPredictions from "./submittedPredictions";
 import GroupAddFromLinkModal from "../groups/groupAddFromLinkModal";
 import { titleCase } from "../../../utils/allowables";
 
@@ -32,7 +29,7 @@ const PredictionsHome = ({
   const [activeCompetitions, setActiveCompetitions] = useState([]);
   const [expiredCompetitions, setExpiredCompetitions] = useState([]);
   const [predictions, setPredictions] = useState([]);
-  const tabs = ["Active Competitions", "Expired Competitions", "Submissions"];
+  const tabs = ["Active Competitions", "Expired Competitions"];
   const [selectedTab, setSelectedTab] = useState(
     titleCase(paramTab) || tabs[0]
   );
@@ -75,34 +72,14 @@ const PredictionsHome = ({
   };
 
   const handleSelectTab = (tab) => {
-    navigate(`/predictions?tab=${tab}`, { replace: true });
+    navigate(`/competitions?tab=${tab}`, { replace: true });
     setSelectedTab(tab);
-  };
-
-  const handleDeletePrediction = async (prediction) => {
-    setLoading(true);
-    const deleteRes = await deletePrediction(prediction._id);
-    if (deleteRes.status === 200) {
-      toast.success("Prediction deleted");
-      return loadData();
-    } else toast.error(deleteRes.data);
-    setLoading(false);
-  };
-
-  const handleRemoveGroup = async (prediction, group) => {
-    setLoading(true);
-    const res = await removePredictionFromGroup(prediction._id, group);
-    if (res.status === 200) {
-      toast.success("Group Removed");
-      return loadData();
-    } else toast.error(res.data);
-    setLoading(false);
   };
 
   const handleAddPredictionToGroup = async (prediction, competitionID) => {
     if (prediction._id === "new") {
       navigate(
-        `/predictions?id=new&competitionID=${competitionID}&groupName=${groupName}&groupPasscode=${groupPasscode}`
+        `/submissions?id=new&competitionID=${competitionID}&groupName=${groupName}&groupPasscode=${groupPasscode}`
       );
     } else {
       setLoading(true);
@@ -114,7 +91,9 @@ const PredictionsHome = ({
       if (res.status === 200) {
         toast.success("Prediction added to group");
         setGroupAddFromLinkOpen(false);
-        handleSelectTab("Submissions");
+        navigate(
+          `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${res.data}`
+        );
         return loadData();
       }
       toast.error(res.data);
@@ -124,7 +103,7 @@ const PredictionsHome = ({
 
   return (
     <div>
-      <Header text="Predictions" />
+      <Header text="Competitions" />
       <TabbedArea
         tabs={tabs}
         selectedTab={selectedTab}
@@ -142,14 +121,6 @@ const PredictionsHome = ({
             }
             predictions={predictions}
             expired={isTab("expired")}
-          />
-        ) : isTab("submission") ? (
-          <SubmittedPredictions
-            predictions={predictions}
-            onDelete={handleDeletePrediction}
-            onLogin={loadData}
-            onGroupSuccess={loadData}
-            onRemoveGroup={handleRemoveGroup}
           />
         ) : null}
       </TabbedArea>

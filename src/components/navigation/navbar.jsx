@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { IconContext } from "react-icons";
@@ -15,10 +15,11 @@ const Navbar = () => {
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
 
   const links = [
-    { to: "/home", icon: "home", label: "Home" },
-    { to: "/predictions", icon: "prediction", label: "Predictions" },
-    { to: "/spotify_api", icon: "spotify", label: "Spotify API" },
-    { to: "/active_sites", icon: "app", label: "Apps & Sites" },
+    // { to: "/home", icon: "home", label: "Home" },
+    { to: "/competitions", icon: "prediction", label: "Competitions" },
+    { to: "/submissions", icon: "submission", label: "Submissions" },
+    // { to: "/spotify_api", icon: "spotify", label: "Spotify API" },
+    // { to: "/active_sites", icon: "app", label: "Apps & Sites" },
   ];
 
   return (

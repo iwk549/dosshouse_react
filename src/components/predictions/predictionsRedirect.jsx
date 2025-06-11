@@ -4,8 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import PredictionsHome from "./home/predictionsHome";
 import PredictionMaker from "./maker/predictionsMaker";
 import PredictionsLeaderboard from "./leaderboard/predictionsLeaderboard";
+import SubmittedPredictions from "./home/submittedPredictions";
 
-const PredictionsRedirect = () => {
+const PredictionsRedirect = ({ page }) => {
   const [Component, setComponent] = useState(<div />);
   const [searchParams] = useSearchParams();
   const predictionID = searchParams.get("id");
@@ -31,6 +32,8 @@ const PredictionsRedirect = () => {
           competitionID={competitionID}
           groupID={groupID}
         />
+      ) : page === "submissions" ? (
+        <SubmittedPredictions />
       ) : (
         <PredictionsHome
           paramTab={selectedTab}
@@ -45,7 +48,7 @@ const PredictionsRedirect = () => {
 
   useEffect(() => {
     redirect();
-  }, [window.location.search]);
+  }, [window.location.search, page]);
 
   return Component;
 };

@@ -99,7 +99,7 @@ const PredictionInfo = ({
               onClick={() => {
                 cookies.addCookie(prediction.competitionID.code, true);
                 navigate(
-                  `/predictions?id=${prediction._id}&competitionID=${prediction.competitionID?._id}`
+                  `/submissions?id=${prediction._id}&competitionID=${prediction.competitionID?._id}`
                 );
               }}
             >
@@ -124,7 +124,7 @@ const PredictionInfo = ({
               className="btn btn-info"
               onClick={() =>
                 navigate(
-                  `/predictions?leaderboard=show&competitionID=${prediction.competitionID._id}&groupID=all`
+                  `/competitions?leaderboard=show&competitionID=${prediction.competitionID._id}&groupID=all`
                 )
               }
             >

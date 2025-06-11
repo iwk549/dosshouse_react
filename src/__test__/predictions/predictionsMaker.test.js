@@ -117,7 +117,7 @@ describe("PredictionsMaker", () => {
       await clickByText(/go back without saving/i);
       expect(savePrediction).toHaveBeenCalledTimes(0);
       expect(navMock).toHaveBeenCalledTimes(1);
-      expect(navMock).toHaveBeenCalledWith("/predictions?tab=submissions");
+      expect(navMock).toHaveBeenCalledWith("/submissions");
     });
     it("should offer to save then go back when clicking go back if prediction is not saved", async () => {
       const { navMock } = await renderWithProps(
@@ -134,7 +134,7 @@ describe("PredictionsMaker", () => {
       await clickByText(/save and go back/i);
       expect(savePrediction).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledTimes(2);
-      expect(navMock).toHaveBeenCalledWith("/predictions?tab=submissions");
+      expect(navMock).toHaveBeenCalledWith("/submissions");
     });
     it("should save the prediction when clicking the save button", async () => {
       const { navMock } = await renderWithProps(
@@ -157,7 +157,7 @@ describe("PredictionsMaker", () => {
       });
       expect(navMock).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledWith(
-        "/predictions?id=savedID&competitionID=testBracket1",
+        "/submissions?id=savedID&competitionID=testBracket1",
         { replace: true }
       );
     });

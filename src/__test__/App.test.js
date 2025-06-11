@@ -37,9 +37,9 @@ describe("App", () => {
     jest.resetAllMocks();
   });
 
-  it("should initialize at the predictions page", async () => {
+  it("should initialize at the competitions page", async () => {
     await renderWithProps();
-    expect(screen.queryByText("Predictions")).toBeInTheDocument();
+    expect(screen.queryByText("Competitions")).toBeInTheDocument();
   });
   it("should render the cookie banner", async () => {
     await renderWithProps();
