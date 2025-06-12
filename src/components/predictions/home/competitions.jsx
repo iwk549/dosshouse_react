@@ -7,8 +7,8 @@ import cookies from "../../../services/cookieService";
 import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
 
 const Competitions = ({ competitions, predictions, expired }) => {
-  const { isMobile } = useWindowDimensions();
   let navigate = useNavigate();
+  const { isMobile } = useWindowDimensions();
 
   if (competitions.length === 0)
     return (

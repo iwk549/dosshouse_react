@@ -86,7 +86,6 @@ const PredictionsHome = ({
       const res = await addPredictionToGroup(prediction._id, {
         name: groupName,
         passcode: groupPasscode,
-        fromUrl: true,
       });
       if (res.status === 200) {
         toast.success("Prediction added to group");

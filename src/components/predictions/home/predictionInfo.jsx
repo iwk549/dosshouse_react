@@ -40,6 +40,8 @@ const PredictionInfo = ({
   };
 
   const renderPoints = (points, totalPoints, potentialPoints) => {
+    if (!points) return null;
+
     return (
       <div className="col">
         {renderInfoLine(

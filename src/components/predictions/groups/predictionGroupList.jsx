@@ -20,7 +20,7 @@ const PredictionGroupList = ({
       <SideBySideView
         Components={[
           <>
-            {prediction.groups.map((g, idx) => (
+            {prediction.groups?.map((g, idx) => (
               <React.Fragment key={idx}>
                 <>
                   Group Name: <b>{g.name}</b>
