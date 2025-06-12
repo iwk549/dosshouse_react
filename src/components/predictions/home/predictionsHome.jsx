@@ -29,7 +29,7 @@ const PredictionsHome = ({
   const [activeCompetitions, setActiveCompetitions] = useState([]);
   const [expiredCompetitions, setExpiredCompetitions] = useState([]);
   const [predictions, setPredictions] = useState([]);
-  const tabs = ["Active Competitions", "Expired Competitions"];
+  const tabs = ["Active", "Expired"];
   const [selectedTab, setSelectedTab] = useState(
     titleCase(paramTab) || tabs[0]
   );
@@ -110,19 +110,17 @@ const PredictionsHome = ({
         onSelectTab={handleSelectTab}
         tabPlacement="top"
       >
-        {isTab("competitions") ? (
-          <Competitions
-            competitions={
-              isTab("active")
-                ? activeCompetitions
-                : isTab("expired")
-                ? expiredCompetitions
-                : []
-            }
-            predictions={predictions}
-            expired={isTab("expired")}
-          />
-        ) : null}
+        <Competitions
+          competitions={
+            isTab("active")
+              ? activeCompetitions
+              : isTab("expired")
+              ? expiredCompetitions
+              : []
+          }
+          predictions={predictions}
+          expired={isTab("expired")}
+        />
       </TabbedArea>
       {groupName && (
         <GroupAddFromLinkModal

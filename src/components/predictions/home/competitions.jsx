@@ -4,6 +4,7 @@ import { renderInfoLine } from "../../../utils/textUtils";
 import SideBySideView from "../../common/pageSections/sideBySideView";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import cookies from "../../../services/cookieService";
+import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
 
 const Competitions = ({ competitions, predictions, expired }) => {
   const { isMobile } = useWindowDimensions();
@@ -16,12 +17,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
       </p>
     );
 
-  let submissions = {};
-  predictions.forEach((p) => {
-    if (submissions[p.competitionID?._id]) {
-      submissions[p.competitionID?._id]++;
-    } else submissions[p.competitionID?._id] = 1;
-  });
+  let submissions = submissionsMadeByCompetition(predictions);
 
   return competitions.map((c) => {
     return (

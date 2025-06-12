@@ -130,6 +130,19 @@ const PredictionInfo = ({
             >
               View Sitewide Leaderboard
             </button>
+            <div style={{ height: 10 }} />
+            {submissionsMade < prediction.competitionID?.maxSubmissions && (
+              <button
+                className="btn btn-dark"
+                onClick={() =>
+                  navigate(
+                    `/submissions?id=new&competitionID=${prediction.competitionID._id}`
+                  )
+                }
+              >
+                Start Another Prediction
+              </button>
+            )}
           </>,
         ]}
       />

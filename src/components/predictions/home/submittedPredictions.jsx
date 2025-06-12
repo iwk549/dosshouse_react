@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Confirm from "../../common/modal/confirm";
 import RegistrationModalForm from "../../user/registrationModalForm";
@@ -13,26 +14,62 @@ import {
 } from "../../../services/predictionsService";
 import { toast } from "react-toastify";
 import Header from "../../common/pageSections/header";
+import TabbedArea from "react-tabbed-area";
+import { titleCase } from "../../../utils/allowables";
+import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
+import SearchBox from "../../common/searchSort/searchBox";
 
-const SubmittedPredictions = () => {
+const SubmittedPredictions = ({ paramTab, competitionID }) => {
+  let navigate = useNavigate();
   const { user, setLoading } = useContext(LoadingContext);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const [groupFormOpen, setGroupFormOpen] = useState(false);
-  const [predictions, setPredictions] = useState([]);
+  const [submissionsCountObj, setSubmissionsCountObj] = useState({});
+  const [activeSubmissions, setActiveSubmissions] = useState([]);
+  const [expiredSubmissions, setExpiredSubmissions] = useState([]);
+  const tabs = ["Active", "Expired"];
+  const [selectedTab, setSelectedTab] = useState(
+    titleCase(paramTab) || tabs[0]
+  );
 
   const loadData = async () => {
     setLoading(true);
     const predictionsRes = await getPredictions();
-    if (predictionsRes && predictionsRes.status === 200)
-      setPredictions(
-        predictionsRes.data.sort(
+    if (predictionsRes && predictionsRes.status === 200) {
+      let active = [];
+      let expired = [];
+      let searched = "";
+      let tab = "Active";
+      predictionsRes.data
+        .sort(
           (a, b) =>
             new Date(b.competitionID?.competitionStart) -
             new Date(a.competitionID?.competitionStart)
         )
-      );
+        .forEach((pred) => {
+          if (new Date(pred.competitionID?.competitionEnd) < new Date()) {
+            expired.push(pred);
+          } else active.push(pred);
+
+          if (competitionID) {
+            if (pred.competitionID?._id === competitionID) {
+              tab =
+                new Date(pred.competitionID?.competitionEnd) < new Date()
+                  ? "Expired"
+                  : "Active";
+              searched = pred.competitionID?.name || "";
+            }
+          }
+        });
+
+      handleSelectTab(tab, searched);
+      setSubmissionsCountObj(submissionsMadeByCompetition(predictionsRes.data));
+      setActiveSubmissions(active);
+      setExpiredSubmissions(expired);
+    }
     setLoading(false);
   };
 
@@ -60,29 +97,62 @@ const SubmittedPredictions = () => {
     setLoading(false);
   };
 
+  const handleSelectTab = (tab, search = "") => {
+    navigate(`/submissions?tab=${tab}`, { replace: true });
+    setSearchQuery(search);
+    setSelectedTab(tab);
+  };
+
+  const filterCompetitions = () => {
+    let displayed =
+      selectedTab === "Active" ? activeSubmissions : expiredSubmissions;
+
+    if (searchQuery) {
+      const s = searchQuery.toLowerCase();
+      displayed = displayed.filter((sub) => {
+        if (
+          sub.competitionID?.name.toLowerCase().includes(s) ||
+          sub.name.toLowerCase().includes(s)
+        ) {
+          return true;
+        }
+      });
+    }
+
+    return displayed;
+  };
+
   return user ? (
-    <>
+    <div>
       <Header text="Submissions" />
-      {predictions.length > 0 ? (
-        predictions.map((p) => (
-          <React.Fragment key={p._id}>
-            <PredictionInfo
-              prediction={p}
-              onRemoveGroup={handleRemoveGroup}
-              setSelectedSubmission={setSelectedSubmission}
-              setConfirmDeleteOpen={setConfirmDeleteOpen}
-              setGroupFormOpen={setGroupFormOpen}
-              submissionsMade={
-                predictions.filter(
-                  (pred) => pred.competitionID?._id === p.competitionID?._id
-                ).length
-              }
-            />
-          </React.Fragment>
-        ))
-      ) : (
-        <p>You have not made any submissions</p>
-      )}
+      <SearchBox
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder="Search by competition or submission name..."
+      />
+      <TabbedArea
+        tabs={tabs}
+        selectedTab={selectedTab}
+        onSelectTab={handleSelectTab}
+        tabPlacement="top"
+      >
+        {filterCompetitions().length ? (
+          filterCompetitions().map((p) => (
+            <div key={p._id}>
+              <PredictionInfo
+                prediction={p}
+                onRemoveGroup={handleRemoveGroup}
+                setSelectedSubmission={setSelectedSubmission}
+                setConfirmDeleteOpen={setConfirmDeleteOpen}
+                setGroupFormOpen={setGroupFormOpen}
+                submissionsMade={submissionsCountObj[p.competitionID?._id]}
+              />
+            </div>
+          ))
+        ) : (
+          <p>There are no submissions to display</p>
+        )}
+      </TabbedArea>
       {selectedSubmission && (
         <>
           <GroupModalForm
@@ -110,7 +180,7 @@ const SubmittedPredictions = () => {
           </Confirm>
         </>
       )}
-    </>
+    </div>
   ) : (
     <>
       <p>Login to view your submissions</p>

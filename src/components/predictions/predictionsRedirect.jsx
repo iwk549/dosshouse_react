@@ -33,7 +33,10 @@ const PredictionsRedirect = ({ page }) => {
           groupID={groupID}
         />
       ) : page === "submissions" ? (
-        <SubmittedPredictions />
+        <SubmittedPredictions
+          paramTab={selectedTab}
+          competitionID={competitionID}
+        />
       ) : (
         <PredictionsHome
           paramTab={selectedTab}
