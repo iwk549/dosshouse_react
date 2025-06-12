@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useReducer } from "react";
+import { useState, useEffect, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import TabbedArea from "react-tabbed-area";
 
@@ -188,6 +188,7 @@ const PredictionMaker = ({
         if (groupRes.status === 200) toast.success("Prediction added to group");
         else toast.error(groupRes.data);
       }
+
       navigate(
         `/submissions?id=${predictionRes.data}&competitionID=${competitionID}`,
         {

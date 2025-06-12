@@ -42,7 +42,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
       let active = [];
       let expired = [];
       let searched = "";
-      let tab = "Active";
+      let tab;
       predictionsRes.data
         .sort(
           (a, b) =>
@@ -65,7 +65,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
           }
         });
 
-      handleSelectTab(tab, searched);
+      if (tab) handleSelectTab(tab, searched);
       setSubmissionsCountObj(submissionsMadeByCompetition(predictionsRes.data));
       setActiveSubmissions(active);
       setExpiredSubmissions(expired);
@@ -122,84 +122,88 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
     return displayed;
   };
 
-  return user ? (
-    <div>
+  return (
+    <>
       <Header text="Submissions" />
-      <SearchBox
-        value={searchQuery}
-        onChange={setSearchQuery}
-        placeholder="Search by competition or submission name..."
-      />
-      <TabbedArea
-        tabs={tabs}
-        selectedTab={selectedTab}
-        onSelectTab={handleSelectTab}
-        tabPlacement="top"
-      >
-        {filterCompetitions().length ? (
-          filterCompetitions().map((p) => (
-            <div key={p._id}>
-              <PredictionInfo
-                prediction={p}
-                onRemoveGroup={handleRemoveGroup}
-                setSelectedSubmission={setSelectedSubmission}
-                setConfirmDeleteOpen={setConfirmDeleteOpen}
-                setGroupFormOpen={setGroupFormOpen}
-                submissionsMade={submissionsCountObj[p.competitionID?._id]}
+      {user ? (
+        <div>
+          <SearchBox
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search by competition or submission name..."
+          />
+          <TabbedArea
+            tabs={tabs}
+            selectedTab={selectedTab}
+            onSelectTab={handleSelectTab}
+            tabPlacement="top"
+          >
+            {filterCompetitions().length ? (
+              filterCompetitions().map((p) => (
+                <div key={p._id}>
+                  <PredictionInfo
+                    prediction={p}
+                    onRemoveGroup={handleRemoveGroup}
+                    setSelectedSubmission={setSelectedSubmission}
+                    setConfirmDeleteOpen={setConfirmDeleteOpen}
+                    setGroupFormOpen={setGroupFormOpen}
+                    submissionsMade={submissionsCountObj[p.competitionID?._id]}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>There are no submissions to display</p>
+            )}
+          </TabbedArea>
+          {selectedSubmission && (
+            <>
+              <GroupModalForm
+                isOpen={groupFormOpen}
+                setIsOpen={setGroupFormOpen}
+                header="Manage Groups"
+                submission={selectedSubmission}
+                onSuccess={() => {
+                  setGroupFormOpen(false);
+                  loadData();
+                }}
               />
-            </div>
-          ))
-        ) : (
-          <p>There are no submissions to display</p>
-        )}
-      </TabbedArea>
-      {selectedSubmission && (
+              <Confirm
+                header="Confirm Delete Submission"
+                isOpen={confirmDeleteOpen}
+                setIsOpen={() => setConfirmDeleteOpen(false)}
+                focus="cancel"
+                onConfirm={() => handleDeletePrediction(selectedSubmission)}
+              >
+                <b>{selectedSubmission.name}</b>
+                <br />
+                Are you sure you want to delete this submission?
+                <br />
+                This cannot be undone.
+              </Confirm>
+            </>
+          )}
+        </div>
+      ) : (
         <>
-          <GroupModalForm
-            isOpen={groupFormOpen}
-            setIsOpen={setGroupFormOpen}
-            header="Manage Groups"
-            submission={selectedSubmission}
+          <p>Login to view your submissions</p>
+          <button
+            className="btn btn-sm btn-dark"
+            onClick={() => setRegisterFormOpen(true)}
+          >
+            Login
+          </button>
+          <RegistrationModalForm
+            header="Login or Register to View your Submissions"
+            isOpen={registerFormOpen}
+            setIsOpen={setRegisterFormOpen}
             onSuccess={() => {
-              setGroupFormOpen(false);
+              setRegisterFormOpen(false);
               loadData();
             }}
+            selectedTab="login"
           />
-          <Confirm
-            header="Confirm Delete Submission"
-            isOpen={confirmDeleteOpen}
-            setIsOpen={() => setConfirmDeleteOpen(false)}
-            focus="cancel"
-            onConfirm={() => handleDeletePrediction(selectedSubmission)}
-          >
-            <b>{selectedSubmission.name}</b>
-            <br />
-            Are you sure you want to delete this submission?
-            <br />
-            This cannot be undone.
-          </Confirm>
         </>
       )}
-    </div>
-  ) : (
-    <>
-      <p>Login to view your submissions</p>
-      <button
-        className="btn btn-sm btn-dark"
-        onClick={() => setRegisterFormOpen(true)}
-      >
-        Login
-      </button>
-      <RegistrationModalForm
-        header="Login or Register to View your Submissions"
-        isOpen={registerFormOpen}
-        setIsOpen={setRegisterFormOpen}
-        onSuccess={() => {
-          setRegisterFormOpen(false);
-          loadData();
-        }}
-        selectedTab="login"
-      />
     </>
   );
 };

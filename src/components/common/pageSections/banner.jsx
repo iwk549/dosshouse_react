@@ -10,9 +10,12 @@ const Banner = ({
   buttonText = "Get Started",
   cookieName,
   showIfLoggedIn,
+  hide,
 }) => {
   const [isDismissed, setIsDismissed] = useState(false);
   const { user } = useContext(LoadingContext);
+
+  if (hide) return null;
 
   const checkForCookie = () => {
     const dismissed = cookies.getCookie(cookieName);

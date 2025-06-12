@@ -14,7 +14,7 @@ const GroupInfo = ({ groupInfo, setInviteOpen }) => {
           Group Owner: <b>{groupInfo?.ownerID?.name}</b>
         </div>
       )}
-      {groupInfo?.ownerID?._id === user?._id && (
+      {groupInfo?.ownerID && groupInfo?.ownerID._id === user?._id && (
         <button
           className="btn btn-sm btn-dark"
           onClick={() => setInviteOpen(true)}

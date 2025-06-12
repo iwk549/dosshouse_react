@@ -9,7 +9,7 @@ export function renderInfoLine(label, value, type, key, isMobile) {
       <p>
         {label}
         {isMobile ? <br /> : ": "}
-        <b>{formattedValue}</b>
+        <b data-testid={key}>{formattedValue}</b>
       </p>
     </div>
   );

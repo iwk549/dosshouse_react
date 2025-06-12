@@ -30,15 +30,12 @@ function App() {
   };
 
   const refresh = async () => {
-    const res = await refreshUser();
-    if (res?.status === 200) {
-      setUser(res.data);
-    }
+    await refreshUser();
+    setCurrentUser();
   };
 
   useEffect(() => {
     refresh();
-    setCurrentUser();
   }, []);
 
   useEffect(() => {
@@ -81,6 +78,7 @@ function App() {
         <>
           <CookieBanner />
           <Banner
+            hide={true}
             announcement="Club World Cup 2025 predictions are now live!!!"
             onClick={() => {
               navigate(

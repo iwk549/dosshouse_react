@@ -39,7 +39,7 @@ jest.spyOn(console, "error").mockImplementation((msg) => {
   console.error(msg);
 });
 
-const renderWithProps = async (path = "") => {
+const renderWithProps = async (path = "", props = {}) => {
   getPrediction.mockReturnValue(apiResponse(null, 404));
   getPredictions.mockReturnValue(apiResponse([], 200));
   getActiveCompetitions.mockReturnValue(apiResponse([], 200));
@@ -49,7 +49,7 @@ const renderWithProps = async (path = "") => {
   getLeaderboard.mockReturnValue(apiResponse(leaderboard));
 
   await act(async () => {
-    renderWithContext(PredictionsRedirect, {}, null, path);
+    renderWithContext(PredictionsRedirect, props, null, path);
   });
 };
 
@@ -72,6 +72,20 @@ describe("PredictionsRedirect", () => {
     await renderWithProps("?id=new");
     expect(
       screen.queryByText("This submission is not complete.")
+    ).toBeInTheDocument();
+  });
+  it("should open the group link modal form based on query params", async () => {
+    await renderWithProps(
+      "?groupName=Test Group&groupPasscode=Password1&type=groupLink"
+    );
+    expect(
+      screen.queryByText(/you've been invited to join a group/i)
+    ).toBeInTheDocument();
+  });
+  it("should show the submission page if prop provided", async () => {
+    await renderWithProps("", { page: "submissions" });
+    expect(
+      screen.queryByText(/login to view your submissions/i)
     ).toBeInTheDocument();
   });
 });
