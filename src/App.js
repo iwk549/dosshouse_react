@@ -14,6 +14,7 @@ import { getCurrentUser, refreshUser } from "./services/userService";
 import Banner from "./components/common/pageSections/banner";
 import CookieBanner from "./components/common/pageSections/cookieBanner";
 import setPageTitle from "./textMaps/pageTitles";
+import DevBanner from "./components/common/dev/devBanner";
 
 ReactGA.initialize("G-TJW8WX427W");
 
@@ -74,6 +75,7 @@ function App() {
     >
       <Loading loading={loading} showText={showText} />
       <div className="App">
+        <DevBanner />
         <Navbar />
         <>
           <CookieBanner />

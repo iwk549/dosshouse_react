@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 import TabbedArea from "react-tabbed-area";
@@ -25,7 +25,7 @@ class GroupModalForm extends Component {
     groups: [],
   };
 
-  async componentDidMount() {
+  async loadData() {
     this.context.setLoading(true);
     const res = await getGroups();
     if (res.status === 200) this.setState({ groups: res.data });
@@ -34,7 +34,8 @@ class GroupModalForm extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.isOpen !== prevProps.isOpen) this.componentDidMount();
+    if (this.props.isOpen !== prevProps.isOpen && this.props.isOpen)
+      this.loadData();
   }
 
   schema = {
