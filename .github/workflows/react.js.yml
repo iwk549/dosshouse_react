@@ -3,6 +3,8 @@
 name: Dosshouse Web React JS Checks
 
 on:
+  push:
+    branches: ["master"]
   pull_request:
     branches: ["master"]
 

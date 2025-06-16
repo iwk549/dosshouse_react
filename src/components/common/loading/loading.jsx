@@ -1,4 +1,3 @@
-import React from "react";
 import Modal from "react-modal";
 import { IconContext } from "react-icons";
 import LoadingAnimation from "./loadingAnimation";
@@ -24,7 +23,7 @@ const style = {
   },
 };
 
-const Loading = ({ loading, showText }) => {
+const Loading = ({ loading }) => {
   return (
     <Modal
       isOpen={loading}
@@ -39,34 +38,6 @@ const Loading = ({ loading, showText }) => {
           <br />
           <br />
           <LoadingAnimation />
-          <br />
-          {showText && (
-            <>
-              <p className="light-text">
-                Our APIs run on free plans from{" "}
-                <a href="https://render.com" target="_blank" rel="noreferrer">
-                  render.com
-                </a>
-                .<br />
-                They may take a minute or two to wake up.
-              </p>
-              <p className="light-text">Don&apos;t want to wait?</p>
-              <button
-                className="btn btn-sm btn-light"
-                onClick={() => window.location.reload()}
-              >
-                Reload the Page
-              </button>
-              <br />
-              <br />
-              <button
-                className="btn btn-sm btn-info"
-                onClick={() => (window.location = "/")}
-              >
-                Home Page
-              </button>
-            </>
-          )}
         </div>
       </IconContext.Provider>
     </Modal>
