@@ -9,6 +9,7 @@ import { sortAndFilterTable } from "../../../utils/leaderboardUtil";
 import LoadingContext from "../../../context/loadingContext";
 
 import LeaderboardCard from "../../common/cards/leaderboardCard";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const LeaderboardTable = ({
   leaderboard,
@@ -80,7 +81,7 @@ const LeaderboardTable = ({
           <div style={{ textAlign: "left" }}>
             {p.misc?.winner} &nbsp;
             <ExternalImage
-              uri={logos[p.misc?.winner]}
+              uri={logos[findCountryLogo(p.misc?.winner)]}
               height={15}
               width="auto"
             />
