@@ -21,8 +21,6 @@ ReactGA.initialize("G-TJW8WX427W");
 function App() {
   let navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [showText, setShowText] = useState(false);
-  const [textTimeout, setTextTimeout] = useState(null);
   const [user, setUser] = useState(null);
   const [cookiesAccepted, setCookiesAccepted] = useState(false);
 
@@ -49,18 +47,45 @@ function App() {
   };
 
   const handleUpdateLoading = (bool) => {
-    if (bool)
-      setTextTimeout(
-        setTimeout(() => {
-          setShowText(true);
-        }, 2500)
-      );
-    else {
-      if (textTimeout) clearTimeout(textTimeout);
-      setShowText(false);
-    }
     setLoading(bool);
   };
+
+  /* 
+      this is a workaround to fix issues between React and Google Translate which cause errors
+      Solution found here: https://github.com/facebook/react/issues/11538
+      Information on this issue: https://martijnhols.nl/gists/everything-about-google-translate-crashing-react
+    */
+  if (typeof Node === "function" && Node.prototype) {
+    const originalRemoveChild = Node.prototype.removeChild;
+    Node.prototype.removeChild = function (child) {
+      if (child.parentNode !== this) {
+        if (console) {
+          console.error(
+            "Cannot remove a child from a different parent",
+            child,
+            this
+          );
+        }
+        return child;
+      }
+      return originalRemoveChild.apply(this, arguments);
+    };
+
+    const originalInsertBefore = Node.prototype.insertBefore;
+    Node.prototype.insertBefore = function (newNode, referenceNode) {
+      if (referenceNode && referenceNode.parentNode !== this) {
+        if (console) {
+          console.error(
+            "Cannot insert before a reference node from a different parent",
+            referenceNode,
+            this
+          );
+        }
+        return newNode;
+      }
+      return originalInsertBefore.apply(this, arguments);
+    };
+  }
 
   return (
     <LoadingContext.Provider
@@ -73,7 +98,7 @@ function App() {
         setCookiesAccepted,
       }}
     >
-      <Loading loading={loading} showText={showText} />
+      <Loading loading={loading} />
       <div className="App">
         <DevBanner />
         <Navbar />
