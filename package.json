@@ -38,6 +38,10 @@
     "cypress": "./node_modules/.bin/cypress open",
     "test:all": "react-scripts test --watchAll=false"
   },
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
