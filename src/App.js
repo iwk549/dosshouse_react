@@ -30,15 +30,12 @@ function App() {
   };
 
   const refresh = async () => {
-    const res = await refreshUser();
-    if (res?.status === 200) {
-      setUser(res.data);
-    }
+    await refreshUser();
+    setCurrentUser();
   };
 
   useEffect(() => {
     refresh();
-    setCurrentUser();
   }, []);
 
   useEffect(() => {
@@ -81,10 +78,11 @@ function App() {
         <>
           <CookieBanner />
           <Banner
+            hide={true}
             announcement="Club World Cup 2025 predictions are now live!!!"
             onClick={() => {
               navigate(
-                "/predictions?id=new&competitionID=683f0928dc52d0c36b3e3b5f"
+                "/competitions?id=new&competitionID=683f0928dc52d0c36b3e3b5f"
               );
             }}
             cookieName="clubWorldCup2022"

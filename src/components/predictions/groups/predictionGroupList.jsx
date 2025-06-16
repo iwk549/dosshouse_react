@@ -20,7 +20,7 @@ const PredictionGroupList = ({
       <SideBySideView
         Components={[
           <>
-            {prediction.groups.map((g, idx) => (
+            {prediction.groups?.map((g, idx) => (
               <React.Fragment key={idx}>
                 <>
                   Group Name: <b>{g.name}</b>
@@ -32,7 +32,7 @@ const PredictionGroupList = ({
                         className="btn btn-block btn-info"
                         onClick={() =>
                           navigate(
-                            `/predictions?leaderboard=show&competitionID=${prediction.competitionID?._id}&groupID=${g._id}`
+                            `/competitions?leaderboard=show&competitionID=${prediction.competitionID?._id}&groupID=${g._id}`
                           )
                         }
                       >

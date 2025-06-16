@@ -18,6 +18,7 @@ import {
   FaCaretSquareDown,
   FaCaretSquareUp,
   FaGripLines,
+  FaClipboardCheck,
 } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
@@ -60,6 +61,7 @@ const icons = {
   search: BiSearchAlt,
   settings: IoMdSettings,
   spotify: BsSpotify,
+  submission: FaClipboardCheck,
   trophy: IoMdTrophy,
   up: BsCaretUpFill,
   user: RiUserFill,

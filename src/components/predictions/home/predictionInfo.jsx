@@ -40,6 +40,8 @@ const PredictionInfo = ({
   };
 
   const renderPoints = (points, totalPoints, potentialPoints) => {
+    if (!points) return null;
+
     return (
       <div className="col">
         {renderInfoLine(
@@ -99,7 +101,7 @@ const PredictionInfo = ({
               onClick={() => {
                 cookies.addCookie(prediction.competitionID.code, true);
                 navigate(
-                  `/predictions?id=${prediction._id}&competitionID=${prediction.competitionID?._id}`
+                  `/submissions?id=${prediction._id}&competitionID=${prediction.competitionID?._id}`
                 );
               }}
             >
@@ -124,12 +126,25 @@ const PredictionInfo = ({
               className="btn btn-info"
               onClick={() =>
                 navigate(
-                  `/predictions?leaderboard=show&competitionID=${prediction.competitionID._id}&groupID=all`
+                  `/competitions?leaderboard=show&competitionID=${prediction.competitionID._id}&groupID=all`
                 )
               }
             >
               View Sitewide Leaderboard
             </button>
+            <div style={{ height: 10 }} />
+            {submissionsMade < prediction.competitionID?.maxSubmissions && (
+              <button
+                className="btn btn-dark"
+                onClick={() =>
+                  navigate(
+                    `/submissions?id=new&competitionID=${prediction.competitionID._id}`
+                  )
+                }
+              >
+                Start Another Prediction
+              </button>
+            )}
           </>,
         ]}
       />

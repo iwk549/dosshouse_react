@@ -39,9 +39,9 @@ const NotAllowed = ({ code }) => {
       )}
       <button
         className="btn btn-block btn-light"
-        onClick={() => navigate("/predictions")}
+        onClick={() => navigate("/competitions")}
       >
-        Return to Predictions
+        Return to Home
       </button>
     </div>
   );

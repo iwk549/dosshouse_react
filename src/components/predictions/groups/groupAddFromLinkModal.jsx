@@ -93,14 +93,14 @@ const GroupAddFromLinkModal = ({
         >
           {selectedPrediction
             ? selectedPrediction._id === "new"
-              ? "Start a New Prediction"
-              : "Add Selected Prediction to Group"
+              ? "Start a New Submission"
+              : "Add Selected Submission to Group"
             : "Select Option to Add to Group"}
         </button>
         <br />
         <br />
         {competition?.maxSubmissions > predictions.length &&
-          renderPrediction({ _id: "new", name: "Create New Prediction" })}
+          renderPrediction({ _id: "new", name: "Create New Submission" })}
         {predictions.map((p) => renderPrediction(p))}
         <br />
         <br />
@@ -114,7 +114,7 @@ const GroupAddFromLinkModal = ({
         )}
       </BasicModal>
       <RegistrationModalForm
-        header="Login to Add Your Predictions to a Group"
+        header="Login to Add Your Submission to a Group"
         selectedTab="login"
         isOpen={loginFormOpen}
         setIsOpen={setLoginFormOpen}

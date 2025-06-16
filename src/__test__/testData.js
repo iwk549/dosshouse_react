@@ -1,11 +1,11 @@
 const competition = {
-  _id: { $oid: "6252ebe1d595c7d6a7a76ded" },
+  _id: "6252ebe1d595c7d6a7a76ded",
   code: "testBracket1",
   name: "World Cup 2022",
-  submissionDeadline: { $date: "2022-11-20T15:00:00.000Z" },
-  maxSubmissions: 2,
-  competitionStart: { $date: "2022-11-20T16:00:00.000Z" },
-  competitionEnd: { $date: "2022-12-18T18:00:00.000Z" },
+  submissionDeadline: "2035-11-20T15:00:00.000Z",
+  maxSubmissions: 1,
+  competitionStart: "2035-11-20T16:00:00.000Z",
+  competitionEnd: "2035-12-18T18:00:00.000Z",
   scoring: {
     group: {
       perTeam: 1,
@@ -236,13 +236,13 @@ const matches = [
 ];
 
 const unevenMatchesCompetition = {
-  _id: { $oid: "684476236ba7e98fd4d5f7ad" },
+  _id: "684476236ba7e98fd4d5f7ad",
   code: "testUnevenBracket1",
   name: "EURO 2024",
-  submissionDeadline: { $date: "2022-11-20T15:00:00.000Z" },
+  submissionDeadline: "2035-11-20T15:00:00.000Z",
   maxSubmissions: 2,
-  competitionStart: { $date: "2022-11-20T16:00:00.000Z" },
-  competitionEnd: { $date: "2022-12-18T18:00:00.000Z" },
+  competitionStart: "2035-11-20T16:00:00.000Z",
+  competitionEnd: "2035-12-18T18:00:00.000Z",
   scoring: {
     group: {
       perTeam: 1,
@@ -817,6 +817,7 @@ const unevenMatches = [
 ];
 
 const prediction = {
+  _id: "a",
   name: "Test Bracket",
   competitionID: "testBracket1",
   groupPredictions: [

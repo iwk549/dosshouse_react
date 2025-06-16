@@ -1,27 +1,25 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { renderInfoLine } from "../../../utils/textUtils";
 import SideBySideView from "../../common/pageSections/sideBySideView";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import cookies from "../../../services/cookieService";
+import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
 
 const Competitions = ({ competitions, predictions, expired }) => {
-  const { isMobile } = useWindowDimensions();
   let navigate = useNavigate();
+  const { isMobile } = useWindowDimensions();
 
   if (competitions.length === 0)
     return (
       <p>
-        There are currently no {expired ? "expired" : "active"} competitions.
+        There are {expired ? "no expired" : "currently no active"} competitions.
       </p>
     );
 
-  return competitions.map((c) => {
-    const submissionsMade = predictions.filter(
-      (p) => p.competitionID?._id === c._id
-    ).length;
+  let submissions = submissionsMadeByCompetition(predictions);
 
+  return competitions.map((c) => {
     return (
       <div className="single-card light-bg" key={c._id}>
         <h3>{c.name}</h3>
@@ -58,7 +56,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
               )}
               {renderInfoLine(
                 "Submissions Made",
-                submissionsMade,
+                submissions[c._id] || 0,
                 "",
                 "made",
                 isMobile
@@ -85,12 +83,12 @@ const Competitions = ({ competitions, predictions, expired }) => {
                     <p>
                       The submission deadline for this competition has passed
                     </p>
-                  ) : submissionsMade < c.maxSubmissions ? (
+                  ) : (submissions[c._id] || 0) < c.maxSubmissions ? (
                     <button
                       className="btn btn-dark"
                       onClick={() => {
                         cookies.addCookie(c.code, true);
-                        navigate(`/predictions?id=new&competitionID=${c._id}`);
+                        navigate(`/submissions?id=new&competitionID=${c._id}`);
                       }}
                     >
                       Start New Submission
@@ -103,12 +101,23 @@ const Competitions = ({ competitions, predictions, expired }) => {
                   )}
                 </>
               )}
-              <div style={{ height: 50 }} />
+              <div style={{ height: 25 }} />
+              {submissions[c._id] && (
+                <button
+                  className="btn btn-light"
+                  onClick={() =>
+                    navigate(`/submissions?competitionID=${c._id}`)
+                  }
+                >
+                  View Submissions
+                </button>
+              )}
+              <div style={{ height: 25 }} />
               <button
                 className="btn btn-info"
                 onClick={() =>
                   navigate(
-                    `/predictions?leaderboard=show&competitionID=${c._id}&groupID=all`
+                    `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`
                   )
                 }
               >

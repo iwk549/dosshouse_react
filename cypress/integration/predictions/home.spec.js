@@ -19,7 +19,7 @@ describe("predictions home", () => {
 
   describe("logged in", () => {
     beforeEach(() => {
-      cy.withCookie("predictions?tab=submissions");
+      cy.withCookie("submissions");
     });
 
     it("should allow you to view your submissions when logged in", () => {

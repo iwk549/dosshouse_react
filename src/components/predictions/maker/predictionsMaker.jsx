@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useReducer } from "react";
+import { useState, useEffect, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import TabbedArea from "react-tabbed-area";
 
@@ -188,8 +188,9 @@ const PredictionMaker = ({
         if (groupRes.status === 200) toast.success("Prediction added to group");
         else toast.error(groupRes.data);
       }
+
       navigate(
-        `/predictions?id=${predictionRes.data}&competitionID=${competitionID}`,
+        `/submissions?id=${predictionRes.data}&competitionID=${competitionID}`,
         {
           replace: true,
         }
@@ -236,7 +237,7 @@ const PredictionMaker = ({
         className="btn btn-sm btn-light"
         onClick={() => {
           predictions.isSaved
-            ? navigate("/predictions?tab=submissions")
+            ? navigate("/submissions")
             : setConfirmGoBackOpen(true);
         }}
       >
@@ -247,7 +248,7 @@ const PredictionMaker = ({
         isOpen={confirmGoBackOpen}
         setIsOpen={() => setConfirmGoBackOpen(false)}
         focus="cancel"
-        onConfirm={() => navigate("/predictions?tab=submissions")}
+        onConfirm={() => navigate("/submissions")}
         buttonText={["Cancel", "Go Back without Saving"]}
       >
         Your latest changes are unsaved. Are you sure you want to go back and
@@ -258,7 +259,7 @@ const PredictionMaker = ({
           className="btn btn-dark btn-sm btn-block"
           onClick={async () => {
             const saved = await handleSavePredictions();
-            if (saved) navigate("/predictions?tab=submissions");
+            if (saved) navigate("/submissions");
             else setConfirmGoBackOpen(false);
           }}
         >
