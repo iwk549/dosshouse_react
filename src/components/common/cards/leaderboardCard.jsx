@@ -2,6 +2,8 @@ import React from "react";
 import IconRender from "../icons/iconRender";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../image/externalImage";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
+import { getTeamAbbreviation } from "../../../utils/bracketsUtil";
 
 const LeaderboardCard = ({ data, onSelect }) => {
   if (data.length === 0) return null;
@@ -31,11 +33,15 @@ const LeaderboardCard = ({ data, onSelect }) => {
 
             <div style={{ gridColumn: 3, textAlign: "right" }}>
               {d.misc?.winner && (
-                <ExternalImage
-                  uri={logos[d.misc.winner]}
-                  height={25}
-                  width="auto"
-                />
+                <>
+                  <b>{getTeamAbbreviation(d.misc?.winner)}</b>
+                  <br />
+                  <ExternalImage
+                    uri={logos[findCountryLogo(d.misc.winner)]}
+                    height={15}
+                    width="auto"
+                  />
+                </>
               )}
             </div>
           </div>
