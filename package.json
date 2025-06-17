@@ -36,7 +36,23 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint **/*.jsx",
     "cypress": "./node_modules/.bin/cypress open",
-    "test:all": "react-scripts test --watchAll=false"
+    "test:all": "react-scripts test --coverage --watchAll=false"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/src/__test__/",
+      "/src/components/activeSites/",
+      "/src/components/spotifyApi/",
+      "/src/services/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 65,
+        "branches": 55,
+        "functions": 60,
+        "lines": 65
+      }
+    }
   },
   "engines": {
     "node": "20.x",
