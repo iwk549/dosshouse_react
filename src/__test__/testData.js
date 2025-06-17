@@ -830,11 +830,28 @@ const prediction = {
     { matchNumber: 9, homeTeam: "Team D", awayTeam: "Team F", round: 2 },
   ],
   misc: { winner: "Team D" },
+  points: {},
+  totalPoints: 0,
+};
+
+const result = {
+  code: "testBracket1",
+  group: [
+    {
+      groupName: "Group A",
+      teamOrder: ["Team C", "Team A", "Team B"],
+    },
+  ],
+  playoff: [{ round: 1, teams: ["Team C", "Team A"] }],
+  misc: {
+    winner: "",
+  },
 };
 
 const leaderboard = {
   predictions: [prediction],
-  count: 0,
+  count: 1,
+  groupInfo: null,
 };
 
 const user = {
@@ -851,4 +868,5 @@ export {
   prediction,
   leaderboard,
   user,
+  result,
 };

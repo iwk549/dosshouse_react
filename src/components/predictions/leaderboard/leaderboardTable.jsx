@@ -93,8 +93,8 @@ const LeaderboardTable = ({
       label: "Group Stage",
       content: (p) => (
         <>
-          {p.points.group.correctPicks} <IconRender type="check" /> |{" "}
-          {p.points.group.points} pts
+          {p.points?.group?.correctPicks || 0} <IconRender type="check" /> |{" "}
+          {p.points?.group?.points || 0} pts
         </>
       ),
     },
@@ -103,8 +103,8 @@ const LeaderboardTable = ({
       label: "Playoff",
       content: (p) => (
         <>
-          {p.points.playoff.correctPicks} <IconRender type="check" /> |{" "}
-          {p.points.playoff.points} pts
+          {p.points?.playoff?.correctPicks || 0} <IconRender type="check" /> |{" "}
+          {p.points?.playoff?.points || 0} pts
         </>
       ),
     },
@@ -113,15 +113,15 @@ const LeaderboardTable = ({
       label: "Misc",
       content: (p) => (
         <>
-          {p.points.misc.correctPicks} <IconRender type="check" /> |{" "}
-          {p.points.misc.points} pts
+          {p.points?.misc?.correctPicks || 0} <IconRender type="check" /> |{" "}
+          {p.points?.misc?.points || 0} pts
         </>
       ),
     },
     {
       path: "points.champion.points",
       label: "Champion",
-      content: (p) => `${p.points.champion.points} pts`,
+      content: (p) => `${p.points?.champion?.points || 0} pts`,
     },
   ];
 
