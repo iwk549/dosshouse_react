@@ -71,6 +71,9 @@ const PredictionInfo = ({
     );
   };
 
+  const deadlinePassed =
+    new Date(prediction.competitionID?.submissionDeadline) < new Date();
+
   return (
     <div className="single-card light-bg" data-testid="prediction-info">
       <Header text={prediction.name} secondary={true} />
@@ -105,23 +108,24 @@ const PredictionInfo = ({
                 );
               }}
             >
-              {new Date(prediction.competitionID?.submissionDeadline) <
-              new Date()
-                ? "View"
-                : "Edit"}
+              {deadlinePassed ? "View" : "Edit"}
             </button>
             <div style={{ height: 10 }} />
-            <button
-              className="btn btn-sm btn-danger"
-              onClick={() => {
-                setSelectedSubmission(prediction);
-                setConfirmDeleteOpen(true);
-              }}
-              data-testid="delete-prediction-button"
-            >
-              Delete
-            </button>
-            <div style={{ height: 10 }} />
+            {!deadlinePassed && (
+              <>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => {
+                    setSelectedSubmission(prediction);
+                    setConfirmDeleteOpen(true);
+                  }}
+                  data-testid="delete-prediction-button"
+                >
+                  Delete
+                </button>
+                <div style={{ height: 10 }} />
+              </>
+            )}
             <button
               className="btn btn-info"
               onClick={() =>

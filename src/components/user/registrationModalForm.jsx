@@ -34,6 +34,11 @@ class RegistrationModalForm extends Form {
     if (accepted) this.setState({ cookiesAccepted: true });
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.isOpen && prevProps.isOpen !== this.props.isOpen)
+      this.checkCookieAcceptance();
+  }
+
   componentDidMount() {
     this.checkCookieAcceptance();
   }
