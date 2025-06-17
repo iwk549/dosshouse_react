@@ -95,13 +95,25 @@ describe("SubmittedPredictions", () => {
           "&groupID=all"
       );
     });
+    it("should not show the delete button if submission deadline has passed", async () => {
+      await renderWithProps({
+        getPredictions: {
+          data: [
+            {
+              ...prediction,
+              competitionID: { ...competition, submissionDeadline: new Date() },
+            },
+          ],
+        },
+      });
+      expect(screen.queryByText("Delete")).not.toBeInTheDocument();
+    });
     it("should delete the submission", async () => {
       await renderWithProps({
         getPredictions: {
           data: [{ ...prediction, competitionID: competition }],
         },
       });
-
       await clickByText("Delete");
       await clickByText("OK");
       expect(deletePrediction).toHaveBeenCalledTimes(1);

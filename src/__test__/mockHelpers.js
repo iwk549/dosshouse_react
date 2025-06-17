@@ -1,4 +1,4 @@
-export function mockHTMLContext(pathname = "/") {
+export function mockHTMLContext(pathname = "/", screenWidth) {
   // mock the HTML Canvas for QR Codes
   Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
     value: () => {
@@ -39,6 +39,9 @@ export function mockHTMLContext(pathname = "/") {
       writeText: writeToClipboardMock,
     },
   });
+
+  // mock the window width
+  if (screenWidth) Object.assign(window, { innerWidth: screenWidth });
 
   // mock window.location for page reloads
   const originalLocation = window.location;

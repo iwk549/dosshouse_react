@@ -61,10 +61,10 @@ const PredictionInfo = ({
           )}
         {!isMobile && (
           <>
-            {renderInfoLine("Group", points.group.points)}
-            {renderInfoLine("Bracket", points.playoff.points)}
-            {renderInfoLine("Champion", points.champion.points)}
-            {renderInfoLine("Miscellaneous", points.misc.points)}
+            {renderInfoLine("Group", points.group?.points)}
+            {renderInfoLine("Bracket", points.playoff?.points)}
+            {renderInfoLine("Champion", points.champion?.points)}
+            {renderInfoLine("Miscellaneous", points.misc?.points)}
           </>
         )}
       </div>

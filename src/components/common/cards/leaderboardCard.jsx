@@ -27,7 +27,7 @@ const LeaderboardCard = ({ data, onSelect }) => {
                 <IconRender type="name" /> {d.name}
               </div>
               <div>
-                <IconRender type="user" /> {d.userID.name}
+                <IconRender type="user" /> {d.userID?.name}
               </div>
             </div>
 

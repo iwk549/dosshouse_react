@@ -78,7 +78,9 @@ const LeaderboardViewPredictionModal = ({
                 <IconRender type="remove" />
               </button>
             )}
-          <p>Correct picks are higlighted in green</p>
+          {prediction.playoffPredictions && (
+            <p>Correct picks are highlighted</p>
+          )}
         </>
       }
       style={{
