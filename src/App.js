@@ -125,8 +125,15 @@ function App() {
         closeOnClick
         pauseOnHover
         pauseOnFocusLoss
-        theme="dark"
         limit={3}
+        icon={
+          <img
+            src="assets/logo4.png"
+            width={25}
+            height={25}
+            style={{ borderRadius: 5, border: "1px solid #831fe0" }}
+          />
+        }
       />
     </LoadingContext.Provider>
   );
