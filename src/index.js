@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom";
 import "./css/index.css";
 import "./css/buttons.css";
@@ -12,6 +11,7 @@ import "./css/text.css";
 import "./css/tooltip.css";
 import "./css/buttons.css";
 import "./css/brackets.css";
+import "./css/toast.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";

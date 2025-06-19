@@ -26,10 +26,11 @@
   padding: 5px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: var(--minus10-light-bg-color);
+  background-color: var(--light-bg-color);
   color: var(--dark-text);
   margin-top: 5px;
   margin-bottom: 5px;
+  box-shadow: 1px 1px 2px var(--main-bg-color);
 }
 .sticky-top {
   position: -webkit-sticky;
