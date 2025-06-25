@@ -59,7 +59,8 @@ const LeaderboardViewPredictionModal = ({
           <h3>
             <b>{prediction.name}</b>
           </h3>
-          <h2>{prediction.totalPoints} Current Points</h2>
+          <h2>{prediction.totalPoints} Points</h2>
+          <h3>{prediction.totalPicks} Correct Picks</h3>
           {/* {prediction.potentialPoints ? (
             <>
               <h4>{prediction.potentialPoints.realistic} Potential</h4>

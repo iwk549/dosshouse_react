@@ -22,7 +22,7 @@ const LeaderboardTable = ({
 }) => {
   const { user } = useContext(LoadingContext);
   const [state, dispatch] = useReducer(reducer, {
-    sortColumn: { path: "totalPoints", order: "desc" },
+    sortColumn: { path: "ranking", order: "asc" },
     tableData: [],
     timer: undefined,
   });
@@ -62,8 +62,13 @@ const LeaderboardTable = ({
     { path: "name", label: "Bracket Name" },
     {
       path: "totalPoints",
-      label: "Total Points",
-      content: (p) => p.totalPoints,
+      label: "Total",
+      content: (p) => (
+        <>
+          {p.totalPicks || 0} <IconRender type="check" /> | {p.totalPoints || 0}{" "}
+          pts
+        </>
+      ),
     },
     // {
     //   path: "potentialPoints.realistic",
