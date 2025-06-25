@@ -60,25 +60,20 @@ const BracketPicker = ({
           />
         </div>
         {!isLocked && (
-          <>
-            <div className="col">
-              <p className="text-center">
-                Pick your winner from each match by tapping or clicking the team
-                name. Pick your tournament champion by tapping or clicking the
-                team in the final match.
-              </p>
-            </div>
-
-            <div className="col-2">
-              <button
-                className="btn btn-sm btn-info"
-                onClick={() => setMatchesOpen(true)}
-              >
-                See All Matches
-              </button>
-            </div>
-          </>
+          <p className="text-center">
+            Pick your winner from each match by tapping or clicking the team
+            name. Pick your tournament champion by tapping or clicking the team
+            in the final match.
+          </p>
         )}
+        <div className="col-2">
+          <button
+            className="btn btn-sm btn-info"
+            onClick={() => setMatchesOpen(true)}
+          >
+            See All Matches
+          </button>
+        </div>
       </div>
       <h1 className="pop-box" data-testid="champion-box">
         {renderImage(misc.winner)}

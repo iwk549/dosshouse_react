@@ -12,6 +12,28 @@ export default [
     ),
   },
   {
+    header: "Tiebreakers",
+    body: (
+      <>
+        <p>
+          If two or more submissions are tied on total points tiebreakers will
+          be applied in the following order:
+        </p>
+        <ol>
+          <li>Correctly picking the tournament champion</li>
+          <li>Most correct picks across entire competition</li>
+          <li>Most points earned in playoff rounds</li>
+          <li>Most correct picks made in playoff rounds</li>
+          <li>Most points earned in group stage</li>
+          <li>Most correct picks made in group stage</li>
+          <li>Most bonus points earned in group stage</li>
+          <li>Most points earned from bonus picks</li>
+          <li>Most correct bonus picks made</li>
+        </ol>
+      </>
+    ),
+  },
+  {
     header: "Bracket Validation",
     body: (
       <p>
