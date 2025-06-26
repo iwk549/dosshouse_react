@@ -175,17 +175,19 @@ const Competitions = ({ competitions, predictions, expired }) => {
                         <p>The second chance competition is not ready yet</p>
                       ) : (submissions[c._id + "_sc"] || 0) <
                         (c.secondChance.maxSubmissions || c.maxSubmissions) ? (
-                        <button
-                          className="btn btn-dark"
-                          onClick={() => {
-                            cookies.addCookie(c.code, true);
-                            navigate(
-                              `/submissions?id=new&competitionID=${c._id}&secondChance=true`
-                            );
-                          }}
-                        >
-                          Start New Submission
-                        </button>
+                        <div style={{ marginBottom: 25 }}>
+                          <button
+                            className="btn btn-dark"
+                            onClick={() => {
+                              cookies.addCookie(c.code, true);
+                              navigate(
+                                `/submissions?id=new&competitionID=${c._id}&secondChance=true`
+                              );
+                            }}
+                          >
+                            Start New Submission
+                          </button>
+                        </div>
                       ) : (
                         <p>
                           You have already made the maximum amount of
@@ -202,7 +204,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
                       )
                     }
                   >
-                    View Leaderboard
+                    View Second Chance Leaderboard
                   </button>
                 </div>,
               ]}
