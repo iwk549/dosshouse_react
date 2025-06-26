@@ -154,18 +154,20 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         groupInfo={groupInfo || { name: "Sitewide" }}
         setInviteOpen={setInviteOpen}
       />
-      <button
-        key="switch"
-        className="btn btn-info"
-        onClick={() =>
-          navigate(
-            `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${groupID}&secondChance=${!isSecondChance}`,
-            { replace: true }
-          )
-        }
-      >
-        View {isSecondChance ? "Full" : "Second Chance"} Leaderboard
-      </button>
+      {competition.secondChance && (
+        <button
+          key="switch"
+          className="btn btn-info"
+          onClick={() =>
+            navigate(
+              `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${groupID}&secondChance=${!isSecondChance}`,
+              { replace: true }
+            )
+          }
+        >
+          View {isSecondChance ? "Full" : "Second Chance"} Leaderboard
+        </button>
+      )}
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}
@@ -175,6 +177,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         hasSearched={searched}
         setForceRemoveOpen={setForceRemoveOpen}
         setSelectedPrediction={setSelectedPrediction}
+        isSecondChance={isSecondChance}
       />
       {leaderboard.length === 0 && (
         <b>No submissions found{searched ? " using the search terms" : ""}.</b>
@@ -202,6 +205,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           setForceRemoveOpen={setForceRemoveOpen}
           setSelectedPrediction={setSelectedPrediction}
           groupInfo={groupInfo}
+          isSecondChance={isSecondChance}
         />
       )}
       {selectedPrediction && (

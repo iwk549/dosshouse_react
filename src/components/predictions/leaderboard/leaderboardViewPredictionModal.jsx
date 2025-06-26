@@ -20,11 +20,10 @@ const LeaderboardViewPredictionModal = ({
   setForceRemoveOpen,
   setSelectedPrediction,
   groupInfo,
+  isSecondChance,
 }) => {
   const { user } = useContext(LoadingContext);
-  const tabs = prediction?.isSecondChance
-    ? ["Playoff", "Bonus"]
-    : ["Group", "Playoff", "Bonus"];
+  const [tabs, setTabs] = useState(["Playoff", "Bonus"]);
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [groups, setGroups] = useState({});
   const [playoffMatches, setPlayoffMatches] = useState([]);
@@ -37,6 +36,14 @@ const LeaderboardViewPredictionModal = ({
   useEffect(() => {
     convertData();
   }, [prediction]);
+
+  useEffect(() => {
+    const newTabs = isSecondChance
+      ? ["Playoff", "Bonus"]
+      : ["Group", "Playoff", "Bonus"];
+    setTabs(newTabs);
+    setSelectedTab(newTabs[0]);
+  }, [isSecondChance]);
 
   const convertData = () => {
     if (!prediction.playoffPredictions) return;

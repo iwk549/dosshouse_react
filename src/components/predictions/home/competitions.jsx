@@ -185,7 +185,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
                               );
                             }}
                           >
-                            Start New Submission
+                            Start New Second Chance Submission
                           </button>
                         </div>
                       ) : (
