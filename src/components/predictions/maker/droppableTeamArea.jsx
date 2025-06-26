@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import MatchesModal from "./matchesModal";
 import DraggableTable from "../../common/table/draggableTable";
@@ -20,10 +20,6 @@ const DroppableTeamArea = ({
 }) => {
   const { isSuperSmall } = useWindowDimensions();
   const [matchesOpen, setMatchesOpen] = useState(false);
-  // const [sortColumn, setSortColumn] = useState({
-  //   path: "dateTime",
-  //   order: "asc",
-  // });
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
@@ -60,11 +56,8 @@ const DroppableTeamArea = ({
   };
 
   return (
-    <>
-      <h3
-        className="text-center"
-        style={{ maxWidth: 300, justifySelf: "center" }}
-      >
+    <div>
+      <h3 className="text-center">
         <b>{groupHeader}</b>
         {description && (
           <>
@@ -98,12 +91,10 @@ const DroppableTeamArea = ({
             setIsOpen={setMatchesOpen}
             matches={matches}
             header={`Group ${groupName} Matches`}
-            // sortColumn={sortColumn}
-            // onSort={handleSort}
           />
         </>
       )}
-    </>
+    </div>
   );
 };
 
