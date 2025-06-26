@@ -110,8 +110,9 @@ const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
           group = info?.groupName;
           position = info?.position;
         }
+
         const teamToInsert = groups[group]
-          ? groups[group][position - 1].name
+          ? groups[group][position - 1]?.name
           : newMatch[t + "TeamName"];
 
         newMatch[t + "TeamName"] = teamToInsert;
@@ -272,7 +273,8 @@ export const handlePopulateBracket = (
   groupPredictions,
   playoffPredictions,
   playoffMatches,
-  result
+  result,
+  isSecondChance
 ) => {
   let groups = {};
   groupPredictions.forEach((g) => {
@@ -305,10 +307,12 @@ export const handlePopulateBracket = (
       const thisRound = result.playoff.find((round) => round.round === p.round);
       if (thisRound) {
         playoffMatch.highlight = [];
-        if (thisRound.teams.includes(p.homeTeam))
-          playoffMatch.highlight.push("home");
-        if (thisRound.teams.includes(p.awayTeam))
-          playoffMatch.highlight.push("away");
+        if (!isSecondChance || thisRound.round !== 1) {
+          if (thisRound.teams.includes(p.homeTeam))
+            playoffMatch.highlight.push("home");
+          if (thisRound.teams.includes(p.awayTeam))
+            playoffMatch.highlight.push("away");
+        }
       }
     }
   });
@@ -326,7 +330,12 @@ const updateMiscItems = (misc, selection) => {
   return newMisc;
 };
 
-const checkForCompletion = (playoffPredictions, misc, competition) => {
+const checkForCompletion = (
+  playoffPredictions,
+  misc,
+  competition,
+  isSecondChance
+) => {
   let missingItems = [];
   if (!misc.winner || misc.winner.toLowerCase().includes("winner"))
     missingItems.push({
@@ -349,8 +358,10 @@ const checkForCompletion = (playoffPredictions, misc, competition) => {
       !misc[pick.name] ||
       misc[pick.name].toLowerCase().includes("winner") ||
       misc[pick.name].toLowerCase().includes("loser")
-    )
-      missingItems.push({ label: "Bonus", text: pick.label });
+    ) {
+      if (!isSecondChance || pick.name === "thirdPlace")
+        missingItems.push({ label: "Bonus", text: pick.label });
+    }
   });
   return missingItems;
 };
@@ -364,6 +375,7 @@ export function predictionReducer(state, action) {
   let isSaved = false;
   let missingItems = state.missingItems;
   let isLocked = state.isLocked;
+  let isSecondChance = state.isSecondChance;
   if (action.type === "save") {
     return {
       groups,
@@ -373,6 +385,7 @@ export function predictionReducer(state, action) {
       competition,
       isSaved: true,
       missingItems,
+      isSecondChance,
     };
   } else if (action.type === "edit") {
     return {
@@ -383,6 +396,7 @@ export function predictionReducer(state, action) {
       misc,
       isSaved,
       missingItems,
+      isSecondChance,
     };
   }
   if (action.type === "initial") {
@@ -453,7 +467,12 @@ export function predictionReducer(state, action) {
     playoffs = updated.playoffs;
     misc = updated.misc;
   }
-  missingItems = checkForCompletion(playoffs, misc, competition);
+  missingItems = checkForCompletion(
+    playoffs,
+    misc,
+    competition,
+    state.isSecondChance
+  );
   toast.clearWaitingQueue();
   return {
     groups,
@@ -464,5 +483,6 @@ export function predictionReducer(state, action) {
     isSaved,
     missingItems,
     isLocked,
+    isSecondChance,
   };
 }

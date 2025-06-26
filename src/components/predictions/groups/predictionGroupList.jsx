@@ -15,6 +15,8 @@ const PredictionGroupList = ({
   const [removeGroupOpen, setRemoveGroupOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
 
+  if (prediction.isSecondChance) return null;
+
   return (
     <>
       <SideBySideView

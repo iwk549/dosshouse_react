@@ -18,6 +18,7 @@ import {
   getPrediction,
   addPredictionToGroup,
 } from "../../../services/predictionsService";
+import { getResult } from "../../../services/resultsService";
 import { getCompetition } from "../../../services/competitionService";
 import HeaderLine from "./headerLine";
 import Miscellaneous from "./miscellaneous";
@@ -32,6 +33,7 @@ const PredictionMaker = ({
   predictionID,
   groupName,
   groupPasscode,
+  isSecondChance,
 }) => {
   let navigate = useNavigate();
   const { isMobile } = useWindowDimensions();
@@ -48,13 +50,16 @@ const PredictionMaker = ({
     isSaved: false,
     isLocked: false,
     missingItems: [],
+    isSecondChance,
   });
   const [groupMatches, setGroupMatches] = useState({});
   const [originalPlayoffMatches, setOriginalPlayoffMatches] = useState([]);
   const [predictionName, setPredictionName] = useState("");
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const [tabs, setTabs] = useState([""]);
-  const [selectedTab, setSelectedTab] = useState("Group");
+  const [selectedTab, setSelectedTab] = useState(
+    isSecondChance ? "Bracket" : "Group"
+  );
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
   const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
@@ -74,10 +79,21 @@ const PredictionMaker = ({
     const competitionRes = await getCompetition(competitionID);
     if (competitionRes.status !== 200) toast.error(competitionRes.data);
     const isLocked =
-      new Date(competitionRes.data?.submissionDeadline) <= new Date();
+      (isSecondChance
+        ? new Date(competitionRes.data?.secondChance?.submissionDeadline)
+        : new Date(competitionRes.data?.submissionDeadline)) <= new Date();
 
-    let newTabs = ["Group", "Bracket", "Information"];
-    if (competitionRes.data?.miscPicks?.length) newTabs.splice(2, 0, "Bonus");
+    let newTabs = [];
+    if (isSecondChance) {
+      newTabs = ["Bracket", "Information"];
+      if (
+        competitionRes.data?.miscPicks?.find((mp) => mp.name === "thirdPlace")
+      )
+        newTabs.splice(1, 0, "Bonus");
+    } else {
+      newTabs = ["Group", "Bracket", "Information"];
+      if (competitionRes.data?.miscPicks?.length) newTabs.splice(2, 0, "Bonus");
+    }
     setTabs(newTabs);
 
     if (matchesRes.status === 200) {
@@ -116,19 +132,26 @@ const PredictionMaker = ({
       setAllTeams(addedTeamTracker);
 
       // get saved predictions or set new predictions
+      // if this is a second chance competition we will need the group results
+      const resultRes = await getResult(competitionID);
+
       if (predictionID !== "new") {
-        // grab predictions from db
+        // grab prediction from db
         const predictionsRes = await getPrediction(predictionID);
 
         if (predictionsRes.status === 200) {
           dispatchPredictions({
             type: "populate",
-            groups: predictionsRes.data?.groupPredictions || [],
+            groups:
+              (isSecondChance
+                ? resultRes.data?.group
+                : predictionsRes.data?.groupPredictions) || [],
             playoffs: predictionsRes.data?.playoffPredictions || [],
             playoffMatches: filtered.playoffMatches,
             misc: predictionsRes.data?.misc,
             competition: competitionRes.data,
             isLocked,
+            isSecondChance,
           });
           setPredictionName(predictionsRes.data?.name || "");
         } else {
@@ -136,13 +159,18 @@ const PredictionMaker = ({
           setNotAllowed(predictionsRes.status);
         }
       } else {
+        const groupResults = {};
+        resultRes.data?.group?.forEach((g) => {
+          groupResults[g.groupName] = g.teamOrder.map((t) => ({ name: t }));
+        });
         dispatchPredictions({
           type: "initial",
-          groups: filtered.groups,
+          groups: isSecondChance ? groupResults : filtered.groups,
           playoffs: [],
           playoffMatches: filtered.playoffMatches,
           competition: competitionRes.data,
           isLocked,
+          isSecondChance,
         });
         if (user) setPredictionName(splitName(user.name) + "'s Bracket");
       }
@@ -171,11 +199,13 @@ const PredictionMaker = ({
       groupPredictions,
       playoffPredictions: predictions.playoffs,
       misc: predictions.misc,
+      isSecondChance: !!isSecondChance,
     });
 
     if (predictionRes.status === 200) {
       dispatchPredictions({
         type: "save",
+        isSecondChance,
       });
       toast.success("Prediction saved");
       if (groupName && groupPasscode) {
@@ -190,7 +220,9 @@ const PredictionMaker = ({
       }
 
       navigate(
-        `/submissions?id=${predictionRes.data}&competitionID=${competitionID}`,
+        `/submissions?id=${
+          predictionRes.data
+        }&competitionID=${competitionID}&secondChance=${!!isSecondChance}`,
         {
           replace: true,
         }
@@ -208,6 +240,7 @@ const PredictionMaker = ({
       type: "winner",
       match,
       winner: team,
+      isSecondChance,
     });
   };
 
@@ -218,6 +251,7 @@ const PredictionMaker = ({
         name,
         value,
       },
+      isSecondChance,
     });
   };
 
@@ -273,6 +307,7 @@ const PredictionMaker = ({
           setPredictionName(value);
           dispatchPredictions({
             type: "edit",
+            isSecondChance,
           });
         }}
         isSaved={predictions.isSaved}
@@ -280,6 +315,7 @@ const PredictionMaker = ({
         competition={predictions.competition}
         missingItems={predictions.missingItems}
         onClickMissingItem={handleClickMissingItem}
+        isSecondChance={isSecondChance}
       />
       <TabbedArea
         tabs={tabs}
@@ -334,7 +370,7 @@ const PredictionMaker = ({
           Return To Top of Page
         </button>
       </div>
-      {predictionID !== "new" && (
+      {predictionID !== "new" && !isSecondChance && (
         <div style={{ float: "left" }}>
           <button
             className="btn btn-sm btn-dark"

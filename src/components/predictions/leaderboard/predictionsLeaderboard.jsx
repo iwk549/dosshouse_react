@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -18,7 +18,7 @@ import GroupInfo from "./groupInfo";
 import { getResult } from "../../../services/resultsService";
 import Confirm from "../../common/modal/confirm";
 
-const PredictionsLeaderboard = ({ competitionID, groupID }) => {
+const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   let navigate = useNavigate();
   const { setLoading } = useContext(LoadingContext);
   const [leaderboard, setLeaderboard] = useState([]);
@@ -47,14 +47,20 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
     let leaderboardRes;
     if (search) {
       setSearched(true);
-      leaderboardRes = await searchLeaderboard(competitionID, groupID, search);
+      leaderboardRes = await searchLeaderboard(
+        competitionID,
+        groupID,
+        search,
+        isSecondChance
+      );
     } else {
       setSearched(false);
       leaderboardRes = await getLeaderboard(
         competitionID,
         selectedPage || page,
         updatedResultsPerPage || resultsPerPage,
-        groupID
+        groupID,
+        isSecondChance
       );
     }
     if (leaderboardRes.status === 200) {
@@ -97,7 +103,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [isSecondChance]);
 
   const handleSelectPrediction = async (prediction) => {
     if (!prediction) return;
@@ -132,15 +138,34 @@ const PredictionsLeaderboard = ({ competitionID, groupID }) => {
 
   return (
     <div>
-      <button className="btn btn-light" onClick={() => navigate(-1)}>
+      <button
+        key="goback"
+        className="btn btn-light"
+        onClick={() => navigate(-1)}
+      >
         Go Back
       </button>
       <br />
+      <div className="standout-header">
+        {competition.name}
+        {isSecondChance ? <small> - Second Chance</small> : null}
+      </div>
       <GroupInfo
         groupInfo={groupInfo || { name: "Sitewide" }}
         setInviteOpen={setInviteOpen}
       />
-
+      <button
+        key="switch"
+        className="btn btn-info"
+        onClick={() =>
+          navigate(
+            `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${groupID}&secondChance=${!isSecondChance}`,
+            { replace: true }
+          )
+        }
+      >
+        View {isSecondChance ? "Full" : "Second Chance"} Leaderboard
+      </button>
       <LeaderboardTable
         leaderboard={leaderboard}
         onSelectPrediction={handleSelectPrediction}

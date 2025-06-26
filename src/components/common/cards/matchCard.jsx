@@ -4,13 +4,20 @@ import { longDate, teamOrder } from "../../../utils/allowables";
 import IconRender from "../icons/iconRender";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../image/externalImage";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const MatchCard = ({ data }) => {
   if (data.length === 0) return null;
   const order = teamOrder(data[0].sport);
 
   const renderLogo = (teamName) => {
-    return <ExternalImage uri={logos[teamName]} width={15} height={15} />;
+    return (
+      <ExternalImage
+        uri={logos[findCountryLogo(teamName)]}
+        width={15}
+        height={15}
+      />
+    );
   };
 
   return (

@@ -12,6 +12,7 @@ import {
   getCompetition,
   getExpiredCompetitions,
 } from "../../services/competitionService";
+import { getResult } from "../../services/resultsService";
 import { getMatches } from "../../services/matchService";
 import { competition, leaderboard, matches } from "../testData";
 
@@ -27,6 +28,9 @@ jest.mock("../../services/competitionService", () => ({
 }));
 jest.mock("../../services/matchService", () => ({
   getMatches: jest.fn(),
+}));
+jest.mock("../../services/resultsService", () => ({
+  getResult: jest.fn(),
 }));
 
 // suppress error caused by long running dispatch op in maker component
@@ -47,6 +51,7 @@ const renderWithProps = async (path = "", props = {}) => {
   getCompetition.mockReturnValue(apiResponse(competition));
   getMatches.mockReturnValue(apiResponse(matches));
   getLeaderboard.mockReturnValue(apiResponse(leaderboard));
+  getResult.mockReturnValue(apiResponse(null));
 
   await act(async () => {
     renderWithContext(PredictionsRedirect, props, null, path);
