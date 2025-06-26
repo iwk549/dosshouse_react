@@ -30,6 +30,7 @@ export default [
           <li>Most points earned from bonus picks</li>
           <li>Most correct bonus picks made</li>
         </ol>
+        <br />
       </>
     ),
   },
@@ -75,9 +76,10 @@ export default [
     header: "Top Goalscorer",
     body: (
       <p>
-        If there is an official golden boot (or similar award for top
-        goalscorer) handed out by the tournament then the winner will be based
-        on that, with any tiebreakers coming from those official rules.
+        This bonus is based on which individual player scores the most goals in
+        the tournament. If there is an official golden boot (or similar award
+        for top goalscorer) handed out by the tournament then the winner will be
+        based on that, with any tiebreakers coming from those official rules.
         <br />
         If there is no official award then only goals scored will be counted, no
         tiebreakers will be applied. In the case of a tie all submissions

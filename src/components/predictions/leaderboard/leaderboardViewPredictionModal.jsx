@@ -22,7 +22,9 @@ const LeaderboardViewPredictionModal = ({
   groupInfo,
 }) => {
   const { user } = useContext(LoadingContext);
-  const tabs = ["Group", "Playoff", "Bonus"];
+  const tabs = prediction?.isSecondChance
+    ? ["Playoff", "Bonus"]
+    : ["Group", "Playoff", "Bonus"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [groups, setGroups] = useState({});
   const [playoffMatches, setPlayoffMatches] = useState([]);
@@ -43,7 +45,8 @@ const LeaderboardViewPredictionModal = ({
         prediction.groupPredictions,
         prediction.playoffPredictions,
         originalMatches,
-        result
+        result,
+        prediction.isSecondChance
       );
     setGroups(populatedGroups);
     setPlayoffMatches(populatedPlayoffMatches);

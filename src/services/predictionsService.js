@@ -51,7 +51,8 @@ export async function getLeaderboard(
   competitionID,
   pageNumber,
   resultsPerPage = 25,
-  groupID = "all"
+  groupID = "all",
+  isSecondChance = false
 ) {
   try {
     return await http.get(
@@ -63,7 +64,8 @@ export async function getLeaderboard(
         "/" +
         pageNumber +
         "/" +
-        groupID
+        groupID +
+        `?secondChance=${isSecondChance}`
     );
   } catch (ex) {
     return ex.response;
@@ -73,7 +75,8 @@ export async function getLeaderboard(
 export async function searchLeaderboard(
   competitionID,
   groupID = "all",
-  searchParam
+  searchParam,
+  isSecondChance
 ) {
   try {
     return await http.get(
@@ -83,7 +86,8 @@ export async function searchLeaderboard(
         "/" +
         groupID +
         "/" +
-        searchParam
+        searchParam +
+        `?secondChance=${isSecondChance}`
     );
   } catch (ex) {
     return ex.response;

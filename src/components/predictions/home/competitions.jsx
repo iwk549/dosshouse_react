@@ -22,7 +22,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
   return competitions.map((c) => {
     return (
       <div className="single-card light-bg" key={c._id}>
-        <h3>{c.name}</h3>
+        <h2>{c.name}</h2>
         <SideBySideView
           Components={[
             <div key="info">
@@ -123,11 +123,92 @@ const Competitions = ({ competitions, predictions, expired }) => {
               >
                 View Leaderboard
               </button>
-              <br />
-              <br />
             </div>,
           ]}
         />
+        {c.secondChance && (
+          <div>
+            <hr />
+            <h3>Second Chance</h3>
+            {new Date(c.secondChance.availableFrom) > new Date() && (
+              <p>
+                The second chance competition will become available after all
+                group matches have been completed.
+              </p>
+            )}
+            <SideBySideView
+              Components={[
+                <div key="secondChance.info">
+                  {renderInfoLine(
+                    "Available From",
+                    c.secondChance.availableFrom,
+                    "date",
+                    "secondChance.available",
+                    isMobile
+                  )}
+                  {renderInfoLine(
+                    "Submission Deadline",
+                    c.secondChance.submissionDeadline,
+                    "date",
+                    "secondChance.deadline",
+                    isMobile
+                  )}
+                  {renderInfoLine(
+                    "Competition Start",
+                    c.secondChance.competitionStart,
+                    "date",
+                    "secondChance.start",
+                    isMobile
+                  )}
+                </div>,
+                <div key="buttons">
+                  {!expired && (
+                    <>
+                      {new Date(c.secondChance.submissionDeadline) <
+                      new Date() ? (
+                        <p>
+                          The submission deadline for the second chance
+                          competition has passed
+                        </p>
+                      ) : new Date(c.secondChance.availableFrom) >
+                        new Date() ? (
+                        <p>The second chance competition is not ready yet</p>
+                      ) : (submissions[c._id + "_sc"] || 0) <
+                        (c.secondChance.maxSubmissions || c.maxSubmissions) ? (
+                        <button
+                          className="btn btn-dark"
+                          onClick={() => {
+                            cookies.addCookie(c.code, true);
+                            navigate(
+                              `/submissions?id=new&competitionID=${c._id}&secondChance=true`
+                            );
+                          }}
+                        >
+                          Start New Submission
+                        </button>
+                      ) : (
+                        <p>
+                          You have already made the maximum amount of
+                          submissions for this competition.
+                        </p>
+                      )}
+                    </>
+                  )}
+                  <button
+                    className="btn btn-info"
+                    onClick={() =>
+                      navigate(
+                        `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all&secondChance=true`
+                      )
+                    }
+                  >
+                    View Leaderboard
+                  </button>
+                </div>,
+              ]}
+            />
+          </div>
+        )}
       </div>
     );
   });

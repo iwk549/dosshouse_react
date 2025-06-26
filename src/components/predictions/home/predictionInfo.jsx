@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { renderInfoLine } from "../../../utils/textUtils";
@@ -25,7 +24,10 @@ const PredictionInfo = ({
   const renderInfo = (prediction) => {
     return (
       <div className="col">
-        <b>{prediction.competitionID?.name}</b>
+        <b>
+          {prediction.competitionID?.name}
+          {prediction.isSecondChance ? <small> - Second Chance</small> : null}
+        </b>
         {!isMobile && (
           <>
             {renderInfoLine(
@@ -72,7 +74,11 @@ const PredictionInfo = ({
   };
 
   const deadlinePassed =
-    new Date(prediction.competitionID?.submissionDeadline) < new Date();
+    new Date(
+      prediction.isSecondChance
+        ? prediction.competitionID?.secondChance?.submissionDeadline
+        : prediction.competitionID?.submissionDeadline
+    ) < new Date();
 
   return (
     <div className="single-card light-bg" data-testid="prediction-info">
@@ -104,7 +110,9 @@ const PredictionInfo = ({
               onClick={() => {
                 cookies.addCookie(prediction.competitionID.code, true);
                 navigate(
-                  `/submissions?id=${prediction._id}&competitionID=${prediction.competitionID?._id}`
+                  `/submissions?id=${prediction._id}&competitionID=${
+                    prediction.competitionID?._id
+                  }&secondChance=${!!prediction.isSecondChance}`
                 );
               }}
             >
@@ -130,7 +138,9 @@ const PredictionInfo = ({
               className="btn btn-info"
               onClick={() =>
                 navigate(
-                  `/competitions?leaderboard=show&competitionID=${prediction.competitionID._id}&groupID=all`
+                  `/competitions?leaderboard=show&competitionID=${
+                    prediction.competitionID._id
+                  }&groupID=all&secondChance=${!!prediction.isSecondChance}`
                 )
               }
             >

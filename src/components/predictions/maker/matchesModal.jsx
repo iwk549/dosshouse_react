@@ -11,6 +11,7 @@ import {
 import MatchCard from "../../common/cards/matchCard";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../../common/image/externalImage";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
 
 const MatchesModal = ({
   matches,
@@ -23,7 +24,13 @@ const MatchesModal = ({
   const teams = teamOrder(matches[0]?.sport || "");
 
   const renderLogo = (teamName) => {
-    return <ExternalImage uri={logos[teamName]} width={25} height={25} />;
+    return (
+      <ExternalImage
+        uri={logos[findCountryLogo(teamName)]}
+        width={25}
+        height={25}
+      />
+    );
   };
 
   if (!matches || matches.length === 0) return null;

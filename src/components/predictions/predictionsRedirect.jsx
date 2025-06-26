@@ -17,6 +17,7 @@ const PredictionsRedirect = ({ page }) => {
   const type = searchParams.get("type");
   const groupName = searchParams.get("groupName");
   const groupPasscode = searchParams.get("groupPasscode");
+  const isSecondChance = searchParams.get("secondChance") === "true";
 
   const redirect = () => {
     setComponent(
@@ -26,11 +27,13 @@ const PredictionsRedirect = ({ page }) => {
           competitionID={competitionID}
           groupName={groupName}
           groupPasscode={groupPasscode}
+          isSecondChance={isSecondChance}
         />
       ) : leaderboard ? (
         <PredictionsLeaderboard
           competitionID={competitionID}
           groupID={groupID}
+          isSecondChance={isSecondChance}
         />
       ) : page === "submissions" ? (
         <SubmittedPredictions

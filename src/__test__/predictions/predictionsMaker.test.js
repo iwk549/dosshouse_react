@@ -11,6 +11,7 @@ import {
 } from "../../services/predictionsService";
 import { getCompetition } from "../../services/competitionService";
 import { getMatches } from "../../services/matchService";
+import { getResult } from "../../services/resultsService";
 import { act, screen } from "@testing-library/react";
 import PredictionMaker from "../../components/predictions/maker/predictionsMaker";
 import { getGroups } from "../../services/groupsService";
@@ -28,6 +29,9 @@ jest.mock("../../services/predictionsService", () => ({
 }));
 jest.mock("../../services/competitionService", () => ({
   getCompetition: jest.fn(),
+}));
+jest.mock("../../services/resultsService", () => ({
+  getResult: jest.fn(),
 }));
 jest.mock("../../services/matchService", () => ({
   getMatches: jest.fn(),
@@ -54,6 +58,9 @@ const renderWithProps = async (props = {}, mocks = {}, user = null) => {
       mocks?.getCompetition?.data || null,
       mocks?.getCompetition?.status || 200
     )
+  );
+  getResult.mockReturnValue(
+    apiResponse(mocks?.getResult?.data || null, mocks?.getResult?.status || 200)
   );
   getMatches.mockReturnValue(
     apiResponse(mocks?.getMatches?.data || [], mocks?.getMatches?.status || 200)
@@ -154,10 +161,11 @@ describe("PredictionsMaker", () => {
         misc: { winner: "" },
         name: "Test's Bracket", // default name from user's name
         playoffPredictions: [],
+        isSecondChance: false,
       });
       expect(navMock).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledWith(
-        "/submissions?id=savedID&competitionID=testBracket1",
+        "/submissions?id=savedID&competitionID=testBracket1&secondChance=false",
         { replace: true }
       );
     });

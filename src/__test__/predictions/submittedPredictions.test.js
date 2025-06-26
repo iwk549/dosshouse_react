@@ -77,7 +77,8 @@ describe("SubmittedPredictions", () => {
         "/submissions?id=" +
           prediction._id +
           "&competitionID=" +
-          competition._id
+          competition._id +
+          "&secondChance=false"
       );
     });
     it("should navigate to the leaderboard", async () => {
@@ -92,7 +93,7 @@ describe("SubmittedPredictions", () => {
       expect(navMock).toHaveBeenCalledWith(
         "/competitions?leaderboard=show&competitionID=" +
           competition._id +
-          "&groupID=all"
+          "&groupID=all&secondChance=false"
       );
     });
     it("should not show the delete button if submission deadline has passed", async () => {

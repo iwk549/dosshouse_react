@@ -12,6 +12,7 @@ const HeaderLine = ({
   isLocked,
   missingItems,
   onClickMissingItem,
+  isSecondChance,
 }) => {
   const nameInputRef = useRef(null);
 
@@ -34,7 +35,10 @@ const HeaderLine = ({
         drillRef={nameInputRef}
       />
       <h1>
-        <b>{competition?.name}</b>
+        <b>
+          {competition?.name}
+          {isSecondChance ? <small> - Second Chance</small> : null}
+        </b>
       </h1>
       <div
         className={
