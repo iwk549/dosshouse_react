@@ -19,6 +19,7 @@ const LeaderboardTable = ({
   hasSearched,
   setForceRemoveOpen,
   setSelectedPrediction,
+  isSecondChance,
 }) => {
   const { user } = useContext(LoadingContext);
   const [state, dispatch] = useReducer(reducer, {
@@ -94,16 +95,6 @@ const LeaderboardTable = ({
         ),
     },
     {
-      path: "points.group.points",
-      label: "Group Stage",
-      content: (p) => (
-        <>
-          {p.points?.group?.correctPicks || 0} <IconRender type="check" /> |{" "}
-          {p.points?.group?.points || 0} pts
-        </>
-      ),
-    },
-    {
       path: "points.playoff.points",
       label: "Playoff",
       content: (p) => (
@@ -129,6 +120,19 @@ const LeaderboardTable = ({
       content: (p) => `${p.points?.champion?.points || 0} pts`,
     },
   ];
+
+  if (!isSecondChance) {
+    columns.splice(5, 0, {
+      path: "points.group.points",
+      label: "Group Stage",
+      content: (p) => (
+        <>
+          {p.points?.group?.correctPicks || 0} <IconRender type="check" /> |{" "}
+          {p.points?.group?.points || 0} pts
+        </>
+      ),
+    });
+  }
 
   if (groupInfo && groupInfo.ownerID && groupInfo.ownerID._id === user?._id)
     columns.push({
