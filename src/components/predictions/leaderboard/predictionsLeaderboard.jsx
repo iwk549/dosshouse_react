@@ -189,7 +189,9 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           isOpen={bonusPicksOpen}
           setIsOpen={setBonusPicksOpen}
           result={result}
-          submissions={leaderboard}
+          competition={competition}
+          setSinglePredictionOpen={setSinglePredictionOpen}
+          setSelectedPrediction={setSelectedPrediction}
         />
       )}
       {!searched && leaderboard.length > 0 && (

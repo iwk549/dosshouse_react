@@ -134,3 +134,13 @@ export async function forceRemovePredictionFromGroup(predictionID, group) {
     return ex.response;
   }
 }
+
+export async function getSubmissionsByMisc(competitionID, key, team) {
+  try {
+    return await http.get(
+      http.predictions + "/bonus/" + competitionID + "/" + key + "/" + team
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
