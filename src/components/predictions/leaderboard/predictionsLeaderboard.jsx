@@ -17,6 +17,7 @@ import PageSelection from "../../common/pageSections/pageSelection";
 import GroupInfo from "./groupInfo";
 import { getResult } from "../../../services/resultsService";
 import Confirm from "../../common/modal/confirm";
+import BonusPickInfo from "./bonusPickInfo";
 
 const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   let navigate = useNavigate();
@@ -37,6 +38,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   const [searched, setSearched] = useState(false);
   const [forceRemoveOpen, setForceRemoveOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [bonusPicksOpen, setBonusPicksOpen] = useState(false);
 
   const loadLeaderboard = async (
     selectedPage,
@@ -181,6 +183,16 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
       />
       {leaderboard.length === 0 && (
         <b>No submissions found{searched ? " using the search terms" : ""}.</b>
+      )}
+      {!isSecondChance && (
+        <BonusPickInfo
+          isOpen={bonusPicksOpen}
+          setIsOpen={setBonusPicksOpen}
+          result={result}
+          competition={competition}
+          setSinglePredictionOpen={setSinglePredictionOpen}
+          setSelectedPrediction={setSelectedPrediction}
+        />
       )}
       {!searched && leaderboard.length > 0 && (
         <PageSelection
