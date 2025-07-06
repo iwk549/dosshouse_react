@@ -4,6 +4,7 @@ import BasicModal from "../../common/modal/basicModal";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../../common/image/externalImage";
 import { findCountryLogo } from "../../../utils/predictionsUtil";
+import SingleTeamView from "./singleTeamView";
 
 const TeamSelectComponent = ({
   teams,
@@ -57,27 +58,12 @@ const TeamSelectComponent = ({
         }
       >
         {teams.map((team, idx) => (
-          <div
-            className="single-card text-center row clickable"
+          <SingleTeamView
+            teamName={team.value}
+            onSelect={raiseSelect}
+            asCard={true}
             key={idx}
-            onClick={() => raiseSelect(team.value)}
-          >
-            <div style={{ gridColumn: 1 }}>
-              <ExternalImage
-                uri={logos[findCountryLogo(team.value)]}
-                height={15}
-                width="auto"
-              />
-            </div>
-            <div style={{ gridColumn: 2 }}>{team.value}</div>
-            <div style={{ gridColumn: 3 }}>
-              <ExternalImage
-                uri={logos[findCountryLogo(team.value)]}
-                height={15}
-                width="auto"
-              />
-            </div>
-          </div>
+          />
         ))}
       </BasicModal>
     </>
