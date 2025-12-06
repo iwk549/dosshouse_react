@@ -95,6 +95,7 @@ const BracketPicker = ({
             ? 1000
             : width - 90
         }
+        height={isPortrait ? matches.length * 40 : matches.length * 25}
         onSelectMatch={handleSelectMatch}
         onSelectTeam={isLocked ? null : onSelectTeam}
         orientation={isPortrait ? "portrait" : "landscape"}

@@ -106,7 +106,9 @@ const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
             .slice(0, groupMatrix.teamsToIncludeInBracket)
             .sort()
             .join("");
-          const info = groupMatrix.matrix?.[newMatch.matchNumber]?.[order];
+          const actualMatchNumber =
+            newMatch.metadata?.matchNumber || newMatch.matchNumber;
+          const info = groupMatrix.matrix?.[actualMatchNumber]?.[order];
           group = info?.groupName;
           position = info?.position;
         }
