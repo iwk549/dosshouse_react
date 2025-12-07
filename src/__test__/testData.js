@@ -280,7 +280,7 @@ const unevenMatchesCompetition = {
       positionInGroup: 3,
       teamsToIncludeInBracket: 4,
       matrix: {
-        13: {
+        39: {
           ABCD: { groupName: "A", position: 3 },
           ABCE: { groupName: "A", position: 3 },
           ABCF: { groupName: "A", position: 3 },
@@ -297,7 +297,7 @@ const unevenMatchesCompetition = {
           BDEF: { groupName: "F", position: 3 },
           CDEF: { groupName: "F", position: 3 },
         },
-        15: {
+        41: {
           ABCD: { groupName: "C", position: 3 },
           ABCE: { groupName: "C", position: 3 },
           ABCF: { groupName: "C", position: 3 },
@@ -314,8 +314,7 @@ const unevenMatchesCompetition = {
           BDEF: { groupName: "B", position: 3 },
           CDEF: { groupName: "C", position: 3 },
         },
-
-        17: {
+        43: {
           ABCD: { groupName: "B", position: 3 },
           ABCE: { groupName: "B", position: 3 },
           ABCF: { groupName: "B", position: 3 },
@@ -332,7 +331,7 @@ const unevenMatchesCompetition = {
           BDEF: { groupName: "D", position: 3 },
           CDEF: { groupName: "D", position: 3 },
         },
-        19: {
+        40: {
           ABCD: { groupName: "D", position: 3 },
           ABCE: { groupName: "E", position: 3 },
           ABCF: { groupName: "F", position: 3 },

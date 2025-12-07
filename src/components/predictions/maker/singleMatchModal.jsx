@@ -5,6 +5,7 @@ import { longDate, translateRound, teamOrder } from "../../../utils/allowables";
 import { confirmModalStyle } from "../../../utils/styles";
 
 const SingleMatchModal = ({ isOpen, setIsOpen, match, finalRoundNumber }) => {
+  if (!match) return null;
   const teams = teamOrder(match.sport);
   const neededPKs =
     match.homeTeamGoals === match.awayTeamGoals &&

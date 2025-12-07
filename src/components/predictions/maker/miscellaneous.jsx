@@ -30,30 +30,32 @@ const Miscellaneous = ({
     const semiFinals = playoffMatches.filter(
       (m) => m.round === getFinalRound(playoffMatches) - 1
     );
-    const thirdPlaceMatch = [];
-    ["home", "away"].forEach((t) => {
-      let losingTeam = "";
-      const finalist = final[t + "TeamName"];
-      if (finalist.toLowerCase().includes("winner")) {
-        losingTeam = "Loser " + final.getTeamsFrom[t].matchNumber;
-      } else {
-        ["home", "away"].forEach((t1) => {
-          const semiFinal = semiFinals.find(
-            (m) => m[t1 + "TeamName"] === finalist
-          );
-          if (semiFinal) {
-            losingTeam =
-              semiFinal[(t1 === "home" ? "away" : "home") + "TeamName"];
-          }
+    if (semiFinals.length) {
+      const thirdPlaceMatch = [];
+      ["home", "away"].forEach((t) => {
+        let losingTeam = "";
+        const finalist = final[t + "TeamName"];
+        if (finalist.toLowerCase().includes("winner")) {
+          losingTeam = "Loser " + final.getTeamsFrom[t].matchNumber;
+        } else {
+          ["home", "away"].forEach((t1) => {
+            const semiFinal = semiFinals.find(
+              (m) => m[t1 + "TeamName"] === finalist
+            );
+            if (semiFinal) {
+              losingTeam =
+                semiFinal[(t1 === "home" ? "away" : "home") + "TeamName"];
+            }
+          });
+        }
+        thirdPlaceMatch.push({
+          value: losingTeam,
+          label: renderSelectLabel(losingTeam, true),
+          logo: logos[losingTeam],
         });
-      }
-      thirdPlaceMatch.push({
-        value: losingTeam,
-        label: renderSelectLabel(losingTeam, true),
-        logo: logos[losingTeam],
       });
-    });
-    return thirdPlaceMatch;
+      return thirdPlaceMatch;
+    } else return [];
   };
 
   return (
