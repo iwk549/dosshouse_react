@@ -100,3 +100,13 @@ export async function updatePassword(token, email, password) {
     return ex.response;
   }
 }
+
+export async function loginWithGoogle(idToken) {
+  try {
+    const res = await http.post(http.users + "/loginwithgoogle", { idToken });
+    setUser(res.data);
+    return res;
+  } catch (ex) {
+    return ex.response;
+  }
+}
