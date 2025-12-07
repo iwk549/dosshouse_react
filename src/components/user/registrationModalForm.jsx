@@ -1,4 +1,3 @@
-import React from "react";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 import TabbedArea from "react-tabbed-area";
@@ -10,11 +9,10 @@ import {
   loginUser,
   requestPasswordReset,
   updatePassword,
+  loginWithGoogle,
 } from "../../services/userService";
 import LoadingContext from "../../context/loadingContext";
 import { titleCase } from "../../utils/allowables";
-import cookies from "../../services/cookieService";
-import CookieBanner from "../common/pageSections/cookieBanner";
 
 class RegistrationModalForm extends Form {
   static contextType = LoadingContext;
@@ -26,22 +24,7 @@ class RegistrationModalForm extends Form {
     },
     errors: {},
     selectedTab: titleCase(this.props.selectedTab) || "Register",
-    cookiesAccepted: false,
   };
-
-  checkCookieAcceptance = () => {
-    const accepted = cookies.getCookie(cookies.acceptedName);
-    if (accepted) this.setState({ cookiesAccepted: true });
-  };
-
-  componentDidUpdate(prevProps) {
-    if (this.props.isOpen && prevProps.isOpen !== this.props.isOpen)
-      this.checkCookieAcceptance();
-  }
-
-  componentDidMount() {
-    this.checkCookieAcceptance();
-  }
 
   schema = {
     name: Joi.string().allow("").min(1).max(50).label("Name"),
@@ -50,13 +33,37 @@ class RegistrationModalForm extends Form {
   };
   tabs = this.props.reset ? ["Reset"] : ["Register", "Login"];
 
+  constructor(props) {
+    super(props);
+    this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.isOpen || this.props.isOpen === prevProps.isOpen) return;
+
+    const interval = setInterval(() => {
+      const el = document.getElementById("googleBtn");
+
+      if (el && window.google) {
+        clearInterval(interval);
+        window.google.accounts.id.initialize({
+          client_id:
+            "425053581926-gnr5vl5sug2ai8iaed9onftce70bp4cd.apps.googleusercontent.com",
+          callback: this.handleGoogleLogin,
+        });
+
+        window.google.accounts.id.renderButton(el, {
+          theme: "filled_blue",
+          size: "medium",
+        });
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }
+
   setSelectedTab = (selectedTab) => {
     this.setState({ selectedTab });
-  };
-
-  handleCookieRejection = () => {
-    this.props.setIsOpen(false);
-    toast.info("You must accept cookies to be able to log in or register");
   };
 
   doSubmit = async () => {
@@ -92,6 +99,18 @@ class RegistrationModalForm extends Form {
     this.context.setLoading(false);
   };
 
+  async handleGoogleLogin(response) {
+    this.context.setLoading(true);
+    const idToken = response.credential;
+
+    const res = await loginWithGoogle(idToken);
+    if (res.status === 200) {
+      this.context.setUser();
+      return this.props.onSuccess();
+    } else toast.error(res.data);
+    this.context.setLoading(false);
+  }
+
   render() {
     return (
       <>
@@ -110,67 +129,58 @@ class RegistrationModalForm extends Form {
             )
           }
         >
-          {!this.state.cookiesAccepted ? (
-            <CookieBanner
-              rejectionCallback={this.handleCookieRejection}
-              acceptanceCallback={this.checkCookieAcceptance}
-              inModal={true}
-              resetOnRejection={true}
-              headerText="You must accept cookies in order to log in"
-            />
-          ) : (
-            <TabbedArea
-              tabs={this.tabs}
-              selectedTab={this.state.selectedTab}
-              onSelectTab={this.setSelectedTab}
-              tabPlacement="top"
-            >
-              <div className="text-center">
-                <h3>
-                  {this.props.reset
-                    ? "Reset your Password"
-                    : this.state.selectedTab === "Register"
-                    ? "Register for a New Account"
-                    : "Login to your Account"}
-                </h3>
-                <form onSubmit={this.handleSubmit}>
-                  {this.state.selectedTab === "Register"
-                    ? this.renderInput("name", "Name", "autofocus")
-                    : null}
-                  {this.renderInput(
-                    "email",
-                    "Email",
-                    this.state.selectedTab === "Login"
-                  )}
-                  {this.renderInput(
-                    "password",
-                    "Password",
-                    this.state.reset ? "autofocus" : "",
-                    "password"
-                  )}
-                  {this.renderValidatedButton(
-                    titleCase(this.state.selectedTab)
-                  )}
-                  <br />
-                  <br />
-                  {this.state.selectedTab === "Login" && (
-                    <>
-                      <p>
-                        Enter your email address and click the button below to
-                        request a password reset
-                      </p>
-                      <button
-                        className="btn btn-block btn-info"
-                        onClick={this.handleResetRequest}
-                      >
-                        Forgot Password?
-                      </button>
-                    </>
-                  )}
-                </form>
-              </div>
-            </TabbedArea>
-          )}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div id="googleBtn" />
+          </div>
+          <TabbedArea
+            tabs={this.tabs}
+            selectedTab={this.state.selectedTab}
+            onSelectTab={this.setSelectedTab}
+            tabPlacement="top"
+          >
+            <div className="text-center">
+              <h3>
+                {this.props.reset
+                  ? "Reset your Password"
+                  : this.state.selectedTab === "Register"
+                  ? "Register for a New Account"
+                  : "Login to your Account"}
+              </h3>
+              <form onSubmit={this.handleSubmit}>
+                {this.state.selectedTab === "Register"
+                  ? this.renderInput("name", "Name", "autofocus")
+                  : null}
+                {this.renderInput(
+                  "email",
+                  "Email",
+                  this.state.selectedTab === "Login"
+                )}
+                {this.renderInput(
+                  "password",
+                  "Password",
+                  this.state.reset ? "autofocus" : "",
+                  "password"
+                )}
+                {this.renderValidatedButton(titleCase(this.state.selectedTab))}
+                <br />
+                <br />
+                {this.state.selectedTab === "Login" && (
+                  <>
+                    <p>
+                      Enter your email address and click the button below to
+                      request a password reset
+                    </p>
+                    <button
+                      className="btn btn-block btn-info"
+                      onClick={this.handleResetRequest}
+                    >
+                      Forgot Password?
+                    </button>
+                  </>
+                )}
+              </form>
+            </div>
+          </TabbedArea>
         </BasicModal>
       </>
     );
