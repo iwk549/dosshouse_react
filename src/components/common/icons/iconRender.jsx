@@ -19,6 +19,7 @@ import {
   FaCaretSquareUp,
   FaGripLines,
   FaClipboardCheck,
+  FaBlog,
 } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
@@ -35,6 +36,7 @@ import { VscThreeBars } from "react-icons/vsc";
 
 const icons = {
   app: MdWebStories,
+  blog: FaBlog,
   calendar: MdCalendarToday,
   cancel: MdCancel,
   check: IoMdCheckmark,

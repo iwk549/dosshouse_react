@@ -31,13 +31,21 @@ const NavDropDown = ({ links }) => {
               onClick={() => setIsOpen(false)}
               className="main-nav"
             >
-              {links.map((link, idx) => (
-                <div key={idx} style={{ textAlign: "center" }}>
-                  <NavLink key={idx} to={link.to} className={getActiveLink}>
-                    <IconRender type={link.icon} /> {link.label}
-                  </NavLink>
-                </div>
-              ))}
+              {links.map((link, idx) => {
+                if (link.external)
+                  return (
+                    <a key={idx} href={link.to} style={{ color: "white" }}>
+                      <IconRender type={link.icon} /> {link.label}
+                    </a>
+                  );
+                return (
+                  <div key={idx} style={{ textAlign: "center" }}>
+                    <NavLink key={idx} to={link.to} className={getActiveLink}>
+                      <IconRender type={link.icon} /> {link.label}
+                    </NavLink>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
