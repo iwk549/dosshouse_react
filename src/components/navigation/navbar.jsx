@@ -18,7 +18,12 @@ const Navbar = () => {
     // { to: "/home", icon: "home", label: "Home" },
     { to: "/competitions", icon: "prediction", label: "Competitions" },
     { to: "/submissions", icon: "submission", label: "Submissions" },
-    { to: "/blog", icon: "blog", label: "Blog", external: true },
+    {
+      to: "https://blog.picker.ultimatescoreboard.com",
+      icon: "blog",
+      label: "Blog",
+      external: true,
+    },
     // { to: "/spotify_api", icon: "spotify", label: "Spotify API" },
     // { to: "/active_sites", icon: "app", label: "Apps & Sites" },
   ];
