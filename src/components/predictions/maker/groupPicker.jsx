@@ -18,7 +18,7 @@ const GroupPicker = ({
   useEffect(() => {
     // set number of groups displayed per row
     // 300 pixels needed per group
-    let groupsPerRow = Math.floor(width / 300) || 1;
+    let groupsPerRow = Math.floor(width / 350) || 1;
     const keys = Object.keys(groups);
     let maps = [];
     let i = 0;
