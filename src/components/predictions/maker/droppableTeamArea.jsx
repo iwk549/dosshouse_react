@@ -66,15 +66,17 @@ const DroppableTeamArea = ({
           </>
         )}
       </h3>
-      <DraggableTable
-        data={teams}
-        columns={columns}
-        onDrop={raiseDrop}
-        onReorder={raiseReorder}
-        type="team"
-        isLocked={isLocked}
-        highlight={highlight}
-      />
+      <div className="draggable-table-container">
+        <DraggableTable
+          data={teams}
+          columns={columns}
+          onDrop={raiseDrop}
+          onReorder={raiseReorder}
+          type="team"
+          isLocked={isLocked}
+          highlight={highlight}
+        />
+      </div>
       <div style={{ height: 5 }} />
       {matches && (
         <>
