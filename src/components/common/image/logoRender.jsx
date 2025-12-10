@@ -9,10 +9,10 @@ const LogoRender = ({
 }) => {
   return (
     <img
-      src="/assets/logo4.png"
+      src="/assets/usb_p_logo.png"
       height={height}
       width={width}
-      alt="Dosshouse"
+      alt="Ultimate Scoreboard Picker"
       style={{ borderRadius }}
       className={className}
       onClick={onClick}

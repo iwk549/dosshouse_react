@@ -8,5 +8,5 @@ const titleMap = {
 
 export default function setPageTitle(pathname) {
   const mapName = pathname.split("/");
-  document.title = `dosshouse | ${titleMap[mapName[1]]}`;
+  document.title = `Picker | Ultimate Scoreboard | ${titleMap[mapName[1]]}`;
 }

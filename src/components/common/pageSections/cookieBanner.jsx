@@ -71,8 +71,8 @@ const CookieBanner = ({
       </h3>
       {renderAcceptButton()}
       {renderBreak()}
-      Dosshouse relies on minimal cookies to maintain your account and
-      administer our competitions.
+      Ultimate Scoreboard Picker relies on minimal cookies to maintain your
+      account and administer our competitions.
       <button
         className="btn btn-block btn-sm btn-info"
         onClick={() => setModalOpen(true)}
@@ -86,7 +86,7 @@ const CookieBanner = ({
       <BasicModal
         isOpen={modalOpen}
         onClose={setModalOpen}
-        header={<h3>Dosshouse Cookie Info</h3>}
+        header={<h3>Ultimate Scoreboard Picker Cookie Info</h3>}
       >
         Cookies stored include:
         <ul>

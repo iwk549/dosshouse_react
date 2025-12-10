@@ -14,7 +14,7 @@ export default [
   {
     header: "Tiebreakers",
     body: (
-      <>
+      <div>
         <p>
           If two or more submissions are tied on total points tiebreakers will
           be applied in the following order:
@@ -31,7 +31,7 @@ export default [
           <li>Most correct bonus picks made</li>
         </ol>
         <br />
-      </>
+      </div>
     ),
   },
   {
@@ -44,14 +44,20 @@ export default [
         <br />
         Some examples include:
         <br />
-        - Picking a champion that you did not pick to participate in the final
-        <br />
-        - Placing a team in the playoff bracket that you placed last in their
-        group
-        <br />
-        - Placing the same team on the playoff bracket in multiple spots in the
-        same round
-        <br />
+        <ul>
+          <li>
+            Picking a champion that you did not pick to participate in the final
+          </li>
+          <li>
+            Placing a team in the playoff bracket that you placed last in their
+            group
+          </li>
+
+          <li>
+            Placing the same team on the playoff bracket in multiple spots in
+            the same round
+          </li>
+        </ul>
         <br />
         If your bracket contains one of these or other similarly impossible
         scenarios then it is invalid.
