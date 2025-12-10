@@ -128,7 +128,7 @@ function App() {
         limit={3}
         icon={
           <img
-            src="assets/logo4.png"
+            src="assets/usb_p_logo.png"
             width={25}
             height={25}
             style={{ borderRadius: 5, border: "1px solid #831fe0" }}

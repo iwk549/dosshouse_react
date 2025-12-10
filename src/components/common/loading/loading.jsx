@@ -32,8 +32,7 @@ const Loading = ({ loading }) => {
       ariaHideApp={false}
     >
       <IconContext.Provider value={{ className: "loading-icon" }}>
-        <div className="text-center">
-          <h1 className="light-text">dosshouse</h1>
+        <div className="text-center" style={{ width: 200 }}>
           <LogoRender />
           <br />
           <br />

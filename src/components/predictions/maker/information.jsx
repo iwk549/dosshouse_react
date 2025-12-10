@@ -18,9 +18,7 @@ const Information = ({ competition }) => {
       return null;
     return (
       <React.Fragment key={idx}>
-        <li>
-          <b>{item.header}</b>
-        </li>
+        <b>{item.header}</b>
         {item.body}
       </React.Fragment>
     );
@@ -34,9 +32,7 @@ const Information = ({ competition }) => {
             <h3>
               <u>{titleCase(key)}</u>
             </h3>
-            <ul className="custom-unordered-list">
-              {lists[key].map((item, ii) => renderItem(item, ii))}
-            </ul>
+            {lists[key].map((item, ii) => renderItem(item, ii))}
           </div>
         )),
         <Scoring
