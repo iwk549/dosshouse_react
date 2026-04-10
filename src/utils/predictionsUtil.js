@@ -59,7 +59,7 @@ const handleReorder = (
   direction,
   groupName,
   state,
-  competition
+  competition,
 ) => {
   if (
     (selectedTeam.position === 0 && direction === "up") ||
@@ -100,7 +100,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
         let position = newMatch.getTeamsFrom[t].position;
         if (group.includes("groupMatrix") && competition?.groupMatrix?.length) {
           const groupMatrix = competition.groupMatrix.find(
-            (m) => m.key === group.split(".")[1]
+            (m) => m.key === group.split(".")[1],
           );
           const order = getGroupNameFromSpecialGroup(groups[groupMatrix.key])
             .slice(0, groupMatrix.teamsToIncludeInBracket)
@@ -142,7 +142,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
           if (!matchesPreviousRound) {
             newMatch[t + "TeamName"] = newPicks[pickIndex];
             newMatch[t + "TeamAbbreviation"] = getTeamAbbreviation(
-              newPicks[pickIndex]
+              newPicks[pickIndex],
             );
             newMatch[t + "TeamLogo"] =
               logos[findCountryLogo(newPicks[pickIndex])];
@@ -276,7 +276,7 @@ export const handlePopulateBracket = (
   playoffPredictions,
   playoffMatches,
   result,
-  isSecondChance
+  isSecondChance,
 ) => {
   let groups = {};
   groupPredictions.forEach((g) => {
@@ -295,7 +295,7 @@ export const handlePopulateBracket = (
   playoffPredictions.forEach((p) => {
     let playoffMatch = {
       ...playoffMatches.find(
-        (m) => (m.metadata?.matchNumber || m.matchNumber) === p.matchNumber
+        (m) => (m.metadata?.matchNumber || m.matchNumber) === p.matchNumber,
       ),
     };
     playoffMatch.homeTeamName = p.homeTeam;
@@ -336,7 +336,7 @@ const checkForCompletion = (
   playoffPredictions,
   misc,
   competition,
-  isSecondChance
+  isSecondChance,
 ) => {
   let missingItems = [];
   if (!misc.winner || misc.winner.toLowerCase().includes("winner"))
@@ -351,7 +351,7 @@ const checkForCompletion = (
     )
       missingItems.push({
         label: "Bracket",
-        text: `Match #${p.metadata?.matchNumbr || p.matchNumber} Missing Teams`,
+        text: `Match #${p.metadata?.matchNumber || p.matchNumber} Missing Teams`,
       });
   });
 
@@ -417,7 +417,7 @@ export function predictionReducer(state, action) {
     const populated = handlePopulateBracket(
       action.groups,
       action.playoffs,
-      action.playoffMatches
+      action.playoffMatches,
     );
     groups = populated.groups;
     playoffs = populated.playoffs;
@@ -434,7 +434,7 @@ export function predictionReducer(state, action) {
         action.droppedOn,
         action.groupName,
         state.groups,
-        competition
+        competition,
       );
     } else if (action.type === "reorder") {
       groups = handleReorder(
@@ -442,14 +442,14 @@ export function predictionReducer(state, action) {
         action.direction,
         action.groupName,
         state.groups,
-        competition
+        competition,
       );
     } else if (action.type === "winner") {
       const winners = handleUpdateBracketWinners(
         playoffMatches,
         action.match,
         action.winner,
-        misc
+        misc,
       );
       playoffs = winners.playoffs;
       playoffMatches = winners.playoffMatches;
@@ -463,7 +463,7 @@ export function predictionReducer(state, action) {
       groups,
       playoffMatches,
       misc,
-      competition
+      competition,
     );
     playoffMatches = updated.playoffMatches;
     playoffs = updated.playoffs;
@@ -473,7 +473,7 @@ export function predictionReducer(state, action) {
     playoffs,
     misc,
     competition,
-    state.isSecondChance
+    state.isSecondChance,
   );
   toast.clearWaitingQueue();
   return {
