@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-// import FormSelect from "../../common/form/select";
 import { getFinalRound } from "../../../utils/bracketsUtil";
 import logos from "../../../textMaps/logos";
 import { renderSelectLabel } from "../../../utils/rendering";
@@ -23,12 +22,12 @@ const Miscellaneous = ({
       return { value: t, label: renderSelectLabel(t, true) };
     });
   const final = playoffMatches.find(
-    (m) => m.round === getFinalRound(playoffMatches)
+    (m) => m.round === getFinalRound(playoffMatches),
   );
 
   const getThirdPlacePlayoff = () => {
     const semiFinals = playoffMatches.filter(
-      (m) => m.round === getFinalRound(playoffMatches) - 1
+      (m) => m.round === getFinalRound(playoffMatches) - 1,
     );
     if (semiFinals.length) {
       const thirdPlaceMatch = [];
@@ -40,7 +39,7 @@ const Miscellaneous = ({
         } else {
           ["home", "away"].forEach((t1) => {
             const semiFinal = semiFinals.find(
-              (m) => m[t1 + "TeamName"] === finalist
+              (m) => m[t1 + "TeamName"] === finalist,
             );
             if (semiFinal) {
               losingTeam =

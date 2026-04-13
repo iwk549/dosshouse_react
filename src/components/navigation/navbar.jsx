@@ -7,7 +7,6 @@ import LoadingContext from "../../context/loadingContext";
 import RegistrationModalForm from "../user/registrationModalForm";
 import LogoRender from "../common/image/logoRender";
 import NavDropDown from "./navDropDown";
-import SideBySideView from "../common/pageSections/sideBySideView";
 
 const Navbar = () => {
   let navigate = useNavigate();
@@ -30,29 +29,28 @@ const Navbar = () => {
 
   return (
     <IconContext.Provider value={{ className: "nav-icon" }}>
-      <div className="main-nav">
-        <SideBySideView
-          Components={[
-            <NavDropDown key={1} links={links} />,
-            <LogoRender
-              key={2}
-              className="clickable"
-              onClick={() => navigate("/")}
-            />,
-            <div key={3}>
-              <button
-                className={"btn btn-sm btn-" + (user ? "info" : "dark")}
-                onClick={() =>
-                  user ? navigate("/profile") : setRegisterFormOpen(true)
-                }
-              >
-                <IconRender type={user ? "profile" : "login"} size={12} />{" "}
-                {user ? "Profile" : "Login"}
-              </button>
-            </div>,
-          ]}
-        />
-      </div>
+      <nav className="main-nav">
+        <div className="nav-left">
+          <NavDropDown links={links} />
+        </div>
+        <div className="nav-center">
+          <LogoRender
+            className="clickable"
+            onClick={() => navigate("/")}
+          />
+        </div>
+        <div className="nav-right">
+          <button
+            className={"btn btn-sm btn-" + (user ? "info" : "dark")}
+            onClick={() =>
+              user ? navigate("/profile") : setRegisterFormOpen(true)
+            }
+          >
+            <IconRender type={user ? "profile" : "login"} size={12} />{" "}
+            {user ? "Profile" : "Login"}
+          </button>
+        </div>
+      </nav>
       <RegistrationModalForm
         header="Login or Register"
         isOpen={registerFormOpen}

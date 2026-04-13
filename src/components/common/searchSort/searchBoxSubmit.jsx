@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Input from "../form/input";
 import IconRender from "../icons/iconRender";
 
 const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
@@ -24,36 +23,34 @@ const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
   }, []);
 
   return (
-    <div style={{ position: "relative" }}>
+    <form
+      style={{ display: "flex", alignItems: "center", gap: 6, width: "calc(100% - 24px)", maxWidth: 600, margin: "0 auto" }}
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSearch(value);
+      }}
+    >
       {hasSearched && (
         <button
-          className="btn btn-light"
-          style={{ position: "absolute", left: -10, top: "30%" }}
+          type="button"
+          className="btn btn-light btn-sm"
           onClick={resetSearch}
         >
           <IconRender type="cancel" />
         </button>
       )}
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          onSearch(value);
-        }}
-      >
-        <Input
-          name={name}
-          placeholder={placeholder}
-          onChange={(event) => setValue(event.target.value)}
-          value={value}
-        />
-        <button
-          className="btn btn-dark"
-          style={{ position: "absolute", top: "30%", right: -10 }}
-        >
-          <IconRender type="search" />
-        </button>
-      </form>
-    </div>
+      <input
+        name={name}
+        placeholder={placeholder}
+        className="custom-input"
+        onChange={(event) => setValue(event.target.value)}
+        value={value}
+        style={{ flex: 1, width: "auto", marginBottom: 0 }}
+      />
+      <button type="submit" className="btn btn-dark btn-sm">
+        <IconRender type="search" />
+      </button>
+    </form>
   );
 };
 
