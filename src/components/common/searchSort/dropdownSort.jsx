@@ -10,22 +10,21 @@ const DropdownSort = ({ onSort, columns, sortColumn }) => {
   });
 
   return (
-    <div style={{ position: "relative" }}>
-      <div style={{ width: "90%" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 6, margin: "0 12px" }}>
+      <div style={{ flex: 1 }}>
         <FormSelect
           options={options}
           onChange={(option) => onSort(decideSortOrder(sortColumn, option))}
-          // label=""
           selectedOption={sortColumn.path}
         />
       </div>
-      <div
-        style={{ position: "absolute", right: 0, top: "30%" }}
-        className="clickable"
+      <button
+        type="button"
+        className="btn btn-dark btn-sm"
         onClick={() => onSort(decideSortOrder(sortColumn, sortColumn.path))}
       >
         <IconRender type={sortColumn.order === "asc" ? "up" : "down"} />
-      </div>
+      </button>
     </div>
   );
 };

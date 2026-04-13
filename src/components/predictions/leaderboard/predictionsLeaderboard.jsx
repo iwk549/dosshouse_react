@@ -18,6 +18,7 @@ import GroupInfo from "./groupInfo";
 import { getResult } from "../../../services/resultsService";
 import Confirm from "../../common/modal/confirm";
 import BonusPickInfo from "./bonusPickInfo";
+import IconRender from "../../common/icons/iconRender";
 
 const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   let navigate = useNavigate();
@@ -32,7 +33,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   const [predictionCount, setPredictionCount] = useState(0);
   const [page, setPage] = useState(1);
   const [resultsPerPage, setResultsPerPage] = useState(
-    groupID === "all" ? 25 : 100
+    groupID === "all" ? 25 : 100,
   );
   const [result, setResult] = useState(null);
   const [searched, setSearched] = useState(false);
@@ -43,7 +44,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   const loadLeaderboard = async (
     selectedPage,
     updatedResultsPerPage,
-    search
+    search,
   ) => {
     setLoading(true);
     let leaderboardRes;
@@ -53,7 +54,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         competitionID,
         groupID,
         search,
-        isSecondChance
+        isSecondChance,
       );
     } else {
       setSearched(false);
@@ -62,7 +63,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         selectedPage || page,
         updatedResultsPerPage || resultsPerPage,
         groupID,
-        isSecondChance
+        isSecondChance,
       );
     }
     if (leaderboardRes.status === 200) {
@@ -150,25 +151,27 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
       <br />
       <div className="standout-header">
         {competition.name}
-        {isSecondChance ? <small> - Second Chance</small> : null}
+        {isSecondChance && <div style={{ fontSize: "0.65em", fontWeight: "normal" }}>Second Chance</div>}
       </div>
       <GroupInfo
         groupInfo={groupInfo || { name: "Sitewide" }}
         setInviteOpen={setInviteOpen}
       />
       {competition.secondChance && (
-        <button
+        <span
           key="switch"
-          className="btn btn-info"
+          className="view-switch-link"
           onClick={() =>
             navigate(
               `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${groupID}&secondChance=${!isSecondChance}`,
-              { replace: true }
+              { replace: true },
             )
           }
         >
-          View {isSecondChance ? "Full" : "Second Chance"} Leaderboard
-        </button>
+          {isSecondChance && <IconRender type="left" size={13} />}
+          {" "}View {isSecondChance ? "Full" : "Second Chance"} Leaderboard{" "}
+          {!isSecondChance && <IconRender type="right" size={13} />}
+        </span>
       )}
       <LeaderboardTable
         leaderboard={leaderboard}
@@ -182,7 +185,9 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         isSecondChance={isSecondChance}
       />
       {leaderboard.length === 0 && (
-        <b>No submissions found{searched ? " using the search terms" : ""}.</b>
+        <div className="single-card text-center">
+          <b>No submissions found{searched ? " using the search terms" : ""}.</b>
+        </div>
       )}
       {!isSecondChance && (
         <BonusPickInfo

@@ -7,7 +7,7 @@ const GroupInfo = ({ groupInfo, setInviteOpen }) => {
 
   return (
     <div>
-      <div className="standout-header">{groupInfo?.name} Leaderboard</div>
+      <div className="standout-header sub">{groupInfo?.name} Leaderboard</div>
       <div style={{ float: "right" }}></div>
       {groupInfo?.ownerID?.name && (
         <div>

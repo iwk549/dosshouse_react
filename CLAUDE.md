@@ -82,6 +82,10 @@ npm run test:all     # All tests with coverage, no watch (CI mode)
 - All env vars use `REACT_APP_*` prefix (CRA requirement)
 - Firebase config lives in `public/index.html` (not in env vars)
 
+## Git
+
+- Do not add `Co-Authored-By` trailers to commit messages.
+
 ## Key Conventions
 
 - **Routing**: Query params drive sub-routing (`id`, `competitionID`, `groupID`, `tab`, `type`). `switchRouter.jsx` is the single route config; navigate with `useNavigate`, not `<Link>`.

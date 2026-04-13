@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IconContext } from "react-icons";
 import { NavLink } from "react-router-dom";
 import OutsideClickHandler from "react-outside-click-handler";
 
@@ -14,39 +13,31 @@ const NavDropDown = ({ links }) => {
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
-      <div>
-        <IconContext.Provider value={{ className: "nav-options" }}>
-          <IconRender type="nav" size={40} onClick={() => setIsOpen(!isOpen)} />
-        </IconContext.Provider>
+      <div className="nav-dropdown-wrapper">
+        <button
+          className={"nav-hamburger" + (isOpen ? " open" : "")}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Navigation menu"
+        >
+          <IconRender type="nav" size={22} />
+        </button>
         {isOpen && (
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                position: "absolute",
-                top: -20,
-                right: 20,
-                border: "1px solid #831fe0",
-                zIndex: 99,
-              }}
-              onClick={() => setIsOpen(false)}
-              className="main-nav"
-            >
-              {links.map((link, idx) => {
-                if (link.external)
-                  return (
-                    <a key={idx} href={link.to} style={{ color: "white" }}>
-                      <IconRender type={link.icon} /> {link.label}
-                    </a>
-                  );
+          <div className="nav-dropdown" onClick={() => setIsOpen(false)}>
+            {links.map((link, idx) => {
+              if (link.external)
                 return (
-                  <div key={idx} style={{ textAlign: "center" }}>
-                    <NavLink key={idx} to={link.to} className={getActiveLink}>
-                      <IconRender type={link.icon} /> {link.label}
-                    </NavLink>
-                  </div>
+                  <a key={idx} href={link.to} className="nav-link">
+                    <IconRender type={link.icon} size={16} />
+                    <span>{link.label}</span>
+                  </a>
                 );
-              })}
-            </div>
+              return (
+                <NavLink key={idx} to={link.to} className={getActiveLink}>
+                  <IconRender type={link.icon} size={16} />
+                  <span>{link.label}</span>
+                </NavLink>
+              );
+            })}
           </div>
         )}
       </div>

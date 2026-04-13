@@ -15,6 +15,7 @@ import Banner from "./components/common/pageSections/banner";
 import CookieBanner from "./components/common/pageSections/cookieBanner";
 import setPageTitle from "./textMaps/pageTitles";
 import DevBanner from "./components/common/dev/devBanner";
+import ErrorBoundary from "./components/common/errorBoundary";
 
 ReactGA.initialize("G-TJW8WX427W");
 
@@ -63,7 +64,7 @@ function App() {
           console.error(
             "Cannot remove a child from a different parent",
             child,
-            this
+            this,
           );
         }
         return child;
@@ -78,7 +79,7 @@ function App() {
           console.error(
             "Cannot insert before a reference node from a different parent",
             referenceNode,
-            this
+            this,
           );
         }
         return newNode;
@@ -88,54 +89,56 @@ function App() {
   }
 
   return (
-    <LoadingContext.Provider
-      value={{
-        loading,
-        setLoading: handleUpdateLoading,
-        user,
-        setUser: setCurrentUser,
-        cookiesAccepted,
-        setCookiesAccepted,
-      }}
-    >
-      <Loading loading={loading} />
-      <div className="App">
-        <DevBanner />
-        <Navbar />
-        <>
-          <CookieBanner />
-          <Banner
-            hide={false}
-            announcement="World Cup 2026 predictions are now live!!!"
-            onClick={() => {
-              navigate(
-                "/competitions?id=new&competitionID=6933533400d2c729449b2e0a"
-              );
-            }}
-            cookieName="worldCup2026"
-            showIfLoggedIn={true}
-          />
-          <SwitchRouter />
-          <PageBottom />
-        </>
-      </div>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        closeOnClick
-        pauseOnHover
-        pauseOnFocusLoss
-        limit={3}
-        icon={
-          <img
-            src="assets/usb_p_logo.png"
-            width={25}
-            height={25}
-            style={{ borderRadius: 5, border: "1px solid #831fe0" }}
-          />
-        }
-      />
-    </LoadingContext.Provider>
+    <ErrorBoundary>
+      <LoadingContext.Provider
+        value={{
+          loading,
+          setLoading: handleUpdateLoading,
+          user,
+          setUser: setCurrentUser,
+          cookiesAccepted,
+          setCookiesAccepted,
+        }}
+      >
+        <Loading loading={loading} />
+        <div className="App">
+          <DevBanner />
+          <Navbar />
+          <>
+            <CookieBanner />
+            <Banner
+              hide={false}
+              announcement="World Cup 2026 predictions are now live!!!"
+              onClick={() => {
+                navigate(
+                  "/competitions?id=new&competitionID=6933533400d2c729449b2e0a",
+                );
+              }}
+              cookieName="worldCup2026"
+              showIfLoggedIn={true}
+            />
+            <SwitchRouter />
+            <PageBottom />
+          </>
+        </div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={2000}
+          closeOnClick
+          pauseOnHover
+          pauseOnFocusLoss
+          limit={3}
+          icon={
+            <img
+              src="assets/usb_p_logo.png"
+              width={25}
+              height={25}
+              style={{ borderRadius: 5, border: "1px solid #831fe0" }}
+            />
+          }
+        />
+      </LoadingContext.Provider>
+    </ErrorBoundary>
   );
 }
 
