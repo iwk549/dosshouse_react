@@ -89,3 +89,38 @@
 .announcement {
   background-color: var(--minus10-light-bg-color);
 }
+.error-boundary-container {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--muted-bg-color);
+}
+.error-boundary-box {
+  max-width: 480px;
+  width: calc(100% - 2rem);
+  text-align: center;
+  padding: 2rem;
+}
+.error-boundary-logo {
+  border-radius: 8px;
+  border: 1px solid var(--secondary);
+  margin-bottom: 1rem;
+}
+.error-boundary-title {
+  color: var(--dark-text);
+  margin-top: 0;
+}
+.error-boundary-message {
+  color: var(--dark-grey);
+  margin-bottom: 1.5rem;
+}
+.error-boundary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
