@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../../common/pageSections/segmentedControl";
 
 import BasicModal from "../../common/modal/basicModal";
 import GroupPicker from "../maker/groupPicker";
@@ -53,7 +53,7 @@ const LeaderboardViewPredictionModal = ({
         prediction.playoffPredictions,
         originalMatches,
         result,
-        prediction.isSecondChance
+        prediction.isSecondChance,
       );
     setGroups(populatedGroups);
     setPlayoffMatches(populatedPlayoffMatches);
@@ -100,12 +100,12 @@ const LeaderboardViewPredictionModal = ({
       }}
     >
       {prediction.playoffPredictions ? (
-        <TabbedArea
-          tabs={tabs}
-          selectedTab={selectedTab}
-          onSelectTab={setSelectedTab}
-          tabPlacement="top"
-        >
+        <>
+          <SegmentedControl
+            tabs={tabs}
+            selectedTab={selectedTab}
+            onSelectTab={setSelectedTab}
+          />
           <div className="text-center">
             {isTab("group") ? (
               <GroupPicker
@@ -137,7 +137,7 @@ const LeaderboardViewPredictionModal = ({
               />
             ) : null}
           </div>
-        </TabbedArea>
+        </>
       ) : (
         <p className="text-center">
           You will be able to view all the picks once the submission deadline

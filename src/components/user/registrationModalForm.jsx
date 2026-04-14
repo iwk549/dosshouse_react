@@ -1,6 +1,6 @@
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../common/pageSections/segmentedControl";
 
 import Form from "../common/form/form";
 import BasicModal from "../common/modal/basicModal";
@@ -132,13 +132,12 @@ class RegistrationModalForm extends Form {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div id="googleBtn" />
           </div>
-          <TabbedArea
+          <SegmentedControl
             tabs={this.tabs}
             selectedTab={this.state.selectedTab}
             onSelectTab={this.setSelectedTab}
-            tabPlacement="top"
-          >
-            <div className="text-center">
+          />
+          <div className="text-center">
               <h3>
                 {this.props.reset
                   ? "Reset your Password"
@@ -180,7 +179,6 @@ class RegistrationModalForm extends Form {
                 )}
               </form>
             </div>
-          </TabbedArea>
         </BasicModal>
       </>
     );

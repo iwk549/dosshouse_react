@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../../common/pageSections/segmentedControl";
 
 import { splitName } from "../../../utils/allowables";
 import BracketPicker from "./bracketPicker";
@@ -58,7 +58,7 @@ const PredictionMaker = ({
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
   const [tabs, setTabs] = useState([""]);
   const [selectedTab, setSelectedTab] = useState(
-    isSecondChance ? "Bracket" : "Group"
+    isSecondChance ? "Bracket" : "Group",
   );
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
@@ -122,7 +122,7 @@ const PredictionMaker = ({
       if (competitionRes.data?.groupMatrix) {
         const rankingGroups = handleUpdateSpecialMatrices(
           competitionRes.data,
-          filtered.groups
+          filtered.groups,
         );
         Object.assign(filtered.groups, rankingGroups);
       }
@@ -225,7 +225,7 @@ const PredictionMaker = ({
         }&competitionID=${competitionID}&secondChance=${!!isSecondChance}`,
         {
           replace: true,
-        }
+        },
       );
       setLoading(false);
       return true;
@@ -317,46 +317,44 @@ const PredictionMaker = ({
         onClickMissingItem={handleClickMissingItem}
         isSecondChance={isSecondChance}
       />
-      <TabbedArea
+      <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}
         onSelectTab={setSelectedTab}
-        tabPlacement="top"
-      >
-        <div className="text-center">
-          {isTab("group") ? (
-            <GroupPicker
-              groups={predictions.groups}
-              onDrop={dispatchPredictions}
-              onReorder={dispatchPredictions}
-              isLocked={predictions.isLocked}
-              groupMatches={groupMatches}
-              competition={predictions.competition}
-            />
-          ) : isTab("bracket") ? (
-            <BracketPicker
-              matches={predictions.playoffMatches}
-              onSelectTeam={handleSelectBracketWinner}
-              isLocked={predictions.isLocked}
-              misc={predictions.misc}
-              isPortrait={bracketIsPortrait}
-              setIsPortrait={setBracketIsPortrait}
-              originalPlayoffMatches={originalPlayoffMatches}
-            />
-          ) : isTab("bonus") ? (
-            <Miscellaneous
-              onChange={handleChangeMiscValue}
-              misc={predictions.misc}
-              playoffMatches={predictions.playoffMatches}
-              competition={predictions.competition}
-              allTeams={allTeams}
-              isLocked={predictions.isLocked}
-            />
-          ) : isTab("info") ? (
-            <Information competition={predictions.competition} />
-          ) : null}
-        </div>
-      </TabbedArea>
+      />
+      <div className="content-box text-center">
+        {isTab("group") ? (
+          <GroupPicker
+            groups={predictions.groups}
+            onDrop={dispatchPredictions}
+            onReorder={dispatchPredictions}
+            isLocked={predictions.isLocked}
+            groupMatches={groupMatches}
+            competition={predictions.competition}
+          />
+        ) : isTab("bracket") ? (
+          <BracketPicker
+            matches={predictions.playoffMatches}
+            onSelectTeam={handleSelectBracketWinner}
+            isLocked={predictions.isLocked}
+            misc={predictions.misc}
+            isPortrait={bracketIsPortrait}
+            setIsPortrait={setBracketIsPortrait}
+            originalPlayoffMatches={originalPlayoffMatches}
+          />
+        ) : isTab("bonus") ? (
+          <Miscellaneous
+            onChange={handleChangeMiscValue}
+            misc={predictions.misc}
+            playoffMatches={predictions.playoffMatches}
+            competition={predictions.competition}
+            allTeams={allTeams}
+            isLocked={predictions.isLocked}
+          />
+        ) : isTab("info") ? (
+          <Information competition={predictions.competition} />
+        ) : null}
+      </div>
       <br />
       <div
         style={{

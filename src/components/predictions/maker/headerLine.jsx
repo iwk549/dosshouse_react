@@ -27,19 +27,14 @@ const HeaderLine = ({
 
   return (
     <>
-      <Input
-        name="bracketName"
-        label="Name this Submission"
-        value={predictionName}
-        onChange={(event) => setPredictionName(event.target.value)}
-        drillRef={nameInputRef}
-      />
-      <h1>
-        <b>
-          {competition?.name}
-          {isSecondChance ? <small> - Second Chance</small> : null}
-        </b>
-      </h1>
+      <div className="standout-header">
+        {competition.name}
+        {isSecondChance && (
+          <div style={{ fontSize: "0.65em", fontWeight: "normal" }}>
+            Second Chance
+          </div>
+        )}
+      </div>
       <div
         className={
           "row custom-alert " +
@@ -71,7 +66,14 @@ const HeaderLine = ({
             </button>
           </div>
         )}
-      </div>
+      </div>{" "}
+      <Input
+        name="bracketName"
+        label="Name this Submission"
+        value={predictionName}
+        onChange={(event) => setPredictionName(event.target.value)}
+        drillRef={nameInputRef}
+      />
       <div className="sticky-top">
         {isSaved ? (
           <button className="pop-box">

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../common/pageSections/segmentedControl";
 
 import ComingSoon from "../common/comingSoon";
 import PlaylistRecommendations from "./playlistRecommendations/playlistRecommendations";
@@ -18,18 +18,16 @@ const SpotifyMain = () => {
   return (
     <>
       <Header text="Spotify API" />
-      <TabbedArea
+      <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}
         onSelectTab={setSelectedTab}
-        tabPlacement="top"
-      >
-        {selectedTab === "playlist Recommendations" ? (
-          <PlaylistRecommendations />
-        ) : (
-          <ComingSoon />
-        )}
-      </TabbedArea>
+      />
+      {selectedTab === "playlist Recommendations" ? (
+        <PlaylistRecommendations />
+      ) : (
+        <ComingSoon />
+      )}
     </>
   );
 };
