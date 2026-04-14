@@ -4,6 +4,7 @@
 }
 .submit-button {
   margin-top: 15px;
+  min-width: 250px;
 }
 
 .btn {
@@ -19,6 +20,10 @@
   font-size: 14px;
 }
 .btn-md {
+  min-height: 30px;
+  font-size: 16px;
+}
+.btn-lg {
   min-height: 35px;
   font-size: 16px;
 }

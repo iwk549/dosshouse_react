@@ -116,6 +116,31 @@
 .competition-card-body {
   padding: 16px 20px;
 }
+.champion-display {
+  padding: 6px 0 14px;
+  text-align: center;
+}
+.champion-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+.submission-card-subtitle {
+  color: var(--light-text);
+  opacity: 0.75;
+  font-size: 13px;
+  margin-top: 4px;
+}
+.submission-card-header {
+  background: linear-gradient(
+    135deg,
+    var(--dark-bg-color) 0%,
+    var(--minus10-info-bg-color) 100%
+  );
+}
 .competition-card-footer {
   display: flex;
   gap: 20px;
@@ -214,6 +239,39 @@
   border-top: 1px solid var(--minus10-info-bg-color);
 }
 
+.groups-panel {
+  margin-top: 20px;
+  border-left: 4px solid var(--dark-bg-color);
+  border-radius: 6px;
+  background-color: var(--light-bg-color);
+  padding: 14px 16px;
+}
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.group-item {
+  background-color: var(--light-text);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.groups-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.groups-badge {
+  background-color: var(--dark-bg-color);
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
 .content-box {
   border-radius: 0 0 5px 5px;
   border-left: 1px solid var(--medium-grey);

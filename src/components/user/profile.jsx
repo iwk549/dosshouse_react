@@ -67,18 +67,20 @@ const Profile = () => {
   };
 
   return user ? (
-    <div>
+    <div className="competitions-container">
       <Header text="Profile" />
       <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}
         onSelectTab={setSelectedTab}
       />
-      {isTab("info") ? (
-        <MyInfo user={user} onEdit={handleEdit} />
-      ) : isTab("settings") ? (
-        <ProfileSettings onLogout={handleLogout} onDelete={handleDelete} />
-      ) : null}
+      <div className="content-box">
+        {isTab("info") ? (
+          <MyInfo user={user} onEdit={handleEdit} />
+        ) : isTab("settings") ? (
+          <ProfileSettings onLogout={handleLogout} onDelete={handleDelete} />
+        ) : null}
+      </div>
     </div>
   ) : (
     <RegistrationModalForm

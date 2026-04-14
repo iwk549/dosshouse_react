@@ -19,20 +19,20 @@ const renderWithProps = async (mocks = {}, props = {}, user = {}) => {
   getPredictions.mockReturnValue(
     apiResponse(
       mocks?.getPredictions?.data || [],
-      mocks.getPredictions?.status || 200
-    )
+      mocks.getPredictions?.status || 200,
+    ),
   );
   deletePrediction.mockReturnValue(
     apiResponse(
       mocks?.deletePrediction?.data || [],
-      mocks.deletePrediction?.status || 200
-    )
+      mocks.deletePrediction?.status || 200,
+    ),
   );
   removePredictionFromGroup.mockReturnValue(
     apiResponse(
       mocks?.removePredictionFromGroup?.data || null,
-      mocks.removePredictionFromGroup?.status || 200
-    )
+      mocks.removePredictionFromGroup?.status || 200,
+    ),
   );
 
   let mockReturns;
@@ -71,14 +71,14 @@ describe("SubmittedPredictions", () => {
         },
       });
 
-      await clickByText("Edit");
+      await clickByText("Edit Submission");
       expect(navMock).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledWith(
         "/submissions?id=" +
           prediction._id +
           "&competitionID=" +
           competition._id +
-          "&secondChance=false"
+          "&secondChance=false",
       );
     });
     it("should navigate to the leaderboard", async () => {
@@ -93,7 +93,7 @@ describe("SubmittedPredictions", () => {
       expect(navMock).toHaveBeenCalledWith(
         "/competitions?leaderboard=show&competitionID=" +
           competition._id +
-          "&groupID=all&secondChance=false"
+          "&groupID=all&secondChance=false",
       );
     });
     it("should not show the delete button if submission deadline has passed", async () => {
@@ -107,7 +107,7 @@ describe("SubmittedPredictions", () => {
           ],
         },
       });
-      expect(screen.queryByText("Delete")).not.toBeInTheDocument();
+      expect(screen.queryByText("Delete Submission")).not.toBeInTheDocument();
     });
     it("should delete the submission", async () => {
       await renderWithProps({
@@ -115,7 +115,7 @@ describe("SubmittedPredictions", () => {
           data: [{ ...prediction, competitionID: competition }],
         },
       });
-      await clickByText("Delete");
+      await clickByText("Delete Submission");
       await clickByText("OK");
       expect(deletePrediction).toHaveBeenCalledTimes(1);
       expect(deletePrediction).toHaveBeenCalledWith(prediction._id);

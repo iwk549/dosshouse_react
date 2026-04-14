@@ -28,7 +28,7 @@ const HeaderLine = ({
   return (
     <>
       <div className="standout-header">
-        {competition.name}
+        {competition?.name}
         {isSecondChance && (
           <div style={{ fontSize: "0.65em", fontWeight: "normal" }}>
             Second Chance
@@ -81,7 +81,7 @@ const HeaderLine = ({
           </button>
         ) : (
           <button
-            className="btn btn-md btn-block btn-dark submit-button sticky-top"
+            className="btn btn-lg btn-dark submit-button sticky-top"
             onClick={onSave}
           >
             <IconRender type="save" size={15} /> Save Prediction
