@@ -18,6 +18,7 @@ import TabbedArea from "react-tabbed-area";
 import { titleCase } from "../../../utils/allowables";
 import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
 import SearchBox from "../../common/searchSort/searchBox";
+import StatusNote from "../../common/pageSections/statusNote";
 
 const SubmittedPredictions = ({ paramTab, competitionID }) => {
   let navigate = useNavigate();
@@ -32,7 +33,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
   const [expiredSubmissions, setExpiredSubmissions] = useState([]);
   const tabs = ["Active", "Expired"];
   const [selectedTab, setSelectedTab] = useState(
-    titleCase(paramTab) || tabs[0]
+    titleCase(paramTab) || tabs[0],
   );
 
   const loadData = async () => {
@@ -47,7 +48,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
         .sort(
           (a, b) =>
             new Date(b.competitionID?.competitionStart) -
-            new Date(a.competitionID?.competitionStart)
+            new Date(a.competitionID?.competitionStart),
         )
         .forEach((pred) => {
           if (new Date(pred.competitionID?.competitionEnd) < new Date()) {
@@ -126,7 +127,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
     <>
       <Header text="Submissions" />
       {user ? (
-        <div>
+        <div className="competitions-container">
           <SearchBox
             value={searchQuery}
             onChange={setSearchQuery}
@@ -152,7 +153,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
                 </div>
               ))
             ) : (
-              <p>There are no submissions to display</p>
+              <StatusNote>There are no submissions to display</StatusNote>
             )}
           </TabbedArea>
           {selectedSubmission && (

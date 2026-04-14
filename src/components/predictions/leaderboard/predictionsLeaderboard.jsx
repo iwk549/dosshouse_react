@@ -140,7 +140,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   };
 
   return (
-    <div>
+    <div className="competitions-container">
       <button
         key="goback"
         className="btn btn-light"
