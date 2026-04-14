@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Header from "../../common/pageSections/header";
 import SegmentedControl from "../../common/pageSections/segmentedControl";
 import LoadingContext from "../../../context/loadingContext";
 import {
@@ -30,7 +29,7 @@ const PredictionsHome = ({
   const [predictions, setPredictions] = useState([]);
   const tabs = ["Active", "Expired"];
   const [selectedTab, setSelectedTab] = useState(
-    titleCase(paramTab) || tabs[0]
+    titleCase(paramTab) || tabs[0],
   );
   const [groupAddFromLinkOpen, setGroupAddFromLinkOpen] = useState(false);
 
@@ -54,8 +53,8 @@ const PredictionsHome = ({
         predictionsRes.data.sort(
           (a, b) =>
             new Date(b.competitionID?.competitionStart) -
-            new Date(a.competitionID?.competitionStart)
-        )
+            new Date(a.competitionID?.competitionStart),
+        ),
       );
 
     if (type === "groupLink") setGroupAddFromLinkOpen(true);
@@ -78,7 +77,7 @@ const PredictionsHome = ({
   const handleAddPredictionToGroup = async (prediction, competitionID) => {
     if (prediction._id === "new") {
       navigate(
-        `/submissions?id=new&competitionID=${competitionID}&groupName=${groupName}&groupPasscode=${groupPasscode}`
+        `/submissions?id=new&competitionID=${competitionID}&groupName=${groupName}&groupPasscode=${groupPasscode}`,
       );
     } else {
       setLoading(true);
@@ -90,7 +89,7 @@ const PredictionsHome = ({
         toast.success("Prediction added to group");
         setGroupAddFromLinkOpen(false);
         navigate(
-          `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${res.data}`
+          `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=${res.data}`,
         );
         return loadData();
       }
@@ -101,7 +100,7 @@ const PredictionsHome = ({
 
   return (
     <div>
-      <Header text="Competitions" />
+      <div className="standout-header">Competitions</div>
       <div className="competitions-container">
         <SegmentedControl
           tabs={tabs}
@@ -113,8 +112,8 @@ const PredictionsHome = ({
             isTab("active")
               ? activeCompetitions
               : isTab("expired")
-              ? expiredCompetitions
-              : []
+                ? expiredCompetitions
+                : []
           }
           predictions={predictions}
           expired={isTab("expired")}

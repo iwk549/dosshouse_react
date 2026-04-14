@@ -13,7 +13,6 @@ import {
   removePredictionFromGroup,
 } from "../../../services/predictionsService";
 import { toast } from "react-toastify";
-import Header from "../../common/pageSections/header";
 import SegmentedControl from "../../common/pageSections/segmentedControl";
 import { titleCase } from "../../../utils/allowables";
 import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
@@ -124,10 +123,15 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
   };
 
   return (
-    <>
-      <Header text="Submissions" />
+    <div className="competitions-container">
+      <div className="standout-header">Submissions</div>
       {user ? (
-        <div className="competitions-container">
+        <>
+          <SegmentedControl
+            tabs={tabs}
+            selectedTab={selectedTab}
+            onSelectTab={handleSelectTab}
+          />
           <SearchBox
             value={searchQuery}
             onChange={setSearchQuery}
@@ -181,10 +185,10 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
               </Confirm>
             </>
           )}
-        </div>
+        </>
       ) : (
-        <>
-          <p>Login to view your submissions</p>
+        <div className="content-box b-top">
+          <StatusNote>Login to view your submissions</StatusNote>
           <button
             className="btn btn-sm btn-dark"
             onClick={() => setRegisterFormOpen(true)}
@@ -201,9 +205,9 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
             }}
             selectedTab="login"
           />
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
