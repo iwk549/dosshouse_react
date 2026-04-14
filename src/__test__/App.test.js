@@ -27,7 +27,7 @@ const renderWithProps = async (user = null) => {
     render(
       <MemoryRouter>
         <App />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 };
@@ -40,9 +40,5 @@ describe("App", () => {
   it("should initialize at the competitions page", async () => {
     await renderWithProps();
     expect(screen.queryByText("Competitions")).toBeInTheDocument();
-  });
-  it("should render the cookie banner", async () => {
-    await renderWithProps();
-    expect(screen.queryByTestId("cookie_banner")).toBeInTheDocument();
   });
 });

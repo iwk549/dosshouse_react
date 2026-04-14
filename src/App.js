@@ -12,7 +12,6 @@ import LoadingContext from "./context/loadingContext";
 import Loading from "./components/common/loading/loading";
 import { getCurrentUser, refreshUser } from "./services/userService";
 import Banner from "./components/common/pageSections/banner";
-import CookieBanner from "./components/common/pageSections/cookieBanner";
 import setPageTitle from "./textMaps/pageTitles";
 import DevBanner from "./components/common/dev/devBanner";
 import ErrorBoundary from "./components/common/errorBoundary";
@@ -23,7 +22,6 @@ function App() {
   let navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [cookiesAccepted, setCookiesAccepted] = useState(false);
 
   const setCurrentUser = () => {
     setUser(getCurrentUser());
@@ -96,8 +94,6 @@ function App() {
           setLoading: handleUpdateLoading,
           user,
           setUser: setCurrentUser,
-          cookiesAccepted,
-          setCookiesAccepted,
         }}
       >
         <Loading loading={loading} />
@@ -105,7 +101,6 @@ function App() {
           <DevBanner />
           <Navbar />
           <>
-            <CookieBanner />
             <Banner
               hide={false}
               announcement="World Cup 2026 predictions are now live!!!"
