@@ -167,12 +167,12 @@
   border: 1px solid var(--dark-grey);
   padding-left: 5px;
   padding-right: 5px;
-  margin-bottom: 10px;
+  margin: 5px;
   width: 80%;
 }
 .custom-input:focus {
   background-color: var(--info-bg-color);
-  border: 1px solid var(--secondary);
+  border: 1px solid var(--main-bg-color);
   color: var(--dark-text);
 }
 .custom-input-label {
