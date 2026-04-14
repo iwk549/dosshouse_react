@@ -6,9 +6,9 @@
   --light-text: #f2f2f2;
   --dark-text: #1a1a1a;
   --main-background: #000;
-  --light-bg-color: #ccffd0;
-  --minus10-light-bg-color: #99ffa2;
-  --minus20-light-bg-color: #66ff73;
+  --light-bg-color: #d4e8d4;
+  --minus10-light-bg-color: #bddbbd;
+  --minus20-light-bg-color: #9cc99c;
   --dark-bg-color: #003304;
   --minus10-dark-bg-color: #006609;
   --minus20-dark-bg-color: #00990d;
@@ -35,17 +35,17 @@ body {
   overflow: auto;
   box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .clickable {

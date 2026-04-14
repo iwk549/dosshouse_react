@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../common/pageSections/segmentedControl";
 
 import LoadingContext from "../../context/loadingContext";
 import Header from "../common/pageSections/header";
@@ -67,20 +67,20 @@ const Profile = () => {
   };
 
   return user ? (
-    <div>
+    <div className="competitions-container">
       <Header text="Profile" />
-      <TabbedArea
+      <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}
         onSelectTab={setSelectedTab}
-        tabPlacement="top"
-      >
+      />
+      <div className="content-box">
         {isTab("info") ? (
           <MyInfo user={user} onEdit={handleEdit} />
         ) : isTab("settings") ? (
           <ProfileSettings onLogout={handleLogout} onDelete={handleDelete} />
         ) : null}
-      </TabbedArea>
+      </div>
     </div>
   ) : (
     <RegistrationModalForm

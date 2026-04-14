@@ -13,7 +13,7 @@ const Information = ({ competition }) => {
   const renderItem = (item, idx) => {
     if (
       item.header.toLowerCase().includes("group") &&
-      !competition.scoring.group
+      !competition?.scoring?.group
     )
       return null;
     return (

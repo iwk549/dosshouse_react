@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import TabbedArea from "react-tabbed-area";
-
 import Header from "../../common/pageSections/header";
+import SegmentedControl from "../../common/pageSections/segmentedControl";
 import LoadingContext from "../../../context/loadingContext";
 import {
   getActiveCompetitions,
@@ -104,24 +103,22 @@ const PredictionsHome = ({
     <div>
       <Header text="Competitions" />
       <div className="competitions-container">
-        <TabbedArea
+        <SegmentedControl
           tabs={tabs}
           selectedTab={selectedTab}
           onSelectTab={handleSelectTab}
-          tabPlacement="top"
-        >
-          <Competitions
-            competitions={
-              isTab("active")
-                ? activeCompetitions
-                : isTab("expired")
-                ? expiredCompetitions
-                : []
-            }
-            predictions={predictions}
-            expired={isTab("expired")}
-          />
-        </TabbedArea>
+        />
+        <Competitions
+          competitions={
+            isTab("active")
+              ? activeCompetitions
+              : isTab("expired")
+              ? expiredCompetitions
+              : []
+          }
+          predictions={predictions}
+          expired={isTab("expired")}
+        />
       </div>
       {groupName && (
         <GroupAddFromLinkModal

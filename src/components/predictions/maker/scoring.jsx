@@ -1,6 +1,7 @@
 import React from "react";
 
 const Scoring = ({ competition, renderItem }) => {
+  if (!competition.scoring) return null;
   const { perTeam, bonus } = competition.scoring.group;
   return (
     <>
@@ -59,8 +60,8 @@ const Scoring = ({ competition, renderItem }) => {
                   header: p.label,
                   body: <p>{p.points} points</p>,
                 },
-                ii
-              )
+                ii,
+              ),
             )
           )}
         </>

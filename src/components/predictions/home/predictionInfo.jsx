@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
-import { renderInfoLine } from "../../../utils/textUtils";
 import PredictionGroupList from "../groups/predictionGroupList";
 import SideBySideView from "../../common/pageSections/sideBySideView";
+import InfoLine from "../../common/pageSections/infoLine";
+import TextLink from "../../common/pageSections/textLink";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
-import Header from "../../common/pageSections/header";
 import ExternalImage from "../../common/image/externalImage";
 import logos from "../../../textMaps/logos";
 import cookies from "../../../services/cookieService";
@@ -24,17 +24,13 @@ const PredictionInfo = ({
   const renderInfo = (prediction) => {
     return (
       <div className="col">
-        <b>
-          {prediction.competitionID?.name}
-          {prediction.isSecondChance ? <small> - Second Chance</small> : null}
-        </b>
         {!isMobile && (
           <>
-            {renderInfoLine(
-              "Submissions Allowed",
-              prediction.competitionID?.maxSubmissions
-            )}
-            {renderInfoLine("Submissions Made", submissionsMade)}
+            <InfoLine
+              label="Submissions Allowed"
+              value={prediction.competitionID?.maxSubmissions}
+            />
+            <InfoLine label="Submissions Made" value={submissionsMade} />
           </>
         )}
       </div>
@@ -46,27 +42,24 @@ const PredictionInfo = ({
 
     return (
       <div className="col">
-        {renderInfoLine(
-          "Total Points",
-          totalPoints,
-          "",
-          "totalPoints",
-          isMobile
+        <InfoLine
+          label="Total Points"
+          value={totalPoints}
+          testId="totalPoints"
+        />
+        {potentialPoints && (
+          <InfoLine
+            label="Potential Points"
+            value={potentialPoints.realistic}
+            testId="potentialPoints"
+          />
         )}
-        {potentialPoints &&
-          renderInfoLine(
-            "Potential Points",
-            potentialPoints.realistic,
-            "",
-            "potentialPoints",
-            isMobile
-          )}
         {!isMobile && (
           <>
-            {renderInfoLine("Group", points.group?.points)}
-            {renderInfoLine("Bracket", points.playoff?.points)}
-            {renderInfoLine("Champion", points.champion?.points)}
-            {renderInfoLine("Miscellaneous", points.misc?.points)}
+            <InfoLine label="Group" value={points.group?.points} />
+            <InfoLine label="Bracket" value={points.playoff?.points} />
+            <InfoLine label="Champion" value={points.champion?.points} />
+            <InfoLine label="Miscellaneous" value={points.misc?.points} />
           </>
         )}
       </div>
@@ -77,50 +70,24 @@ const PredictionInfo = ({
     new Date(
       prediction.isSecondChance
         ? prediction.competitionID?.secondChance?.submissionDeadline
-        : prediction.competitionID?.submissionDeadline
+        : prediction.competitionID?.submissionDeadline,
     ) < new Date();
 
   return (
-    <div className="single-card light-bg" data-testid="prediction-info">
-      <Header text={prediction.name} secondary={true} />
-      <SideBySideView
-        Components={[
-          renderInfo(prediction),
-          renderPoints(
-            prediction.points,
-            prediction.totalPoints,
-            prediction.potentialPoints
-          ),
-          <>
-            {renderInfoLine(
-              "Champion",
-              prediction.misc?.winner,
-              "",
-              "champion",
-              isMobile
-            )}
-            <ExternalImage
-              uri={logos[findCountryLogo(prediction.misc?.winner)]}
-              width="auto"
-            />
-            <br />
-            {!isMobile && <div style={{ height: 25 }} />}
-            <button
-              className="btn btn-sm btn-dark"
-              onClick={() => {
-                cookies.addCookie(prediction.competitionID.code, true);
-                navigate(
-                  `/submissions?id=${prediction._id}&competitionID=${
-                    prediction.competitionID?._id
-                  }&secondChance=${!!prediction.isSecondChance}`
-                );
-              }}
-            >
-              {deadlinePassed ? "View" : "Edit"}
-            </button>
-            <div style={{ height: 10 }} />
-            {!deadlinePassed && (
-              <>
+    <div className="competition-card" data-testid="prediction-info">
+      <div className="competition-card-header submission-card-header">
+        <h2>{prediction.name}</h2>
+        <div className="submission-card-subtitle">
+          {prediction.competitionID?.name}
+          {prediction.isSecondChance ? " - Second Chance" : null}
+        </div>
+      </div>
+      <div className="competition-card-body">
+        <SideBySideView
+          Components={[
+            <>
+              {renderInfo(prediction)}
+              {!deadlinePassed && (
                 <button
                   className="btn btn-sm btn-danger"
                   onClick={() => {
@@ -129,46 +96,79 @@ const PredictionInfo = ({
                   }}
                   data-testid="delete-prediction-button"
                 >
-                  Delete
+                  Delete Submission
                 </button>
-                <div style={{ height: 10 }} />
-              </>
-            )}
-            <button
-              className="btn btn-info"
-              onClick={() =>
-                navigate(
-                  `/competitions?leaderboard=show&competitionID=${
-                    prediction.competitionID._id
-                  }&groupID=all&secondChance=${!!prediction.isSecondChance}`
-                )
-              }
-            >
-              View Sitewide Leaderboard
-            </button>
-            <div style={{ height: 10 }} />
-            {submissionsMade < prediction.competitionID?.maxSubmissions && (
+              )}
+            </>,
+            renderPoints(
+              prediction.points,
+              prediction.totalPoints,
+              prediction.potentialPoints,
+            ),
+            <>
+              {prediction.misc?.winner && (
+                <div className="champion-display">
+                  <div className="info-line-label">Champion Picked</div>
+                  <div className="champion-pick">
+                    <ExternalImage
+                      uri={logos[findCountryLogo(prediction.misc?.winner)]}
+                      width={30}
+                      height={20}
+                    />
+                    <span data-testid="champion">
+                      {prediction.misc?.winner}
+                    </span>
+                  </div>
+                </div>
+              )}
               <button
-                className="btn btn-dark"
-                onClick={() =>
+                className="btn btn-md btn-dark btn-block"
+                onClick={() => {
+                  cookies.addCookie(prediction.competitionID.code, true);
                   navigate(
-                    `/submissions?id=new&competitionID=${prediction.competitionID._id}`
-                  )
-                }
+                    `/submissions?id=${prediction._id}&competitionID=${
+                      prediction.competitionID?._id
+                    }&secondChance=${!!prediction.isSecondChance}`,
+                  );
+                }}
               >
-                Start Another Prediction
+                {deadlinePassed ? "View" : "Edit"} Submission
               </button>
-            )}
-          </>,
-        ]}
-      />
-      <div className="mini-div-line" />
-      <PredictionGroupList
-        prediction={prediction}
-        setSelectedSubmission={setSelectedSubmission}
-        setGroupFormOpen={setGroupFormOpen}
-        onRemoveGroup={(group) => onRemoveGroup(prediction, group)}
-      />
+              <div className="competition-card-footer">
+                <TextLink
+                  onClick={() =>
+                    navigate(
+                      `/competitions?leaderboard=show&competitionID=${
+                        prediction.competitionID._id
+                      }&groupID=all&secondChance=${!!prediction.isSecondChance}`,
+                    )
+                  }
+                >
+                  View Sitewide Leaderboard
+                </TextLink>
+              </div>
+              {submissionsMade < prediction.competitionID?.maxSubmissions && (
+                <button
+                  className="btn btn-dark"
+                  onClick={() =>
+                    navigate(
+                      `/submissions?id=new&competitionID=${prediction.competitionID._id}`,
+                    )
+                  }
+                >
+                  Start Another Prediction
+                </button>
+              )}
+            </>,
+          ]}
+        />
+        <PredictionGroupList
+          prediction={prediction}
+          setSelectedSubmission={setSelectedSubmission}
+          setGroupFormOpen={setGroupFormOpen}
+          onRemoveGroup={(group) => onRemoveGroup(prediction, group)}
+        />
+      </div>
     </div>
   );
 };

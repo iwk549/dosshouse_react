@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../../common/pageSections/segmentedControl";
 
 import BasicModal from "../../common/modal/basicModal";
 import LoadingContext from "../../../context/loadingContext";
@@ -115,13 +115,12 @@ class GroupModalForm extends Component {
           </>
         }
       >
-        <TabbedArea
+        <SegmentedControl
           tabs={this.tabs}
           selectedTab={this.state.selectedTab}
           onSelectTab={this.setSelectedTab}
-          tabPlacement="top"
-        >
-          <div className="text-center">
+        />
+        <div className="text-center">
             {this.isTab("manage") && this.state.groups.length === 0 ? (
               <p>You have not created any groups yet</p>
             ) : (
@@ -146,7 +145,6 @@ class GroupModalForm extends Component {
               />
             )}
           </div>
-        </TabbedArea>
       </BasicModal>
     );
   }

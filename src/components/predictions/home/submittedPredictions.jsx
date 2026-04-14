@@ -14,7 +14,7 @@ import {
 } from "../../../services/predictionsService";
 import { toast } from "react-toastify";
 import Header from "../../common/pageSections/header";
-import TabbedArea from "react-tabbed-area";
+import SegmentedControl from "../../common/pageSections/segmentedControl";
 import { titleCase } from "../../../utils/allowables";
 import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
 import SearchBox from "../../common/searchSort/searchBox";
@@ -133,29 +133,27 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
             onChange={setSearchQuery}
             placeholder="Search by competition or submission name..."
           />
-          <TabbedArea
+          <SegmentedControl
             tabs={tabs}
             selectedTab={selectedTab}
             onSelectTab={handleSelectTab}
-            tabPlacement="top"
-          >
-            {filterCompetitions().length ? (
-              filterCompetitions().map((p) => (
-                <div key={p._id}>
-                  <PredictionInfo
-                    prediction={p}
-                    onRemoveGroup={handleRemoveGroup}
-                    setSelectedSubmission={setSelectedSubmission}
-                    setConfirmDeleteOpen={setConfirmDeleteOpen}
-                    setGroupFormOpen={setGroupFormOpen}
-                    submissionsMade={submissionsCountObj[p.competitionID?._id]}
-                  />
-                </div>
-              ))
-            ) : (
-              <StatusNote>There are no submissions to display</StatusNote>
-            )}
-          </TabbedArea>
+          />
+          {filterCompetitions().length ? (
+            filterCompetitions().map((p) => (
+              <div key={p._id}>
+                <PredictionInfo
+                  prediction={p}
+                  onRemoveGroup={handleRemoveGroup}
+                  setSelectedSubmission={setSelectedSubmission}
+                  setConfirmDeleteOpen={setConfirmDeleteOpen}
+                  setGroupFormOpen={setGroupFormOpen}
+                  submissionsMade={submissionsCountObj[p.competitionID?._id]}
+                />
+              </div>
+            ))
+          ) : (
+            <StatusNote>There are no submissions to display</StatusNote>
+          )}
           {selectedSubmission && (
             <>
               <GroupModalForm

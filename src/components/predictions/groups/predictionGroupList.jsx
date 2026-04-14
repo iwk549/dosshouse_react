@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Confirm from "../../common/modal/confirm";
 import IconRender from "../../common/icons/iconRender";
-import SideBySideView from "../../common/pageSections/sideBySideView";
+import TextLink from "../../common/pageSections/textLink";
+import InfoLine from "../../common/pageSections/infoLine";
+import { getCurrentUser } from "../../../services/userService";
+import StatusNote from "../../common/pageSections/statusNote";
 
 const PredictionGroupList = ({
   prediction,
@@ -17,60 +20,69 @@ const PredictionGroupList = ({
 
   if (prediction.isSecondChance) return null;
 
+  const user = getCurrentUser();
+
   return (
-    <>
-      <SideBySideView
-        Components={[
-          <>
-            {prediction.groups?.map((g, idx) => (
-              <React.Fragment key={idx}>
-                <>
-                  Group Name: <b>{g.name}</b>
-                  <br />
-                  Group Owner: <b>{g.ownerID?.name}</b>
-                  <div className="row">
-                    <div style={{ gridColumn: 1 }}>
-                      <button
-                        className="btn btn-block btn-info"
-                        onClick={() =>
-                          navigate(
-                            `/competitions?leaderboard=show&competitionID=${prediction.competitionID?._id}&groupID=${g._id}`
-                          )
-                        }
-                      >
-                        View Group Leaderboard
-                      </button>
-                    </div>
-                    <div style={{ gridColumn: 2 }}>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => {
-                          setSelectedGroup(g);
-                          setRemoveGroupOpen(true);
-                        }}
-                      >
-                        <IconRender type="remove" size={15} />
-                      </button>
-                    </div>
-                  </div>
-                </>
-                <div className="mini-div-line" />
-              </React.Fragment>
-            ))}
-          </>,
-          <button
-            key="button"
-            className="btn btn-sm btn-dark"
-            onClick={() => {
-              setSelectedSubmission(prediction);
-              setGroupFormOpen(true);
-            }}
-            data-testid="manage-groups-button"
-          >
-            Manage Groups
-          </button>,
-        ]}
-      />
+    <div className="groups-panel">
+      <div className="groups-panel-header">
+        <span className="groups-badge">Groups</span>
+      </div>
+      <div className="groups-grid">
+        {!prediction.groups?.length && (
+          <StatusNote>You have not joined any groups</StatusNote>
+        )}
+        {prediction.groups?.map((g, idx) => {
+          const isOwner = user._id === g.ownerID._id;
+          return (
+            <div key={idx} className="group-item">
+              <InfoLine label="Group Name" value={g.name} />
+              <InfoLine
+                label="Group Owner"
+                value={
+                  <span title={isOwner ? "You own this group" : ""}>
+                    {g.ownerID?.name}
+                  </span>
+                }
+              />
+              <div
+                className="competition-card-footer"
+                style={{ justifyContent: "space-between" }}
+              >
+                <button
+                  title="Remove submission from group"
+                  className="btn btn-sm btn-danger"
+                  onClick={() => {
+                    setSelectedGroup(g);
+                    setRemoveGroupOpen(true);
+                  }}
+                >
+                  <IconRender type="remove" size={15} />
+                </button>
+                <TextLink
+                  onClick={() =>
+                    navigate(
+                      `/competitions?leaderboard=show&competitionID=${prediction.competitionID?._id}&groupID=${g._id}`,
+                    )
+                  }
+                >
+                  View Group Leaderboard
+                </TextLink>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <button
+        key="button"
+        className="btn btn-sm btn-dark"
+        onClick={() => {
+          setSelectedSubmission(prediction);
+          setGroupFormOpen(true);
+        }}
+        data-testid="manage-groups-button"
+      >
+        Manage Groups
+      </button>
       {selectedGroup && (
         <Confirm
           header="Confirm Remove Group"
@@ -86,7 +98,7 @@ const PredictionGroupList = ({
           You can add the group back at any time with the name and passcode.
         </Confirm>
       )}
-    </>
+    </div>
   );
 };
 
