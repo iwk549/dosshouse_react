@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-import { renderInfoLine } from "../../../utils/textUtils";
-import SideBySideView from "../../common/pageSections/sideBySideView";
-import useWindowDimensions from "../../../utils/useWindowDimensions";
 import cookies from "../../../services/cookieService";
 import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
+import StatusNote from "../../common/pageSections/statusNote";
+import TextLink from "../../common/pageSections/textLink";
+import InfoLine from "../../common/pageSections/infoLine";
 
 const Competitions = ({ competitions, predictions, expired }) => {
   let navigate = useNavigate();
-  const { isMobile } = useWindowDimensions();
 
   if (competitions.length === 0)
     return (
@@ -20,72 +19,70 @@ const Competitions = ({ competitions, predictions, expired }) => {
   let submissions = submissionsMadeByCompetition(predictions);
 
   return competitions.map((c) => {
+    const madeCount = submissions[c._id] || 0;
+    const deadlinePassed = new Date(c.submissionDeadline) < new Date();
+    const maxedOut = madeCount >= c.maxSubmissions;
+
     return (
-      <div className="single-card light-bg" key={c._id}>
-        <h2>{c.name}</h2>
-        <SideBySideView
-          Components={[
-            <div key="info">
-              {c.prize &&
-                renderInfoLine(
-                  "Prize",
-                  <a
-                    href={c.prize.link}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {c.prize.text}
-                  </a>,
-                  "text",
-                  "prize",
-                  isMobile
-                )}
-              {renderInfoLine(
-                "Submission Deadline",
-                c.submissionDeadline,
-                "date",
-                "deadline",
-                isMobile
+      <div className="competition-card" key={c._id}>
+        <div className="competition-card-header">
+          <h2>{c.name}</h2>
+        </div>
+
+        <div className="competition-card-body">
+          <div className="competition-columns">
+            <div>
+              {c.prize && (
+                <InfoLine
+                  label="Prize"
+                  value={
+                    <a
+                      href={c.prize.link}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {c.prize.text}
+                    </a>
+                  }
+                />
               )}
-              {renderInfoLine(
-                "Submissions Allowed",
-                c.maxSubmissions,
-                "",
-                "allowed",
-                isMobile
-              )}
-              {renderInfoLine(
-                "Submissions Made",
-                submissions[c._id] || 0,
-                "",
-                "made",
-                isMobile
-              )}
-              {renderInfoLine(
-                "Competition Start",
-                c.competitionStart,
-                "date",
-                "start",
-                isMobile
-              )}
-              {renderInfoLine(
-                "Competition End",
-                c.competitionEnd,
-                "date",
-                "end",
-                isMobile
-              )}
-            </div>,
-            <div key="buttons">
+              <InfoLine
+                label="Submission Deadline"
+                value={c.submissionDeadline}
+                type="date"
+                testId="deadline"
+              />
+              <InfoLine
+                label="Submissions Allowed"
+                value={c.maxSubmissions}
+                testId="allowed"
+              />
+              <InfoLine
+                label="Submissions Made"
+                value={madeCount}
+                testId="made"
+              />
+              <InfoLine
+                label="Competition Start"
+                value={c.competitionStart}
+                type="date"
+                testId="start"
+              />
+              <InfoLine
+                label="Competition End"
+                value={c.competitionEnd}
+                type="date"
+                testId="end"
+              />
+            </div>
+            <div className="competition-buttons">
               {!expired && (
                 <>
-                  {new Date(c.submissionDeadline) < new Date() ? (
-                    <p>
-                      The submission deadline for this competition has passed
-                    </p>
-                  ) : (submissions[c._id] || 0) < c.maxSubmissions ? (
+                  {deadlinePassed ? (
+                    <StatusNote>Submission deadline has passed</StatusNote>
+                  ) : !maxedOut ? (
                     <button
-                      className="btn btn-dark"
+                      className="btn btn-dark btn-block"
                       onClick={() => {
                         cookies.addCookie(c.code, true);
                         navigate(`/submissions?id=new&competitionID=${c._id}`);
@@ -94,123 +91,109 @@ const Competitions = ({ competitions, predictions, expired }) => {
                       Start New Submission
                     </button>
                   ) : (
-                    <p>
-                      You have already made the maximum amount of submissions
-                      for this competition.
-                    </p>
+                    <StatusNote>Maximum submissions reached</StatusNote>
                   )}
                 </>
               )}
-              <div style={{ height: 25 }} />
-              {submissions[c._id] && (
-                <button
-                  className="btn btn-light"
-                  onClick={() =>
-                    navigate(`/submissions?competitionID=${c._id}`)
-                  }
-                >
-                  View Submissions
-                </button>
-              )}
-              <div style={{ height: 25 }} />
-              <button
-                className="btn btn-info"
+            </div>
+          </div>
+
+          <div className="competition-card-footer">
+            {submissions[c._id] && (
+              <TextLink
                 onClick={() =>
-                  navigate(
-                    `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`
-                  )
+                  navigate(`/submissions?competitionID=${c._id}`)
                 }
               >
-                View Leaderboard
-              </button>
-            </div>,
-          ]}
-        />
-        {c.secondChance && (
-          <div>
-            <hr />
-            <h3>Second Chance</h3>
-            {new Date(c.secondChance.availableFrom) > new Date() && (
-              <p>
-                The second chance competition will become available after all
-                group matches have been completed.
-              </p>
+                View Submissions
+              </TextLink>
             )}
-            <SideBySideView
-              Components={[
-                <div key="secondChance.info">
-                  {renderInfoLine(
-                    "Available From",
-                    c.secondChance.availableFrom,
-                    "date",
-                    "secondChance.available",
-                    isMobile
-                  )}
-                  {renderInfoLine(
-                    "Submission Deadline",
-                    c.secondChance.submissionDeadline,
-                    "date",
-                    "secondChance.deadline",
-                    isMobile
-                  )}
-                  {renderInfoLine(
-                    "Competition Start",
-                    c.secondChance.competitionStart,
-                    "date",
-                    "secondChance.start",
-                    isMobile
-                  )}
-                </div>,
-                <div key="buttons">
+            <TextLink
+              onClick={() =>
+                navigate(
+                  `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`
+                )
+              }
+            >
+              View Leaderboard
+            </TextLink>
+          </div>
+
+          {c.secondChance && (
+            <div className="second-chance-panel">
+              <div className="second-chance-header">
+                <span className="second-chance-badge">Second Chance</span>
+                {new Date(c.secondChance.availableFrom) > new Date() && (
+                  <span className="second-chance-note">
+                    Available after all group matches are completed.
+                  </span>
+                )}
+              </div>
+
+              <div className="competition-columns">
+                <div>
+                  <InfoLine
+                    label="Available From"
+                    value={c.secondChance.availableFrom}
+                    type="date"
+                  />
+                  <InfoLine
+                    label="Submission Deadline"
+                    value={c.secondChance.submissionDeadline}
+                    type="date"
+                  />
+                  <InfoLine
+                    label="Competition Start"
+                    value={c.secondChance.competitionStart}
+                    type="date"
+                  />
+                </div>
+                <div className="competition-buttons">
                   {!expired && (
                     <>
                       {new Date(c.secondChance.submissionDeadline) <
                       new Date() ? (
-                        <p>
-                          The submission deadline for the second chance
-                          competition has passed
-                        </p>
+                        <StatusNote>
+                          Second chance deadline has passed
+                        </StatusNote>
                       ) : new Date(c.secondChance.availableFrom) >
                         new Date() ? (
-                        <p>The second chance competition is not ready yet</p>
+                        <StatusNote>Not available yet</StatusNote>
                       ) : (submissions[c._id + "_sc"] || 0) <
                         (c.secondChance.maxSubmissions || c.maxSubmissions) ? (
-                        <div style={{ marginBottom: 25 }}>
-                          <button
-                            className="btn btn-dark"
-                            onClick={() => {
-                              cookies.addCookie(c.code, true);
-                              navigate(
-                                `/submissions?id=new&competitionID=${c._id}&secondChance=true`
-                              );
-                            }}
-                          >
-                            Start New Second Chance Submission
-                          </button>
-                        </div>
+                        <button
+                          className="btn btn-dark btn-block"
+                          onClick={() => {
+                            cookies.addCookie(c.code, true);
+                            navigate(
+                              `/submissions?id=new&competitionID=${c._id}&secondChance=true`
+                            );
+                          }}
+                        >
+                          Start Second Chance Submission
+                        </button>
                       ) : (
-                        <p>
-                          You have already made the maximum amount of
-                          submissions for this competition.
-                        </p>
+                        <StatusNote>Maximum submissions reached</StatusNote>
                       )}
                     </>
                   )}
-                  <button
-                    className="btn btn-info"
-                    onClick={() =>
-                      navigate(
-                        `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all&secondChance=true`
-                      )
-                    }
-                  >
-                    View Second Chance Leaderboard
-                  </button>
-                </div>,
-              ]}
-            />
-          </div>
-        )}
+                </div>
+              </div>
+
+              <div className="second-chance-footer">
+                <TextLink
+                  onClick={() =>
+                    navigate(
+                      `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all&secondChance=true`
+                    )
+                  }
+                >
+                  View Second Chance Leaderboard
+                </TextLink>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   });

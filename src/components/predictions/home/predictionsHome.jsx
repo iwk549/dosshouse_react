@@ -103,24 +103,26 @@ const PredictionsHome = ({
   return (
     <div>
       <Header text="Competitions" />
-      <TabbedArea
-        tabs={tabs}
-        selectedTab={selectedTab}
-        onSelectTab={handleSelectTab}
-        tabPlacement="top"
-      >
-        <Competitions
-          competitions={
-            isTab("active")
-              ? activeCompetitions
-              : isTab("expired")
-              ? expiredCompetitions
-              : []
-          }
-          predictions={predictions}
-          expired={isTab("expired")}
-        />
-      </TabbedArea>
+      <div className="competitions-container">
+        <TabbedArea
+          tabs={tabs}
+          selectedTab={selectedTab}
+          onSelectTab={handleSelectTab}
+          tabPlacement="top"
+        >
+          <Competitions
+            competitions={
+              isTab("active")
+                ? activeCompetitions
+                : isTab("expired")
+                ? expiredCompetitions
+                : []
+            }
+            predictions={predictions}
+            expired={isTab("expired")}
+          />
+        </TabbedArea>
+      </div>
       {groupName && (
         <GroupAddFromLinkModal
           isOpen={groupAddFromLinkOpen}
