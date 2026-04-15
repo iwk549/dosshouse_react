@@ -123,7 +123,7 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
   };
 
   return (
-    <div className="competitions-container">
+    <div className="page-container">
       <div className="standout-header">Submissions</div>
       {user ? (
         <>

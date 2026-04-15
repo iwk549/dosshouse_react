@@ -15,6 +15,7 @@ const Navbar = () => {
 
   const links = [
     // { to: "/home", icon: "home", label: "Home" },
+    ...(user ? [{ to: "/profile", icon: "profile", label: "Profile" }] : []),
     { to: "/competitions", icon: "prediction", label: "Competitions" },
     { to: "/submissions", icon: "submission", label: "Submissions" },
     {
@@ -40,15 +41,14 @@ const Navbar = () => {
           />
         </div>
         <div className="nav-right">
-          <button
-            className={"btn btn-sm btn-" + (user ? "info" : "dark")}
-            onClick={() =>
-              user ? navigate("/profile") : setRegisterFormOpen(true)
-            }
-          >
-            <IconRender type={user ? "profile" : "login"} size={12} />{" "}
-            {user ? "Profile" : "Login"}
-          </button>
+          {!user && (
+            <button
+              className="btn btn-sm btn-dark"
+              onClick={() => setRegisterFormOpen(true)}
+            >
+              <IconRender type="login" size={12} /> Login
+            </button>
+          )}
         </div>
       </nav>
       <RegistrationModalForm

@@ -101,7 +101,7 @@ const PredictionsHome = ({
   return (
     <div>
       <div className="standout-header">Competitions</div>
-      <div className="competitions-container">
+      <div className="page-container">
         <SegmentedControl
           tabs={tabs}
           selectedTab={selectedTab}

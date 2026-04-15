@@ -7,18 +7,20 @@ const ProfileSettings = ({ onLogout, onDelete }) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
-    <div>
-      <br />
-      <button className="btn btn-dark" onClick={() => setLogoutOpen(true)}>
-        Logout
-      </button>
-      <br />
-      <br />
-      <br />
-      <br />
-      <button className="btn btn-danger" onClick={() => setDeleteOpen(true)}>
-        Delete My Account
-      </button>
+    <div className="profile-settings">
+      <div>
+        <button className="btn btn-dark" onClick={() => setLogoutOpen(true)}>
+          Logout
+        </button>
+      </div>
+      <div className="danger-zone">
+        <div className="danger-zone-header">
+          Danger Zone
+        </div>
+        <button className="btn btn-danger" onClick={() => setDeleteOpen(true)}>
+          Delete My Account
+        </button>
+      </div>
 
       <Confirm
         header="Logout"

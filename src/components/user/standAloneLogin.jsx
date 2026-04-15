@@ -13,7 +13,7 @@ const StandAloneLogin = () => {
 
   useEffect(() => {
     setLoading(false);
-  });
+  }, []);
 
   const handleResetSuccess = () => {
     navigate("/home");

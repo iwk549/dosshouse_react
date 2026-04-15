@@ -91,7 +91,7 @@
   background-color: var(--minus10-light-bg-color);
 }
 /* Competition cards */
-.competitions-container {
+.page-container {
   max-width: 900px;
   margin: 0 auto;
 }
@@ -354,6 +354,23 @@
   cursor: default;
 }
 
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+}
+.danger-zone {
+  border-left: 4px solid var(--danger-bg-color);
+  border-radius: 6px;
+  background-color: #fff5f5;
+  padding: 14px 16px;
+}
+.danger-zone-header {
+  font-weight: bold;
+  color: var(--danger-bg-color);
+  margin-bottom: 10px;
+}
 .error-boundary-container {
   min-height: 100vh;
   box-sizing: border-box;

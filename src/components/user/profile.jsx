@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SegmentedControl from "../common/pageSections/segmentedControl";
 
@@ -51,7 +51,7 @@ const Profile = () => {
     logout();
     toast.info("Logged out");
     setUser();
-    window.location = "/home";
+    window.location = "home";
   };
 
   const handleDelete = async () => {
@@ -60,13 +60,13 @@ const Profile = () => {
     if (res.status === 200) {
       toast.info("Account deleted");
       setUser();
-      navigate("/home");
+      window.location = "home";
     } else toast.error(res.data);
     setLoading(false);
   };
 
   return user ? (
-    <div className="competitions-container">
+    <div className="page-container">
       <div className="standout-header">Profile</div>
       <SegmentedControl
         tabs={tabs}
@@ -85,7 +85,10 @@ const Profile = () => {
     <RegistrationModalForm
       header="Login or Register"
       isOpen={registerFormOpen}
-      setIsOpen={setRegisterFormOpen}
+      setIsOpen={() => {
+        setRegisterFormOpen(false);
+        navigate("/home");
+      }}
       onSuccess={() => {
         setRegisterFormOpen(false);
         setUser();

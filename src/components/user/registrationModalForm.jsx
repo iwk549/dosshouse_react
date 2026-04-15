@@ -76,12 +76,12 @@ class RegistrationModalForm extends Form {
       res = await updatePassword(
         this.props.reset.token,
         this.state.data.email,
-        this.state.data.password
+        this.state.data.password,
       );
     if (res?.status === 200) {
       this.context.setUser();
       toast.success(
-        type === "register" ? "Registration Successful" : "Logged In"
+        type === "register" ? "Registration Successful" : "Logged In",
       );
       return this.props.onSuccess();
     } else toast.error(res?.data);
@@ -121,12 +121,7 @@ class RegistrationModalForm extends Form {
           header={
             this.props.header ? (
               <h4 className="text-center">{this.props.header}</h4>
-            ) : (
-              <>
-                <br />
-                <br />
-              </>
-            )
+            ) : null
           }
         >
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -138,47 +133,40 @@ class RegistrationModalForm extends Form {
             onSelectTab={this.setSelectedTab}
           />
           <div className="text-center">
-              <h3>
-                {this.props.reset
-                  ? "Reset your Password"
-                  : this.state.selectedTab === "Register"
-                  ? "Register for a New Account"
-                  : "Login to your Account"}
-              </h3>
-              <form onSubmit={this.handleSubmit}>
-                {this.state.selectedTab === "Register"
-                  ? this.renderInput("name", "Name", "autofocus")
-                  : null}
-                {this.renderInput(
-                  "email",
-                  "Email",
-                  this.state.selectedTab === "Login"
-                )}
-                {this.renderInput(
-                  "password",
-                  "Password",
-                  this.state.reset ? "autofocus" : "",
-                  "password"
-                )}
-                {this.renderValidatedButton(titleCase(this.state.selectedTab))}
-                <br />
-                <br />
-                {this.state.selectedTab === "Login" && (
-                  <>
-                    <p>
-                      Enter your email address and click the button below to
-                      request a password reset
-                    </p>
-                    <button
-                      className="btn btn-block btn-info"
-                      onClick={this.handleResetRequest}
-                    >
-                      Forgot Password?
-                    </button>
-                  </>
-                )}
-              </form>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+              {this.state.selectedTab === "Register"
+                ? this.renderInput("name", "Name", "autofocus")
+                : null}
+              {this.renderInput(
+                "email",
+                "Email",
+                this.state.selectedTab === "Login",
+              )}
+              {this.renderInput(
+                "password",
+                "Password",
+                this.state.reset ? "autofocus" : "",
+                "password",
+              )}
+              {this.renderValidatedButton(titleCase(this.state.selectedTab))}
+              <br />
+              <br />
+              {this.state.selectedTab === "Login" && (
+                <>
+                  <p>
+                    Enter your email address and click the button below to
+                    request a password reset
+                  </p>
+                  <button
+                    className="btn btn-block btn-info"
+                    onClick={this.handleResetRequest}
+                  >
+                    Forgot Password?
+                  </button>
+                </>
+              )}
+            </form>
+          </div>
         </BasicModal>
       </>
     );
