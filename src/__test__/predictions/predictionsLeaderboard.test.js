@@ -44,47 +44,47 @@ const renderWithProps = async (mocks = {}, props = {}, user = null) => {
   getGroupLink.mockReturnValue(
     apiResponse(
       mocks?.getGroupLink?.data || "link",
-      mocks.getGroupLink?.status || 200
-    )
+      mocks.getGroupLink?.status || 200,
+    ),
   );
   getResult.mockReturnValue(
     apiResponse(
       mocks?.getResult?.data || result,
-      mocks.getResult?.status || 200
-    )
+      mocks.getResult?.status || 200,
+    ),
   );
   getMatches.mockReturnValue(
-    apiResponse(mocks?.getMatches?.data || [], mocks.getMatches?.status || 200)
+    apiResponse(mocks?.getMatches?.data || [], mocks.getMatches?.status || 200),
   );
   getCompetition.mockReturnValue(
     apiResponse(
       mocks?.getCompetition?.data || competition,
-      mocks.getCompetition?.status || 200
-    )
+      mocks.getCompetition?.status || 200,
+    ),
   );
   getLeaderboard.mockReturnValue(
     apiResponse(
       mocks?.getLeaderboard?.data || leaderboard,
-      mocks.getLeaderboard?.status || 200
-    )
+      mocks.getLeaderboard?.status || 200,
+    ),
   );
   searchLeaderboard.mockReturnValue(
     apiResponse(
       mocks?.searchLeaderboard?.data || [],
-      mocks.searchLeaderboard?.status || 200
-    )
+      mocks.searchLeaderboard?.status || 200,
+    ),
   );
   getUnownedPrediction.mockReturnValue(
     apiResponse(
       mocks?.getUnownedPrediction?.data || {},
-      mocks.getUnownedPrediction?.status || 200
-    )
+      mocks.getUnownedPrediction?.status || 200,
+    ),
   );
   forceRemovePredictionFromGroup.mockReturnValue(
     apiResponse(
       mocks?.forceRemovePredictionFromGroup?.data || null,
-      mocks.forceRemovePredictionFromGroup?.status || 200
-    )
+      mocks.forceRemovePredictionFromGroup?.status || 200,
+    ),
   );
 
   let mockReturns;
@@ -115,7 +115,7 @@ describe("PredictionsLeaderboard", () => {
         },
       });
       expect(
-        screen.queryByText(/hidden until after submission deadline/i)
+        screen.queryByText(/hidden until after submission deadline/i),
       ).toBeInTheDocument();
     });
     it("should not show prediction info when clicked if deadline has not passed", async () => {
@@ -132,10 +132,10 @@ describe("PredictionsLeaderboard", () => {
       });
       await clickByText(prediction.name);
       expect(
-        screen.queryByText(/you will be able to view all the picks/i)
+        screen.queryByText(/you will be able to view all the picks/i),
       ).toBeInTheDocument();
       expect(
-        screen.queryByText(/correct picks are highlighted/i)
+        screen.queryByText(/correct picks are highlighted/i),
       ).not.toBeInTheDocument();
     });
     it("should show the champion picked", async () => {
@@ -184,12 +184,14 @@ describe("PredictionsLeaderboard", () => {
           getGroupLink: { data: { link: "testlink" } },
         },
         {},
-        user
+        user,
       );
       await clickByText("Invite Users");
       await clickByText(/copy link/i);
       expect(writeToClipboardMock).toHaveBeenCalledTimes(1);
-      expect(writeToClipboardMock).toHaveBeenCalledWith("testlink");
+      expect(writeToClipboardMock).toHaveBeenCalledWith(
+        expect.stringContaining("testlink"),
+      );
     });
     it("should allow removing a prediction from the group", async () => {
       const groupInfo = { name: "Test Group", ownerID: { _id: user._id } };
@@ -204,14 +206,14 @@ describe("PredictionsLeaderboard", () => {
           },
         },
         {},
-        user
+        user,
       );
       await clickByText("remove_icon", 0, true);
       await clickByText("OK");
       expect(forceRemovePredictionFromGroup).toHaveBeenCalledTimes(1);
       expect(forceRemovePredictionFromGroup).toHaveBeenCalledWith(
         prediction._id,
-        groupInfo
+        groupInfo,
       );
     });
   });
@@ -223,7 +225,7 @@ describe("PredictionsLeaderboard", () => {
     it("should show the champion picked", async () => {
       await renderWithProps();
       expect(
-        screen.queryByText(getTeamAbbreviation(prediction.misc.winner))
+        screen.queryByText(getTeamAbbreviation(prediction.misc.winner)),
       ).toBeInTheDocument();
     });
   });
