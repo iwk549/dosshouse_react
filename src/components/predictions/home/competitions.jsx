@@ -11,9 +11,9 @@ const Competitions = ({ competitions, predictions, expired }) => {
 
   if (competitions.length === 0)
     return (
-      <p>
+      <StatusNote>
         There are {expired ? "no expired" : "currently no active"} competitions.
-      </p>
+      </StatusNote>
     );
 
   let submissions = submissionsMadeByCompetition(predictions);
@@ -25,7 +25,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
 
     return (
       <div className="competition-card" key={c._id}>
-        <div className="competition-card-header">
+        <div className={`competition-card-header${expired ? " expired" : ""}`}>
           <h2>{c.name}</h2>
         </div>
 
@@ -101,9 +101,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
           <div className="competition-card-footer">
             {submissions[c._id] && (
               <TextLink
-                onClick={() =>
-                  navigate(`/submissions?competitionID=${c._id}`)
-                }
+                onClick={() => navigate(`/submissions?competitionID=${c._id}`)}
               >
                 View Submissions
               </TextLink>
@@ -111,7 +109,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
             <TextLink
               onClick={() =>
                 navigate(
-                  `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`
+                  `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`,
                 )
               }
             >
@@ -166,7 +164,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
                           onClick={() => {
                             cookies.addCookie(c.code, true);
                             navigate(
-                              `/submissions?id=new&competitionID=${c._id}&secondChance=true`
+                              `/submissions?id=new&competitionID=${c._id}&secondChance=true`,
                             );
                           }}
                         >
@@ -184,7 +182,7 @@ const Competitions = ({ competitions, predictions, expired }) => {
                 <TextLink
                   onClick={() =>
                     navigate(
-                      `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all&secondChance=true`
+                      `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all&secondChance=true`,
                     )
                   }
                 >

@@ -56,17 +56,14 @@ const DroppableTeamArea = ({
   };
 
   return (
-    <div>
-      <h3 className="text-center">
-        <b>{groupHeader}</b>
-        {description && (
-          <>
-            <br />
-            <small style={{ fontWeight: "normal" }}>{description}</small>
-          </>
-        )}
-      </h3>
+    <div style={{ marginTop: 10 }}>
       <div className="draggable-table-container">
+        <div className="group-picker-header">
+          <span>{groupHeader}</span>
+          {description && (
+            <div className="group-picker-header-description">{description}</div>
+          )}
+        </div>
         <DraggableTable
           data={teams}
           columns={columns}

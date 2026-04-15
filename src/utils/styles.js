@@ -2,7 +2,6 @@ const borderShadow = "#dd99ff";
 
 const commonModalStyles = {
   backgroundColor: "#f2f2f2",
-  // border: `1px solid ${borderShadow}`,
   top: "50%",
   left: "50%",
   right: "auto",
@@ -17,6 +16,7 @@ export const modalStyle = {
     minHeight: "auto",
     maxHeight: "75%",
     width: "75%",
+    maxWidth: 900,
     ...commonModalStyles,
   },
 };

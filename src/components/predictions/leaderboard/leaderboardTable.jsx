@@ -16,7 +16,6 @@ const LeaderboardTable = ({
   groupInfo,
   onSelectPrediction,
   onSearch,
-  hasSearched,
   setForceRemoveOpen,
   setSelectedPrediction,
   isSecondChance,
@@ -158,7 +157,6 @@ const LeaderboardTable = ({
         name="leaderboardSearch"
         onSearch={(value) => onSearch(value)}
         placeholder="Search by user or bracket name..."
-        hasSearched={hasSearched}
       />
       <Table
         columns={columns}

@@ -33,7 +33,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   const [predictionCount, setPredictionCount] = useState(0);
   const [page, setPage] = useState(1);
   const [resultsPerPage, setResultsPerPage] = useState(
-    groupID === "all" ? 25 : 100,
+    groupID === "all" ? 50 : 100,
   );
   const [result, setResult] = useState(null);
   const [searched, setSearched] = useState(false);
@@ -151,7 +151,11 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
       <br />
       <div className="standout-header">
         {competition.name}
-        {isSecondChance && <div style={{ fontSize: "0.65em", fontWeight: "normal" }}>Second Chance</div>}
+        {isSecondChance && (
+          <div style={{ fontSize: "0.65em", fontWeight: "normal" }}>
+            Second Chance
+          </div>
+        )}
       </div>
       <GroupInfo
         groupInfo={groupInfo || { name: "Sitewide" }}
@@ -168,8 +172,8 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
             )
           }
         >
-          {isSecondChance && <IconRender type="left" size={13} />}
-          {" "}View {isSecondChance ? "Full" : "Second Chance"} Leaderboard{" "}
+          {isSecondChance && <IconRender type="left" size={13} />} View{" "}
+          {isSecondChance ? "Full" : "Second Chance"} Leaderboard{" "}
           {!isSecondChance && <IconRender type="right" size={13} />}
         </span>
       )}
@@ -179,14 +183,15 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         onForceRemovePrediction={handleForceRemovePrediction}
         groupInfo={groupInfo}
         onSearch={(value) => loadLeaderboard(null, null, value)}
-        hasSearched={searched}
         setForceRemoveOpen={setForceRemoveOpen}
         setSelectedPrediction={setSelectedPrediction}
         isSecondChance={isSecondChance}
       />
       {leaderboard.length === 0 && (
         <div className="single-card text-center">
-          <b>No submissions found{searched ? " using the search terms" : ""}.</b>
+          <b>
+            No submissions found{searched ? " using the search terms" : ""}.
+          </b>
         </div>
       )}
       {!isSecondChance && (
@@ -206,7 +211,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           pageNumber={page}
           onSelectPage={(page) => loadLeaderboard(page)}
           onClickCaret={(movement) => loadLeaderboard(page + movement)}
-          resultsSelectionArray={[25, 50, 100]}
+          resultsSelectionArray={[50, 100, 250]}
           onUpdateResultsPerPage={(selection) => loadLeaderboard(1, selection)}
         />
       )}

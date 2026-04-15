@@ -34,13 +34,35 @@
   padding-left: 5px;
   padding-right: 5px;
 }
+.group-picker-header {
+  background-color: var(--muted-bg-color);
+  color: var(--dark-text);
+  font-weight: bold;
+  font-size: 0.95em;
+  padding: 6px 10px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid var(--secondary);
+  border-bottom: none;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+.group-picker-header-description {
+  font-weight: normal;
+  font-size: 0.85em;
+  color: var(--darker-grey);
+  margin-top: 2px;
+}
 .draggable-table {
   border: 1px solid var(--secondary);
   border-collapse: collapse;
   align-items: center;
   margin-right: auto;
   margin-left: auto;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
 }
 .d-table-row {
   border: 1px solid var(--secondary);
