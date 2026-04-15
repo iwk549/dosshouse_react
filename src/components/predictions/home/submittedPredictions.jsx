@@ -127,11 +127,6 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
       <div className="standout-header">Submissions</div>
       {user ? (
         <>
-          <SegmentedControl
-            tabs={tabs}
-            selectedTab={selectedTab}
-            onSelectTab={handleSelectTab}
-          />
           <SearchBox
             value={searchQuery}
             onChange={setSearchQuery}

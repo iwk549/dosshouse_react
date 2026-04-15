@@ -11,6 +11,7 @@ const GroupPicker = ({
   groupMatches,
   highlight,
   competition,
+  availableWidth,
 }) => {
   const { width } = useWindowDimensions();
   const [groupMaps, setGroupMaps] = useState([]);
@@ -18,7 +19,7 @@ const GroupPicker = ({
   useEffect(() => {
     // set number of groups displayed per row
     // 300 pixels needed per group
-    let groupsPerRow = Math.floor(width / 350) || 1;
+    let groupsPerRow = Math.floor((availableWidth || width) / 350) || 1;
     const keys = Object.keys(groups);
     let maps = [];
     let i = 0;
@@ -27,7 +28,7 @@ const GroupPicker = ({
       i += groupsPerRow;
     }
     setGroupMaps(maps);
-  }, [width, groups]);
+  }, [width, availableWidth, groups]);
 
   return (
     <>
@@ -42,7 +43,11 @@ const GroupPicker = ({
       )}
       <div className="row">
         {groupMaps.map((h, i) => (
-          <div className="row" key={i}>
+          <div
+            className="row"
+            key={i}
+            style={{ gridTemplateColumns: `repeat(${h.length}, 1fr)` }}
+          >
             {h.map((g, ii) => {
               const groupMatrix = competition.groupMatrix
                 ? competition.groupMatrix.find((m) => m.key === g)

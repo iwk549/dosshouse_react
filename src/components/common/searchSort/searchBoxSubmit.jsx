@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import IconRender from "../icons/iconRender";
 
-const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
+const SearchBoxSubmit = ({ name, onSearch, placeholder }) => {
   const [value, setValue] = useState("");
+  const debounceTimer = useRef(null);
 
   const resetSearch = () => {
     setValue("");
@@ -22,34 +23,45 @@ const SearchBoxSubmit = ({ name, onSearch, placeholder, hasSearched }) => {
     };
   }, []);
 
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      onSearch(newValue);
+    }, 400);
+  };
+
   return (
     <form
-      style={{ display: "flex", alignItems: "center", gap: 6, width: "calc(100% - 24px)", maxWidth: 600, margin: "0 auto" }}
+      className="search-bar-submit"
       onSubmit={(event) => {
         event.preventDefault();
+        clearTimeout(debounceTimer.current);
         onSearch(value);
       }}
     >
-      {hasSearched && (
-        <button
-          type="button"
-          className="btn btn-light btn-sm"
-          onClick={resetSearch}
-        >
-          <IconRender type="cancel" />
-        </button>
-      )}
-      <input
-        name={name}
-        placeholder={placeholder}
-        className="custom-input"
-        onChange={(event) => setValue(event.target.value)}
-        value={value}
-        style={{ flex: 1, width: "auto", marginBottom: 0 }}
-      />
-      <button type="submit" className="btn btn-dark btn-sm">
-        <IconRender type="search" />
-      </button>
+      <div className="search-input-wrap">
+        <span className="search-bar-icon">
+          <IconRender type="search" size={14} />
+        </span>
+        <input
+          name={name}
+          placeholder={placeholder}
+          className="custom-input"
+          onChange={handleChange}
+          value={value}
+        />
+        {value && (
+          <button
+            type="button"
+            className="search-bar-clear"
+            onClick={resetSearch}
+          >
+            <IconRender type="cancel" size={14} />
+          </button>
+        )}
+      </div>
     </form>
   );
 };

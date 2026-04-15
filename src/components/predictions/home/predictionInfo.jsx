@@ -66,6 +66,9 @@ const PredictionInfo = ({
     );
   };
 
+  const isExpired =
+    new Date(prediction.competitionID?.competitionEnd) < new Date();
+
   const deadlinePassed =
     new Date(
       prediction.isSecondChance
@@ -75,7 +78,7 @@ const PredictionInfo = ({
 
   return (
     <div className="competition-card" data-testid="prediction-info">
-      <div className="competition-card-header submission-card-header">
+      <div className={`competition-card-header submission-card-header${isExpired ? " expired" : ""}`}>
         <h2>{prediction.name}</h2>
         <div className="submission-card-subtitle">
           {prediction.competitionID?.name}

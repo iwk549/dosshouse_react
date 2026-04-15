@@ -8,6 +8,8 @@ import Miscellaneous from "../maker/miscellaneous";
 import { handlePopulateBracket } from "../../../utils/predictionsUtil";
 import IconRender from "../../common/icons/iconRender";
 import LoadingContext from "../../../context/loadingContext";
+import useWindowDimensions from "../../../utils/useWindowDimensions";
+import StatusNote from "../../common/pageSections/statusNote";
 
 const LeaderboardViewPredictionModal = ({
   prediction,
@@ -23,6 +25,7 @@ const LeaderboardViewPredictionModal = ({
   isSecondChance,
 }) => {
   const { user } = useContext(LoadingContext);
+  const { width } = useWindowDimensions();
   const [tabs, setTabs] = useState(["Playoff", "Bonus"]);
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [groups, setGroups] = useState({});
@@ -66,31 +69,28 @@ const LeaderboardViewPredictionModal = ({
       onClose={setIsOpen}
       header={
         <>
-          <h3>
-            <b>{prediction.name}</b>
-          </h3>
-          <h2>{prediction.totalPoints} Points</h2>
-          <h3>{prediction.totalPicks} Correct Picks</h3>
-          {/* {prediction.potentialPoints ? (
-            <>
-              <h4>{prediction.potentialPoints.realistic} Potential</h4>
-            </>
-          ) : null} */}
-          {groupInfo &&
-            groupInfo.ownerID &&
-            groupInfo.ownerID._id === user?._id && (
-              <button
-                className="btn btn-block btn-danger"
-                onClick={() => {
-                  setSelectedPrediction(prediction);
-                  setForceRemoveOpen(true);
-                }}
-              >
-                <IconRender type="remove" />
-              </button>
-            )}
+          <div className="standout-header">{prediction.name}</div>
+          <div className="modal-stats-row">
+            <span>
+              <b>{prediction.totalPoints}</b> pts
+            </span>
+            <span>
+              <b>{prediction.totalPicks}</b> correct picks
+            </span>
+          </div>
+          {groupInfo?.ownerID?._id === user?._id && (
+            <button
+              className="btn btn-sm btn-danger"
+              onClick={() => {
+                setSelectedPrediction(prediction);
+                setForceRemoveOpen(true);
+              }}
+            >
+              <IconRender type="remove" /> Remove from group
+            </button>
+          )}
           {prediction.playoffPredictions && (
-            <p>Correct picks are highlighted</p>
+            <p className="status-note">Correct picks are highlighted</p>
           )}
         </>
       }
@@ -117,6 +117,7 @@ const LeaderboardViewPredictionModal = ({
                   key: "correct",
                 }}
                 competition={competition}
+                availableWidth={width * 0.8}
               />
             ) : isTab("playoff") ? (
               <BracketPicker
@@ -139,10 +140,10 @@ const LeaderboardViewPredictionModal = ({
           </div>
         </>
       ) : (
-        <p className="text-center">
+        <StatusNote>
           You will be able to view all the picks once the submission deadline
           has passed
-        </p>
+        </StatusNote>
       )}
     </BasicModal>
   );
