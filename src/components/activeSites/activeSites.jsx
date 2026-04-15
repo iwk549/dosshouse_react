@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from "react";
 
-import Header from "../common/pageSections/header";
 import Site from "./site";
 import LoadingContext from "../../context/loadingContext";
 
@@ -192,7 +191,7 @@ const ActiveSites = () => {
   ];
   return (
     <div>
-      <Header text="Apps and Projects" />
+      <div className="standout-header">Apps and Projects</div>
       {sites.map((s, i) => (
         <Site
           key={i}

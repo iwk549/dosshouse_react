@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 
-import Header from "../common/pageSections/header";
 import ActiveSites from "../activeSites/activeSites";
 import LoadingContext from "../../context/loadingContext";
 
@@ -13,7 +12,7 @@ const Home = () => {
 
   return (
     <div>
-      <Header text="Welcome to Dosshouse" />
+      <div className="standout-header">Welcome to Dosshouse</div>
       <p>
         Dosshouse is a combination of personal projects, utilities, and links to
         my active sites. Please browse around and check them out.

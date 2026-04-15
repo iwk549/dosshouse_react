@@ -12,19 +12,20 @@ const MyInfo = ({ user, onEdit }) => {
 
   return (
     <div>
-      <br />
-      <button className="btn btn-info" onClick={() => setEditing(!editing)}>
-        {editing ? "Cancel" : "Edit My Info"}
-      </button>
-      {editing ? (
-        <UserInfoForm user={user} onEdit={raiseEdit} />
-      ) : (
-        <h3>
-          <b>{user.name}</b>
-        </h3>
-      )}
-      <b>{user.email}</b>
-      <br />
+      <div className="info-line">
+        <span className="info-line-label">Name</span>
+        <span className="info-line-value">{user.name}</span>
+      </div>
+      <div className="info-line">
+        <span className="info-line-label">Email</span>
+        <span className="info-line-value">{user.email}</span>
+      </div>
+      <div style={{ marginTop: "16px" }}>
+        <button className="btn btn-info" onClick={() => setEditing(!editing)}>
+          {editing ? "Cancel" : "Edit My Info"}
+        </button>
+        {editing && <UserInfoForm user={user} onEdit={raiseEdit} />}
+      </div>
     </div>
   );
 };
