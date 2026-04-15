@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import SegmentedControl from "../common/pageSections/segmentedControl";
 
 import LoadingContext from "../../context/loadingContext";
-import Header from "../common/pageSections/header";
 import MyInfo from "./myInfo";
 import ProfileSettings from "./profileSettings";
 import RegistrationModalForm from "./registrationModalForm";
@@ -68,7 +67,7 @@ const Profile = () => {
 
   return user ? (
     <div className="competitions-container">
-      <Header text="Profile" />
+      <div className="standout-header">Profile</div>
       <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}

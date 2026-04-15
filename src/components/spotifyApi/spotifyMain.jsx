@@ -3,7 +3,6 @@ import SegmentedControl from "../common/pageSections/segmentedControl";
 
 import ComingSoon from "../common/comingSoon";
 import PlaylistRecommendations from "./playlistRecommendations/playlistRecommendations";
-import Header from "../common/pageSections/header";
 import LoadingContext from "../../context/loadingContext";
 
 const SpotifyMain = () => {
@@ -17,7 +16,7 @@ const SpotifyMain = () => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (
     <>
-      <Header text="Spotify API" />
+      <div className="standout-header">Spotify API</div>
       <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}

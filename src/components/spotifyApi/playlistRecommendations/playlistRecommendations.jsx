@@ -14,7 +14,6 @@ import ChartSelector from "./chartSelector";
 import LoadingContext from "../../../context/loadingContext";
 import SelectedArtist from "./selectedArtist";
 import SelectedPlaylists from "./selectedPlaylists";
-import Header from "../../common/pageSections/header";
 
 class PlaylistRecommendations extends Component {
   static contextType = LoadingContext;
@@ -164,13 +163,13 @@ class PlaylistRecommendations extends Component {
     let filteredTracks = data;
     if (searchQuery)
       filteredTracks = data.filter((t) =>
-        t.name.toLowerCase().includes(searchQuery.toLowerCase())
+        t.name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
 
     const sortedTracks = _.orderBy(
       filteredTracks,
       [sortColumn.path],
-      [sortColumn.order]
+      [sortColumn.order],
     );
     return sortedTracks;
   };
@@ -244,7 +243,7 @@ class PlaylistRecommendations extends Component {
           closeModal={this.modalToggle}
           popupOpen={readMeOpen}
         />
-        <Header text="Spotify Playlist Recommendations" secondary={true} />
+        <div className="standout-header">Spotify Playlist Recommendations</div>
         <div className="side-by-side left">
           <button
             className="btn btn-sm btn-info sticky-top"
