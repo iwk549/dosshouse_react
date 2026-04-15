@@ -12,7 +12,7 @@ const LeaderboardInviteModal = ({ isOpen, setIsOpen, group, competition }) => {
     setLoading(true);
     const res = await getGroupLink(group._id, competition._id);
     if (res.status === 200) {
-      navigator.clipboard.writeText(res.data.link);
+      navigator.clipboard.writeText(window.location.origin + res.data.link);
       toast.success("Link copied to clipboard");
     } else toast.error(res.body);
     setLoading(false);
