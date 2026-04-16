@@ -1,8 +1,7 @@
-import React from "react";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
-import DropdownSort from "../searchSort/dropdownSort";
+import PillSort from "../searchSort/pillSort";
 
 const Table = ({
   columns,
@@ -26,7 +25,7 @@ const Table = ({
   return isMobile && CardComponent ? (
     <>
       {sortColumn && onSort && (
-        <DropdownSort
+        <PillSort
           onSort={onSort}
           columns={cardSearchColumns || columns}
           sortColumn={sortColumn}

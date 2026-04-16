@@ -215,6 +215,23 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           onUpdateResultsPerPage={(selection) => loadLeaderboard(1, selection)}
         />
       )}
+      <div className="fine-print">
+        <b>Potential Points (pot)</b>: the maximum total points a submission
+        could finish with if every remaining pick goes their way. Only calculated
+        once the group stage is complete.
+        <ul>
+          <li>
+            <b>Realistic</b>: bonus picks (e.g. top scorer, discipline) are only
+            counted if that team/player is still in contention (e.g. within a
+            couple goals of the top scorer, or only a few cards behind on
+            discipline).
+          </li>
+          <li>
+            <b>Maximum</b>: bonus picks are counted as long as that team/player
+            is still in the tournament, regardless of how far behind they are.
+          </li>
+        </ul>
+      </div>
       {selectedPrediction && (
         <LeaderboardViewPredictionModal
           prediction={selectedPrediction}

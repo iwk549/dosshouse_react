@@ -1,4 +1,3 @@
-import React from "react";
 import IconRender from "../icons/iconRender";
 import logos from "../../../textMaps/logos";
 import ExternalImage from "../image/externalImage";
@@ -8,12 +7,13 @@ import { getTeamAbbreviation } from "../../../utils/bracketsUtil";
 const LeaderboardCard = ({ data, onSelect }) => {
   if (data.length === 0) return null;
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", padding: "0 10px" }}>
       {data.map((d, idx) => {
         return (
           <div
             className="single-card row clickable"
             key={idx}
+            style={{ gridTemplateColumns: "50px 1fr auto" }}
             onClick={() => onSelect(d)}
           >
             <div style={{ gridColumn: 1, textAlign: "left" }}>
@@ -21,8 +21,13 @@ const LeaderboardCard = ({ data, onSelect }) => {
                 <IconRender type="ranking" /> {d.ranking}
               </div>
               <div>{d.totalPoints} Pts</div>
+              {d.potentialPoints?.realistic > 0 && (
+                <div style={{ fontSize: "0.8em", color: "gray" }}>
+                  {d.potentialPoints?.realistic} pot
+                </div>
+              )}
             </div>
-            <div style={{ gridColumn: 2, textAlign: "center" }}>
+            <div style={{ gridColumn: 2, textAlign: "left", paddingLeft: 12 }}>
               <div style={{ fontWeight: "bold" }}>
                 <IconRender type="name" /> {d.name}
               </div>

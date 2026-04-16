@@ -28,6 +28,14 @@
   border-bottom-color: var(--secondary);
 }
 
+.fine-print {
+  margin: 24px auto 0;
+  padding: 0 12px;
+  font-size: 0.75em;
+  color: gray;
+  max-width: 600px;
+}
+
 .standout-header.sub {
   font-size: 1em;
   font-weight: 600;
