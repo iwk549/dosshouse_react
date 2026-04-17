@@ -306,6 +306,10 @@
   padding: 15px 20px;
   background-color: var(--light-text);
 }
+.b-top {
+  border-radius: 5px;
+  border: 1px solid var(--medium-grey);
+}
 
 .segmented-control-wrapper {
   position: relative;

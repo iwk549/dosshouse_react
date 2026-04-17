@@ -114,9 +114,7 @@ describe("PredictionsLeaderboard", () => {
           data: { predictions: [{ ...prediction, misc: null }], count: 1 },
         },
       });
-      expect(
-        screen.queryByText(/hidden until after submission deadline/i),
-      ).toBeInTheDocument();
+      expect(screen.queryByText("Hidden")).toBeInTheDocument();
     });
     it("should not show prediction info when clicked if deadline has not passed", async () => {
       // check is against playoffPredictions to see if full submission was returned

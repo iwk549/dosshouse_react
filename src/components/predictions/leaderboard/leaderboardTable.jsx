@@ -76,7 +76,9 @@ const LeaderboardTable = ({
       label: "Champion Picked",
       content: (p) =>
         !p.misc ? (
-          "Hidden until after submission deadline"
+          <span title="Submission information will be revealed after the deadline">
+            <i>Hidden</i>
+          </span>
         ) : (
           <div style={{ textAlign: "center" }}>
             <div style={{ fontWeight: 600 }}>{p.misc?.winner}</div>
