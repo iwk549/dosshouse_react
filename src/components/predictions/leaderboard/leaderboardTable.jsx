@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext } from "react";
+import React, { useEffect, useReducer, useContext, useState } from "react";
 
 import Table from "../../common/table/table";
 import SearchBoxSubmit from "../../common/searchSort/searchBoxSubmit";
@@ -21,6 +21,7 @@ const LeaderboardTable = ({
   isSecondChance,
 }) => {
   const { user } = useContext(LoadingContext);
+  const [potentialMode, setPotentialMode] = useState("realistic");
   const [state, dispatch] = useReducer(reducer, {
     sortColumn: { path: "ranking", order: "asc" },
     tableData: [],
@@ -59,23 +60,17 @@ const LeaderboardTable = ({
       path: "userID.name",
       label: "User Name",
     },
-    { path: "name", label: "Bracket Name" },
+    { path: "name", label: "Submission Name" },
     {
       path: "totalPoints",
       label: "Total",
       content: (p) => (
         <>
-          {p.totalPicks || 0} <IconRender type="check" /> | {p.totalPoints || 0}{" "}
-          pts
+          {p.totalPoints || 0}
+          <span className="picks-badge">{p.totalPicks || 0} ✓</span>
         </>
       ),
     },
-    // {
-    //   path: "potentialPoints.realistic",
-    //   label: "Potential Points",
-    //   content: (p) =>
-    //     p.potentialPoints ? <>{p.potentialPoints?.realistic}</> : null,
-    // },
     {
       path: "misc.winner",
       label: "Champion Picked",
@@ -83,8 +78,8 @@ const LeaderboardTable = ({
         !p.misc ? (
           "Hidden until after submission deadline"
         ) : (
-          <div style={{ textAlign: "left" }}>
-            {p.misc?.winner} &nbsp;
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontWeight: 600 }}>{p.misc?.winner}</div>
             <ExternalImage
               uri={logos[findCountryLogo(p.misc?.winner)]}
               height={15}
@@ -98,38 +93,73 @@ const LeaderboardTable = ({
       label: "Playoff",
       content: (p) => (
         <>
-          {p.points?.playoff?.correctPicks || 0} <IconRender type="check" /> |{" "}
-          {p.points?.playoff?.points || 0} pts
+          {p.points?.playoff?.points || 0}
+          <span className="picks-badge">
+            {p.points?.playoff?.correctPicks || 0} ✓
+          </span>
         </>
       ),
     },
     {
       path: "points.misc.points",
-      label: "Misc",
+      label: "Bonus",
       content: (p) => (
         <>
-          {p.points?.misc?.correctPicks || 0} <IconRender type="check" /> |{" "}
-          {p.points?.misc?.points || 0} pts
+          {p.points?.misc?.points || 0}
+          <span className="picks-badge">
+            {p.points?.misc?.correctPicks || 0} ✓
+          </span>
         </>
       ),
     },
     {
       path: "points.champion.points",
       label: "Champion",
-      content: (p) => `${p.points?.champion?.points || 0} pts`,
+      content: (p) => `${p.points?.champion?.points || 0}`,
     },
   ];
 
   if (!isSecondChance) {
-    columns.splice(5, 0, {
+    columns.splice(6, 0, {
       path: "points.group.points",
       label: "Group Stage",
       content: (p) => (
         <>
-          {p.points?.group?.correctPicks || 0} <IconRender type="check" /> |{" "}
-          {p.points?.group?.points || 0} pts
+          {p.points?.group?.points || 0}
+          <span className="picks-badge">
+            {p.points?.group?.correctPicks || 0} ✓
+          </span>
         </>
       ),
+    });
+  }
+
+  if ((leaderboard[0]?.potentialPoints?.maximum || 0) > 0) {
+    columns.splice(4, 0, {
+      path: `potentialPoints.${potentialMode}`,
+      label: (
+        <div>
+          <button
+            className={`btn btn-xs${potentialMode === "realistic" ? " btn-info" : " btn-secondary"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setPotentialMode((m) =>
+                m === "realistic" ? "maximum" : "realistic",
+              );
+            }}
+          >
+            {potentialMode === "realistic" ? "Show Max" : "Show Real."}
+          </button>
+          <div>
+            {potentialMode === "realistic" ? "Realistic" : "Maximum"} Potential
+            Points
+          </div>
+        </div>
+      ),
+      content: (p) =>
+        p.potentialPoints?.[potentialMode] > 0
+          ? `${p.potentialPoints?.[potentialMode]}`
+          : "—",
     });
   }
 
@@ -166,7 +196,12 @@ const LeaderboardTable = ({
         keyProperty="_id"
         onSelect={onSelectPrediction}
         CardComponent={LeaderboardCard}
-        cardSearchColumns={columns.slice(0, 6)}
+        cardSearchColumns={[
+          ...columns.filter((c) =>
+            ["ranking", "userID.name", "name", "totalPoints"].includes(c.path),
+          ),
+          { path: "potentialPoints.realistic", label: "Potential Points" },
+        ]}
       />
     </>
   );

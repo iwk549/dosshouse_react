@@ -1,3 +1,42 @@
+.picks-badge {
+  display: block;
+  width: fit-content;
+  min-width: 36px;
+  font-size: 0.75em;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background-color: var(--minus10-dark-bg-color);
+  color: var(--light-text);
+  margin-left: 5px;
+}
+
+.pill-sort {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 12px;
+}
+
+.pill-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--minus10-dark-bg-color);
+  background-color: var(--light-bg-color);
+  color: var(--dark-text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill-sort-btn.active {
+  background-color: var(--dark-bg-color);
+  border-color: var(--dark-bg-color);
+  color: var(--light-text);
+}
+
 .custom-button {
   border-radius: 5px;
   margin: 2px;
