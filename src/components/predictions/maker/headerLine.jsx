@@ -81,7 +81,8 @@ const HeaderLine = ({
           </button>
         ) : (
           <button
-            className="btn btn-lg btn-dark submit-button sticky-top"
+            className="btn btn-lg btn-dark"
+            style={{ marginTop: 15, minWidth: 250 }}
             onClick={onSave}
           >
             <IconRender type="save" size={15} /> Save Prediction
