@@ -40,8 +40,10 @@
 .btn {
   border-radius: 5px;
   cursor: pointer;
+  padding: 4px 12px;
   transition:
     background-color 150ms ease,
+    border-color 150ms ease,
     box-shadow 150ms ease;
 }
 .btn:disabled {
@@ -70,28 +72,24 @@
   --btn-bg: var(--light-bg-color);
   --btn-border: var(--minus10-light-bg-color);
   --btn-hover-bg: var(--minus10-light-bg-color);
-  --btn-disabled-bg: var(--minus20-light-bg-color);
   --btn-text: var(--dark-text);
 }
 .btn-dark {
   --btn-bg: var(--dark-bg-color);
   --btn-border: var(--minus10-dark-bg-color);
   --btn-hover-bg: var(--minus10-dark-bg-color);
-  --btn-disabled-bg: var(--minus20-dark-bg-color);
   --btn-text: var(--light-text);
 }
 .btn-info {
   --btn-bg: var(--info-bg-color);
   --btn-border: var(--minus10-info-bg-color);
   --btn-hover-bg: var(--minus10-info-bg-color);
-  --btn-disabled-bg: var(--minus20-info-bg-color);
   --btn-text: var(--dark-text);
 }
 .btn-danger {
   --btn-bg: var(--danger-bg-color);
   --btn-border: var(--minus10-danger-bg-color);
   --btn-hover-bg: var(--minus10-danger-bg-color);
-  --btn-disabled-bg: var(--minus20-danger-bg-color);
   --btn-text: var(--light-text);
 }
 
@@ -132,8 +130,9 @@
 .btn-info:disabled,
 .btn-danger.disabled,
 .btn-danger:disabled {
-  background-color: var(--btn-disabled-bg);
-  color: var(--btn-text);
+  background-color: var(--medium-grey);
+  border-color: var(--medium-grey);
+  color: var(--darker-grey);
 }
 .btn-light:not(:disabled):not(.disabled):active,
 .btn-light:not(:disabled):not(.disabled).active,

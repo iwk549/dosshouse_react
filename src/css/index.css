@@ -7,8 +7,8 @@
   --dark-text: #1a1a1a;
   --main-background: #000;
   --light-bg-color: #d4e8d4;
-  --minus10-light-bg-color: #bddbbd;
-  --minus20-light-bg-color: #9cc99c;
+  --minus10-light-bg-color: #9cc99c;
+  --minus20-light-bg-color: #7ab87a;
   --dark-bg-color: #003304;
   --minus10-dark-bg-color: #006609;
   --minus20-dark-bg-color: #00990d;
@@ -18,10 +18,10 @@
   --alert-bg-color: #831fe0;
   --secondary: #831fe0;
   --main-bg-color: #831fe0;
-  --muted-bg-color: #e6d2f9;
+--muted-bg-color: #e6d2f9;
   --danger-bg-color: #cc0000;
-  --minus10-danger-bg-color: #ff0000;
-  --minus20-danger-bg-color: #ff3333;
+  --minus10-danger-bg-color: #990000;
+  --minus20-danger-bg-color: #660000;
 }
 
 html {

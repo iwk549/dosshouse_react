@@ -82,7 +82,7 @@ const HeaderLine = ({
         ) : (
           <button
             className="btn btn-lg btn-dark"
-            style={{ marginTop: 15, minWidth: 250 }}
+            style={{ marginTop: 15, minWidth: 250, boxShadow: "0 2px 10px rgba(0, 102, 9, 0.6)" }}
             onClick={onSave}
           >
             <IconRender type="save" size={15} /> Save Prediction
