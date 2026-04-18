@@ -17,21 +17,21 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-boundary-container">
-          <div className="pop-box error-boundary-box">
+        <div className="centered-page-container">
+          <div className="pop-box centered-page-box">
             <img
               src="assets/usb_p_logo.png"
               alt="Dosshouse logo"
               width={50}
               height={50}
-              className="error-boundary-logo"
+              className="centered-page-logo"
             />
-            <h2 className="error-boundary-title">Something went wrong</h2>
-            <p className="error-boundary-message">
+            <h2 className="centered-page-title">Something went wrong</h2>
+            <p className="centered-page-message">
               An unexpected error occurred. Please refresh the page or try again
               later.
             </p>
-            <div className="error-boundary-actions">
+            <div className="centered-page-actions">
               <button
                 className="btn btn-md btn-dark"
                 onClick={() => (window.location.href = "/")}

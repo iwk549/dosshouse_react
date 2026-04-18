@@ -46,6 +46,12 @@
     border-color 150ms ease,
     box-shadow 150ms ease;
 }
+a.btn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
 .btn:disabled {
   cursor: auto;
 }

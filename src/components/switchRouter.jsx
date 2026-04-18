@@ -7,10 +7,11 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import PredictionsRedirect from "./predictions/predictionsRedirect";
 import Profile from "./user/profile";
 import StandAloneLogin from "./user/standAloneLogin";
+import TipJarThankYou from "./tipJar/tipJarThankYou";
 
 const SwitchRouter = () => {
   return (
-    <div className="content">
+    <div>
       <Routes>
         {/* <Route path="/home" element={<Home />} />
         <Route path="/spotify_api" element={<SpotifyMain />} />
@@ -22,6 +23,7 @@ const SwitchRouter = () => {
         />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<StandAloneLogin />} />
+        <Route path="/thankyou" element={<TipJarThankYou />} />
         <Route path="*" element={<Navigate replace to="/competitions" />} />
       </Routes>
     </div>

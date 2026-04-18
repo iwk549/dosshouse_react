@@ -3,6 +3,7 @@ import Modal from "react-modal";
 
 import { modalStyle } from "../../../utils/styles";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
+import IconRender from "../icons/iconRender";
 
 const BasicModal = ({
   id,
@@ -29,20 +30,23 @@ const BasicModal = ({
         content: { ...modalStyle.content, ...(!isMobile ? style : {}) },
       }}
     >
-      <div className="text-center">
+      <div style={{ position: "relative" }}>
         {!hideClose && (
           <button
-            className="btn btn-block btn-sm btn-light sticky-top"
+            className="modal-close-btn"
             onClick={() => {
               onClose(id ? id : false);
               if (alsoRunOnClose) alsoRunOnClose();
             }}
+            aria-label="Close"
           >
-            Close
+            <IconRender type="close" size={24} />
           </button>
         )}
-        {header}
-        {children}
+        <div className="text-center">
+          {header}
+          {children}
+        </div>
       </div>
     </Modal>
   );

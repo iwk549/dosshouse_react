@@ -28,6 +28,12 @@ import NotAllowed from "./notAllowed";
 import Confirm from "../../common/modal/confirm";
 import DualNavLink from "../../common/pageSections/dualNavLink";
 import GroupModalForm from "../groups/groupModalForm";
+import TipJarModal from "../../tipJar/tipJarModal";
+import {
+  shouldShowTipJar,
+  recordTipJarShown,
+  dismissTipJarPermanently,
+} from "../../../utils/tipJarStorage";
 
 const PredictionMaker = ({
   competitionID,
@@ -77,6 +83,8 @@ const PredictionMaker = ({
     setBracketIsPortrait(isMobile || rounds < 2);
   }, [predictions.playoffMatches]);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
+  const [tipJarOpen, setTipJarOpen] = useState(false);
+  const [postSavePath, setPostSavePath] = useState(null);
 
   const loadData = async () => {
     setLoading(true); // get matches from db
@@ -185,7 +193,10 @@ const PredictionMaker = ({
           isLocked,
           isSecondChance,
         });
-        if (user) setPredictionName(splitName(user.name) + "'s Bracket");
+        setPredictionName(
+          (user ? splitName(user.name) + "'s Bracket " : "Bracket ") +
+            Math.random().toString(16).slice(2, 8).toLowerCase(),
+        );
       }
     } else toast.error(matchesRes.data);
 
@@ -232,15 +243,15 @@ const PredictionMaker = ({
         else toast.error(groupRes.data);
       }
 
-      navigate(
-        `/submissions?id=${
-          predictionRes.data
-        }&competitionID=${competitionID}&secondChance=${!!isSecondChance}`,
-        {
-          replace: true,
-        },
-      );
+      const submissionsPath = `/submissions?id=${predictionRes.data}&competitionID=${competitionID}&secondChance=${!!isSecondChance}`;
       setLoading(false);
+      if (shouldShowTipJar() && !pendingNavigation) {
+        recordTipJarShown();
+        setPostSavePath(submissionsPath);
+        setTipJarOpen(true);
+      } else {
+        navigate(submissionsPath, { replace: true });
+      }
       return true;
     } else toast.error(predictionRes.data);
 
@@ -372,9 +383,21 @@ const PredictionMaker = ({
       <br />
       <div
         style={{
-          float: "right",
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "0 10px",
         }}
       >
+        <div>
+          {predictionID !== "new" && !isSecondChance && (
+            <button
+              className="btn btn-sm btn-dark"
+              onClick={() => setGroupModalOpen(true)}
+            >
+              Add to Group
+            </button>
+          )}
+        </div>
         <button
           className="btn btn-sm btn-info"
           onClick={() =>
@@ -386,16 +409,6 @@ const PredictionMaker = ({
           Return To Top of Page
         </button>
       </div>
-      {predictionID !== "new" && !isSecondChance && (
-        <div style={{ float: "left" }}>
-          <button
-            className="btn btn-sm btn-dark"
-            onClick={() => setGroupModalOpen(true)}
-          >
-            Add to Group
-          </button>
-        </div>
-      )}
       <RegistrationModalForm
         header="Login or Register to Save Your Predictions"
         isOpen={registerFormOpen}
@@ -418,6 +431,18 @@ const PredictionMaker = ({
           onSuccess={() => setGroupModalOpen(false)}
         />
       )}
+      <TipJarModal
+        isOpen={tipJarOpen}
+        onClose={() => {
+          setTipJarOpen(false);
+          navigate(postSavePath, { replace: true });
+        }}
+        onDismiss={() => {
+          dismissTipJarPermanently();
+          navigate(postSavePath, { replace: true });
+          setTipJarOpen(false);
+        }}
+      />
     </div>
   );
 };

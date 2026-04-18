@@ -112,7 +112,9 @@ function App() {
               cookieName="worldCup2026"
               showIfLoggedIn={true}
             />
-            <SwitchRouter />
+            <div style={{ flex: 1 }}>
+              <SwitchRouter />
+            </div>
             <PageBottom />
           </>
         </div>

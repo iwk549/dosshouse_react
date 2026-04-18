@@ -67,27 +67,36 @@ const HeaderLine = ({
           </div>
         )}
       </div>{" "}
-      <Input
-        name="bracketName"
-        label="Name this Submission"
-        value={predictionName}
-        onChange={(event) => setPredictionName(event.target.value)}
-        drillRef={nameInputRef}
-      />
       <div className="sticky-top">
         {isSaved ? (
           <button className="pop-box">
-            <IconRender type="checkmark" /> Prediction Saved
+            <IconRender type="checkmark" /> Submission Saved
           </button>
         ) : (
           <button
             className="btn btn-lg btn-dark"
-            style={{ marginTop: 15, minWidth: 250, boxShadow: "0 2px 10px rgba(0, 102, 9, 0.6)" }}
+            style={{
+              marginTop: 15,
+              minWidth: 250,
+              boxShadow: "0 2px 10px rgba(0, 102, 9, 0.6)",
+            }}
             onClick={onSave}
           >
-            <IconRender type="save" size={15} /> Save Prediction
+            <IconRender type="save" size={15} /> Save Submission
           </button>
         )}
+      </div>
+      <div className="standout-input-wrap">
+        <div className="standout-input">
+          <Input
+            name="bracketName"
+            label="Give this Submission a Name"
+            value={predictionName}
+            onChange={(event) => setPredictionName(event.target.value)}
+            drillRef={nameInputRef}
+            style={{ fontSize: "1.1em", width: "90%" }}
+          />
+        </div>
       </div>
       <MissingItems
         items={missingItems}
