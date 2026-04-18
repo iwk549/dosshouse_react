@@ -120,7 +120,7 @@ class RegistrationModalForm extends Form {
           hideClose={!this.props.setIsOpen}
           header={
             this.props.header ? (
-              <h4 className="text-center">{this.props.header}</h4>
+              <div className="standout-header">{this.props.header}</div>
             ) : null
           }
         >

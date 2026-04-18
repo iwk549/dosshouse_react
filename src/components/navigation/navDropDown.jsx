@@ -26,7 +26,13 @@ const NavDropDown = ({ links }) => {
             {links.map((link, idx) => {
               if (link.external)
                 return (
-                  <a key={idx} href={link.to} className="nav-link">
+                  <a
+                    key={idx}
+                    href={link.to}
+                    className="nav-link"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
                     <IconRender type={link.icon} size={16} />
                     <span>{link.label}</span>
                   </a>

@@ -44,32 +44,39 @@ const renderWithProps = async (props = {}, mocks = {}, user = null) => {
   getPrediction.mockReturnValue(
     apiResponse(
       mocks?.getPrediction?.data || null,
-      mocks?.getPrediction?.status || 200
-    )
+      mocks?.getPrediction?.status || 200,
+    ),
   );
   savePrediction.mockReturnValue(
     apiResponse(
       mocks?.savePrediction?.data || null,
-      mocks?.savePrediction?.status || 200
-    )
+      mocks?.savePrediction?.status || 200,
+    ),
   );
   getCompetition.mockReturnValue(
     apiResponse(
       mocks?.getCompetition?.data || null,
-      mocks?.getCompetition?.status || 200
-    )
+      mocks?.getCompetition?.status || 200,
+    ),
   );
   getResult.mockReturnValue(
-    apiResponse(mocks?.getResult?.data || null, mocks?.getResult?.status || 200)
+    apiResponse(
+      mocks?.getResult?.data || null,
+      mocks?.getResult?.status || 200,
+    ),
   );
   getMatches.mockReturnValue(
-    apiResponse(mocks?.getMatches?.data || [], mocks?.getMatches?.status || 200)
+    apiResponse(
+      mocks?.getMatches?.data || [],
+      mocks?.getMatches?.status || 200,
+    ),
   );
   addPredictionToGroup.mockReturnValue(
-    apiResponse(null, mocks?.addPredictionToGroup?.status || 200)
+    apiResponse(null, mocks?.addPredictionToGroup?.status || 200),
   );
   getGroups.mockReturnValue(apiResponse(null, mocks?.getGroups?.status || 200));
 
+  localStorage.setItem("tipJarDismissed", "true");
   let mockReturns;
   await act(async () => {
     mockReturns = renderWithContext(PredictionMaker, props, user);
@@ -80,6 +87,7 @@ const renderWithProps = async (props = {}, mocks = {}, user = null) => {
 describe("PredictionsMaker", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    localStorage.clear();
     Object.assign(window, { innerWidth: 1200 });
   });
 
@@ -87,9 +95,11 @@ describe("PredictionsMaker", () => {
     it("should render the basics with no error if no data returned", async () => {
       await renderWithProps();
       expect(screen.queryByText("All Submissions")).toBeInTheDocument();
-      expect(screen.queryByText("Name this Submission")).toBeInTheDocument();
+      expect(
+        screen.queryByText(/give this submission a name/i),
+      ).toBeInTheDocument();
       expect(screen.queryByText("See What's Missing")).toBeInTheDocument();
-      expect(screen.queryByText("Prediction Saved")).toBeInTheDocument();
+      expect(screen.queryByText("Submission Saved")).toBeInTheDocument();
       expect(screen.queryByText("Group")).toBeInTheDocument();
       expect(screen.queryByText("Bracket")).toBeInTheDocument();
       expect(screen.queryByText("Bonus")).not.toBeInTheDocument();
@@ -103,9 +113,9 @@ describe("PredictionsMaker", () => {
           getMatches: { data: [] },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
-      changeText(/name this submission/i, "New Name");
+      changeText(/give this submission a name/i, "New Name");
       await clickByText("All Submissions");
       await clickByText("Cancel");
       expect(navMock).toHaveBeenCalledTimes(0);
@@ -118,9 +128,9 @@ describe("PredictionsMaker", () => {
           getMatches: { data: [] },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
-      changeText(/name this submission/i, "New Name");
+      changeText(/give this submission a name/i, "New Name");
       await clickByText("All Submissions");
       await clickByText(/go to all submissions without saving/i);
       expect(savePrediction).toHaveBeenCalledTimes(0);
@@ -135,9 +145,9 @@ describe("PredictionsMaker", () => {
           getMatches: { data: [] },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
-      changeText(/name this submission/i, "New Name");
+      changeText(/give this submission a name/i, "New Name");
       await clickByText("All Submissions");
       await clickByText(/save and go to all submissions/i);
       expect(savePrediction).toHaveBeenCalledTimes(1);
@@ -152,22 +162,24 @@ describe("PredictionsMaker", () => {
           getMatches: { data: [] },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
-      await clickByText(/Save Prediction/i);
+      localStorage.clear(); // allow tip jar modal to appear
+      await clickByText(/Save Submission/i);
       expect(savePrediction).toHaveBeenCalledTimes(1);
       expect(savePrediction).toHaveBeenCalledWith("new", {
         competitionID: "testBracket1", // ID from props
         groupPredictions: [],
         misc: { winner: "" },
-        name: "Test's Bracket", // default name from user's name
+        name: expect.stringMatching(/^Test's Bracket /),
         playoffPredictions: [],
         isSecondChance: false,
       });
+      await clickByText(/don't show again/i); // dismiss tip jar
       expect(navMock).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledWith(
         "/submissions?id=savedID&competitionID=testBracket1&secondChance=false",
-        { replace: true }
+        { replace: true },
       );
     });
   });
@@ -182,11 +194,11 @@ describe("PredictionsMaker", () => {
           getMatches: { data: [] },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       await clickByText("Add to Group");
       expect(
-        screen.queryByText(/manage groups for test bracket/i)
+        screen.queryByText(/manage groups for test bracket/i),
       ).toBeInTheDocument();
     });
   });
@@ -200,7 +212,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
 
       const startingOrder = [];
@@ -224,7 +236,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       await clickByText("Bracket");
       expect(screen.queryAllByText("Team A").length).toBe(1);
@@ -245,7 +257,7 @@ describe("PredictionsMaker", () => {
             data: unevenMatches,
           },
         },
-        user
+        user,
       );
 
       // render the name and description with initial teams
@@ -292,7 +304,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       await clickByText("See Matches");
       expect(screen.queryByText(`Group ${matches[0].groupName} Matches`));
@@ -302,7 +314,7 @@ describe("PredictionsMaker", () => {
       expect(screen.queryAllByText("Team D").length).toBe(1);
       expect(screen.queryAllByText("Team E").length).toBe(1);
       expect(screen.queryAllByText("Team F").length).toBe(1);
-      await clickByText("Close");
+      await clickByText("close_icon", 0, true);
       await clickByText("See Matches", 1);
       expect(screen.queryByText(`Group ${matches[1].groupName} Matches`));
       expect(screen.queryAllByText("Team A").length).toBe(1);
@@ -311,7 +323,7 @@ describe("PredictionsMaker", () => {
       expect(screen.queryAllByText("Team D").length).toBe(3);
       expect(screen.queryAllByText("Team E").length).toBe(3);
       expect(screen.queryAllByText("Team F").length).toBe(3);
-      await clickByText("Close");
+      await clickByText("close_icon", 0, true);
     });
   });
 
@@ -324,7 +336,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       await clickByText("Bracket");
       expect(screen.queryAllByText("Team A").length).toBe(1);
@@ -339,7 +351,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       await clickByText("Bracket");
       await clickByText("Team A");
@@ -355,7 +367,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       await clickByText("Bracket");
       await clickByText("Team A");
@@ -374,7 +386,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       // select teams A & B as semi final winners, sending D & E to third place
       await clickByText("Bracket");
@@ -398,7 +410,7 @@ describe("PredictionsMaker", () => {
           getMatches: { data: matches },
           savePrediction: { data: "savedID" },
         },
-        user
+        user,
       );
       // select teams A & B as semi final winners, sending D & E to third place
       await clickByText("Bracket");

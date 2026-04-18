@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const links = [
     // { to: "/home", icon: "home", label: "Home" },
-    ...(user ? [{ to: "/profile", icon: "profile", label: "Profile" }] : []),
+    ...(user ? [{ to: "/profile", icon: "profile", label: "Account" }] : []),
     { to: "/competitions", icon: "prediction", label: "Competitions" },
     { to: "/submissions", icon: "submission", label: "Submissions" },
     {
@@ -35,10 +35,7 @@ const Navbar = () => {
           <NavDropDown links={links} />
         </div>
         <div className="nav-center">
-          <LogoRender
-            className="clickable"
-            onClick={() => navigate("/")}
-          />
+          <LogoRender className="clickable" onClick={() => navigate("/")} />
         </div>
         <div className="nav-right">
           {!user && (

@@ -6,7 +6,7 @@ describe("predictions maker", () => {
 
   describe("rendering", () => {
     it("should visit the page", () => {
-      cy.contains(/name this submission/i);
+      cy.contains(/give this submission a name/i);
     });
     it("should render the tabs", () => {
       cy.contains(/group/i);
