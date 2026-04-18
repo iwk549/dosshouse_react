@@ -217,6 +217,12 @@
 .text-link::after {
   content: " →";
 }
+.text-link-back::before {
+  content: "← ";
+}
+.text-link-back::after {
+  content: "";
+}
 .text-link:hover {
   text-decoration: underline;
 }

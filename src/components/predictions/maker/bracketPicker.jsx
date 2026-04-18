@@ -21,6 +21,7 @@ const BracketPicker = ({
   originalPlayoffMatches,
 }) => {
   let { isSuperSmall, width, superSmallWidth } = useWindowDimensions();
+  const numRounds = new Set(matches.map((m) => m.round)).size;
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [matchesOpen, setMatchesOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState(null);
@@ -28,7 +29,7 @@ const BracketPicker = ({
     const originalMatch = originalPlayoffMatches.find(
       (o) =>
         (o.metadata?.matchNumber || o.matchNumber) ===
-        (match.metadata?.matchNumber || match.matchNumber)
+        (match.metadata?.matchNumber || match.matchNumber),
     );
     setSelectedMatch(originalMatch);
     setMatchModalOpen(true);
@@ -84,31 +85,35 @@ const BracketPicker = ({
         &nbsp;&nbsp;
         {renderImage(misc.winner)}
       </h1>
-      <TournamentBracket
-        matches={matches}
-        width={
-          isPortrait
-            ? isSuperSmall
-              ? superSmallWidth
-              : width - 90
-            : 1000 >= width
-            ? 1000
-            : width - 90
-        }
-        height={isPortrait ? matches.length * 40 : matches.length * 25}
-        onSelectMatch={handleSelectMatch}
-        onSelectTeam={isLocked ? null : onSelectTeam}
-        orientation={isPortrait ? "portrait" : "landscape"}
-        backgroundColor="#eeccff"
-        lineColor="#999999"
-        popColor="#831fe0"
-        highlightColor={{
-          backgroundColor: "#66ff73",
-          color: "#000",
-        }}
-        dateTimeFormatter={isPortrait ? null : shortDate}
-        showFullTeamNames={!isPortrait}
-      />
+      <div className="bracket-container">
+        <TournamentBracket
+          matches={matches}
+          width={
+            isPortrait
+              ? isSuperSmall
+                ? superSmallWidth
+                : width - 90
+              : Math.max(numRounds * 200, width - 90)
+          }
+          height={
+            isPortrait
+              ? matches.length * 40
+              : Math.max(matches.length * 25, 300)
+          }
+          onSelectMatch={handleSelectMatch}
+          onSelectTeam={isLocked ? null : onSelectTeam}
+          orientation={isPortrait ? "portrait" : "landscape"}
+          backgroundColor="#eeccff"
+          lineColor="#999999"
+          popColor="#831fe0"
+          highlightColor={{
+            backgroundColor: "#66ff73",
+            color: "#000",
+          }}
+          dateTimeFormatter={isPortrait ? null : (dt) => shortDate(dt, true)}
+          showFullTeamNames={!isPortrait}
+        />
+      </div>
       {selectedMatch && (
         <SingleMatchModal
           isOpen={matchModalOpen}

@@ -19,6 +19,7 @@ import { getResult } from "../../../services/resultsService";
 import Confirm from "../../common/modal/confirm";
 import BonusPickInfo from "./bonusPickInfo";
 import IconRender from "../../common/icons/iconRender";
+import DualNavLink from "../../common/pageSections/dualNavLink";
 
 const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   let navigate = useNavigate();
@@ -141,14 +142,13 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
 
   return (
     <div className="page-container">
-      <button
-        key="goback"
-        className="btn btn-light"
-        onClick={() => navigate(-1)}
-      >
-        Go Back
-      </button>
-      <br />
+      <DualNavLink
+        left={{
+          label: "Your Submissions",
+          onClick: () =>
+            navigate(`/submissions?competitionID=${competitionID}`),
+        }}
+      />
       <div className="standout-header">
         {competition.name}
         {isSecondChance && (
@@ -217,8 +217,8 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
       )}
       <div className="fine-print">
         <b>Potential Points (pot)</b>: the maximum total points a submission
-        could finish with if every remaining pick goes their way. Only calculated
-        once the group stage is complete.
+        could finish with if every remaining pick goes their way. Only
+        calculated once the group stage is complete.
         <ul>
           <li>
             <b>Realistic</b>: bonus picks (e.g. top scorer, discipline) are only
