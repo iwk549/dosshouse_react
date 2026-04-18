@@ -38,3 +38,7 @@
 .svg-match-spacer {
   font-size: 14px;
 }
+
+.bracket-container #svg-bracket text {
+  font-size: 11px !important; /* override font size for all text inside react-svg-tournament-bracket */
+}

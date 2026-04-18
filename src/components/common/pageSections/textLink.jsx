@@ -1,5 +1,5 @@
-const TextLink = ({ children, onClick }) => (
-  <button className="text-link" onClick={onClick}>
+const TextLink = ({ children, onClick, className }) => (
+  <button className={`text-link${className ? " " + className : ""}`} onClick={onClick}>
     {children}
   </button>
 );

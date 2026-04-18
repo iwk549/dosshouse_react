@@ -26,6 +26,7 @@ import Information from "./information";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import NotAllowed from "./notAllowed";
 import Confirm from "../../common/modal/confirm";
+import DualNavLink from "../../common/pageSections/dualNavLink";
 import GroupModalForm from "../groups/groupModalForm";
 
 const PredictionMaker = ({
@@ -62,7 +63,19 @@ const PredictionMaker = ({
   );
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
-  const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
+  const leaderboardPath = `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=all&secondChance=${!!isSecondChance}`;
+  const confirmNavigate = (path, label) => {
+    predictions.isSaved
+      ? navigate(path)
+      : setPendingNavigation({ path, label });
+  };
+
+  useEffect(() => {
+    if (!predictions.playoffMatches.length) return;
+    const rounds = new Set(predictions.playoffMatches.map((m) => m.round)).size;
+    setBracketIsPortrait(isMobile || rounds < 2);
+  }, [predictions.playoffMatches]);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
 
   const loadData = async () => {
@@ -267,25 +280,26 @@ const PredictionMaker = ({
 
   return (
     <div id="scroller">
-      <button
-        className="btn btn-sm btn-light"
-        onClick={() => {
-          predictions.isSaved
-            ? navigate("/submissions")
-            : setConfirmGoBackOpen(true);
+      <DualNavLink
+        left={{
+          label: "All Submissions",
+          onClick: () =>
+            confirmNavigate("/submissions", "Go to All Submissions"),
         }}
-      >
-        Go Back
-      </button>
+        right={{
+          label: "View Leaderboard",
+          onClick: () => confirmNavigate(leaderboardPath, "Go to Leaderboard"),
+        }}
+      />
       <Confirm
         header="Are You Sure?"
-        isOpen={confirmGoBackOpen}
-        setIsOpen={() => setConfirmGoBackOpen(false)}
+        isOpen={!!pendingNavigation}
+        setIsOpen={() => setPendingNavigation(null)}
         focus="cancel"
-        onConfirm={() => navigate("/submissions")}
-        buttonText={["Cancel", "Go Back without Saving"]}
+        onConfirm={() => navigate(pendingNavigation?.path)}
+        buttonText={["Cancel", `${pendingNavigation?.label} without Saving`]}
       >
-        Your latest changes are unsaved. Are you sure you want to go back and
+        Your latest changes are unsaved. Are you sure you want to leave and
         discard them?
         <br />
         <br />
@@ -293,11 +307,11 @@ const PredictionMaker = ({
           className="btn btn-dark btn-sm btn-block"
           onClick={async () => {
             const saved = await handleSavePredictions();
-            if (saved) navigate("/submissions");
-            else setConfirmGoBackOpen(false);
+            if (saved) navigate(pendingNavigation?.path);
+            else setPendingNavigation(null);
           }}
         >
-          Save and Go Back
+          Save and {pendingNavigation?.label}
         </button>
       </Confirm>
       <HeaderLine
@@ -363,7 +377,11 @@ const PredictionMaker = ({
       >
         <button
           className="btn btn-sm btn-info"
-          onClick={() => document.querySelector("body").scroll(0, 0)}
+          onClick={() =>
+            document
+              .querySelector("body")
+              .scroll({ top: 0, behavior: "smooth" })
+          }
         >
           Return To Top of Page
         </button>

@@ -37,18 +37,14 @@
   color: var(--light-text);
 }
 
-.custom-button {
-  border-radius: 5px;
-  margin: 2px;
-}
-.submit-button {
-  margin-top: 15px;
-  min-width: 250px;
-}
-
 .btn {
   border-radius: 5px;
   cursor: pointer;
+  padding: 4px 12px;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 .btn:disabled {
   cursor: auto;
@@ -71,145 +67,101 @@
   width: 95%;
 }
 
+/* --- Variant token definitions --- */
 .btn-light {
-  background-color: var(--light-bg-color);
-  border-color: var(--minus10-light-bg-color);
-  color: var(--dark-text);
+  --btn-bg: var(--light-bg-color);
+  --btn-border: var(--minus10-light-bg-color);
+  --btn-hover-bg: var(--minus10-light-bg-color);
+  --btn-text: var(--dark-text);
 }
-.btn-light:hover {
-  background-color: var(--minus10-light-bg-color);
-  color: var(--dark-text);
+.btn-dark {
+  --btn-bg: var(--dark-bg-color);
+  --btn-border: var(--minus10-dark-bg-color);
+  --btn-hover-bg: var(--minus10-dark-bg-color);
+  --btn-text: var(--light-text);
+}
+.btn-info {
+  --btn-bg: var(--info-bg-color);
+  --btn-border: var(--minus10-info-bg-color);
+  --btn-hover-bg: var(--minus10-info-bg-color);
+  --btn-text: var(--dark-text);
+}
+.btn-danger {
+  --btn-bg: var(--danger-bg-color);
+  --btn-border: var(--minus10-danger-bg-color);
+  --btn-hover-bg: var(--minus10-danger-bg-color);
+  --btn-text: var(--light-text);
+}
+
+/* --- Shared state rules for all variants --- */
+.btn-light,
+.btn-dark,
+.btn-info,
+.btn-danger {
+  background-color: var(--btn-bg);
+  border-color: var(--btn-border);
+  color: var(--btn-text);
+}
+.btn-light:hover,
+.btn-dark:hover,
+.btn-info:hover,
+.btn-danger:hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-text);
 }
 .btn-light:focus,
-.btn-light.focus {
-  background-color: var(--light-bg-color);
-  border-color: var(--light-bg-color);
-  box-shadow: 0 0 0 0.2rem var(--minus10-light-bg-color);
-  color: var(--dark-text);
+.btn-light.focus,
+.btn-dark:focus,
+.btn-dark.focus,
+.btn-info:focus,
+.btn-info.focus,
+.btn-danger:focus,
+.btn-danger.focus {
+  background-color: var(--btn-bg);
+  border-color: var(--btn-bg);
+  box-shadow: 0 0 0 0.2rem var(--btn-hover-bg);
+  color: var(--btn-text);
 }
 .btn-light.disabled,
-.btn-light:disabled {
-  background-color: var(--minus20-light-bg-color);
-  color: var(--secondary);
+.btn-light:disabled,
+.btn-dark.disabled,
+.btn-dark:disabled,
+.btn-info.disabled,
+.btn-info:disabled,
+.btn-danger.disabled,
+.btn-danger:disabled {
+  background-color: var(--medium-grey);
+  border-color: var(--medium-grey);
+  color: var(--darker-grey);
 }
 .btn-light:not(:disabled):not(.disabled):active,
 .btn-light:not(:disabled):not(.disabled).active,
-.show > .btn-light.dropdown-toggle {
-  background-color: var(--minus10-light-bg-color);
-  border-color: var(--minus10-light-bg-color);
-  color: var(--dark-text);
-}
-.btn-light:not(:disabled):not(.disabled):active:focus,
-.btn-light:not(:disabled):not(.disabled).active:focus,
-.show > .btn-light.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem var(--minus10-light-bg-color);
-  color: var(--dark-text);
-}
-
-.btn-dark {
-  background-color: var(--dark-bg-color);
-  border-color: var(--minus10-dark-bg-color);
-  color: var(--light-text);
-}
-.btn-dark:hover {
-  background-color: var(--minus10-dark-bg-color);
-  color: var(--light-text);
-}
-.btn-dark:focus,
-.btn-dark.focus {
-  background-color: var(--dark-bg-color);
-  border-color: var(--dark-bg-color);
-  box-shadow: 0 0 0 0.2rem var(--minus10-dark-bg-color);
-  color: var(--light-text);
-}
-.btn-dark.disabled,
-.btn-dark:disabled {
-  background-color: var(--minus20-dark-bg-color);
-  color: var(--light-text);
-}
+.show > .btn-light.dropdown-toggle,
 .btn-dark:not(:disabled):not(.disabled):active,
 .btn-dark:not(:disabled):not(.disabled).active,
-.show > .btn-dark.dropdown-toggle {
-  color: var(--white-text);
-  background-color: var(--minus10-dark-bg-color);
-  border-color: var(--minus10-dark-bg-color);
-  color: var(--light-text);
-}
-.btn-dark:not(:disabled):not(.disabled):active:focus,
-.btn-dark:not(:disabled):not(.disabled).active:focus,
-.show > .btn-dark.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem var(--minus10-dark-bg-color);
-  color: var(--light-text);
-}
-
-.btn-info {
-  background-color: var(--info-bg-color);
-  border-color: var(--minus10-info-bg-color);
-  color: var(--dark-text);
-}
-.btn-info:hover {
-  background-color: var(--minus10-info-bg-color);
-  color: var(--dark-text);
-}
-.btn-info:focus,
-.btn-info.focus {
-  background-color: var(--info-bg-color);
-  border-color: var(--info-bg-color);
-  box-shadow: 0 0 0 0.2rem var(--minus10-info-bg-color);
-  color: var(--dark-text);
-}
-.btn-info.disabled,
-.btn-info:disabled {
-  background-color: var(--minus20-info-bg-color);
-  color: var(--dark-text);
-}
+.show > .btn-dark.dropdown-toggle,
 .btn-info:not(:disabled):not(.disabled):active,
 .btn-info:not(:disabled):not(.disabled).active,
-.show > .btn-info.dropdown-toggle {
-  color: var(--white-text);
-  background-color: var(--minus10-info-bg-color);
-  border-color: var(--minus10-info-bg-color);
-  color: var(--dark-text);
-}
-.btn-info:not(:disabled):not(.disabled):active:focus,
-.btn-info:not(:disabled):not(.disabled).active:focus,
-.show > .btn-info.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem var(--minus10-info-bg-color);
-  color: var(--dark-text);
-}
-
-.btn-danger {
-  background-color: var(--danger-bg-color);
-  border-color: var(--minus10-danger-bg-color);
-  color: var(--light-text);
-}
-.btn-danger:hover {
-  background-color: var(--minus10-danger-bg-color);
-  color: var(--light-text);
-}
-.btn-danger:focus,
-.btn-danger.focus {
-  background-color: var(--danger-bg-color);
-  border-color: var(--danger-bg-color);
-  box-shadow: 0 0 0 0.2rem var(--minus10-danger-bg-color);
-  color: var(--light-text);
-}
-.btn-danger.disabled,
-.btn-danger:disabled {
-  background-color: var(--minus20-danger-bg-color);
-  color: var(--light-text);
-}
+.show > .btn-info.dropdown-toggle,
 .btn-danger:not(:disabled):not(.disabled):active,
 .btn-danger:not(:disabled):not(.disabled).active,
 .show > .btn-danger.dropdown-toggle {
-  color: var(--white-text);
-  background-color: var(--minus10-danger-bg-color);
-  border-color: var(--minus10-danger-bg-color);
-  color: var(--light-text);
+  background-color: var(--btn-hover-bg);
+  border-color: var(--btn-hover-bg);
+  color: var(--btn-text);
 }
+.btn-light:not(:disabled):not(.disabled):active:focus,
+.btn-light:not(:disabled):not(.disabled).active:focus,
+.show > .btn-light.dropdown-toggle:focus,
+.btn-dark:not(:disabled):not(.disabled):active:focus,
+.btn-dark:not(:disabled):not(.disabled).active:focus,
+.show > .btn-dark.dropdown-toggle:focus,
+.btn-info:not(:disabled):not(.disabled):active:focus,
+.btn-info:not(:disabled):not(.disabled).active:focus,
+.show > .btn-info.dropdown-toggle:focus,
 .btn-danger:not(:disabled):not(.disabled):active:focus,
 .btn-danger:not(:disabled):not(.disabled).active:focus,
 .show > .btn-danger.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem var(--minus10-info-bg-color);
-  color: var(--light-text);
+  box-shadow: 0 0 0 0.2rem var(--btn-hover-bg);
+  color: var(--btn-text);
 }
