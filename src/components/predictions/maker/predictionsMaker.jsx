@@ -74,7 +74,7 @@ const PredictionMaker = ({
   useEffect(() => {
     if (!predictions.playoffMatches.length) return;
     const rounds = new Set(predictions.playoffMatches.map((m) => m.round)).size;
-    setBracketIsPortrait(isMobile || rounds <= 2);
+    setBracketIsPortrait(isMobile || rounds < 2);
   }, [predictions.playoffMatches]);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
 

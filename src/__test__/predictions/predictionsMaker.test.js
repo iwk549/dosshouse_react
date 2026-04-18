@@ -80,12 +80,13 @@ const renderWithProps = async (props = {}, mocks = {}, user = null) => {
 describe("PredictionsMaker", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    Object.assign(window, { innerWidth: 1200 });
   });
 
   describe("Prediction Actions", () => {
     it("should render the basics with no error if no data returned", async () => {
       await renderWithProps();
-      expect(screen.queryByText("Go Back")).toBeInTheDocument();
+      expect(screen.queryByText("All Submissions")).toBeInTheDocument();
       expect(screen.queryByText("Name this Submission")).toBeInTheDocument();
       expect(screen.queryByText("See What's Missing")).toBeInTheDocument();
       expect(screen.queryByText("Prediction Saved")).toBeInTheDocument();
@@ -94,7 +95,7 @@ describe("PredictionsMaker", () => {
       expect(screen.queryByText("Bonus")).not.toBeInTheDocument();
       expect(screen.queryByText("Information")).toBeInTheDocument();
     });
-    it("should offer to cancel when clicking go back if prediction is not saved", async () => {
+    it("should offer to cancel when clicking All Submissions if prediction is not saved", async () => {
       const { navMock } = await renderWithProps(
         { predictionID: "new", competitionID: "testBracket1" },
         {
@@ -105,11 +106,11 @@ describe("PredictionsMaker", () => {
         user
       );
       changeText(/name this submission/i, "New Name");
-      await clickByText(/go back/i);
+      await clickByText("All Submissions");
       await clickByText("Cancel");
       expect(navMock).toHaveBeenCalledTimes(0);
     });
-    it("should offer to go back without saving when clicking go back if prediction is not saved", async () => {
+    it("should offer to leave without saving when clicking All Submissions if prediction is not saved", async () => {
       const { navMock } = await renderWithProps(
         { predictionID: "new", competitionID: "testBracket1" },
         {
@@ -120,13 +121,13 @@ describe("PredictionsMaker", () => {
         user
       );
       changeText(/name this submission/i, "New Name");
-      await clickByText(/go back/i);
-      await clickByText(/go back without saving/i);
+      await clickByText("All Submissions");
+      await clickByText(/go to all submissions without saving/i);
       expect(savePrediction).toHaveBeenCalledTimes(0);
       expect(navMock).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledWith("/submissions");
     });
-    it("should offer to save then go back when clicking go back if prediction is not saved", async () => {
+    it("should offer to save then navigate when clicking All Submissions if prediction is not saved", async () => {
       const { navMock } = await renderWithProps(
         { predictionID: "new", competitionID: "testBracket1" },
         {
@@ -137,8 +138,8 @@ describe("PredictionsMaker", () => {
         user
       );
       changeText(/name this submission/i, "New Name");
-      await clickByText(/go back/i);
-      await clickByText(/save and go back/i);
+      await clickByText("All Submissions");
+      await clickByText(/save and go to all submissions/i);
       expect(savePrediction).toHaveBeenCalledTimes(1);
       expect(navMock).toHaveBeenCalledTimes(2);
       expect(navMock).toHaveBeenCalledWith("/submissions");
