@@ -23,6 +23,7 @@ const StandAloneLogin = () => {
   return (
     <div>
       <RegistrationModalForm
+        header="Change Password"
         isOpen={true}
         setIsOpen={handleResetSuccess}
         selectedTab="reset"

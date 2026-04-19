@@ -47,12 +47,12 @@ class Form extends Component {
     }
   };
 
-  renderValidatedButton(label) {
+  renderValidatedButton(label, className = "") {
     return (
       <button
         name={label}
         disabled={this.validate()}
-        className="btn btn-md btn-dark"
+        className={`btn btn-md btn-dark${className ? " " + className : ""}`}
       >
         {label}
       </button>

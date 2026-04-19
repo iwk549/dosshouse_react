@@ -69,11 +69,7 @@ const MatchesModal = ({
     <BasicModal
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
-      header={
-        <h3 className="text-center">
-          <b>{header}</b>
-        </h3>
-      }
+      header={<div className="standout-header">{header}</div>}
     >
       <Table
         columns={columns}

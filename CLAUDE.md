@@ -92,6 +92,6 @@ npm run test:all     # All tests with coverage, no watch (CI mode)
 - **Service layer**: Every API resource has a service file in `src/services/`. Components call service functions, never axios directly.
 - **State**: Context (`loadingContext`) for global user/loading state; `useReducer` for complex local state (e.g., prediction maker); `useState` for UI state.
 - **Forms**: Custom form components in `components/common/form/`; Joi for validation; manual state via useState.
-- **Styling**: Global CSS files imported in `index.js`; class-based with Bootstrap-like naming (`btn btn-sm btn-info`). Responsive via `useWindowDimensions` hook.
+- **Styling**: Global CSS files imported in `index.js`; class-based with Bootstrap-like naming (`btn btn-sm btn-info`). Responsive via `useWindowDimensions` hook. Avoid inline styles — add CSS classes instead.
 - **Toasts**: Use react-toastify for user feedback on API success/errors.
 - **Legacy code**: `components/activeSites/` and `components/spotifyApi/` are unrouted legacy features — do not modify or add to them.

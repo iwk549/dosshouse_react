@@ -1,3 +1,16 @@
+.btn-top-margin {
+  margin-top: 16px;
+}
+
+.registration-form {
+  margin-top: 16px;
+}
+
+.forgot-link-row {
+  text-align: right;
+  margin-bottom: 4px;
+}
+
 .custom-alert {
   color: var(--dark-text);
   border-radius: 5px;
@@ -420,8 +433,8 @@
 }
 .modal-close-btn {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -20px;
+  right: -20px;
   background: none;
   border: none;
   cursor: pointer;

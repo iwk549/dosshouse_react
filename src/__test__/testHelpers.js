@@ -12,20 +12,22 @@ jest.mock("react-router-dom", () => {
 });
 
 export function renderWithContext(Component, props, user, path = "/") {
+  const setUser = jest.fn();
   render(
     <MemoryRouter initialEntries={[path]}>
       <LoadingContext.Provider
         value={{
           loading: false,
           setLoading: jest.fn(),
+          setUser,
           user,
         }}
       >
         <Component {...props} />
       </LoadingContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
-  return { navMock: mockNav };
+  return { navMock: mockNav, setUser };
 }
 
 export function apiResponse(data, status = 200) {
