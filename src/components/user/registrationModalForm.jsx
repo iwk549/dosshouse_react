@@ -24,6 +24,7 @@ class RegistrationModalForm extends Form {
     },
     errors: {},
     selectedTab: titleCase(this.props.selectedTab) || "Register",
+    resetCooldown: 0,
   };
 
   schema = {
@@ -31,7 +32,7 @@ class RegistrationModalForm extends Form {
     email: Joi.string().required().email().label("Email"),
     password: Joi.string().required().min(8).max(100).label("Password"),
   };
-  tabs = this.props.reset ? ["Reset"] : ["Register", "Login"];
+  tabs = this.props.reset ? ["Reset"] : ["Register", "Login", "Forgot"];
 
   constructor(props) {
     super(props);
@@ -94,10 +95,29 @@ class RegistrationModalForm extends Form {
       return toast.info("Enter your email address to request a password reset");
     this.context.setLoading(true);
     const res = await requestPasswordReset(this.state.data.email);
-    if (res.status === 200) toast.success(res.data);
-    else toast.error(res.data);
+    if (res.status === 200) {
+      toast.success(res.data);
+      this.startResetCooldown();
+    } else toast.error(res.data);
     this.context.setLoading(false);
   };
+
+  startResetCooldown = () => {
+    this.setState({ resetCooldown: 45 });
+    this._cooldownInterval = setInterval(() => {
+      this.setState((prev) => {
+        if (prev.resetCooldown <= 1) {
+          clearInterval(this._cooldownInterval);
+          return { resetCooldown: 0 };
+        }
+        return { resetCooldown: prev.resetCooldown - 1 };
+      });
+    }, 1000);
+  };
+
+  componentWillUnmount() {
+    clearInterval(this._cooldownInterval);
+  }
 
   async handleGoogleLogin(response) {
     this.context.setLoading(true);
@@ -133,7 +153,7 @@ class RegistrationModalForm extends Form {
             onSelectTab={this.setSelectedTab}
           />
           <div className="text-center">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className="registration-form">
               {this.state.selectedTab === "Register"
                 ? this.renderInput("name", "Name", "autofocus")
                 : null}
@@ -142,28 +162,35 @@ class RegistrationModalForm extends Form {
                 "Email",
                 this.state.selectedTab === "Login",
               )}
-              {this.renderInput(
-                "password",
-                "Password",
-                this.state.reset ? "autofocus" : "",
-                "password",
-              )}
-              {this.renderValidatedButton(titleCase(this.state.selectedTab))}
-              <br />
-              <br />
+              {this.state.selectedTab !== "Forgot" &&
+                this.renderInput(
+                  "password",
+                  "Password",
+                  this.state.reset ? "autofocus" : "",
+                  "password",
+                )}
               {this.state.selectedTab === "Login" && (
-                <>
-                  <p>
-                    Enter your email address and click the button below to
-                    request a password reset
-                  </p>
-                  <button
-                    className="btn btn-block btn-info"
-                    onClick={this.handleResetRequest}
+                <div className="forgot-link-row">
+                  <span
+                    className="view-switch-link"
+                    onClick={() => this.setSelectedTab("Forgot")}
                   >
-                    Forgot Password?
-                  </button>
-                </>
+                    Forgot password?
+                  </span>
+                </div>
+              )}
+              {this.state.selectedTab === "Forgot" ? (
+                <button
+                  className="btn btn-info btn-top-margin"
+                  onClick={this.handleResetRequest}
+                  disabled={this.state.resetCooldown > 0}
+                >
+                  {this.state.resetCooldown > 0
+                    ? `Resend in ${this.state.resetCooldown}s`
+                    : "Send Reset Email"}
+                </button>
+              ) : (
+                this.renderValidatedButton(titleCase(this.state.selectedTab))
               )}
             </form>
           </div>
