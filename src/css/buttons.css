@@ -10,14 +10,14 @@
   margin-left: 5px;
 }
 
-.pill-sort {
+.pill-group {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   padding: 6px 12px;
 }
 
-.pill-sort-btn {
+.pill-btn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -31,9 +31,20 @@
   white-space: nowrap;
 }
 
-.pill-sort-btn.active {
+.pill-btn.active {
   background-color: var(--dark-bg-color);
   border-color: var(--dark-bg-color);
+  color: var(--light-text);
+}
+
+.pill-btn.filter {
+  border-color: var(--minus10-info-bg-color);
+  background-color: var(--info-bg-color);
+}
+
+.pill-btn.filter.active {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
   color: var(--light-text);
 }
 

@@ -5,6 +5,8 @@ import { Route, Routes, Navigate } from "react-router-dom";
 // import Home from "./home/home";
 // import SpotifyMain from "./spotifyApi/spotifyMain";
 import PredictionsRedirect from "./predictions/predictionsRedirect";
+import AdminHome from "./admin/adminHome";
+import AdminRoute from "./common/routing/adminRoute";
 import Profile from "./user/profile";
 import StandAloneLogin from "./user/standAloneLogin";
 import TipJarThankYou from "./tipJar/tipJarThankYou";
@@ -21,6 +23,7 @@ const SwitchRouter = () => {
           path="/submissions"
           element={<PredictionsRedirect page="submissions" />}
         />
+        <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<StandAloneLogin />} />
         <Route path="/thankyou" element={<TipJarThankYou />} />

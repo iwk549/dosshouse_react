@@ -15,9 +15,10 @@ const Navbar = () => {
 
   const links = [
     // { to: "/home", icon: "home", label: "Home" },
-    ...(user ? [{ to: "/profile", icon: "profile", label: "Account" }] : []),
     { to: "/competitions", icon: "prediction", label: "Competitions" },
     { to: "/submissions", icon: "submission", label: "Submissions" },
+    ...(user ? [{ to: "/profile", icon: "profile", label: "Account" }] : []),
+    ...(user?.role === "admin" ? [{ to: "/admin", icon: "settings", label: "Admin" }] : []),
     {
       to: "https://blog.picker.ultimatescoreboard.com",
       icon: "blog",
