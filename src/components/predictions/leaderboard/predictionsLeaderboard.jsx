@@ -161,7 +161,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         groupInfo={groupInfo || { name: "Sitewide" }}
         setInviteOpen={setInviteOpen}
       />
-      {competition.secondChance && (
+      {competition.secondChance && !groupInfo && (
         <span
           key="switch"
           className="view-switch-link"

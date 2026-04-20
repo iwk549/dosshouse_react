@@ -78,7 +78,7 @@ const LeaderboardViewPredictionModal = ({
               <b>{prediction.totalPicks}</b> correct picks
             </span>
           </div>
-          {groupInfo?.ownerID?._id === user?._id && (
+          {user && groupInfo?.ownerID?._id === user?._id && (
             <button
               className="btn btn-sm btn-danger"
               onClick={() => {

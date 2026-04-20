@@ -66,7 +66,7 @@ const LeaderboardTable = ({
       label: "Total",
       content: (p) => (
         <>
-          {p.totalPoints || 0}
+          <span style={{ fontWeight: 700, fontSize: "1.1em" }}>{p.totalPoints || 0}</span>
           <span className="picks-badge">{p.totalPicks || 0} ✓</span>
         </>
       ),
@@ -117,7 +117,14 @@ const LeaderboardTable = ({
     {
       path: "points.champion.points",
       label: "Champion",
-      content: (p) => `${p.points?.champion?.points || 0}`,
+      content: (p) => (
+        <>
+          {p.points?.champion?.points || 0}
+          <span className="picks-badge">
+            {p.points?.champion?.points ? 1 : 0} ✓
+          </span>
+        </>
+      ),
     },
   ];
 

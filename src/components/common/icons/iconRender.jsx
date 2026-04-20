@@ -8,6 +8,7 @@ import {
   BiSave,
   BiRename,
   BiSearchAlt,
+  BiRefresh,
 } from "react-icons/bi";
 import { BsSpotify, BsCaretUpFill, BsCaretDownFill } from "react-icons/bs";
 import {
@@ -30,6 +31,8 @@ import {
   MdOutlineLocationOn,
   MdCalendarToday,
   MdCancel,
+  MdCheckBox,
+  MdCheckBoxOutlineBlank,
 } from "react-icons/md";
 import { RiUserSettingsLine, RiUserFill } from "react-icons/ri";
 import { VscThreeBars } from "react-icons/vsc";
@@ -41,6 +44,8 @@ const icons = {
   cancel: MdCancel,
   check: IoMdCheckmark,
   checkmark: BiCheckDouble,
+  checkbox: MdCheckBox,
+  checkboxEmpty: MdCheckBoxOutlineBlank,
   close: FaWindowClose,
   delete: MdDeleteSweep,
   down: BsCaretDownFill,
@@ -57,6 +62,7 @@ const icons = {
   prediction: MdOutlineBatchPrediction,
   profile: RiUserSettingsLine,
   ranking: FaSortAmountUp,
+  refresh: BiRefresh,
   remove: MdOutlineRemoveCircle,
   right: FaCaretRight,
   save: BiSave,

@@ -21,6 +21,7 @@ ReactGA.initialize("G-TJW8WX427W");
 function App() {
   let navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
   const [user, setUser] = useState(null);
 
   const setCurrentUser = () => {
@@ -30,6 +31,7 @@ function App() {
   const refresh = async () => {
     await refreshUser();
     setCurrentUser();
+    setInitialized(true);
   };
 
   useEffect(() => {
@@ -92,6 +94,7 @@ function App() {
         value={{
           loading,
           setLoading: handleUpdateLoading,
+          initialized,
           user,
           setUser: setCurrentUser,
         }}

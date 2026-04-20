@@ -18,6 +18,7 @@ export function renderWithContext(Component, props, user, path = "/") {
       <LoadingContext.Provider
         value={{
           loading: false,
+          initialized: true,
           setLoading: jest.fn(),
           setUser,
           user,

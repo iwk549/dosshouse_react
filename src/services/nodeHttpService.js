@@ -38,5 +38,6 @@ export default {
   groups: "/groups",
   results: "/results",
   versions: "/versions",
+  admin: "/admin",
   setJwt,
 };
