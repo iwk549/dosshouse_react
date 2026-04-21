@@ -19,8 +19,10 @@ const BracketPicker = ({
   isPortrait,
   setIsPortrait,
   originalPlayoffMatches,
+  availableWidth,
 }) => {
   let { isSuperSmall, width, superSmallWidth } = useWindowDimensions();
+  if (availableWidth) width = availableWidth;
   const numRounds = new Set(matches.map((m) => m.round)).size;
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [matchesOpen, setMatchesOpen] = useState(false);
