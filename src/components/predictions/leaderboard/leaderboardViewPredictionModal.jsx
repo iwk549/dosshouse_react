@@ -127,6 +127,7 @@ const LeaderboardViewPredictionModal = ({
                 isPortrait={orientation}
                 setIsPortrait={setOrientation}
                 originalPlayoffMatches={originalMatches}
+                availableWidth={Math.min(width, 900)}
               />
             ) : isTab("bonus") ? (
               <Miscellaneous
