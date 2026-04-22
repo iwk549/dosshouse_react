@@ -103,7 +103,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
             (m) => m.key === group.split(".")[1],
           );
           const order = getGroupNameFromSpecialGroup(groups[groupMatrix.key])
-            .slice(0, groupMatrix.teamsToIncludeInBracket)
+            ?.slice(0, groupMatrix.teamsToIncludeInBracket)
             .sort()
             .join("");
           const actualMatchNumber =
