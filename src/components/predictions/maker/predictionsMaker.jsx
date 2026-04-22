@@ -375,6 +375,7 @@ const PredictionMaker = ({
             competition={predictions.competition}
             allTeams={allTeams}
             isLocked={predictions.isLocked}
+            isSecondChance={isSecondChance}
           />
         ) : isTab("info") ? (
           <Information competition={predictions.competition} />
