@@ -33,6 +33,7 @@ import {
   MdCancel,
   MdCheckBox,
   MdCheckBoxOutlineBlank,
+  MdDownload,
 } from "react-icons/md";
 import { RiUserSettingsLine, RiUserFill } from "react-icons/ri";
 import { VscThreeBars } from "react-icons/vsc";
@@ -49,6 +50,7 @@ const icons = {
   close: FaWindowClose,
   delete: MdDeleteSweep,
   down: BsCaretDownFill,
+  download: MdDownload,
   drag: FaGripLines,
   home: BiHome,
   left: FaCaretLeft,

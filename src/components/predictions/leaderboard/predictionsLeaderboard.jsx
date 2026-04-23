@@ -177,6 +177,13 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
             Group Owner: <b>{groupInfo?.ownerID?.name}</b>
           </div>
         )}
+        {competition.name && (
+          <div className="fine-print">
+            {competition.lastCalculated
+              ? `Last calculated: ${new Date(competition.lastCalculated).toLocaleString()}`
+              : "Standings not yet calculated"}
+          </div>
+        )}
         {groupInfo?.ownerID && groupInfo?.ownerID._id === user?._id && (
           <button
             className="btn btn-sm btn-dark"
@@ -253,7 +260,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           onUpdateResultsPerPage={(selection) => loadLeaderboard(1, selection)}
         />
       )}
-      <div className="fine-print">
+      <div className="fine-print" style={{ marginTop: "24px" }}>
         <b>Potential Points (pot)</b>: the maximum total points a submission
         could finish with if every remaining pick goes their way. Only
         calculated once the group stage is complete.

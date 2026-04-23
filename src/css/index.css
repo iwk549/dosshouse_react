@@ -54,6 +54,9 @@ code {
 .text-center {
   text-align: center;
 }
+.text-right {
+  text-align: right;
+}
 
 .dark-bg {
   background-color: var(--secondary);

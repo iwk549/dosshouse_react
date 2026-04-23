@@ -7,3 +7,11 @@ export async function getResult(competitionID) {
     return ex.response;
   }
 }
+
+export async function calculateCompetition(code) {
+  try {
+    return await http.post(http.results + "/calculate/" + code);
+  } catch (ex) {
+    return ex.response;
+  }
+}
