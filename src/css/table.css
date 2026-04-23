@@ -76,3 +76,26 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+.table-full-width {
+  width: 100%;
+}
+.table-row.expanded-sub {
+  background-color: var(--muted-bg-color);
+}
+.table-cell.expanded-name {
+  padding-left: 24px;
+  border-left: 3px solid var(--secondary);
+  font-size: 0.9em;
+}
+.table-cell.expanded-points {
+  text-align: right;
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.table-cell.expanded-user {
+  text-align: right;
+  color: var(--darker-grey);
+  font-size: 0.9em;
+  white-space: nowrap;
+}

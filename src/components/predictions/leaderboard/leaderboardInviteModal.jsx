@@ -22,14 +22,10 @@ const LeaderboardInviteModal = ({ isOpen, setIsOpen, group, competition }) => {
     <BasicModal
       isOpen={isOpen}
       onClose={setIsOpen}
-      header={
-        <h3>
-          <b>{group.name}</b>
-        </h3>
-      }
+      header={<div className="standout-header">{group.name}</div>}
     >
       <button className="btn btn-block btn-info" onClick={copyInviteLink}>
-        Copy Link to Clipboard
+        Copy Invite Link to Clipboard
       </button>
     </BasicModal>
   );

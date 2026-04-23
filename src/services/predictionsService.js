@@ -135,6 +135,28 @@ export async function forceRemovePredictionFromGroup(predictionID, group) {
   }
 }
 
+export async function getTeamEliminations(
+  competitionID,
+  groupID,
+  team,
+  isSecondChance
+) {
+  try {
+    return await http.get(
+      http.predictions +
+        "/leaderboard/" +
+        competitionID +
+        "/eliminations/" +
+        groupID +
+        "/" +
+        encodeURIComponent(team) +
+        `?secondChance=${isSecondChance}`
+    );
+  } catch (ex) {
+    return ex.response;
+  }
+}
+
 export async function getSubmissionsByMisc(competitionID, key, team) {
   try {
     return await http.get(

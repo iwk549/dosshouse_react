@@ -1,3 +1,7 @@
+export function submissionDeadlinePassed(competition) {
+  return new Date(competition.submissionDeadline) <= new Date();
+}
+
 export function submissionsMadeByCompetition(allPredictions) {
   let submissions = {};
   allPredictions.forEach((p) => {
