@@ -1,8 +1,10 @@
 import { useState } from "react";
 import SegmentedControl from "../common/pageSections/segmentedControl";
 import AdminUsers from "./adminUsers";
+import AdminTools from "./adminTools";
+import AdminCompetitions from "./adminCompetitions";
 
-const tabs = ["Users"];
+const tabs = ["Competitions", "Users", "Tools"];
 
 const AdminHome = () => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -17,6 +19,8 @@ const AdminHome = () => {
           onSelectTab={setSelectedTab}
         />
         <div className="content-box">
+          {selectedTab === "Tools" && <AdminTools />}
+          {selectedTab === "Competitions" && <AdminCompetitions />}
           {selectedTab === "Users" && <AdminUsers />}
         </div>
       </div>

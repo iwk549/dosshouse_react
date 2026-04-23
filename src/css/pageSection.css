@@ -139,6 +139,47 @@
 .competition-card-body {
   padding: 16px 20px;
 }
+.competition-card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.competition-card-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85em;
+  margin-top: 4px;
+}
+.competition-card-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0 16px;
+}
+.competition-card-section {
+  border-top: 1px solid var(--light-grey);
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.competition-card-section-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: gray;
+  margin-bottom: 6px;
+}
+.competition-card-section-empty {
+  color: gray;
+  font-size: 0.9em;
+}
+.competition-card-load-btn {
+  margin-top: 14px;
+  text-align: right;
+}
+.pull-to-load {
+  color: gray;
+  font-size: 0.85em;
+  font-style: italic;
+}
 .champion-display {
   padding: 6px 0 14px;
   text-align: center;
@@ -202,6 +243,9 @@
   align-items: center;
   padding: 6px 0;
   border-bottom: 1px solid var(--light-grey);
+}
+.info-line.no-border {
+  border-bottom: none;
 }
 .info-line-label {
   color: var(--darker-grey);
