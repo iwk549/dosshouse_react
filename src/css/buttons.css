@@ -52,6 +52,7 @@
   border-radius: 5px;
   cursor: pointer;
   padding: 4px 12px;
+  margin: 5px;
   transition:
     background-color 150ms ease,
     border-color 150ms ease,

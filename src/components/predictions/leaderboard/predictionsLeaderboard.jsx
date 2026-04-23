@@ -14,16 +14,20 @@ import LeaderboardInviteModal from "./leaderboardInviteModal";
 import { getMatches } from "../../../services/matchService";
 import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
-import GroupInfo from "./groupInfo";
+import TeamSelectComponent from "../maker/teamSelectComponent";
 import { getResult } from "../../../services/resultsService";
 import Confirm from "../../common/modal/confirm";
 import BonusPickInfo from "./bonusPickInfo";
 import IconRender from "../../common/icons/iconRender";
 import DualNavLink from "../../common/pageSections/dualNavLink";
+import { submissionDeadlinePassed } from "../../../utils/competitionsUtil";
+import logos from "../../../textMaps/logos";
+import { findCountryLogo } from "../../../utils/predictionsUtil";
+import LeaderboardTeamEliminationsModal from "./leaderboardTeamEliminationsModal";
 
 const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   let navigate = useNavigate();
-  const { setLoading } = useContext(LoadingContext);
+  const { setLoading, user } = useContext(LoadingContext);
   const [leaderboard, setLeaderboard] = useState([]);
   const [groupInfo, setGroupInfo] = useState(null);
   const [competition, setCompetition] = useState([]);
@@ -41,6 +45,9 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   const [forceRemoveOpen, setForceRemoveOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [bonusPicksOpen, setBonusPicksOpen] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [teamEliminationsOpen, setTeamEliminationsOpen] = useState(false);
+  const [teamEliminations, setTeamEliminations] = useState([]);
 
   const loadLeaderboard = async (
     selectedPage,
@@ -92,7 +99,11 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
         if (!allTeams.includes(m.awayTeamName)) allTeams.push(m.awayTeamName);
       });
       setOriginalMatches(playoffMatches);
-      setAllTeams(allTeams);
+      // Filter to teams with a logo entry — matches data includes placeholder
+      // names (e.g. "Winner Group A") that should not appear in the team picker.
+      // Every real competing nation must have a logo; if a team is missing one,
+      // add it to logos.js rather than relaxing this filter.
+      setAllTeams(allTeams.filter((t) => logos[findCountryLogo(t)]));
       if (competitionRes.status === 200) {
         setCompetition(competitionRes.data);
         if (resultRes && resultRes.status === 200) {
@@ -157,10 +168,37 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           </div>
         )}
       </div>
-      <GroupInfo
-        groupInfo={groupInfo || { name: "Sitewide" }}
-        setInviteOpen={setInviteOpen}
-      />
+      <div>
+        <div className="standout-header sub">
+          {(groupInfo || { name: "Sitewide" })?.name} Leaderboard
+        </div>
+        {groupInfo?.ownerID?.name && (
+          <div>
+            Group Owner: <b>{groupInfo?.ownerID?.name}</b>
+          </div>
+        )}
+        {groupInfo?.ownerID && groupInfo?.ownerID._id === user?._id && (
+          <button
+            className="btn btn-sm btn-dark"
+            onClick={() => setInviteOpen(true)}
+          >
+            Invite Users
+          </button>
+        )}
+        {allTeams.length > 0 && submissionDeadlinePassed(competition) && (
+          <TeamSelectComponent
+            teams={allTeams.map((t) => ({ value: t }))}
+            onSelect={(team) => {
+              setSelectedTeam(team);
+              setTeamEliminations([]);
+              setTeamEliminationsOpen(true);
+            }}
+            title="View Team Eliminations"
+            subtitle={`Select a team to view the breakdown of predicted elimination rounds across all ${groupInfo ? groupInfo.name + " " : ""}submissions`}
+            compact
+          />
+        )}
+      </div>
       {competition.secondChance && !groupInfo && (
         <span
           key="switch"
@@ -263,6 +301,20 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           this group you should change the group passcode.
         </Confirm>
       )}
+      <LeaderboardTeamEliminationsModal
+        isOpen={teamEliminationsOpen}
+        setIsOpen={(val) => {
+          setTeamEliminationsOpen(val);
+          if (!val) setSelectedTeam(null);
+        }}
+        team={selectedTeam}
+        competitionID={competitionID}
+        groupID={groupID}
+        groupName={groupInfo?.name}
+        isSecondChance={isSecondChance}
+        eliminations={teamEliminations}
+        onSetEliminations={setTeamEliminations}
+      />
       {groupInfo && (
         <LeaderboardInviteModal
           isOpen={inviteOpen}

@@ -6,6 +6,7 @@ import {
   searchLeaderboard,
   getUnownedPrediction,
   forceRemovePredictionFromGroup,
+  getTeamEliminations,
 } from "../../services/predictionsService";
 import {
   competition,
@@ -38,6 +39,7 @@ jest.mock("../../services/predictionsService", () => ({
   searchLeaderboard: jest.fn(),
   getUnownedPrediction: jest.fn(),
   forceRemovePredictionFromGroup: jest.fn(),
+  getTeamEliminations: jest.fn(),
 }));
 
 const renderWithProps = async (mocks = {}, props = {}, user = null) => {
@@ -84,6 +86,12 @@ const renderWithProps = async (mocks = {}, props = {}, user = null) => {
     apiResponse(
       mocks?.forceRemovePredictionFromGroup?.data || null,
       mocks.forceRemovePredictionFromGroup?.status || 200,
+    ),
+  );
+  getTeamEliminations.mockReturnValue(
+    apiResponse(
+      mocks?.getTeamEliminations?.data || [],
+      mocks.getTeamEliminations?.status || 200,
     ),
   );
 
@@ -185,7 +193,7 @@ describe("PredictionsLeaderboard", () => {
         user,
       );
       await clickByText("Invite Users");
-      await clickByText(/copy link/i);
+      await clickByText(/copy invite link/i);
       expect(writeToClipboardMock).toHaveBeenCalledTimes(1);
       expect(writeToClipboardMock).toHaveBeenCalledWith(
         expect.stringContaining("testlink"),
@@ -213,6 +221,127 @@ describe("PredictionsLeaderboard", () => {
         prediction._id,
         groupInfo,
       );
+    });
+  });
+
+  describe("Team Eliminations", () => {
+    const pastDeadlineCompetition = {
+      ...competition,
+      submissionDeadline: "2020-01-01T00:00:00.000Z",
+    };
+    // Real country names required — teams without a logo entry are filtered out
+    const teamMatches = [
+      { type: "Group", homeTeamName: "Argentina", awayTeamName: "Brazil" },
+      { type: "Playoff", homeTeamName: "Argentina", awayTeamName: "Brazil" },
+    ];
+    const eliminationsData = [
+      {
+        _id: "e1",
+        name: "My Picks",
+        userID: { name: "Alice" },
+        totalPoints: 42,
+        eliminationRound: "Semi Final",
+      },
+      {
+        _id: "e2",
+        name: "Her Picks",
+        userID: { name: "Bob" },
+        totalPoints: 38,
+        eliminationRound: "Semi Final",
+      },
+      {
+        _id: "e3",
+        name: "His Picks",
+        userID: { name: "Carol" },
+        totalPoints: 20,
+        eliminationRound: "Quarter Final",
+      },
+    ];
+
+    it("should not show the button before the submission deadline", async () => {
+      await renderWithProps({
+        getMatches: { data: teamMatches },
+      });
+      expect(
+        screen.queryByText("View Team Eliminations"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("should show the button after the submission deadline", async () => {
+      await renderWithProps({
+        getCompetition: { data: pastDeadlineCompetition },
+        getMatches: { data: teamMatches },
+      });
+      expect(
+        screen.queryByText("View Team Eliminations"),
+      ).toBeInTheDocument();
+    });
+
+    it("should open the team picker when the button is clicked", async () => {
+      await renderWithProps({
+        getCompetition: { data: pastDeadlineCompetition },
+        getMatches: { data: teamMatches },
+      });
+      await clickByText("View Team Eliminations");
+      expect(screen.queryByText("Argentina")).toBeInTheDocument();
+      expect(screen.queryByText("Brazil")).toBeInTheDocument();
+    });
+
+    it("should fetch eliminations and show the round breakdown when a team is selected", async () => {
+      await renderWithProps(
+        {
+          getCompetition: { data: pastDeadlineCompetition },
+          getMatches: { data: teamMatches },
+          getTeamEliminations: { data: eliminationsData },
+        },
+        { competitionID: pastDeadlineCompetition._id, groupID: "all" },
+      );
+      await clickByText("View Team Eliminations");
+      await clickByText("Argentina");
+      expect(getTeamEliminations).toHaveBeenCalledTimes(1);
+      expect(getTeamEliminations).toHaveBeenCalledWith(
+        pastDeadlineCompetition._id,
+        "all",
+        "Argentina",
+        undefined,
+      );
+      expect(screen.queryByText("Semi Final")).toBeInTheDocument();
+      expect(screen.queryByText("Quarter Final")).toBeInTheDocument();
+    });
+
+    it("should expand submissions when a round row is clicked", async () => {
+      await renderWithProps(
+        {
+          getCompetition: { data: pastDeadlineCompetition },
+          getMatches: { data: teamMatches },
+          getTeamEliminations: { data: eliminationsData },
+        },
+        { competitionID: pastDeadlineCompetition._id, groupID: "all" },
+      );
+      await clickByText("View Team Eliminations");
+      await clickByText("Argentina");
+      expect(screen.queryByText("My Picks")).not.toBeInTheDocument();
+      await clickByText("Semi Final");
+      expect(screen.queryByText("My Picks")).toBeInTheDocument();
+      expect(screen.queryByText("Her Picks")).toBeInTheDocument();
+      expect(screen.queryByText("His Picks")).not.toBeInTheDocument();
+    });
+
+    it("should collapse submissions when the same round row is clicked again", async () => {
+      await renderWithProps(
+        {
+          getCompetition: { data: pastDeadlineCompetition },
+          getMatches: { data: teamMatches },
+          getTeamEliminations: { data: eliminationsData },
+        },
+        { competitionID: pastDeadlineCompetition._id, groupID: "all" },
+      );
+      await clickByText("View Team Eliminations");
+      await clickByText("Argentina");
+      await clickByText("Semi Final");
+      expect(screen.queryByText("My Picks")).toBeInTheDocument();
+      await clickByText("Semi Final");
+      expect(screen.queryByText("My Picks")).not.toBeInTheDocument();
     });
   });
 

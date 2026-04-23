@@ -13,6 +13,8 @@ const TeamSelectComponent = ({
   isLocked,
   title,
   children,
+  compact,
+  subtitle,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,38 +25,57 @@ const TeamSelectComponent = ({
 
   return (
     <>
-      <div className={"single-card light-bg"}>
-        <div
-          className={isLocked ? "" : " clickable"}
-          onClick={() => setIsOpen(!isLocked)}
-        >
-          <h3>
-            <b>{title}</b>
-          </h3>
-          {selectedOption ? (
-            <>
-              <ExternalImage
-                uri={logos[findCountryLogo(selectedOption)]}
-                height={30}
-                width="auto"
-              />
+      {compact ? (
+        <button className="btn btn-sm btn-info" onClick={() => setIsOpen(true)}>
+          {title}
+        </button>
+      ) : (
+        <div className={"competition-card"}>
+          <div
+            className={"competition-card-header active" + (isLocked ? "" : " clickable")}
+            onClick={() => setIsOpen(!isLocked)}
+          >
+            <h2>{title}</h2>
+          </div>
+          <div
+            className={
+              "competition-card-body " + (isLocked ? "" : " clickable")
+            }
+            onClick={() => setIsOpen(!isLocked)}
+          >
+            {selectedOption ? (
+              <>
+                <ExternalImage
+                  uri={logos[findCountryLogo(selectedOption)]}
+                  height={30}
+                  width="auto"
+                />
+                <p>
+                  <b>{selectedOption}</b>
+                </p>
+              </>
+            ) : !isLocked ? (
+              <p>Tap to make your selection</p>
+            ) : (
               <p>
-                <b>{selectedOption}</b>
+                Not selected
+                <br />
+                <br />
+                <b>Selection Locked</b>
               </p>
-            </>
-          ) : (
-            !isLocked && <p>Tap to make your selection</p>
-          )}
+            )}
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
+      )}
       <BasicModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         header={
-          <h3>
-            <b>{title}</b>
-          </h3>
+          <>
+            <div className="standout-header">{title}</div>
+            {subtitle && <p>{subtitle}</p>}
+          </>
         }
       >
         {teams.map((team, idx) => (
