@@ -83,6 +83,9 @@ export const findCountryLogo = (teamName) => {
   return countryLogo;
 };
 
+export const filterRealTeams = (teams) =>
+  teams.filter((t) => logos[findCountryLogo(t)]);
+
 const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
   let newPlayoffMatches = [];
   let newPlayoffs = [];
@@ -420,6 +423,13 @@ export function predictionReducer(state, action) {
       action.playoffMatches,
     );
     groups = populated.groups;
+    if (action.competition?.groupMatrix?.length) {
+      const rankingGroups = handleUpdateSpecialMatrices(
+        action.competition,
+        groups,
+      );
+      Object.assign(groups, rankingGroups);
+    }
     playoffs = populated.playoffs;
     playoffMatches = populated.playoffMatches;
     isSaved = true;

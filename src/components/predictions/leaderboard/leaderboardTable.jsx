@@ -66,7 +66,9 @@ const LeaderboardTable = ({
       label: "Total",
       content: (p) => (
         <>
-          <span style={{ fontWeight: 700, fontSize: "1.1em" }}>{p.totalPoints || 0}</span>
+          <span style={{ fontWeight: 700, fontSize: "1.1em" }}>
+            {p.totalPoints || 0}
+          </span>
           <span className="picks-badge">{p.totalPicks || 0} ✓</span>
         </>
       ),
@@ -129,7 +131,7 @@ const LeaderboardTable = ({
   ];
 
   if (!isSecondChance) {
-    columns.splice(6, 0, {
+    columns.splice(5, 0, {
       path: "points.group.points",
       label: "Group Stage",
       content: (p) => (

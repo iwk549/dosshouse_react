@@ -14,6 +14,7 @@ const TeamSelectComponent = ({
   title,
   children,
   compact,
+  singleTeam,
   subtitle,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +30,11 @@ const TeamSelectComponent = ({
         <button className="btn btn-sm btn-info" onClick={() => setIsOpen(true)}>
           {title}
         </button>
+      ) : singleTeam ? (
+        <SingleTeamView
+          teamName={selectedOption || title}
+          onSelect={() => setIsOpen(true)}
+        />
       ) : (
         <div className={"competition-card"}>
           <div
