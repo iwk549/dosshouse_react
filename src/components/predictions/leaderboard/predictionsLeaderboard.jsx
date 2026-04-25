@@ -21,8 +21,7 @@ import BonusPickInfo from "./bonusPickInfo";
 import IconRender from "../../common/icons/iconRender";
 import DualNavLink from "../../common/pageSections/dualNavLink";
 import { submissionDeadlinePassed } from "../../../utils/competitionsUtil";
-import logos from "../../../textMaps/logos";
-import { findCountryLogo } from "../../../utils/predictionsUtil";
+import { filterRealTeams } from "../../../utils/predictionsUtil";
 import LeaderboardTeamEliminationsModal from "./leaderboardTeamEliminationsModal";
 
 const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
@@ -103,7 +102,7 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
       // names (e.g. "Winner Group A") that should not appear in the team picker.
       // Every real competing nation must have a logo; if a team is missing one,
       // add it to logos.js rather than relaxing this filter.
-      setAllTeams(allTeams.filter((t) => logos[findCountryLogo(t)]));
+      setAllTeams(filterRealTeams(allTeams));
       if (competitionRes.status === 200) {
         setCompetition(competitionRes.data);
         if (resultRes && resultRes.status === 200) {

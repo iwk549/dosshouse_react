@@ -27,6 +27,7 @@ const BasicModal = ({
       }}
       ariaHideApp={false}
       style={{
+        overlay: modalStyle.overlay,
         content: { ...modalStyle.content, ...(!isMobile ? style : {}) },
       }}
     >

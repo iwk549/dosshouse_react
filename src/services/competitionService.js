@@ -23,3 +23,11 @@ export async function getCompetition(competitionID) {
     return ex.response;
   }
 }
+
+export async function updateMiscPickInfo(code, name, data) {
+  try {
+    return await http.put(`${http.competitions}/${code}/misc-pick/${name}`, data);
+  } catch (ex) {
+    return ex.response;
+  }
+}

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Checkbox from "./checkbox";
+import TeamSelectComponent from "../../predictions/maker/teamSelectComponent";
 
 class Form extends Component {
   state = {
@@ -104,6 +105,23 @@ class Form extends Component {
         error={errors[name]}
         disabled={disabled}
         max={max}
+      />
+    );
+  }
+
+  renderTeamSelect(name, title, subtitle, teams) {
+    const { data, errors } = this.state;
+    return (
+      <TeamSelectComponent
+        teams={teams}
+        selectedOption={data[name]}
+        title={title}
+        subtitle={subtitle}
+        onSelect={(v) =>
+          this.handleChange({ currentTarget: { name, value: v } })
+        }
+        singleTeam
+        error={errors[name]}
       />
     );
   }

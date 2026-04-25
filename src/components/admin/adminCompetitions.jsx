@@ -1,11 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingContext from "../../context/loadingContext";
-import {
-  getActiveCompetitions,
-  getExpiredCompetitions,
-} from "../../services/competitionService";
 import { getResult } from "../../services/resultsService";
 import { getLeaderboard } from "../../services/predictionsService";
 import { shortDate } from "../../utils/allowables";
@@ -16,26 +12,10 @@ const PullToLoad = () => (
   <span className="pull-to-load">pull to load</span>
 );
 
-const AdminCompetitions = () => {
+const AdminCompetitions = ({ competitions }) => {
   const { setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
-  const [rows, setRows] = useState([]);
   const [info, setInfo] = useState({});
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      const [activeRes, expiredRes] = await Promise.all([
-        getActiveCompetitions(),
-        getExpiredCompetitions(),
-      ]);
-      const active = activeRes?.status === 200 ? activeRes.data : [];
-      const expired = expiredRes?.status === 200 ? expiredRes.data : [];
-      setRows([...active, ...expired]);
-      setLoading(false);
-    };
-    load();
-  }, []);
 
   const handleLoadInfo = async (competition) => {
     const { _id, secondChance } = competition;
@@ -62,7 +42,7 @@ const AdminCompetitions = () => {
 
   return (
     <div>
-      {rows.map((c) => {
+      {competitions.map((c) => {
         const data = info[c._id];
         const complete = isComplete(c);
         return (
@@ -151,7 +131,7 @@ const AdminCompetitions = () => {
           </div>
         );
       })}
-      {rows.length === 0 && (
+      {competitions.length === 0 && (
         <div className="single-card text-center">
           <b>No competitions found.</b>
         </div>

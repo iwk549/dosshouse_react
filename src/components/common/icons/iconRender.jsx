@@ -9,6 +9,7 @@ import {
   BiRename,
   BiSearchAlt,
   BiRefresh,
+  BiEditAlt,
 } from "react-icons/bi";
 import { BsSpotify, BsCaretUpFill, BsCaretDownFill } from "react-icons/bs";
 import {
@@ -21,6 +22,7 @@ import {
   FaGripLines,
   FaClipboardCheck,
   FaBlog,
+  FaTimes,
 } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
@@ -48,6 +50,7 @@ const icons = {
   checkbox: MdCheckBox,
   checkboxEmpty: MdCheckBoxOutlineBlank,
   close: FaWindowClose,
+  clear: FaTimes,
   delete: MdDeleteSweep,
   down: BsCaretDownFill,
   download: MdDownload,
@@ -64,6 +67,7 @@ const icons = {
   prediction: MdOutlineBatchPrediction,
   profile: RiUserSettingsLine,
   ranking: FaSortAmountUp,
+  edit: BiEditAlt,
   refresh: BiRefresh,
   remove: MdOutlineRemoveCircle,
   right: FaCaretRight,

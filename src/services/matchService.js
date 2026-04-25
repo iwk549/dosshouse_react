@@ -7,3 +7,11 @@ export async function getMatches(competitionID) {
     return ex.response;
   }
 }
+
+export async function updateMatch(matchId, data) {
+  try {
+    return await http.put(http.matches + "/" + matchId, data);
+  } catch (ex) {
+    return ex.response;
+  }
+}

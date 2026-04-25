@@ -1,6 +1,5 @@
 import { act, screen } from "@testing-library/react";
 import AdminCompetitions from "../../components/admin/adminCompetitions";
-import { getActiveCompetitions, getExpiredCompetitions } from "../../services/competitionService";
 import { getResult } from "../../services/resultsService";
 import { getLeaderboard } from "../../services/predictionsService";
 import { toast } from "react-toastify";
@@ -8,11 +7,6 @@ import { apiResponse, clickByText, renderWithContext } from "../testHelpers";
 
 jest.mock("react-toastify", () => ({
   toast: { success: jest.fn(), error: jest.fn(), info: jest.fn() },
-}));
-
-jest.mock("../../services/competitionService", () => ({
-  getActiveCompetitions: jest.fn(),
-  getExpiredCompetitions: jest.fn(),
 }));
 
 jest.mock("../../services/resultsService", () => ({
@@ -47,15 +41,15 @@ const completedCompetition = {
   },
 };
 
-function renderComponent() {
-  return renderWithContext(AdminCompetitions, {}, { role: "admin" });
+const defaultCompetitions = [activeCompetition, completedCompetition];
+
+function renderComponent(competitions = defaultCompetitions) {
+  return renderWithContext(AdminCompetitions, { competitions }, { role: "admin" });
 }
 
 describe("AdminCompetitions", () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    getActiveCompetitions.mockReturnValue(apiResponse([activeCompetition]));
-    getExpiredCompetitions.mockReturnValue(apiResponse([completedCompetition]));
   });
 
   it("should render a card for each competition", async () => {
@@ -80,10 +74,8 @@ describe("AdminCompetitions", () => {
     expect(screen.queryByText(/No second chance/)).toBeInTheDocument();
   });
 
-  it("should show No competitions found when lists are empty", async () => {
-    getActiveCompetitions.mockReturnValue(apiResponse([]));
-    getExpiredCompetitions.mockReturnValue(apiResponse([]));
-    await act(async () => renderComponent());
+  it("should show No competitions found when list is empty", async () => {
+    await act(async () => renderComponent([]));
     expect(screen.queryByText("No competitions found.")).toBeInTheDocument();
   });
 
@@ -101,9 +93,7 @@ describe("AdminCompetitions", () => {
     it("should switch to a refresh icon after info is loaded", async () => {
       getResult.mockReturnValue(apiResponse({}));
       getLeaderboard.mockReturnValue(apiResponse({ count: 42, predictions: [] }));
-      getActiveCompetitions.mockReturnValue(apiResponse([activeCompetition]));
-      getExpiredCompetitions.mockReturnValue(apiResponse([]));
-      await act(async () => renderComponent());
+      await act(async () => renderComponent([activeCompetition]));
       await act(async () => clickByText("download_icon", 0, true));
       expect(screen.queryAllByTestId("download_icon").length).toBe(0);
       expect(screen.queryAllByTestId("refresh_icon").length).toBe(1);
@@ -131,9 +121,7 @@ describe("AdminCompetitions", () => {
       getLeaderboard
         .mockReturnValueOnce(apiResponse({ count: 100, predictions: [] }))
         .mockReturnValueOnce(apiResponse({ count: 25, predictions: [] }));
-      getActiveCompetitions.mockReturnValue(apiResponse([]));
-      getExpiredCompetitions.mockReturnValue(apiResponse([completedCompetition]));
-      await act(async () => renderComponent());
+      await act(async () => renderComponent([completedCompetition]));
       await act(async () => clickByText("download_icon", 0, true));
       expect(screen.queryByText("100")).toBeInTheDocument();
       expect(screen.queryByText("25")).toBeInTheDocument();
