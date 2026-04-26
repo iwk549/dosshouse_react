@@ -57,6 +57,7 @@ const LeaderboardViewPredictionModal = ({
         originalMatches,
         result,
         prediction.isSecondChance,
+        competition,
       );
     setGroups(populatedGroups);
     setPlayoffMatches(populatedPlayoffMatches);

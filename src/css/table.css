@@ -86,11 +86,11 @@
   padding-left: 24px;
   border-left: 3px solid var(--secondary);
   font-size: 0.9em;
+  font-weight: bold;
 }
 .table-cell.expanded-points {
   text-align: right;
   font-size: 0.9em;
-  font-weight: bold;
   white-space: nowrap;
 }
 .table-cell.expanded-user {

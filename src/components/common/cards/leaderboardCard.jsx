@@ -13,19 +13,13 @@ const LeaderboardCard = ({ data, onSelect }) => {
           <div
             className="single-card row clickable"
             key={idx}
-            style={{ gridTemplateColumns: "50px 1fr auto" }}
+            style={{ gridTemplateColumns: "50px 1fr auto auto" }}
             onClick={() => onSelect(d)}
           >
             <div style={{ gridColumn: 1, textAlign: "left" }}>
-              <div>
-                <IconRender type="ranking" /> {d.ranking}
-              </div>
+              <div><IconRender type="ranking" /> {d.ranking}</div>
               <div>{d.totalPoints} Pts</div>
-              {d.potentialPoints?.realistic > 0 && (
-                <div style={{ fontSize: "0.8em", color: "gray" }}>
-                  {d.potentialPoints?.realistic} pot
-                </div>
-              )}
+              <span className="picks-badge" style={{ marginLeft: 0, display: "inline-block", minWidth: "unset" }}>{d.totalPicks || 0} ✓</span>
             </div>
             <div style={{ gridColumn: 2, textAlign: "left", paddingLeft: 12 }}>
               <div style={{ fontWeight: "bold" }}>
@@ -36,7 +30,15 @@ const LeaderboardCard = ({ data, onSelect }) => {
               </div>
             </div>
 
-            <div style={{ gridColumn: 3, textAlign: "right" }}>
+            <div style={{ gridColumn: 3, textAlign: "right", paddingRight: 8, fontSize: "0.8em", color: "gray" }}>
+              {d.potentialPoints?.realistic > 0 && (
+                <>
+                  <div>{d.potentialPoints.realistic}</div>
+                  <div>pot</div>
+                </>
+              )}
+            </div>
+            <div style={{ gridColumn: 4, textAlign: "right" }}>
               {d.misc?.winner && (
                 <>
                   <b>{getTeamAbbreviation(d.misc?.winner)}</b>

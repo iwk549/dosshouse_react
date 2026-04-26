@@ -102,7 +102,7 @@ const cascadeGroupChanges = (groups, playoffMatches, misc, competition) => {
         let group = newMatch.getTeamsFrom[t].groupName;
         let position = newMatch.getTeamsFrom[t].position;
         if (group.includes("groupMatrix") && competition?.groupMatrix?.length) {
-          const groupMatrix = competition.groupMatrix.find(
+          const groupMatrix = competition?.groupMatrix?.find(
             (m) => m.key === group.split(".")[1],
           );
           const order = getGroupNameFromSpecialGroup(groups[groupMatrix.key])
@@ -280,16 +280,26 @@ export const handlePopulateBracket = (
   playoffMatches,
   result,
   isSecondChance,
+  competition,
 ) => {
   let groups = {};
   groupPredictions.forEach((g) => {
-    let thisGroup;
+    let thisGroupResult;
     if (result) {
-      thisGroup = result.group.find((rg) => rg.groupName === g.groupName);
+      thisGroupResult = result.group.find((rg) => rg.groupName === g.groupName);
     }
+
     groups[g.groupName] = g.teamOrder.map((t, idx) => {
       let order = { name: t };
-      if (thisGroup?.teamOrder[idx] === t) order.correct = true;
+      let teamToMatch = t;
+      const isMatrixGroup = !!competition?.groupMatrix?.find(
+        (gm) => gm.key === thisGroupResult.groupName,
+      );
+      if (isMatrixGroup) {
+        // group matrix picks are correct if they match the group name
+        teamToMatch = teamToMatch.split(":")[0];
+      }
+      if (thisGroupResult?.teamOrder[idx] === teamToMatch) order.correct = true;
       return order;
     });
   });
