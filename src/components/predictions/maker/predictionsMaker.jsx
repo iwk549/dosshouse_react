@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useReducer } from "react";
+import { useState, useEffect, useContext, useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SegmentedControl from "../../common/pageSections/segmentedControl";
 
@@ -69,6 +69,7 @@ const PredictionMaker = ({
   );
   const [allTeams, setAllTeams] = useState([]);
   const [bracketIsPortrait, setBracketIsPortrait] = useState(isMobile);
+  const bracketOrientationManuallySet = useRef(false);
   const [pendingNavigation, setPendingNavigation] = useState(null);
   const leaderboardPath = `/competitions?leaderboard=show&competitionID=${competitionID}&groupID=all&secondChance=${!!isSecondChance}`;
   const confirmNavigate = (path, label) => {
@@ -79,6 +80,7 @@ const PredictionMaker = ({
 
   useEffect(() => {
     if (!predictions.playoffMatches.length) return;
+    if (bracketOrientationManuallySet.current) return;
     const rounds = new Set(predictions.playoffMatches.map((m) => m.round)).size;
     setBracketIsPortrait(isMobile || rounds < 2);
   }, [predictions.playoffMatches]);
@@ -364,7 +366,10 @@ const PredictionMaker = ({
             isLocked={predictions.isLocked}
             misc={predictions.misc}
             isPortrait={bracketIsPortrait}
-            setIsPortrait={setBracketIsPortrait}
+            setIsPortrait={(v) => {
+              bracketOrientationManuallySet.current = true;
+              setBracketIsPortrait(v);
+            }}
             originalPlayoffMatches={originalPlayoffMatches}
           />
         ) : isTab("bonus") ? (

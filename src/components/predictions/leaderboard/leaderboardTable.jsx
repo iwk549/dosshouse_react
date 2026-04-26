@@ -75,7 +75,7 @@ const LeaderboardTable = ({
     },
     {
       path: "misc.winner",
-      label: "Champion Picked",
+      label: "Champion",
       content: (p) =>
         !p.misc ? (
           <span title="Submission information will be revealed after the deadline">
@@ -89,6 +89,13 @@ const LeaderboardTable = ({
               height={15}
               width="auto"
             />
+            {p.points?.champion?.points > 0 && (
+              <div>
+                <span className="picks-badge" style={{ margin: "2px auto 0" }}>
+                  {p.points.champion.points} pts
+                </span>
+              </div>
+            )}
           </div>
         ),
     },
@@ -112,18 +119,6 @@ const LeaderboardTable = ({
           {p.points?.misc?.points || 0}
           <span className="picks-badge">
             {p.points?.misc?.correctPicks || 0} ✓
-          </span>
-        </>
-      ),
-    },
-    {
-      path: "points.champion.points",
-      label: "Champion",
-      content: (p) => (
-        <>
-          {p.points?.champion?.points || 0}
-          <span className="picks-badge">
-            {p.points?.champion?.points ? 1 : 0} ✓
           </span>
         </>
       ),
