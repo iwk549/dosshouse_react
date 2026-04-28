@@ -834,3 +834,108 @@
   border-radius: 12px;
   white-space: nowrap;
 }
+
+.whatif-winner-card {
+  margin-bottom: 12px;
+}
+
+.whatif-winner-name {
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-bottom: 2px;
+}
+
+.whatif-winner-meta {
+  font-size: 0.85em;
+  color: gray;
+  margin-bottom: 4px;
+}
+
+.whatif-path-row {
+  margin: 8px 12px 0;
+  padding: 10px 8px;
+  border-radius: 5px;
+  background-color: var(--muted-bg-color);
+  box-shadow: 0 1px 3px var(--minus10-info-bg-color);
+}
+
+.whatif-path-champion {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.whatif-finalists-row {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--light-grey);
+}
+
+.whatif-finalists-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.whatif-top-three {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.whatif-top-three-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  background-color: var(--light-text);
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.whatif-top-three-rank {
+  font-weight: bold;
+  min-width: 16px;
+  color: var(--secondary);
+}
+
+.whatif-top-three-name {
+  flex: 1;
+  font-weight: bold;
+}
+
+.whatif-top-three-user {
+  color: var(--darker-grey);
+}
+
+.whatif-top-three-points {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.whatif-path-semi {
+  flex: 1;
+  text-align: center;
+}
+
+@media (max-width: 380px) {
+  .whatif-path-semi .single-team-name {
+    display: none;
+  }
+
+  .whatif-path-semi .row {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.whatif-path-third {
+  text-align: center;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.whatif-path-third-name {
+  font-size: 0.85em;
+  font-weight: bold;
+}

@@ -2,7 +2,15 @@ import logos from "../../../textMaps/logos";
 import { findCountryLogo } from "../../../utils/predictionsUtil";
 import ExternalImage from "../../common/image/externalImage";
 
-const SingleTeamView = ({ teamName, onSelect, asCard }) => {
+const SingleTeamView = ({ teamName, onSelect, asCard, flagSide }) => {
+  const flag = (
+    <ExternalImage
+      uri={logos[findCountryLogo(teamName)]}
+      height={15}
+      width="auto"
+    />
+  );
+
   return (
     <div
       className={
@@ -13,21 +21,13 @@ const SingleTeamView = ({ teamName, onSelect, asCard }) => {
       onClick={onSelect ? () => onSelect(teamName) : null}
     >
       <div style={{ gridColumn: 1 }}>
-        <ExternalImage
-          uri={logos[findCountryLogo(teamName)]}
-          height={15}
-          width="auto"
-        />
+        {flagSide !== "right" && flag}
       </div>
-      <div style={{ gridColumn: 2, fontWeight: asCard ? "" : "bold" }}>
+      <div className="single-team-name" style={{ gridColumn: 2, fontWeight: asCard ? "" : "bold" }}>
         {teamName}
       </div>
       <div style={{ gridColumn: 3 }}>
-        <ExternalImage
-          uri={logos[findCountryLogo(teamName)]}
-          height={15}
-          width="auto"
-        />
+        {flagSide !== "left" && flag}
       </div>
     </div>
   );

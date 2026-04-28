@@ -12,7 +12,7 @@ const commonModalStyles = {
 };
 
 export const modalStyle = {
-  overlay: { zIndex: 50 },
+  overlay: { zIndex: 150 },
   content: {
     minHeight: "auto",
     maxHeight: "75%",

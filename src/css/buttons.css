@@ -1,3 +1,18 @@
+.btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: calc(100% - 48px);
+  gap: 2px;
+  padding: 4px 10px;
+  margin: 8px auto 0;
+  background-color: var(--light-grey);
+  border: 1px solid var(--medium-grey);
+  border-radius: 8px;
+}
+
 .picks-badge {
   display: block;
   width: fit-content;
@@ -110,12 +125,19 @@ a.btn {
   --btn-hover-bg: var(--minus10-danger-bg-color);
   --btn-text: var(--light-text);
 }
+.btn-secondary {
+  --btn-bg: var(--secondary);
+  --btn-border: var(--minus10-secondary);
+  --btn-hover-bg: var(--minus10-secondary);
+  --btn-text: var(--light-text);
+}
 
 /* --- Shared state rules for all variants --- */
 .btn-light,
 .btn-dark,
 .btn-info,
-.btn-danger {
+.btn-danger,
+.btn-secondary {
   background-color: var(--btn-bg);
   border-color: var(--btn-border);
   color: var(--btn-text);
@@ -123,7 +145,8 @@ a.btn {
 .btn-light:hover,
 .btn-dark:hover,
 .btn-info:hover,
-.btn-danger:hover {
+.btn-danger:hover,
+.btn-secondary:hover {
   background-color: var(--btn-hover-bg);
   color: var(--btn-text);
 }
@@ -134,7 +157,9 @@ a.btn {
 .btn-info:focus,
 .btn-info.focus,
 .btn-danger:focus,
-.btn-danger.focus {
+.btn-danger.focus,
+.btn-secondary:focus,
+.btn-secondary.focus {
   background-color: var(--btn-bg);
   border-color: var(--btn-bg);
   box-shadow: 0 0 0 0.2rem var(--btn-hover-bg);
@@ -147,7 +172,9 @@ a.btn {
 .btn-info.disabled,
 .btn-info:disabled,
 .btn-danger.disabled,
-.btn-danger:disabled {
+.btn-danger:disabled,
+.btn-secondary.disabled,
+.btn-secondary:disabled {
   background-color: var(--medium-grey);
   border-color: var(--medium-grey);
   color: var(--darker-grey);
@@ -163,7 +190,10 @@ a.btn {
 .show > .btn-info.dropdown-toggle,
 .btn-danger:not(:disabled):not(.disabled):active,
 .btn-danger:not(:disabled):not(.disabled).active,
-.show > .btn-danger.dropdown-toggle {
+.show > .btn-danger.dropdown-toggle,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
   background-color: var(--btn-hover-bg);
   border-color: var(--btn-hover-bg);
   color: var(--btn-text);
@@ -179,7 +209,10 @@ a.btn {
 .show > .btn-info.dropdown-toggle:focus,
 .btn-danger:not(:disabled):not(.disabled):active:focus,
 .btn-danger:not(:disabled):not(.disabled).active:focus,
-.show > .btn-danger.dropdown-toggle:focus {
+.show > .btn-danger.dropdown-toggle:focus,
+.btn-secondary:not(:disabled):not(.disabled):active:focus,
+.btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem var(--btn-hover-bg);
   color: var(--btn-text);
 }

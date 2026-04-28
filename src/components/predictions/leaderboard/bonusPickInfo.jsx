@@ -33,7 +33,7 @@ const BonusPickInfo = ({
     const submissionsRes = await getSubmissionsByMisc(
       competition._id,
       key,
-      team
+      team,
     );
     if (submissionsRes.status === 200) {
       setFilteredSubmissions(submissionsRes.data);
@@ -45,13 +45,6 @@ const BonusPickInfo = ({
 
   return (
     <>
-      <div style={{ height: 5 }} />
-      <button
-        className="btn btn-small btn-dark"
-        onClick={() => setIsOpen(true)}
-      >
-        View Current Bonus Pick Leaders
-      </button>
       <BasicModal isOpen={isOpen} onClose={setIsOpen}>
         {result.leaders.map((r, idx) => (
           <div key={idx} className="single-card light-bg">
