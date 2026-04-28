@@ -23,3 +23,11 @@ export async function calculateCompetition(code) {
     return ex.response;
   }
 }
+
+export async function getWhatIfResult(code) {
+  try {
+    return await http.get(http.results + "/whatif/" + code);
+  } catch (ex) {
+    return ex.response;
+  }
+}

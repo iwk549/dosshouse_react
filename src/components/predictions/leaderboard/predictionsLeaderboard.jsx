@@ -15,7 +15,7 @@ import { getMatches } from "../../../services/matchService";
 import { getCompetition } from "../../../services/competitionService";
 import PageSelection from "../../common/pageSections/pageSelection";
 import TeamSelectComponent from "../maker/teamSelectComponent";
-import { getResult } from "../../../services/resultsService";
+import { getResult, getWhatIfResult } from "../../../services/resultsService";
 import Confirm from "../../common/modal/confirm";
 import BonusPickInfo from "./bonusPickInfo";
 import IconRender from "../../common/icons/iconRender";
@@ -23,6 +23,7 @@ import DualNavLink from "../../common/pageSections/dualNavLink";
 import { submissionDeadlinePassed } from "../../../utils/competitionsUtil";
 import { filterRealTeams } from "../../../utils/predictionsUtil";
 import LeaderboardTeamEliminationsModal from "./leaderboardTeamEliminationsModal";
+import LeaderboardWhatIfModal from "./leaderboardWhatIfModal";
 
 const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   let navigate = useNavigate();
@@ -47,6 +48,8 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [teamEliminationsOpen, setTeamEliminationsOpen] = useState(false);
   const [teamEliminations, setTeamEliminations] = useState([]);
+  const [whatIfOpen, setWhatIfOpen] = useState(false);
+  const [whatIfData, setWhatIfData] = useState(null);
 
   const loadLeaderboard = async (
     selectedPage,
@@ -109,6 +112,9 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           setResult(resultRes.data);
           // do not give error here, results may not exist yet
         }
+        const whatIfRes = await getWhatIfResult(competitionRes.data.code);
+        if (whatIfRes && whatIfRes.status === 200)
+          setWhatIfData(whatIfRes.data);
       } else toast.error(competitionRes.data);
     } else toast.error(matchesRes.data);
 
@@ -191,19 +197,37 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
             Invite Users
           </button>
         )}
-        {allTeams.length > 0 && submissionDeadlinePassed(competition) && (
-          <TeamSelectComponent
-            teams={allTeams.map((t) => ({ value: t }))}
-            onSelect={(team) => {
-              setSelectedTeam(team);
-              setTeamEliminations([]);
-              setTeamEliminationsOpen(true);
-            }}
-            title="View Team Eliminations"
-            subtitle={`Select a team to view the breakdown of predicted elimination rounds across all ${groupInfo ? groupInfo.name + " " : ""}submissions`}
-            compact
-          />
-        )}
+        <div className="btn-toolbar">
+          {!result?.misc?.winner && !groupInfo && (
+            <button
+              className="btn btn-sm btn-secondary"
+              onClick={() => setWhatIfOpen(true)}
+            >
+              Final Scenarios
+            </button>
+          )}
+          {allTeams.length > 0 && submissionDeadlinePassed(competition) && (
+            <TeamSelectComponent
+              teams={allTeams.map((t) => ({ value: t }))}
+              onSelect={(team) => {
+                setSelectedTeam(team);
+                setTeamEliminations([]);
+                setTeamEliminationsOpen(true);
+              }}
+              title="Team Eliminations"
+              subtitle={`Select a team to view the breakdown of predicted elimination rounds across all ${groupInfo ? groupInfo.name + " " : ""}submissions`}
+              compact
+            />
+          )}
+          {!isSecondChance && !!result?.leaders?.length && (
+            <button
+              className="btn btn-small btn-light"
+              onClick={() => setBonusPicksOpen(true)}
+            >
+              Bonus Pick Leaders
+            </button>
+          )}
+        </div>
       </div>
       {competition.secondChance && !groupInfo && (
         <span
@@ -307,6 +331,12 @@ const PredictionsLeaderboard = ({ competitionID, groupID, isSecondChance }) => {
           this group you should change the group passcode.
         </Confirm>
       )}
+      <LeaderboardWhatIfModal
+        isOpen={whatIfOpen}
+        setIsOpen={setWhatIfOpen}
+        whatIfData={whatIfData}
+        isSecondChance={isSecondChance}
+      />
       <LeaderboardTeamEliminationsModal
         isOpen={teamEliminationsOpen}
         setIsOpen={(val) => {

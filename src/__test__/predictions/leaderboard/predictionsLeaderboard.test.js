@@ -1,40 +1,41 @@
-import { apiResponse, clickByText, renderWithContext } from "../testHelpers"; // helpers must be imported at top of file as they contain mocking of useNavigate
+import { apiResponse, clickByText, renderWithContext } from "../../testHelpers"; // helpers must be imported at top of file as they contain mocking of useNavigate
 import { act, screen } from "@testing-library/react";
-import { getCompetition } from "../../services/competitionService";
+import { getCompetition } from "../../../services/competitionService";
 import {
   getLeaderboard,
   searchLeaderboard,
   getUnownedPrediction,
   forceRemovePredictionFromGroup,
   getTeamEliminations,
-} from "../../services/predictionsService";
+} from "../../../services/predictionsService";
 import {
   competition,
   prediction,
   leaderboard,
   result,
   user,
-} from "../testData";
-import { getMatches } from "../../services/matchService";
-import { getResult } from "../../services/resultsService";
-import { getGroupLink } from "../../services/groupsService";
-import PredictionsLeaderboard from "../../components/predictions/leaderboard/predictionsLeaderboard";
-import { mockHTMLContext } from "../mockHelpers";
-import { getTeamAbbreviation } from "../../utils/bracketsUtil";
+} from "../../testData";
+import { getMatches } from "../../../services/matchService";
+import { getResult, getWhatIfResult } from "../../../services/resultsService";
+import { getGroupLink } from "../../../services/groupsService";
+import PredictionsLeaderboard from "../../../components/predictions/leaderboard/predictionsLeaderboard";
+import { mockHTMLContext } from "../../mockHelpers";
+import { getTeamAbbreviation } from "../../../utils/bracketsUtil";
 
-jest.mock("../../services/groupsService", () => ({
+jest.mock("../../../services/groupsService", () => ({
   getGroupLink: jest.fn(),
 }));
-jest.mock("../../services/resultsService", () => ({
+jest.mock("../../../services/resultsService", () => ({
   getResult: jest.fn(),
+  getWhatIfResult: jest.fn(),
 }));
-jest.mock("../../services/matchService", () => ({
+jest.mock("../../../services/matchService", () => ({
   getMatches: jest.fn(),
 }));
-jest.mock("../../services/competitionService", () => ({
+jest.mock("../../../services/competitionService", () => ({
   getCompetition: jest.fn(),
 }));
-jest.mock("../../services/predictionsService", () => ({
+jest.mock("../../../services/predictionsService", () => ({
   getLeaderboard: jest.fn(),
   searchLeaderboard: jest.fn(),
   getUnownedPrediction: jest.fn(),
@@ -92,6 +93,12 @@ const renderWithProps = async (mocks = {}, props = {}, user = null) => {
     apiResponse(
       mocks?.getTeamEliminations?.data || [],
       mocks.getTeamEliminations?.status || 200,
+    ),
+  );
+  getWhatIfResult.mockReturnValue(
+    apiResponse(
+      mocks?.getWhatIfResult?.data || null,
+      mocks.getWhatIfResult?.status || 404,
     ),
   );
 
@@ -262,9 +269,7 @@ describe("PredictionsLeaderboard", () => {
       await renderWithProps({
         getMatches: { data: teamMatches },
       });
-      expect(
-        screen.queryByText("View Team Eliminations"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText("Team Eliminations")).not.toBeInTheDocument();
     });
 
     it("should show the button after the submission deadline", async () => {
@@ -272,9 +277,7 @@ describe("PredictionsLeaderboard", () => {
         getCompetition: { data: pastDeadlineCompetition },
         getMatches: { data: teamMatches },
       });
-      expect(
-        screen.queryByText("View Team Eliminations"),
-      ).toBeInTheDocument();
+      expect(screen.queryByText("Team Eliminations")).toBeInTheDocument();
     });
 
     it("should open the team picker when the button is clicked", async () => {
@@ -282,7 +285,7 @@ describe("PredictionsLeaderboard", () => {
         getCompetition: { data: pastDeadlineCompetition },
         getMatches: { data: teamMatches },
       });
-      await clickByText("View Team Eliminations");
+      await clickByText("Team Eliminations");
       expect(screen.queryByText("Argentina")).toBeInTheDocument();
       expect(screen.queryByText("Brazil")).toBeInTheDocument();
     });
@@ -296,7 +299,7 @@ describe("PredictionsLeaderboard", () => {
         },
         { competitionID: pastDeadlineCompetition._id, groupID: "all" },
       );
-      await clickByText("View Team Eliminations");
+      await clickByText("Team Eliminations");
       await clickByText("Argentina");
       expect(getTeamEliminations).toHaveBeenCalledTimes(1);
       expect(getTeamEliminations).toHaveBeenCalledWith(
@@ -318,7 +321,7 @@ describe("PredictionsLeaderboard", () => {
         },
         { competitionID: pastDeadlineCompetition._id, groupID: "all" },
       );
-      await clickByText("View Team Eliminations");
+      await clickByText("Team Eliminations");
       await clickByText("Argentina");
       expect(screen.queryByText("My Picks")).not.toBeInTheDocument();
       await clickByText("Semi Final");
@@ -336,12 +339,25 @@ describe("PredictionsLeaderboard", () => {
         },
         { competitionID: pastDeadlineCompetition._id, groupID: "all" },
       );
-      await clickByText("View Team Eliminations");
+      await clickByText("Team Eliminations");
       await clickByText("Argentina");
       await clickByText("Semi Final");
       expect(screen.queryByText("My Picks")).toBeInTheDocument();
       await clickByText("Semi Final");
       expect(screen.queryByText("My Picks")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Final Scenarios button", () => {
+    it("should show when there is no winner", async () => {
+      await renderWithProps();
+      expect(screen.queryByText("Final Scenarios")).toBeInTheDocument();
+    });
+    it("should hide when the competition has a winner", async () => {
+      await renderWithProps({
+        getResult: { data: { ...result, misc: { winner: "Argentina" } } },
+      });
+      expect(screen.queryByText("Final Scenarios")).not.toBeInTheDocument();
     });
   });
 
