@@ -14,7 +14,6 @@ const Navbar = () => {
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
 
   const links = [
-    // { to: "/home", icon: "home", label: "Home" },
     { to: "/competitions", icon: "prediction", label: "Competitions" },
     { to: "/submissions", icon: "submission", label: "Submissions" },
     ...(user ? [{ to: "/profile", icon: "profile", label: "Account" }] : []),
@@ -25,8 +24,6 @@ const Navbar = () => {
       label: "Blog",
       external: true,
     },
-    // { to: "/spotify_api", icon: "spotify", label: "Spotify API" },
-    // { to: "/active_sites", icon: "app", label: "Apps & Sites" },
   ];
 
   return (

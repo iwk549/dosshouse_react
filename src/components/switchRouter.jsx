@@ -1,9 +1,5 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-// import ActiveSites from "./activeSites/activeSites";
-
-// import Home from "./home/home";
-// import SpotifyMain from "./spotifyApi/spotifyMain";
 import PredictionsRedirect from "./predictions/predictionsRedirect";
 import CompetitionSocialCard from "./predictions/socialCard/competitionSocialCard";
 import AdminHome from "./admin/adminHome";
@@ -16,9 +12,6 @@ const SwitchRouter = () => {
   return (
     <div>
       <Routes>
-        {/* <Route path="/home" element={<Home />} />
-        <Route path="/spotify_api" element={<SpotifyMain />} />
-        <Route path="/active_sites" element={<ActiveSites />} /> */}
         <Route path="/social-card" element={<AdminRoute><CompetitionSocialCard /></AdminRoute>} />
         <Route path="/competitions" element={<PredictionsRedirect />} />
         <Route
