@@ -5,8 +5,9 @@ export const getFinalRound = (bracket) => {
 };
 
 export const getTeamAbbreviation = (teamName) => {
+  if (!teamName) return "";
   const preAbr = findCountryLogo(teamName);
-  let lcName = preAbr.toLowerCase();
+  let lcName = preAbr?.toLowerCase() || "";
   let splitName = lcName.split(" ");
 
   // basic return value, 3 chars upper

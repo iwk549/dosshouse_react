@@ -126,6 +126,10 @@ const AdminCompetitions = ({ competitions }) => {
                 >
                   View Leaderboard
                 </TextLink>
+                {"\u00a0\u00a0\u00a0"}
+                <TextLink onClick={() => navigate(`/social-card?code=${c.code}`)}>
+                  Social Card
+                </TextLink>
               </div>
             </div>
           </div>

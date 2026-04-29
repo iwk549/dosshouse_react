@@ -13,6 +13,7 @@ import {
 } from "../../../services/predictionsService";
 import Competitions from "./competitions";
 import GroupAddFromLinkModal from "../groups/groupAddFromLinkModal";
+import LandingSplash from "./landingSplash";
 import { titleCase } from "../../../utils/allowables";
 
 const PredictionsHome = ({
@@ -100,6 +101,7 @@ const PredictionsHome = ({
 
   return (
     <div>
+      {!user && <LandingSplash competitionID={activeCompetitions[0]?._id} competitionName={activeCompetitions[0]?.name} />}
       <div className="standout-header">Competitions</div>
       <div className="page-container">
         <SegmentedControl
