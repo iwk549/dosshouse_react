@@ -17,7 +17,7 @@ function fmt(date) {
 
 const s = {
   page: {
-    background: "#0f0020",
+    background: "#eeccff",
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
@@ -215,7 +215,13 @@ const CompetitionSocialCard = () => {
         </div>
 
         <div style={s.freeBadgeWrap}>
-          <div style={{ ...s.freeBadge, justifyContent: "space-between", width: "100%" }}>
+          <div
+            style={{
+              ...s.freeBadge,
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
             <img src="/assets/usb_p_logo.png" alt="" style={s.logo} />
             <img src="/assets/usb_p_logo.png" alt="" style={s.logo} />
           </div>
