@@ -28,7 +28,7 @@ const s = {
     width: 540,
     background:
       "linear-gradient(160deg, #1a0040 0%, #3d0080 40%, #831fe0 75%, #b060ff 100%)",
-    borderRadius: 28,
+    borderRadius: 0,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
