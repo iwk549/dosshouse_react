@@ -165,6 +165,7 @@ const CompetitionSocialCard = () => {
   const code = searchParams.get("code");
   const [competition, setCompetition] = useState(null);
   const [error, setError] = useState(null);
+  const [showText, setShowText] = useState(true);
 
   useEffect(() => {
     setLoading(false);
@@ -200,76 +201,87 @@ const CompetitionSocialCard = () => {
   } = competition;
 
   return (
-    <div style={s.page}>
-      <div style={s.card}>
-        <div style={s.appName}>Ultimate Scoreboard Picker</div>
+    <>
+      <div>
+        <button
+          className="btn btn-sm btn-info"
+          onClick={() => setShowText(!showText)}
+        >
+          {showText ? "Hide" : "Show"} Text
+        </button>
+      </div>
+      <div style={s.page}>
+        <div style={s.card}>
+          <div style={s.appName}>Ultimate Scoreboard Picker</div>
 
-        <div style={s.hero}>
-          <div style={s.compName}>{name.toUpperCase()}</div>
-          <div style={s.dates}>
-            {fmt(competitionStart)} - {fmt(competitionEnd)}
+          <div style={s.hero}>
+            <div style={s.compName}>{name.toUpperCase()}</div>
+            <div style={s.dates}>
+              {fmt(competitionStart)} - {fmt(competitionEnd)}
+            </div>
+            <div style={s.deadline}>
+              Entry deadline: {fmt(submissionDeadline)}
+            </div>
           </div>
-          <div style={s.deadline}>
-            Entry deadline: {fmt(submissionDeadline)}
-          </div>
-        </div>
 
-        <div style={s.freeBadgeWrap}>
-          <div
-            style={{
-              ...s.freeBadge,
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <img src="/assets/usb_p_logo.png" alt="" style={s.logo} />
-            <img src="/assets/usb_p_logo.png" alt="" style={s.logo} />
-          </div>
-        </div>
-
-        <div style={s.groupsCallout}>
-          <span style={s.groupsIcon}>👥</span>
-          <div style={s.groupsTitle}>Create Groups &amp; Pools</div>
-          <div style={s.groupsSub}>
-            Compete with friends, family &amp; co-workers
-          </div>
-        </div>
-
-        <div style={s.features}>
-          <div style={s.featureItem}>
-            ⚽ Pick group standings &amp; every knockout match
-          </div>
-          {miscPicks?.length > 0 && (
+          <div style={s.freeBadgeWrap}>
             <div
               style={{
-                ...s.featureItem,
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
+                ...s.freeBadge,
+                justifyContent: "space-between",
+                width: "100%",
               }}
             >
-              <span style={{ whiteSpace: "nowrap", marginRight: 4 }}>
-                🎯 Bonus picks:
+              <img src="/assets/usb_p_logo.png" alt="" style={s.logo} />
+              {showText && "Free to Play"}
+              <img src="/assets/usb_p_logo.png" alt="" style={s.logo} />
+            </div>
+          </div>
+
+          <div style={s.groupsCallout}>
+            <span style={s.groupsIcon}>👥</span>
+            <div style={s.groupsTitle}>Create Groups &amp; Pools</div>
+            <div style={s.groupsSub}>
+              Compete with friends, family &amp; co-workers
+            </div>
+          </div>
+
+          <div style={s.features}>
+            <div style={s.featureItem}>
+              ⚽ Pick group standings &amp; every knockout match
+            </div>
+            {miscPicks?.length > 0 && (
+              <div
+                style={{
+                  ...s.featureItem,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
+                <span style={{ whiteSpace: "nowrap", marginRight: 4 }}>
+                  🎯 Bonus picks:
+                </span>
+                <span>{miscPicks.map((p) => p.label).join(", ")}</span>
+              </div>
+            )}
+            <div style={s.featureItem}>
+              🔴 Live leaderboard updates as matches are played
+            </div>
+          </div>
+
+          {secondChance && (
+            <div style={s.secondChance}>
+              <span style={s.scLabel}>⚡ Second Chance Entry</span>
+              <span style={s.scDate}>
+                Available {fmt(secondChance.availableFrom)} - deadline{" "}
+                {fmt(secondChance.submissionDeadline)}
               </span>
-              <span>{miscPicks.map((p) => p.label).join(", ")}</span>
             </div>
           )}
-          <div style={s.featureItem}>
-            🔴 Live leaderboard updates as matches are played
-          </div>
         </div>
-
-        {secondChance && (
-          <div style={s.secondChance}>
-            <span style={s.scLabel}>⚡ Second Chance Entry</span>
-            <span style={s.scDate}>
-              Available {fmt(secondChance.availableFrom)} - deadline{" "}
-              {fmt(secondChance.submissionDeadline)}
-            </span>
-          </div>
-        )}
       </div>
-    </div>
+    </>
   );
 };
 
