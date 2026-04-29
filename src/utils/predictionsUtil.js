@@ -359,8 +359,8 @@ const checkForCompletion = (
     });
   playoffPredictions.forEach((p) => {
     if (
-      p.homeTeam.toLowerCase().includes("winner") ||
-      p.awayTeam.toLowerCase().includes("winner")
+      p.homeTeam?.toLowerCase().includes("winner") ||
+      p.awayTeam?.toLowerCase().includes("winner")
     )
       missingItems.push({
         label: "Bracket",

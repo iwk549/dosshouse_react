@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +10,6 @@ import Navbar from "./components/navigation/navbar";
 import LoadingContext from "./context/loadingContext";
 import Loading from "./components/common/loading/loading";
 import { getCurrentUser, refreshUser } from "./services/userService";
-import Banner from "./components/common/pageSections/banner";
 import setPageTitle from "./textMaps/pageTitles";
 import DevBanner from "./components/common/dev/devBanner";
 import ErrorBoundary from "./components/common/errorBoundary";
@@ -19,7 +17,6 @@ import ErrorBoundary from "./components/common/errorBoundary";
 ReactGA.initialize("G-TJW8WX427W");
 
 function App() {
-  let navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [initialized, setInitialized] = useState(false);
   const [user, setUser] = useState(null);
@@ -104,17 +101,6 @@ function App() {
           <DevBanner />
           <Navbar />
           <>
-            <Banner
-              hide={false}
-              announcement="World Cup 2026 predictions are now live!!!"
-              onClick={() => {
-                navigate(
-                  "/competitions?id=new&competitionID=6933533400d2c729449b2e0a",
-                );
-              }}
-              cookieName="worldCup2026"
-              showIfLoggedIn={true}
-            />
             <div style={{ flex: 1 }}>
               <SwitchRouter />
             </div>
