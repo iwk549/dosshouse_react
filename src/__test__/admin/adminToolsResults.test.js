@@ -2,6 +2,7 @@ import { act, screen, fireEvent } from "@testing-library/react";
 import AdminToolsResults from "../../components/admin/adminToolsResults";
 import AdminToolsResultsEdit from "../../components/admin/adminToolsResultsEdit";
 import { getResult, calculateCompetition, updateResult } from "../../services/resultsService";
+import { getCompetition } from "../../services/competitionService";
 import { getMatches } from "../../services/matchService";
 import { toast } from "react-toastify";
 import { apiResponse, clickByText, renderWithContext } from "../testHelpers";
@@ -14,6 +15,10 @@ jest.mock("../../services/resultsService", () => ({
   getResult: jest.fn(),
   calculateCompetition: jest.fn(),
   updateResult: jest.fn(),
+}));
+
+jest.mock("../../services/competitionService", () => ({
+  getCompetition: jest.fn(),
 }));
 
 jest.mock("../../services/matchService", () => ({
@@ -41,6 +46,13 @@ const activeCompetition = {
   code: "WC2026",
   name: "World Cup 2026",
   competitionEnd: "2099-07-19T00:00:00.000Z",
+};
+
+const activeCompetitionFull = {
+  ...activeCompetition,
+  groupMatrix: [
+    { key: "R16-A", name: "Round of 16 — Match A" },
+  ],
 };
 
 const completedCompetition = {
@@ -137,6 +149,7 @@ function renderEdit({
 describe("AdminToolsResults", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    getCompetition.mockReturnValue(apiResponse(activeCompetitionFull));
   });
 
   describe("competition list", () => {
@@ -181,11 +194,39 @@ describe("AdminToolsResults", () => {
       expect(getResult).toHaveBeenCalledWith("comp1");
     });
 
+    it("should call getCompetition with the competition id on load", async () => {
+      getResult.mockReturnValue(apiResponse(mockResult));
+      await act(async () => renderComponent());
+      await act(async () => clickByText("Load Results"));
+      expect(getCompetition).toHaveBeenCalledWith("comp1");
+    });
+
+    it("should show an error toast and not expand if getCompetition fails", async () => {
+      getResult.mockReturnValue(apiResponse(mockResult));
+      getCompetition.mockReturnValue(apiResponse("server error", 500));
+      await act(async () => renderComponent());
+      await act(async () => clickByText("Load Results"));
+      expect(toast.error).toHaveBeenCalled();
+      expect(screen.queryByText("Winners and Bonus")).not.toBeInTheDocument();
+    });
+
     it("should show an error toast if loading fails", async () => {
       getResult.mockReturnValue(apiResponse("error", 500));
       await act(async () => renderComponent());
       await act(async () => clickByText("Load Results"));
       expect(toast.error).toHaveBeenCalled();
+    });
+
+    it("should render matrix group names from the fetched competition", async () => {
+      getResult.mockReturnValue(
+        apiResponse({
+          ...mockResult,
+          group: [{ groupName: "R16-A", teamOrder: ["Brazil", "Argentina"] }],
+        }),
+      );
+      await act(async () => renderComponent());
+      await act(async () => clickByText("Load Results"));
+      expect(screen.queryByText("Round of 16 — Match A")).toBeInTheDocument();
     });
 
     it("should show StatusNote when no results are posted (404)", async () => {
