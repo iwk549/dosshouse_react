@@ -24,6 +24,17 @@ const NavDropDown = ({ links }) => {
         {isOpen && (
           <div className="nav-dropdown" onClick={() => setIsOpen(false)}>
             {links.map((link, idx) => {
+              const icon = link.iconImage ? (
+                <img
+                  src={link.iconImage}
+                  alt=""
+                  width={16}
+                  height={16}
+                  style={{ borderRadius: 3 }}
+                />
+              ) : (
+                <IconRender type={link.icon} size={16} />
+              );
               if (link.external)
                 return (
                   <a
@@ -33,13 +44,13 @@ const NavDropDown = ({ links }) => {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <IconRender type={link.icon} size={16} />
+                    {icon}
                     <span>{link.label}</span>
                   </a>
                 );
               return (
                 <NavLink key={idx} to={link.to} className={getActiveLink}>
-                  <IconRender type={link.icon} size={16} />
+                  {icon}
                   <span>{link.label}</span>
                 </NavLink>
               );

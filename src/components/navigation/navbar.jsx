@@ -17,11 +17,19 @@ const Navbar = () => {
     { to: "/competitions", icon: "prediction", label: "Competitions" },
     { to: "/submissions", icon: "submission", label: "Submissions" },
     ...(user ? [{ to: "/profile", icon: "profile", label: "Account" }] : []),
-    ...(user?.role === "admin" ? [{ to: "/admin", icon: "settings", label: "Admin" }] : []),
+    ...(user?.role === "admin"
+      ? [{ to: "/admin", icon: "settings", label: "Admin" }]
+      : []),
     {
       to: "https://blog.picker.ultimatescoreboard.com",
-      icon: "blog",
+      iconImage: "/assets/usb_b_logo.png",
       label: "Blog",
+      external: true,
+    },
+    {
+      to: "https://ultimatescoreboard.com",
+      iconImage: "/assets/usb_u_logo.png",
+      label: "Ultimate Scoreboard",
       external: true,
     },
   ];
@@ -33,7 +41,21 @@ const Navbar = () => {
           <NavDropDown links={links} />
         </div>
         <div className="nav-center">
-          <LogoRender className="clickable" onClick={() => navigate("/")} />
+          <LogoRender
+            className="clickable"
+            width={36}
+            height={36}
+            borderRadius={8}
+            onClick={() => navigate("/")}
+          />
+          <a
+            className="nav-tagline"
+            href="https://ultimatescoreboard.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            by Ultimate Scoreboard
+          </a>
         </div>
         <div className="nav-right">
           {!user && (
