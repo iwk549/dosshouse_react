@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import LoadingContext from "../../context/loadingContext";
 import { getResult, calculateCompetition } from "../../services/resultsService";
+import { getCompetition } from "../../services/competitionService";
 import StatusNote from "../common/pageSections/statusNote";
 import Confirm from "../common/modal/confirm";
 import AdminToolsResultsEdit from "./adminToolsResultsEdit";
@@ -15,17 +16,26 @@ const AdminToolsResults = ({ competitions }) => {
 
   const handleLoadResults = async (competition) => {
     setLoading(true);
-    const res = await getResult(competition._id);
+    const [res, compRes] = await Promise.all([
+      getResult(competition._id),
+      getCompetition(competition._id),
+    ]);
+    if (compRes?.status !== 200) {
+      toast.error("Failed to load competition");
+      setLoading(false);
+      return;
+    }
+    const fullCompetition = compRes.data;
     if (res?.status === 200) {
       setResults((prev) => ({
         ...prev,
-        [competition._id]: { ok: true, data: res.data },
+        [competition._id]: { ok: true, data: res.data, competition: fullCompetition },
       }));
       setSelectedCompetitionId(competition._id);
     } else if (res?.status === 404) {
       setResults((prev) => ({
         ...prev,
-        [competition._id]: { ok: false, data: null },
+        [competition._id]: { ok: false, data: null, competition: fullCompetition },
       }));
       setSelectedCompetitionId(competition._id);
     } else {
@@ -103,7 +113,7 @@ const AdminToolsResults = ({ competitions }) => {
               <div className="match-list">
                 {editingCompetitionId === c._id ? (
                   <AdminToolsResultsEdit
-                    competition={c}
+                    competition={loaded?.competition || c}
                     initialData={loaded?.data}
                     onSave={() => {
                       setEditingCompetitionId(null);
@@ -122,7 +132,7 @@ const AdminToolsResults = ({ competitions }) => {
                     </button>
                   </StatusNote>
                 ) : (
-                  <ResultSummary result={loaded.data} competition={c} />
+                  <ResultSummary result={loaded.data} competition={loaded.competition} />
                 )}
               </div>
             )}
