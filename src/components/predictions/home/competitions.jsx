@@ -5,6 +5,7 @@ import { submissionsMadeByCompetition } from "../../../utils/competitionsUtil";
 import StatusNote from "../../common/pageSections/statusNote";
 import TextLink from "../../common/pageSections/textLink";
 import InfoLine from "../../common/pageSections/infoLine";
+import ExternalLinks from "../../common/pageSections/externalLinks";
 
 const Competitions = ({ competitions, predictions, expired }) => {
   let navigate = useNavigate();
@@ -99,22 +100,27 @@ const Competitions = ({ competitions, predictions, expired }) => {
           </div>
 
           <div className="competition-card-footer">
-            {submissions[c._id] && (
+            <ExternalLinks links={c.links} testId="competition-links" />
+            <div className="competition-card-footer-actions">
+              {submissions[c._id] && (
+                <TextLink
+                  onClick={() =>
+                    navigate(`/submissions?competitionID=${c._id}`)
+                  }
+                >
+                  View Submissions
+                </TextLink>
+              )}
               <TextLink
-                onClick={() => navigate(`/submissions?competitionID=${c._id}`)}
+                onClick={() =>
+                  navigate(
+                    `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`,
+                  )
+                }
               >
-                View Submissions
+                View Leaderboard
               </TextLink>
-            )}
-            <TextLink
-              onClick={() =>
-                navigate(
-                  `/competitions?leaderboard=show&competitionID=${c._id}&groupID=all`,
-                )
-              }
-            >
-              View Leaderboard
-            </TextLink>
+            </div>
           </div>
 
           {c.secondChance && (

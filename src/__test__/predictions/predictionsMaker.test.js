@@ -377,6 +377,49 @@ describe("PredictionsMaker", () => {
     });
   });
 
+  describe("Information Tab", () => {
+    const links = [
+      { label: "Tournament Site", url: "https://example.com/tournament" },
+      { label: "Wiki", url: "https://example.com/wiki" },
+    ];
+
+    it("should render an external link pill for each competition link", async () => {
+      await renderWithProps(
+        { predictionID: "new", competitionID: "testBracket1" },
+        {
+          getCompetition: { data: { ...competition, links } },
+          getMatches: { data: matches },
+        },
+        user,
+      );
+      await clickByText("Information");
+
+      const container = screen.queryByTestId("information-links");
+      expect(container).toBeInTheDocument();
+      links.forEach((link) => {
+        const anchor = screen.queryByText(link.label).closest("a");
+        expect(anchor).toBeInTheDocument();
+        expect(anchor).toHaveAttribute("href", link.url);
+        expect(anchor).toHaveAttribute("target", "_blank");
+        expect(anchor).toHaveAttribute("rel", "noopener noreferrer");
+      });
+    });
+
+    it("should not render the links container when no links are provided", async () => {
+      await renderWithProps(
+        { predictionID: "new", competitionID: "testBracket1" },
+        {
+          getCompetition: { data: competition },
+          getMatches: { data: matches },
+        },
+        user,
+      );
+      await clickByText("Information");
+
+      expect(screen.queryByTestId("information-links")).not.toBeInTheDocument();
+    });
+  });
+
   describe("Bonus Tab", () => {
     it("should render the losing semi finalists as third place teams", async () => {
       await renderWithProps(

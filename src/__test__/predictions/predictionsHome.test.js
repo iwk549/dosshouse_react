@@ -171,6 +171,37 @@ describe("PredictionsHome", () => {
     });
   });
 
+  describe("External Links", () => {
+    const links = [
+      { label: "Tournament Site", url: "https://example.com/tournament" },
+      { label: "Wiki", url: "https://example.com/wiki" },
+    ];
+
+    it("should render an external link pill for each competition link", async () => {
+      await renderWithProps({
+        getActiveCompetitions: { data: [{ ...competition, links }] },
+      });
+
+      const container = screen.queryByTestId("competition-links");
+      expect(container).toBeInTheDocument();
+      links.forEach((link) => {
+        const anchor = screen.queryByText(link.label).closest("a");
+        expect(anchor).toBeInTheDocument();
+        expect(anchor).toHaveAttribute("href", link.url);
+        expect(anchor).toHaveAttribute("target", "_blank");
+        expect(anchor).toHaveAttribute("rel", "noopener noreferrer");
+      });
+    });
+
+    it("should not render the links container when no links are provided", async () => {
+      await renderWithProps({
+        getActiveCompetitions: { data: [competition] },
+      });
+
+      expect(screen.queryByTestId("competition-links")).not.toBeInTheDocument();
+    });
+  });
+
   describe("Expired Competitions", () => {
     it("should NOT display New/Edit Submission buttons", async () => {
       await renderWithProps(
