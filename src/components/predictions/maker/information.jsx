@@ -4,6 +4,7 @@ import { titleCase } from "../../../utils/allowables";
 import rules from "../../../textMaps/rules";
 import Scoring from "./scoring";
 import SideBySideView from "../../common/pageSections/sideBySideView";
+import ExternalLinks from "../../common/pageSections/externalLinks";
 
 const Information = ({ competition }) => {
   const lists = {
@@ -17,31 +18,40 @@ const Information = ({ competition }) => {
     )
       return null;
     return (
-      <React.Fragment key={idx}>
-        <b>{item.header}</b>
-        {item.body}
-      </React.Fragment>
+      <div className="info-section" key={idx}>
+        <div className="info-section-label">{item.header}</div>
+        <div className="info-section-body">{item.body}</div>
+      </div>
     );
   };
 
   return (
-    <SideBySideView
-      Components={[
-        Object.keys(lists).map((key, i) => (
-          <div className="col" key={i}>
-            <h3>
-              <u>{titleCase(key)}</u>
-            </h3>
-            {lists[key].map((item, ii) => renderItem(item, ii))}
-          </div>
-        )),
-        <Scoring
-          key="scoring"
-          competition={competition}
-          renderItem={renderItem}
-        />,
-      ]}
-    />
+    <>
+      {competition?.links?.length > 0 && (
+        <div className="information-links">
+          <ExternalLinks links={competition.links} testId="information-links" />
+        </div>
+      )}
+      <SideBySideView
+        Components={[
+          <Scoring
+            key="scoring"
+            competition={competition}
+            renderItem={renderItem}
+          />,
+          Object.keys(lists).map((key, i) => (
+            <div className="competition-card info-card info-card-compact" key={i}>
+              <div className="competition-card-header">
+                <h3>{titleCase(key)}</h3>
+              </div>
+              <div className="competition-card-body">
+                {lists[key].map((item, ii) => renderItem(item, ii))}
+              </div>
+            </div>
+          )),
+        ]}
+      />
+    </>
   );
 };
 

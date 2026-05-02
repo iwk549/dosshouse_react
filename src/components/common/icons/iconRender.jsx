@@ -23,6 +23,7 @@ import {
   FaClipboardCheck,
   FaBlog,
   FaTimes,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 import { IoMdTrophy, IoMdSettings, IoMdCheckmark } from "react-icons/io";
 import {
@@ -68,6 +69,7 @@ const icons = {
   profile: RiUserSettingsLine,
   ranking: FaSortAmountUp,
   edit: BiEditAlt,
+  external: FaExternalLinkAlt,
   refresh: BiRefresh,
   remove: MdOutlineRemoveCircle,
   right: FaCaretRight,
