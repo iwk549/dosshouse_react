@@ -17,6 +17,7 @@ const DroppableTeamArea = ({
   isLocked,
   matches,
   highlight,
+  compact,
 }) => {
   const { isSuperSmall } = useWindowDimensions();
   const [matchesOpen, setMatchesOpen] = useState(false);
@@ -29,14 +30,14 @@ const DroppableTeamArea = ({
         content: (t) => (
           <ExternalImage
             uri={logos[findCountryLogo(t.name)]}
-            width={30}
-            height={20}
+            width={compact ? 18 : 30}
+            height={compact ? 12 : 20}
           />
         ),
       });
     }
     setColumns(newColumns);
-  }, [isSuperSmall]);
+  }, [isSuperSmall, compact]);
 
   const raiseDrop = ({ draggedItem, droppedOn }) => {
     onDrop({
@@ -56,8 +57,10 @@ const DroppableTeamArea = ({
   };
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <div className="draggable-table-container">
+    <div style={{ marginTop: compact ? 4 : 10 }}>
+      <div
+        className={`draggable-table-container${compact ? " compact" : ""}`}
+      >
         <div className="group-picker-header">
           <span>{groupHeader}</span>
           {description && (

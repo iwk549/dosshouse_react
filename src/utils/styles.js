@@ -1,3 +1,11 @@
+export const getCssVar = (name, fallback = "") => {
+  if (typeof window === "undefined") return fallback;
+  return (
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() ||
+    fallback
+  );
+};
+
 const borderShadow = "#dd99ff";
 
 const commonModalStyles = {

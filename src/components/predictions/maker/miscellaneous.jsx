@@ -14,7 +14,16 @@ const Miscellaneous = ({
   allTeams,
   isLocked,
   isSecondChance,
+  result,
 }) => {
+  const getIsCorrect = (pickName) => {
+    const resultValue = result?.misc?.[pickName];
+    const userPick = misc?.[pickName];
+    if (!resultValue || !userPick) return undefined;
+    if (Array.isArray(resultValue)) return resultValue.includes(userPick);
+    return resultValue.includes(userPick);
+  };
+
   const [matchModalOpen, setMatchModalOpen] = useState(false);
 
   const mappedTeams = allTeams
@@ -72,6 +81,7 @@ const Miscellaneous = ({
               onSelect={(value) => onChange(p.name, value)}
               isLocked={isLocked}
               selectedOption={misc[p.name]}
+              isCorrect={getIsCorrect(p.name)}
             >
               {p.name === "thirdPlace" && (
                 <>

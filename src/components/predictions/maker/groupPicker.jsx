@@ -12,6 +12,7 @@ const GroupPicker = ({
   highlight,
   competition,
   availableWidth,
+  compact,
 }) => {
   const { width } = useWindowDimensions();
   const [groupMaps, setGroupMaps] = useState([]);
@@ -72,6 +73,7 @@ const GroupPicker = ({
                     isLocked={isLocked}
                     matches={groupMatches ? groupMatches[g] : null}
                     highlight={highlight}
+                    compact={compact}
                   />
                 </div>
               );

@@ -293,7 +293,7 @@ export const handlePopulateBracket = (
       let order = { name: t };
       let teamToMatch = t;
       const isMatrixGroup = !!competition?.groupMatrix?.find(
-        (gm) => gm.key === thisGroupResult.groupName,
+        (gm) => gm.key === thisGroupResult?.groupName,
       );
       if (isMatrixGroup) {
         // group matrix picks are correct if they match the group name

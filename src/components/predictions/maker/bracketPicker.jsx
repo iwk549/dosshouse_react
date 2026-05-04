@@ -10,6 +10,7 @@ import MatchesModal from "./matchesModal";
 import { shortDate } from "../../../utils/allowables";
 import useWindowDimensions from "../../../utils/useWindowDimensions";
 import { findCountryLogo } from "../../../utils/predictionsUtil";
+import { getCssVar } from "../../../utils/styles";
 
 const BracketPicker = ({
   matches,
@@ -109,8 +110,8 @@ const BracketPicker = ({
           lineColor="#999999"
           popColor="#831fe0"
           highlightColor={{
-            backgroundColor: "#66ff73",
-            color: "#000",
+            backgroundColor: getCssVar("--correct-bg-color", "#66ff73"),
+            color: getCssVar("--dark-text", "#1a1a1a"),
           }}
           dateTimeFormatter={isPortrait ? null : (dt) => shortDate(dt, true)}
           showFullTeamNames={!isPortrait}

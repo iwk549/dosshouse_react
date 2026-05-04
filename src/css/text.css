@@ -21,7 +21,9 @@
   font-size: 1em;
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
   margin: 4px 0;
 }
 .view-switch-link:hover {
@@ -52,4 +54,9 @@
   background-color: var(--light-grey);
   color: var(--dark-text);
   box-shadow: 0 2px 6px var(--secondary);
+}
+
+.standout-header.section-start {
+  border-left: 8px solid var(--minus10-info-bg-color);
+  margin-top: 24px;
 }
