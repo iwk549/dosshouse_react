@@ -577,6 +577,12 @@
   gap: 1rem;
   align-items: center;
 }
+.centered-page-container.plain {
+  background-color: #ffffff;
+}
+.centered-page-logo.no-border {
+  border: none;
+}
 .modal-close-btn {
   position: absolute;
   top: -20px;
