@@ -12,14 +12,14 @@ const TipJarThankYou = () => {
   }, []);
 
   return (
-    <div className="centered-page-container" style={{ marginTop: "-5px" }}>
+    <div className="centered-page-container plain">
       <div className="pop-box centered-page-box">
         <img
           src="assets/usb_p_logo.png"
-          alt="Dosshouse logo"
+          alt="Ultimate Scoreboard Picker logo"
           width={50}
           height={50}
-          className="centered-page-logo"
+          className="centered-page-logo no-border"
         />
         <h2 className="centered-page-title">
           Thanks for the tip{user?.name ? `, ${user.name}` : ""}!
