@@ -16,6 +16,7 @@ const TeamSelectComponent = ({
   compact,
   singleTeam,
   subtitle,
+  isCorrect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,7 +46,9 @@ const TeamSelectComponent = ({
           </div>
           <div
             className={
-              "competition-card-body " + (isLocked ? "" : " clickable")
+              "competition-card-body" +
+              (isLocked ? "" : " clickable") +
+              (isCorrect === true ? " correct-pick" : "")
             }
             onClick={() => setIsOpen(!isLocked)}
           >

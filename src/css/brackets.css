@@ -42,3 +42,34 @@
 .bracket-container #svg-bracket text {
   font-size: 11px !important; /* override font size for all text inside react-svg-tournament-bracket */
 }
+
+.group-pick-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--dark-grey);
+  background-color: var(--danger-bg-color);
+}
+.group-pick-dot.correct {
+  background-color: var(--correct-bg-color);
+}
+.group-pick-dot.pending {
+  background-color: transparent;
+  border-color: var(--medium-grey);
+}
+
+.playoff-round-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 6px;
+  padding: 4px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--secondary);
+  background-color: var(--muted-bg-color);
+  color: var(--dark-text);
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: 0.02em;
+}

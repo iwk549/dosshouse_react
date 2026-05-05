@@ -29,7 +29,7 @@ const DraggableTableRow = ({
         };
       },
     }),
-    [position]
+    [position],
   );
 
   const [{ isOver }, drop] = useDrop(
@@ -43,7 +43,7 @@ const DraggableTableRow = ({
         isOver: !!monitor.isOver(),
       }),
     }),
-    [position]
+    [position],
   );
 
   const ref = useRef(null);
@@ -102,7 +102,7 @@ const DraggableTableRow = ({
             </td>
           ) : null}
         </tr>
-      ) : (
+      ) : !isLocked ? (
         <tr
           ref={isLocked ? null : dragDrop}
           className={isOver ? "dark-bg" : "muted-bg"}
@@ -111,12 +111,14 @@ const DraggableTableRow = ({
           {columns.map((c, idx) => renderBlankTopCell(idx))}
           {renderBlankTopCell()}
         </tr>
+      ) : null}
+      {!isLocked && (
+        <tr className={isOver ? "dark-bg" : "muted-bg"}>
+          {renderBlankHoverCell()}
+          {columns.map((c, idx) => renderBlankHoverCell(idx))}
+          {renderBlankHoverCell()}
+        </tr>
       )}
-      <tr className={isOver ? "dark-bg" : "muted-bg"}>
-        {renderBlankHoverCell()}
-        {columns.map((c, idx) => renderBlankHoverCell(idx))}
-        {renderBlankHoverCell()}
-      </tr>
     </IconContext.Provider>
   );
 };

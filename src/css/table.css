@@ -34,6 +34,13 @@
   padding-left: 5px;
   padding-right: 5px;
 }
+.draggable-table-container.compact .group-picker-header {
+  padding: 3px 8px;
+  font-size: 0.85em;
+}
+.draggable-table-container.compact .d-table-cell {
+  padding: 2px 8px;
+}
 .group-picker-header {
   background-color: var(--muted-bg-color);
   color: var(--dark-text);

@@ -2,7 +2,7 @@ import logos from "../../../textMaps/logos";
 import { findCountryLogo } from "../../../utils/predictionsUtil";
 import ExternalImage from "../../common/image/externalImage";
 
-const SingleTeamView = ({ teamName, onSelect, asCard, flagSide }) => {
+const SingleTeamView = ({ teamName, onSelect, asCard, flagSide, correct }) => {
   const flag = (
     <ExternalImage
       uri={logos[findCountryLogo(teamName)]}
@@ -15,6 +15,7 @@ const SingleTeamView = ({ teamName, onSelect, asCard, flagSide }) => {
     <div
       className={
         (asCard ? "single-card" : "") +
+        (asCard && correct ? " correct-pick" : "") +
         " text-center row" +
         (onSelect ? " clickable" : "")
       }
