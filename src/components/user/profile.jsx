@@ -13,13 +13,15 @@ import {
   editUser,
 } from "../../services/userService";
 import { toast } from "react-toastify";
+import GroupModalForm from "../predictions/groups/groupModalForm";
 
 const Profile = () => {
   let navigate = useNavigate();
   const { user, setLoading, setUser } = useContext(LoadingContext);
-  const tabs = ["My Info", "Settings"];
+  const tabs = ["My Account", "Settings"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [registerFormOpen, setRegisterFormOpen] = useState(!user);
+  const [groupFormOpen, setGroupFormOpen] = useState(false);
 
   const loadData = async () => {
     setLoading(true);
@@ -67,15 +69,32 @@ const Profile = () => {
 
   return user ? (
     <div className="page-container">
-      <div className="standout-header">Profile</div>
+      <div className="standout-header">Account</div>
       <SegmentedControl
         tabs={tabs}
         selectedTab={selectedTab}
         onSelectTab={setSelectedTab}
       />
       <div className="content-box">
-        {isTab("info") ? (
-          <MyInfo user={user} onEdit={handleEdit} />
+        {isTab("account") ? (
+          <>
+            <MyInfo user={user} onEdit={handleEdit} />
+            <button
+              key="button"
+              className="btn btn-sm btn-dark"
+              onClick={() => {
+                setGroupFormOpen(true);
+              }}
+              data-testid="manage-groups-button"
+            >
+              Manage Groups
+            </button>
+            <GroupModalForm
+              isOpen={groupFormOpen}
+              setIsOpen={setGroupFormOpen}
+              header="Manage Groups"
+            />
+          </>
         ) : isTab("settings") ? (
           <ProfileSettings onLogout={handleLogout} onDelete={handleDelete} />
         ) : null}

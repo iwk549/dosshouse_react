@@ -1,6 +1,31 @@
 import { act, fireEvent, screen } from "@testing-library/react";
 import Navbar from "../../components/navigation/navbar";
 import { renderWithContext } from "../testHelpers";
+import { logout } from "../../services/userService";
+
+jest.mock("../../services/userService", () => ({
+  logout: jest.fn(),
+}));
+
+jest.mock("react-toastify", () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+  },
+}));
+
+const originalLocation = window.location;
+beforeAll(() => {
+  delete window.location;
+  window.location = { ...originalLocation, href: "" };
+});
+afterAll(() => {
+  window.location = originalLocation;
+});
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 async function openDropdown() {
   await act(async () => {
@@ -72,6 +97,21 @@ describe("Navbar", () => {
       expect(
         screen.queryByRole("button", { name: /Login/i }),
       ).not.toBeInTheDocument();
+    });
+
+    it("shows a Logout button that logs the user out when confirmed", async () => {
+      const logoutButton = screen.getByRole("button", { name: /Logout/i });
+      expect(logoutButton).toBeInTheDocument();
+
+      await act(async () => {
+        fireEvent.click(logoutButton);
+      });
+
+      await act(async () => {
+        fireEvent.click(screen.getByRole("button", { name: "Yes" }));
+      });
+
+      expect(logout).toHaveBeenCalled();
     });
 
     it("includes the Account link in the dropdown", () => {

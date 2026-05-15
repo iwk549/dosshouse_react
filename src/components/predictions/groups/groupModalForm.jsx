@@ -7,10 +7,13 @@ import BasicModal from "../../common/modal/basicModal";
 import LoadingContext from "../../../context/loadingContext";
 import { titleCase } from "../../../utils/allowables";
 import descriptionText from "../../../textMaps/groups";
-import { deleteGroup, saveGroup } from "../../../services/groupsService";
+import {
+  deleteGroup,
+  saveGroup,
+  getGroups,
+} from "../../../services/groupsService";
 import { addPredictionToGroup } from "../../../services/predictionsService";
 import MyGroupsList from "./myGroupsList";
-import { getGroups } from "../../../services/groupsService";
 import GroupEditForm from "./groupEditForm";
 
 class GroupModalForm extends Component {
@@ -21,16 +24,20 @@ class GroupModalForm extends Component {
       passcode: "",
     },
     errors: {},
-    selectedTab: "Join",
+    selectedTab: "Create",
     groups: [],
   };
 
   async loadData() {
     this.context.setLoading(true);
     const res = await getGroups();
-    if (res.status === 200) this.setState({ groups: res.data });
-    else toast.error(res.data);
+    if (res?.status === 200) this.setState({ groups: res.data });
+    else toast.error(res?.data || "Could not load groups");
     this.context.setLoading(false);
+  }
+
+  componentDidMount() {
+    this.loadData();
   }
 
   async componentDidUpdate(prevProps) {
@@ -42,10 +49,21 @@ class GroupModalForm extends Component {
     name: Joi.string().allow("").min(1).max(50).label("Name"),
     passcode: Joi.string().required().min(8).max(100).label("Passcode"),
   };
-  tabs = ["Join", "Create", "Manage"];
 
   setSelectedTab = (selectedTab) => {
     this.setState({ selectedTab });
+  };
+
+  handleCreateGroup = async (data) => {
+    this.context.setLoading(true);
+    const res = await saveGroup(null, data);
+    if (res.status === 200) {
+      toast.success("Group Created");
+      this.props.onSuccess?.();
+      this.setState({ selectedTab: "Manage" });
+      return this.loadData();
+    } else toast.error(res.data);
+    this.context.setLoading(false);
   };
 
   handleCreateAndJoin = async (data) => {
@@ -62,7 +80,7 @@ class GroupModalForm extends Component {
     if (!error) {
       const addRes = await addPredictionToGroup(
         this.props.submission._id,
-        data
+        data,
       );
       if (addRes.status === 200) toast.success("Submission added to group");
       else {
@@ -70,7 +88,7 @@ class GroupModalForm extends Component {
         error = true;
       }
     }
-    if (!error) this.props.onSuccess();
+    if (!error) this.props.onSuccess?.();
 
     this.context.setLoading(false);
   };
@@ -80,8 +98,8 @@ class GroupModalForm extends Component {
     const res = await deleteGroup(group._id);
     if (res.status === 200) {
       toast.success("Group Deleted");
-      this.props.onSuccess();
-      return this.componentDidMount();
+      this.props.onSuccess?.();
+      return this.loadData();
     } else toast.error(res.data);
     this.context.setLoading(false);
   };
@@ -91,8 +109,8 @@ class GroupModalForm extends Component {
     const res = await saveGroup(group._id, data);
     if (res.status === 200) {
       toast.success("Group Updated");
-      this.props.onSuccess();
-      return this.componentDidMount();
+      this.props.onSuccess?.();
+      return this.loadData();
     } else toast.error(res.data);
     this.context.setLoading(false);
   };
@@ -102,49 +120,64 @@ class GroupModalForm extends Component {
   };
 
   render() {
+    const tabs = ["Create", "Manage"];
+    if (this.props.submission) tabs.unshift("Join");
+
     return (
       <BasicModal
         isOpen={this.props.isOpen}
         onClose={this.props.setIsOpen}
         header={
-          <>
-            <h3>
-              <b>{`Manage Groups for ${this.props.submission.name}`}</b>
-            </h3>
-            <h4>{this.props.submission.competitionID?.name}</h4>
-          </>
+          <div className="standout-header">
+            Manage Groups
+            {this.props.submission ? (
+              <div style={{ fontSize: "0.8em", fontWeight: "normal" }}>
+                {this.props.submission.name}
+              </div>
+            ) : null}
+            {this.props.submission && (
+              <div style={{ fontSize: "0.65em", fontWeight: "normal" }}>
+                {this.props.submission.competitionID?.name}
+              </div>
+            )}
+          </div>
         }
       >
         <SegmentedControl
-          tabs={this.tabs}
+          tabs={tabs}
           selectedTab={this.state.selectedTab}
           onSelectTab={this.setSelectedTab}
         />
         <div className="text-center">
-            {this.isTab("manage") && this.state.groups.length === 0 ? (
-              <p>You have not created any groups yet</p>
-            ) : (
-              descriptionText[this.state.selectedTab]
-            )}
-            {this.isTab("manage") ? (
-              <>
-                <MyGroupsList
-                  groups={this.state.groups}
-                  onEditGroup={this.handleEditGroup}
-                  onDeleteGroup={this.handleDeleteGroup}
-                />
-              </>
-            ) : (
-              <GroupEditForm
-                onSubmit={this.handleCreateAndJoin}
-                buttonText={
-                  this.state.selectedTab === "edit"
-                    ? "Save"
-                    : titleCase(this.state.selectedTab)
-                }
+          {this.isTab("manage") && this.state.groups.length === 0 ? (
+            <p>You have not created any groups yet</p>
+          ) : (
+            descriptionText[this.state.selectedTab]
+          )}
+          {this.isTab("manage") ? (
+            <>
+              <MyGroupsList
+                groups={this.state.groups}
+                onEditGroup={this.handleEditGroup}
+                onDeleteGroup={this.handleDeleteGroup}
+                competition={this.props.submission?.competitionID}
               />
-            )}
-          </div>
+            </>
+          ) : (
+            <GroupEditForm
+              onSubmit={
+                this.props.submission
+                  ? this.handleCreateAndJoin
+                  : this.handleCreateGroup
+              }
+              buttonText={
+                this.state.selectedTab === "edit"
+                  ? "Save"
+                  : titleCase(this.state.selectedTab)
+              }
+            />
+          )}
+        </div>
       </BasicModal>
     );
   }

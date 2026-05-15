@@ -14,6 +14,9 @@ jest.mock("../../services/predictionsService", () => ({
   deletePrediction: jest.fn(),
   removePredictionFromGroup: jest.fn(),
 }));
+jest.mock("../../services/groupsService", () => ({
+  getGroups: jest.fn(),
+}));
 
 const renderWithProps = async (mocks = {}, props = {}, user = {}) => {
   getPredictions.mockReturnValue(

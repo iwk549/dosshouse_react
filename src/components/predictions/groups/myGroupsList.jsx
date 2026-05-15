@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import Confirm from "../../common/modal/confirm";
 import IconRender from "../../common/icons/iconRender";
 import GroupEditForm from "./groupEditForm";
+import LeaderboardInviteModal from "../leaderboard/leaderboardInviteModal";
 
-const MyGroupsList = ({ groups, onDeleteGroup, onEditGroup }) => {
+const MyGroupsList = ({ groups, onDeleteGroup, onEditGroup, competition }) => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [deleteGroupOpen, setDeleteGroupOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   return (
     <div>
@@ -42,19 +44,32 @@ const MyGroupsList = ({ groups, onDeleteGroup, onEditGroup }) => {
                   />
                 )}
               </div>
-              <br />
-              <div className="col">
-                <button
-                  className="btn btn-danger"
-                  onClick={() => {
-                    setDeleteGroupOpen(true);
-                    setSelectedGroup(g);
-                  }}
-                >
-                  <IconRender type="delete" />
-                </button>
-              </div>
+              {competition && (
+                <div className="col">
+                  <button
+                    className="btn btn-sm btn-dark"
+                    onClick={() => setInviteOpen(true)}
+                  >
+                    Get Invite Link
+                  </button>
+                  <LeaderboardInviteModal
+                    isOpen={inviteOpen}
+                    setIsOpen={setInviteOpen}
+                    group={g}
+                    competition={competition}
+                  />
+                </div>
+              )}
             </div>
+            <button
+              className="btn btn-danger btn-sm"
+              onClick={() => {
+                setDeleteGroupOpen(true);
+                setSelectedGroup(g);
+              }}
+            >
+              <IconRender type="delete" />
+            </button>
             <div className="mini-div-line" />
           </React.Fragment>
         );

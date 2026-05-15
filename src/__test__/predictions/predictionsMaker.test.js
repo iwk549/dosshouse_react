@@ -197,9 +197,7 @@ describe("PredictionsMaker", () => {
         user,
       );
       await clickByText("Add to Group");
-      expect(
-        screen.queryByText(/manage groups for test bracket/i),
-      ).toBeInTheDocument();
+      expect(screen.queryByText(/manage groups/i)).toBeInTheDocument();
     });
   });
 
