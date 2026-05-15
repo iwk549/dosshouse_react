@@ -158,7 +158,6 @@ const SubmittedPredictions = ({ paramTab, competitionID }) => {
               <GroupModalForm
                 isOpen={groupFormOpen}
                 setIsOpen={setGroupFormOpen}
-                header="Manage Groups"
                 submission={selectedSubmission}
                 onSuccess={() => {
                   setGroupFormOpen(false);

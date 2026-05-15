@@ -7,11 +7,15 @@ import LoadingContext from "../../context/loadingContext";
 import RegistrationModalForm from "../user/registrationModalForm";
 import LogoRender from "../common/image/logoRender";
 import NavDropDown from "./navDropDown";
+import { logout } from "../../services/userService";
+import { toast } from "react-toastify";
+import Confirm from "../common/modal/confirm";
 
 const Navbar = () => {
   let navigate = useNavigate();
   const { user, setUser, setLoading } = useContext(LoadingContext);
   const [registerFormOpen, setRegisterFormOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   const links = [
     { to: "/competitions", icon: "prediction", label: "Competitions" },
@@ -33,6 +37,15 @@ const Navbar = () => {
       external: true,
     },
   ];
+
+  const handleLogout = () => {
+    setLoading(true);
+    logout();
+    setUser();
+    toast.info("Logged out");
+    window.location = "home";
+    setLoading(false);
+  };
 
   return (
     <IconContext.Provider value={{ className: "nav-icon" }}>
@@ -58,13 +71,33 @@ const Navbar = () => {
           </a>
         </div>
         <div className="nav-right">
-          {!user && (
+          {!user ? (
             <button
               className="btn btn-sm btn-dark"
               onClick={() => setRegisterFormOpen(true)}
             >
               <IconRender type="login" size={12} /> Login
             </button>
+          ) : (
+            <>
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={() => setLogoutOpen(true)}
+                title="logout"
+              >
+                <IconRender type="logout" size={12} /> Logout
+              </button>
+              <Confirm
+                header="Logout"
+                isOpen={logoutOpen}
+                setIsOpen={() => setLogoutOpen(false)}
+                focus="cancel"
+                onConfirm={handleLogout}
+                buttonText={["No", "Yes"]}
+              >
+                Are you sure you want to log out?
+              </Confirm>
+            </>
           )}
         </div>
       </nav>

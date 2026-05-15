@@ -81,7 +81,7 @@ const PredictionGroupList = ({
         }}
         data-testid="manage-groups-button"
       >
-        Manage Groups
+        Manage Groups for this Submission
       </button>
       {selectedGroup && (
         <Confirm

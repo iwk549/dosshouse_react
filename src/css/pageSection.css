@@ -87,7 +87,10 @@
 }
 .row {
   display: grid;
-  grid-template-columns: (auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+.col {
+  min-width: 0;
 }
 .single-card {
   border-radius: 5px;
