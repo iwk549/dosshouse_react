@@ -19,6 +19,10 @@ const SingleTeamView = ({ teamName, onSelect, asCard, flagSide, correct }) => {
         " text-center row" +
         (onSelect ? " clickable" : "")
       }
+      style={{
+        gridTemplateColumns: "1fr auto 1fr",
+        alignItems: "center",
+      }}
       onClick={onSelect ? () => onSelect(teamName) : null}
     >
       <div style={{ gridColumn: 1 }}>

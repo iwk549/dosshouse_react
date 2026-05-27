@@ -42,7 +42,7 @@ const GroupPicker = ({
           through the whole bracket.
         </p>
       )}
-      <div className="row">
+      <div>
         {groupMaps.map((h, i) => (
           <div
             className="row"
