@@ -11,13 +11,13 @@ import {
 } from "../../services/predictionsService";
 import { getCompetition } from "../../services/competitionService";
 import { getMatches } from "../../services/matchService";
-import { getResult } from "../../services/resultsService";
 import { act, screen } from "@testing-library/react";
 import PredictionMaker from "../../components/predictions/maker/predictionsMaker";
 import { getGroups } from "../../services/groupsService";
 import {
   competition,
   matches,
+  secondChanceMatches,
   unevenMatches,
   unevenMatchesCompetition,
   user,
@@ -29,9 +29,6 @@ jest.mock("../../services/predictionsService", () => ({
 }));
 jest.mock("../../services/competitionService", () => ({
   getCompetition: jest.fn(),
-}));
-jest.mock("../../services/resultsService", () => ({
-  getResult: jest.fn(),
 }));
 jest.mock("../../services/matchService", () => ({
   getMatches: jest.fn(),
@@ -57,12 +54,6 @@ const renderWithProps = async (props = {}, mocks = {}, user = null) => {
     apiResponse(
       mocks?.getCompetition?.data || null,
       mocks?.getCompetition?.status || 200,
-    ),
-  );
-  getResult.mockReturnValue(
-    apiResponse(
-      mocks?.getResult?.data || null,
-      mocks?.getResult?.status || 200,
     ),
   );
   getMatches.mockReturnValue(
@@ -467,6 +458,70 @@ describe("PredictionsMaker", () => {
       // team B will now cascade into third place pick
       await clickByText("Bonus");
       expect(screen.queryByText("Team B")).toBeInTheDocument();
+    });
+  });
+
+  describe("Second Chance", () => {
+    const secondChanceCompetition = {
+      ...competition,
+      secondChance: {
+        submissionDeadline: "2035-12-01T15:00:00.000Z",
+      },
+    };
+
+    it("should show Bracket tab but not Group tab", async () => {
+      await renderWithProps(
+        {
+          predictionID: "new",
+          competitionID: "testBracket1",
+          isSecondChance: true,
+        },
+        {
+          getCompetition: { data: secondChanceCompetition },
+          getMatches: { data: secondChanceMatches },
+        },
+        user,
+      );
+      expect(screen.queryByText("Group")).not.toBeInTheDocument();
+      expect(screen.queryByText("Bracket")).toBeInTheDocument();
+      expect(screen.queryByText("Information")).toBeInTheDocument();
+    });
+    it("should show real team names from match data in round 1", async () => {
+      await renderWithProps(
+        {
+          predictionID: "new",
+          competitionID: "testBracket1",
+          isSecondChance: true,
+        },
+        {
+          getCompetition: { data: secondChanceCompetition },
+          getMatches: { data: secondChanceMatches },
+        },
+        user,
+      );
+      expect(screen.queryByText("Team A")).toBeInTheDocument();
+      expect(screen.queryByText("Team E")).toBeInTheDocument();
+      expect(screen.queryByText("Team D")).toBeInTheDocument();
+      expect(screen.queryByText("Team B")).toBeInTheDocument();
+      expect(screen.queryByText("Winner Group A")).not.toBeInTheDocument();
+      expect(screen.queryByText("Runner Up Group B")).not.toBeInTheDocument();
+    });
+    it("should advance a team to the next round when clicked", async () => {
+      await renderWithProps(
+        {
+          predictionID: "new",
+          competitionID: "testBracket1",
+          isSecondChance: true,
+        },
+        {
+          getCompetition: { data: secondChanceCompetition },
+          getMatches: { data: secondChanceMatches },
+        },
+        user,
+      );
+      expect(screen.queryAllByText("Team A").length).toBe(1);
+      await clickByText("Team A");
+      expect(screen.queryAllByText("Team A").length).toBe(2);
     });
   });
 });
