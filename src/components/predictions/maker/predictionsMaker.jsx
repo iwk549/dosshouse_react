@@ -18,7 +18,6 @@ import {
   getPrediction,
   addPredictionToGroup,
 } from "../../../services/predictionsService";
-import { getResult } from "../../../services/resultsService";
 import { getCompetition } from "../../../services/competitionService";
 import HeaderLine from "./headerLine";
 import Miscellaneous from "./miscellaneous";
@@ -154,10 +153,6 @@ const PredictionMaker = ({
       setOriginalPlayoffMatches(filtered.playoffMatches);
       setAllTeams(addedTeamTracker);
 
-      // get saved predictions or set new predictions
-      // if this is a second chance competition we will need the group results
-      const resultRes = await getResult(competitionID);
-
       if (predictionID !== "new") {
         // grab prediction from db
         const predictionsRes = await getPrediction(predictionID);
@@ -167,7 +162,7 @@ const PredictionMaker = ({
             type: "populate",
             groups:
               (isSecondChance
-                ? resultRes.data?.group
+                ? []
                 : predictionsRes.data?.groupPredictions) || [],
             playoffs: predictionsRes.data?.playoffPredictions || [],
             playoffMatches: filtered.playoffMatches,
@@ -182,13 +177,9 @@ const PredictionMaker = ({
           setNotAllowed(predictionsRes.status);
         }
       } else {
-        const groupResults = {};
-        resultRes.data?.group?.forEach((g) => {
-          groupResults[g.groupName] = g.teamOrder.map((t) => ({ name: t }));
-        });
         dispatchPredictions({
           type: "initial",
-          groups: isSecondChance ? groupResults : filtered.groups,
+          groups: isSecondChance ? {} : filtered.groups,
           playoffs: [],
           playoffMatches: filtered.playoffMatches,
           competition: competitionRes.data,

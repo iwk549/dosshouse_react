@@ -859,9 +859,67 @@ const user = {
   email: "test@test.com",
 };
 
+const secondChanceMatches = [
+  {
+    homeTeamGoals: 0,
+    homeTeamPKs: 0,
+    awayTeamGoals: 0,
+    awayTeamPKs: 0,
+    matchAccepted: false,
+    homeTeamName: "Team A",
+    awayTeamName: "Team E",
+    matchNumber: 7,
+    round: 1,
+    sport: "Soccer",
+    type: "Playoff",
+    getTeamsFrom: {
+      home: { groupName: "Group A", position: 1 },
+      away: { groupName: "Group B", position: 2 },
+    },
+    bracketCode: "testBracket1",
+  },
+  {
+    homeTeamGoals: 0,
+    homeTeamPKs: 0,
+    awayTeamGoals: 0,
+    awayTeamPKs: 0,
+    matchAccepted: false,
+    homeTeamName: "Team D",
+    awayTeamName: "Team B",
+    matchNumber: 8,
+    round: 1,
+    sport: "Soccer",
+    type: "Playoff",
+    getTeamsFrom: {
+      home: { groupName: "Group B", position: 1 },
+      away: { groupName: "Group A", position: 2 },
+    },
+    bracketCode: "testBracket1",
+  },
+  {
+    homeTeamGoals: 0,
+    homeTeamPKs: 0,
+    awayTeamGoals: 0,
+    awayTeamPKs: 0,
+    matchAccepted: false,
+    homeTeamName: "Winner 7",
+    awayTeamName: "Winner 8",
+    matchNumber: 10,
+    round: 2,
+    sport: "Soccer",
+    type: "Playoff",
+    getTeamsFrom: {
+      home: { matchNumber: 7 },
+      away: { matchNumber: 8 },
+    },
+    bracketCode: "testBracket1",
+  },
+];
+
 export {
   competition,
   matches,
+  secondChanceMatches,
   unevenMatchesCompetition,
   unevenMatches,
   prediction,
