@@ -38,7 +38,8 @@ const AdminToolsMatches = ({ competitions }) => {
     if (res?.status === 200) {
       setMatches(res.data);
       setSelectedCompetitionId(competition._id);
-      if (selectedCompetition?._id !== competition._id) setSelectedCompetition(competition);
+      if (selectedCompetition?._id !== competition._id)
+        setSelectedCompetition(competition);
       const allTeams = [
         ...new Set(res.data.flatMap((m) => [m.homeTeamName, m.awayTeamName])),
       ];
@@ -49,9 +50,16 @@ const AdminToolsMatches = ({ competitions }) => {
     setLoading(false);
   };
 
-  const thirdPlaceInfo = selectedCompetition?.miscPicks?.find((p) => p.name === "thirdPlace")?.info;
+  const thirdPlaceInfo = selectedCompetition?.miscPicks?.find(
+    (p) => p.name === "thirdPlace",
+  )?.info;
   const thirdPlaceMatch = thirdPlaceInfo
-    ? { ...thirdPlaceInfo, _id: "thirdPlace", isMiscPick: true, miscPickName: "thirdPlace" }
+    ? {
+        ...thirdPlaceInfo,
+        _id: "thirdPlace",
+        isMiscPick: true,
+        miscPickName: "thirdPlace",
+      }
     : null;
 
   const renderMatch = (m, { onSave, saveOverride }) => {
@@ -73,12 +81,20 @@ const AdminToolsMatches = ({ competitions }) => {
         className={"match-row" + (m.matchAccepted ? " match-row-accepted" : "")}
       >
         <div className="match-info">
-          <span className="match-meta">R{m.round} #{m.matchNumber}</span>
+          <span className="match-meta">
+            R{m.round} #{m.metadata?.matchNumber || m.matchNumber}
+          </span>
           <span className="match-meta">{m.type}</span>
           {m.isMiscPick && <span className="match-meta">3rd Place</span>}
-          <span className="match-teams">{m.homeTeamName} vs {m.awayTeamName}</span>
-          {formatScore(m) && <span className="match-score">{formatScore(m)}</span>}
-          {m.dateTime && <span className="match-meta">{shortDate(m.dateTime)}</span>}
+          <span className="match-teams">
+            {m.homeTeamName} vs {m.awayTeamName}
+          </span>
+          {formatScore(m) && (
+            <span className="match-score">{formatScore(m)}</span>
+          )}
+          {m.dateTime && (
+            <span className="match-meta">{shortDate(m.dateTime)}</span>
+          )}
           {m.location && <span className="match-meta">{m.location}</span>}
         </div>
         <div className="inline-row">
@@ -87,7 +103,10 @@ const AdminToolsMatches = ({ competitions }) => {
           ) : (
             <span className="match-pending-badge">Pending</span>
           )}
-          <button className="btn btn-sm btn-dark" onClick={() => setEditingMatchId(m._id)}>
+          <button
+            className="btn btn-sm btn-dark"
+            onClick={() => setEditingMatchId(m._id)}
+          >
             <IconRender type="edit" size={14} />
           </button>
         </div>
@@ -101,7 +120,10 @@ const AdminToolsMatches = ({ competitions }) => {
         const complete = new Date(c.competitionEnd) < new Date();
         const isSelected = selectedCompetitionId === c._id;
         return (
-          <div key={c._id} className={"single-card" + (complete ? " muted-card" : "")}>
+          <div
+            key={c._id}
+            className={"single-card" + (complete ? " muted-card" : "")}
+          >
             <div className="competition-card-header-row">
               <div className="inline-row">
                 <b>{c.name}</b>
@@ -129,35 +151,77 @@ const AdminToolsMatches = ({ competitions }) => {
               <div className="match-list">
                 {matches.length === 0 && !thirdPlaceMatch ? (
                   <p className="muted-text">No matches found.</p>
-                ) : (() => {
-                    const filtered = matches.filter((m) => showAccepted || !m.matchAccepted);
-                    const allButLast = thirdPlaceMatch ? filtered.slice(0, -1) : filtered;
-                    const finalMatch = thirdPlaceMatch ? filtered.slice(-1) : [];
+                ) : (
+                  (() => {
+                    const filtered = matches.filter(
+                      (m) => showAccepted || !m.matchAccepted,
+                    );
+                    const allButLast = thirdPlaceMatch
+                      ? filtered.slice(0, -1)
+                      : filtered;
+                    const finalMatch = thirdPlaceMatch
+                      ? filtered.slice(-1)
+                      : [];
                     const matchOnSave = (m) => (updated) => {
-                      setMatches((prev) => prev.map((x) => (x._id === m._id ? updated : x)));
+                      setMatches((prev) =>
+                        prev.map((x) => (x._id === m._id ? updated : x)),
+                      );
                       setEditingMatchId(null);
                     };
-                    const thirdPlaceSaveOverride = ({ homeTeamName, awayTeamName, homeTeamGoals, homeTeamPKs, awayTeamGoals, awayTeamPKs, dateTime, location, matchAccepted }) =>
-                      updateMiscPickInfo(selectedCompetition.code, "thirdPlace", { homeTeamName, awayTeamName, homeTeamGoals, homeTeamPKs, awayTeamGoals, awayTeamPKs, dateTime, location, matchAccepted });
+                    const thirdPlaceSaveOverride = ({
+                      homeTeamName,
+                      awayTeamName,
+                      homeTeamGoals,
+                      homeTeamPKs,
+                      awayTeamGoals,
+                      awayTeamPKs,
+                      dateTime,
+                      location,
+                      matchAccepted,
+                    }) =>
+                      updateMiscPickInfo(
+                        selectedCompetition.code,
+                        "thirdPlace",
+                        {
+                          homeTeamName,
+                          awayTeamName,
+                          homeTeamGoals,
+                          homeTeamPKs,
+                          awayTeamGoals,
+                          awayTeamPKs,
+                          dateTime,
+                          location,
+                          matchAccepted,
+                        },
+                      );
                     return (
                       <>
-                        {allButLast.map((m) => renderMatch(m, { onSave: matchOnSave(m) }))}
-                        {thirdPlaceMatch && (showAccepted || !thirdPlaceMatch.matchAccepted) && renderMatch(thirdPlaceMatch, {
-                          onSave: (updated) => {
-                            setSelectedCompetition((prev) => ({
-                              ...prev,
-                              miscPicks: prev.miscPicks.map((p) =>
-                                p.name === "thirdPlace" ? { ...p, info: updated } : p
-                              ),
-                            }));
-                            setEditingMatchId(null);
-                          },
-                          saveOverride: thirdPlaceSaveOverride,
-                        })}
-                        {finalMatch.map((m) => renderMatch(m, { onSave: matchOnSave(m) }))}
+                        {allButLast.map((m) =>
+                          renderMatch(m, { onSave: matchOnSave(m) }),
+                        )}
+                        {thirdPlaceMatch &&
+                          (showAccepted || !thirdPlaceMatch.matchAccepted) &&
+                          renderMatch(thirdPlaceMatch, {
+                            onSave: (updated) => {
+                              setSelectedCompetition((prev) => ({
+                                ...prev,
+                                miscPicks: prev.miscPicks.map((p) =>
+                                  p.name === "thirdPlace"
+                                    ? { ...p, info: updated }
+                                    : p,
+                                ),
+                              }));
+                              setEditingMatchId(null);
+                            },
+                            saveOverride: thirdPlaceSaveOverride,
+                          })}
+                        {finalMatch.map((m) =>
+                          renderMatch(m, { onSave: matchOnSave(m) }),
+                        )}
                       </>
                     );
-                  })()}
+                  })()
+                )}
               </div>
             )}
           </div>
