@@ -61,12 +61,16 @@ class AdminToolsMatchEdit extends Form {
       awayTeamName: data.awayTeamName,
       awayTeamGoals: toNum(data.awayTeamGoals),
       awayTeamPKs: toNum(data.awayTeamPKs),
-      dateTime: data.dateTime ? new Date(data.dateTime).toISOString() : undefined,
+      dateTime: data.dateTime
+        ? new Date(data.dateTime).toISOString()
+        : undefined,
       location: data.location || undefined,
       matchAccepted: data.matchAccepted,
     };
     const { saveOverride } = this.props;
-    const res = saveOverride ? await saveOverride(body) : await updateMatch(match._id, body);
+    const res = saveOverride
+      ? await saveOverride(body)
+      : await updateMatch(match._id, body);
     if (res?.status === 200) {
       toast.success("Match updated");
       this.props.onSave(res.data);
@@ -82,13 +86,25 @@ class AdminToolsMatchEdit extends Form {
     return (
       <div className="match-edit-form">
         <div className="match-edit-ref inline-row">
-          <span className="match-meta">R{match.round} #{match.matchNumber}</span>
+          <span className="match-meta">
+            R{match.round} #{match.metadata?.matchNumber || match.matchNumber}
+          </span>
           <span className="match-meta">{match.type}</span>
         </div>
         <form onSubmit={this.handleSubmit}>
           <div className="match-edit-grid">
-            {this.renderTeamSelect("homeTeamName", "Home Team", "Select the home team", teamOptions)}
-            {this.renderTeamSelect("awayTeamName", "Away Team", "Select the away team", teamOptions)}
+            {this.renderTeamSelect(
+              "homeTeamName",
+              "Home Team",
+              "Select the home team",
+              teamOptions,
+            )}
+            {this.renderTeamSelect(
+              "awayTeamName",
+              "Away Team",
+              "Select the away team",
+              teamOptions,
+            )}
             {this.renderInput("homeTeamGoals", "Home Goals", "", "number")}
             {this.renderInput("awayTeamGoals", "Away Goals", "", "number")}
             {this.renderInput("homeTeamPKs", "Home PKs", "", "number")}
